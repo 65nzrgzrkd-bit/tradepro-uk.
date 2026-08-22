@@ -55,7 +55,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 1.4</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -572,8 +572,7 @@ let bankBits=[
 setting("accountName","") ? "Account: "+setting("accountName","") : "",
 setting("sortCode","") ? "Sort code: "+setting("sortCode","") : "",
 setting("accountNumber","") ? "Account no: "+setting("accountNumber","") : ""
-].filter(Boolean).join("
-");
+].filter(Boolean).join("\n");
 return `${setting("businessName","TradePro UK")}
 ${businessDetailsText()}
 ${companyBits}
@@ -645,8 +644,7 @@ setting("accountName","") ? "Account name: "+setting("accountName","") : "",
 setting("sortCode","") ? "Sort code: "+setting("sortCode","") : "",
 setting("accountNumber","") ? "Account number: "+setting("accountNumber","") : ""
 ].filter(Boolean);
-pBankDetails.innerText=bank.join("
-") || "Payment details not entered";
+pBankDetails.innerText=bank.join("\n") || "Payment details not entered";
 pPaymentNote.innerText=setting("paymentNote","");
 
 let footer=[
