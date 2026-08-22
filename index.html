@@ -34,10 +34,17 @@ input,textarea,select{width:100%;margin-top:7px;padding:14px;border:1px solid #d
 .result small{color:#6f7a84}.result strong{display:block;font-size:38px;margin:7px 0}
 .resultbuttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
 .resultbuttons button{padding:13px;border-radius:12px;font-weight:700}
-.secondary{background:#e4ebf0;color:#15324b}.green{background:#2c7a38;color:white}
+.secondary{background:#e4ebf0;color:#15324b}.green{background:#2c7a38;color:white}.danger{background:#b42318;color:white}
 .item{background:white;border-radius:15px;padding:14px;margin-bottom:10px;box-shadow:0 4px 14px rgba(0,0,0,.05)}
-.item strong{display:block}.item small{color:#6f7a84}.price{float:right;color:#2c7a38;font-weight:800}
+.item.clickable{cursor:pointer}.item strong{display:block}.item small{color:#6f7a84}.price{float:right;color:#2c7a38;font-weight:800}
 .empty{background:white;border-radius:15px;padding:25px;text-align:center;color:#77828d}
+.detail{background:white;border-radius:18px;padding:18px;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.detail .bigprice{font-size:40px;font-weight:800;color:#2c7a38;margin:6px 0 18px}
+.detailrow{padding:12px 0;border-bottom:1px solid #e7edf1}
+.detailrow:last-of-type{border-bottom:0}
+.detailrow span{display:block;color:#6f7a84;font-size:13px;margin-bottom:3px}
+.detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.detail-actions button{padding:14px;border-radius:13px;font-weight:700}
 nav{position:fixed;bottom:0;left:0;right:0;max-width:650px;margin:auto;background:white;border-top:1px solid #d8e0e6;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 4px calc(8px + env(safe-area-inset-bottom))}
 nav button{background:white;color:#15324b;font-size:20px}nav span{display:block;font-size:11px;margin-top:3px}
 </style>
@@ -45,6 +52,7 @@ nav button{background:white;color:#15324b;font-size:20px}nav span{display:block;
 <body>
 <header><small>TradePro UK</small><h1>Plumber Edition</h1></header>
 <main>
+
 <section id="home" class="screen active">
 <div class="hero"><small>This month</small><h2 id="sales">£0.00</h2><div>Sales recorded</div></div>
 <div class="stats">
@@ -92,6 +100,22 @@ nav button{background:white;color:#15324b;font-size:20px}nav span{display:block;
 
 <section id="customers" class="screen"><div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Customers</h2></div><div id="customerList"></div></section>
 <section id="quotes" class="screen"><div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Quotes</h2></div><div id="quoteList"></div></section>
+
+<section id="quoteDetail" class="screen">
+<div class="screenhead"><button class="back" onclick="show('quotes')">‹</button><h2>Quote Details</h2></div>
+<div class="detail">
+<div class="bigprice" id="qdPrice">£0.00</div>
+<div class="detailrow"><span>Customer</span><strong id="qdCustomer"></strong></div>
+<div class="detailrow"><span>Job</span><strong id="qdJob"></strong></div>
+<div class="detailrow"><span>Date</span><strong id="qdDate"></strong></div>
+<div class="detailrow"><span>Status</span><strong>Draft</strong></div>
+<div class="detail-actions">
+<button class="green" onclick="convertSelectedQuoteToInvoice()">Create Invoice</button>
+<button class="danger" onclick="deleteSelectedQuote()">Delete Quote</button>
+</div>
+</div>
+</section>
+
 <section id="invoices" class="screen"><div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Invoices</h2></div><div id="invoiceList"></div></section>
 
 <section id="pricebook" class="screen">
@@ -116,8 +140,8 @@ nav button{background:white;color:#15324b;font-size:20px}nav span{display:block;
 <label>Profit margin %<input id="profit" type="number" value="20"></label>
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
-</main>
 
+</main>
 <nav>
 <button onclick="show('home')">⌂<span>Home</span></button>
 <button onclick="show('job')">＋<span>New Job</span></button>
@@ -128,10 +152,28 @@ nav button{background:white;color:#15324b;font-size:20px}nav span{display:block;
 <script>
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 let currentPrice=0;
+let selectedQuoteIndex=null;
 const presets={tap:[1,8],fill:[0.75,25],pipe:[2,20],rad:[1.5,15],designer:[2,20],shower:[1.25,15],bath:[5,35],bathroom:[40,180]};
-function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");render();window.scrollTo(0,0)}
-function preset(){let key=document.getElementById("jobtype").value;if(!presets[key])return;hours.value=presets[key][0];materials.value=presets[key][1]}
-function setting(id,def){let value=parseFloat(localStorage.getItem(id));return isNaN(value)?def:value}
+
+function show(id){
+document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+render();
+window.scrollTo(0,0)
+}
+
+function preset(){
+let key=document.getElementById("jobtype").value;
+if(!presets[key])return;
+hours.value=presets[key][0];
+materials.value=presets[key][1]
+}
+
+function setting(id,def){
+let value=parseFloat(localStorage.getItem(id));
+return isNaN(value)?def:value
+}
+
 function calculate(){
 let h=parseFloat(hours.value)||0,m=parseFloat(materials.value)||0;
 let rate=setting("rate",55),travel=setting("travel",15),markup=setting("markup",20)/100,overhead=setting("overheadRate",10)/100,contingency=setting("contingency",5)/100,profit=setting("profit",20)/100;
@@ -143,21 +185,100 @@ recommended.innerText="£"+currentPrice.toFixed(2);
 breakdown.innerText="Labour £"+labour.toFixed(2)+" · Materials £"+m.toFixed(2)+" · "+difficulty;
 result.style.display="block"
 }
+
 function customerName(){return customer.value.trim()||"Unnamed customer"}
 function jobName(){return description.value.trim()||jobtype.options[jobtype.selectedIndex].text||"Plumbing job"}
-function addCustomer(){let name=customerName();if(!data.customers.includes(name))data.customers.push(name);return name}
-function saveQuote(){if(!currentPrice)calculate();let name=addCustomer();data.quotes.unshift({customer:name,job:jobName(),price:currentPrice,date:new Date().toLocaleDateString("en-GB")});save();show("quotes")}
-function saveInvoice(){if(!currentPrice)calculate();let name=addCustomer();data.invoices.unshift({customer:name,job:jobName(),price:currentPrice,date:new Date().toLocaleDateString("en-GB")});save();show("invoices")}
-function save(){localStorage.setItem("tradepro",JSON.stringify(data));render()}
-function saveSettings(){["rate","travel","markup","overheadRate","contingency","profit"].forEach(id=>localStorage.setItem(id,document.getElementById(id).value));alert("Settings saved")}
-function render(){
-quoteCount.innerText=data.quotes.length;invoiceCount.innerText=data.invoices.length;customerCount.innerText=data.customers.length;
-let owed=data.invoices.reduce((a,b)=>a+b.price,0);outstanding.innerText="£"+owed.toFixed(0);sales.innerText="£"+owed.toFixed(2);
-customerList.innerHTML=data.customers.length?data.customers.map(x=>'<div class="item"><strong>'+x+'</strong><small>Customer record</small></div>').join(""):'<div class="empty">No customers saved yet.</div>';
-quoteList.innerHTML=data.quotes.length?data.quotes.map(x=>'<div class="item"><span class="price">£'+x.price.toFixed(2)+'</span><strong>'+x.customer+'</strong><small>'+x.job+' · '+x.date+'</small></div>').join(""):'<div class="empty">No quotes saved yet.</div>';
-invoiceList.innerHTML=data.invoices.length?data.invoices.map(x=>'<div class="item"><span class="price">£'+x.price.toFixed(2)+'</span><strong>'+x.customer+'</strong><small>'+x.job+' · '+x.date+' · Unpaid</small></div>').join(""):'<div class="empty">No invoices saved yet.</div>';
-["rate","travel","markup","overheadRate","contingency","profit"].forEach(id=>{let saved=localStorage.getItem(id);if(saved!==null)document.getElementById(id).value=saved})
+
+function addCustomer(){
+let name=customerName();
+if(!data.customers.includes(name))data.customers.push(name);
+return name
 }
+
+function saveQuote(){
+if(!currentPrice)calculate();
+let name=addCustomer();
+data.quotes.unshift({customer:name,job:jobName(),price:currentPrice,date:new Date().toLocaleDateString("en-GB")});
+save();
+show("quotes")
+}
+
+function saveInvoice(){
+if(!currentPrice)calculate();
+let name=addCustomer();
+data.invoices.unshift({customer:name,job:jobName(),price:currentPrice,date:new Date().toLocaleDateString("en-GB"),status:"Unpaid"});
+save();
+show("invoices")
+}
+
+function openQuote(index){
+selectedQuoteIndex=index;
+let q=data.quotes[index];
+qdPrice.innerText="£"+q.price.toFixed(2);
+qdCustomer.innerText=q.customer;
+qdJob.innerText=q.job;
+qdDate.innerText=q.date;
+show("quoteDetail")
+}
+
+function convertSelectedQuoteToInvoice(){
+if(selectedQuoteIndex===null)return;
+let q=data.quotes[selectedQuoteIndex];
+data.invoices.unshift({customer:q.customer,job:q.job,price:q.price,date:q.date,status:"Unpaid"});
+save();
+show("invoices")
+}
+
+function deleteSelectedQuote(){
+if(selectedQuoteIndex===null)return;
+if(!confirm("Delete this quote?"))return;
+data.quotes.splice(selectedQuoteIndex,1);
+selectedQuoteIndex=null;
+save();
+show("quotes")
+}
+
+function save(){
+localStorage.setItem("tradepro",JSON.stringify(data));
+render()
+}
+
+function saveSettings(){
+["rate","travel","markup","overheadRate","contingency","profit"].forEach(id=>localStorage.setItem(id,document.getElementById(id).value));
+alert("Settings saved")
+}
+
+function esc(s){
+return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))
+}
+
+function render(){
+quoteCount.innerText=data.quotes.length;
+invoiceCount.innerText=data.invoices.length;
+customerCount.innerText=data.customers.length;
+
+let owed=data.invoices.filter(x=>x.status!=="Paid").reduce((a,b)=>a+b.price,0);
+outstanding.innerText="£"+owed.toFixed(0);
+sales.innerText="£"+data.invoices.reduce((a,b)=>a+b.price,0).toFixed(2);
+
+customerList.innerHTML=data.customers.length
+?data.customers.map(x=>'<div class="item"><strong>'+esc(x)+'</strong><small>Customer record</small></div>').join("")
+:'<div class="empty">No customers saved yet.</div>';
+
+quoteList.innerHTML=data.quotes.length
+?data.quotes.map((x,i)=>'<div class="item clickable" onclick="openQuote('+i+')"><span class="price">£'+x.price.toFixed(2)+'</span><strong>'+esc(x.customer)+'</strong><small>'+esc(x.job)+' · '+esc(x.date)+'</small></div>').join("")
+:'<div class="empty">No quotes saved yet.</div>';
+
+invoiceList.innerHTML=data.invoices.length
+?data.invoices.map(x=>'<div class="item"><span class="price">£'+x.price.toFixed(2)+'</span><strong>'+esc(x.customer)+'</strong><small>'+esc(x.job)+' · '+esc(x.date)+' · '+esc(x.status||"Unpaid")+'</small></div>').join("")
+:'<div class="empty">No invoices saved yet.</div>';
+
+["rate","travel","markup","overheadRate","contingency","profit"].forEach(id=>{
+let saved=localStorage.getItem(id);
+if(saved!==null)document.getElementById(id).value=saved
+})
+}
+
 render();
 </script>
 </body>
