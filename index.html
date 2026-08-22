@@ -161,7 +161,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <section id="invoiceDetail" class="screen">
 <div class="screenhead"><button class="back" onclick="show('invoices')">‹</button><h2>Invoice Details</h2></div>
-<div class="detail">
+
+<div id="invoiceView" class="detail">
 <div class="detailrow"><span>Invoice number</span><strong id="idNumber"></strong></div>
 <div class="bigprice" id="idPrice">£0.00</div>
 <div class="detailrow"><span>Customer</span><strong id="idCustomer"></strong></div>
@@ -174,11 +175,59 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="detailrow"><span>Status</span><strong id="idStatus" class="status"></strong></div>
 <div class="detailrow"><span>Amount paid</span><strong id="idPaid"></strong></div>
 <div class="detailrow"><span>Balance due</span><strong id="idBalance"></strong></div>
+
 <div class="detail-actions">
+<button class="secondary" onclick="editSelectedInvoice()">Edit Invoice</button>
 <button class="green" onclick="togglePaid()">Mark Paid / Unpaid</button>
 <button class="secondary" onclick="sendInvoice()">Send Invoice</button>
 <button class="secondary" onclick="printInvoice()">Print / Save PDF</button>
 <button class="danger" onclick="deleteSelectedInvoice()">Delete Invoice</button>
+</div>
+</div>
+
+<div id="invoiceEdit" class="detail" style="display:none">
+<h3>Edit Invoice</h3>
+
+<label>Customer name<input id="editCustomerName"></label>
+
+<div class="two">
+<label>Phone<input id="editPhone" type="tel"></label>
+<label>Email<input id="editEmail" type="email"></label>
+</div>
+
+<label>Address line 1<input id="editAddress1"></label>
+<label>Address line 2<input id="editAddress2"></label>
+
+<div class="two">
+<label>Town / City<input id="editTown"></label>
+<label>Postcode<input id="editPostcode"></label>
+</div>
+
+<label>Job description<textarea id="editJob" rows="3"></textarea></label>
+<label>Job address<textarea id="editJobAddress" rows="2"></textarea></label>
+
+<div class="two">
+<label>Invoice date<input id="editInvoiceDate"></label>
+<label>Due date<input id="editDueDate"></label>
+</div>
+
+<div class="two">
+<label>Total £<input id="editPrice" type="number" step="0.01"></label>
+<label>Amount paid £<input id="editPaid" type="number" step="0.01"></label>
+</div>
+
+<label>Status
+<select id="editStatus">
+<option>Unpaid</option>
+<option>Paid</option>
+<option>Part Paid</option>
+<option>Overdue</option>
+</select>
+</label>
+
+<div class="detail-actions">
+<button class="green" onclick="saveInvoiceEdits()">Save Changes</button>
+<button class="secondary" onclick="cancelInvoiceEdit()">Cancel</button>
 </div>
 </div>
 </section>
@@ -323,7 +372,10 @@ qdPrice.innerText="£"+q.price.toFixed(2);qdCustomer.innerText=c.name;qdAddress.
 function convertSelectedQuoteToInvoice(){
 if(selectedQuoteIndex===null)return;
 let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer);
-let duplicate=data.invoices.find(x=>x.quoteKey===quoteKey(q));
+let duplicate=data.invoices.find(x=>
+x.quoteKey===quoteKey(q) ||
+(normalizeCustomer(x.customer).name===c.name && x.job===q.job && Number(x.price)===Number(q.price))
+);
 if(duplicate){alert("This quote has already been converted to invoice "+duplicate.number+".");openInvoice(data.invoices.indexOf(duplicate));return}
 let terms=settingNum("paymentDays",14);
 data.invoices.unshift({customer:c,job:q.job,jobAddress:q.jobAddress||fullAddress(c),price:q.price,date:todayUK(),dueDate:addDaysUK(terms),number:nextInvoiceNumber(),status:"Unpaid",paid:0,quoteKey:quoteKey(q)});
@@ -336,6 +388,8 @@ function normalizeCustomer(c){return typeof c==="string"?{name:c,phone:"",email:
 
 function openInvoice(i){
 selectedInvoiceIndex=i;let inv=data.invoices[i],c=normalizeCustomer(inv.customer);
+if(document.getElementById("invoiceView")) invoiceView.style.display="block";
+if(document.getElementById("invoiceEdit")) invoiceEdit.style.display="none";
 idNumber.innerText=inv.number||("TP-"+String(i+1).padStart(4,"0"));
 idPrice.innerText="£"+inv.price.toFixed(2);
 idCustomer.innerText=c.name;idAddress.innerText=fullAddress(c);idContact.innerText=contactText(c);
@@ -344,11 +398,89 @@ idStatus.innerText=inv.status||"Unpaid";idPaid.innerText="£"+Number(inv.paid||0
 show("invoiceDetail")
 }
 
+
+function editSelectedInvoice(){
+if(selectedInvoiceIndex===null)return;
+let inv=data.invoices[selectedInvoiceIndex],c=normalizeCustomer(inv.customer);
+
+editCustomerName.value=c.name||"";
+editPhone.value=c.phone||"";
+editEmail.value=c.email||"";
+editAddress1.value=c.address1||"";
+editAddress2.value=c.address2||"";
+editTown.value=c.town||"";
+editPostcode.value=c.postcode||"";
+
+editJob.value=inv.job||"";
+editJobAddress.value=inv.jobAddress||"";
+editInvoiceDate.value=inv.date||"";
+editDueDate.value=inv.dueDate||"";
+editPrice.value=Number(inv.price||0).toFixed(2);
+editPaid.value=Number(inv.paid||0).toFixed(2);
+editStatus.value=inv.status||"Unpaid";
+
+invoiceView.style.display="none";
+invoiceEdit.style.display="block";
+window.scrollTo(0,0);
+}
+
+function cancelInvoiceEdit(){
+invoiceEdit.style.display="none";
+invoiceView.style.display="block";
+window.scrollTo(0,0);
+}
+
+function saveInvoiceEdits(){
+if(selectedInvoiceIndex===null)return;
+
+let inv=data.invoices[selectedInvoiceIndex];
+let c={
+name:editCustomerName.value.trim()||"Unnamed customer",
+phone:editPhone.value.trim(),
+email:editEmail.value.trim(),
+address1:editAddress1.value.trim(),
+address2:editAddress2.value.trim(),
+town:editTown.value.trim(),
+postcode:editPostcode.value.trim()
+};
+
+inv.customer=c;
+inv.job=editJob.value.trim()||"Plumbing job";
+inv.jobAddress=editJobAddress.value.trim()||fullAddress(c);
+inv.date=editInvoiceDate.value.trim()||todayUK();
+inv.dueDate=editDueDate.value.trim();
+inv.price=Math.max(0,parseFloat(editPrice.value)||0);
+inv.paid=Math.max(0,parseFloat(editPaid.value)||0);
+
+let chosenStatus=editStatus.value;
+if(inv.paid>=inv.price && inv.price>0){
+inv.paid=inv.price;
+inv.status="Paid";
+}else if(inv.paid>0){
+inv.status="Part Paid";
+}else{
+inv.status=chosenStatus==="Paid"?"Unpaid":chosenStatus;
+}
+
+upsertCustomer(c);
+save();
+
+invoiceEdit.style.display="none";
+invoiceView.style.display="block";
+openInvoice(selectedInvoiceIndex);
+}
 function togglePaid(){
 if(selectedInvoiceIndex===null)return;
 let inv=data.invoices[selectedInvoiceIndex];
-if(inv.status==="Paid"){inv.status="Unpaid";inv.paid=0}else{inv.status="Paid";inv.paid=inv.price}
-save();openInvoice(selectedInvoiceIndex)
+if(inv.status==="Paid"){
+inv.status="Unpaid";
+inv.paid=0;
+}else{
+inv.status="Paid";
+inv.paid=inv.price;
+}
+save();
+openInvoice(selectedInvoiceIndex);
 }
 function deleteSelectedInvoice(){
 if(selectedInvoiceIndex===null)return;
