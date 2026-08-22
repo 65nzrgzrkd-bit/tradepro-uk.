@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#15324b">
+<title>TradePro UK</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f3f6f8;color:#1c2733}
+header{background:#15324b;color:white;padding:22px 18px 18px}
+header small{text-transform:uppercase;letter-spacing:1px;opacity:.75}
+header h1{margin:4px 0 0;font-size:26px}
+main{max-width:650px;margin:auto;padding:16px 16px 100px}
+.screen{display:none}.screen.active{display:block}
+.hero{background:linear-gradient(135deg,#205d89,#27808c);color:white;border-radius:22px;padding:20px;margin-bottom:14px}
+.hero small{opacity:.8}.hero h2{font-size:34px;margin:8px 0 2px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.card{background:white;border-radius:17px;padding:16px;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.card small{color:#6f7a84}.card strong{display:block;font-size:23px;margin-top:5px}
+button{border:0;font:inherit;cursor:pointer}
+.primary{width:100%;background:#2c7a38;color:white;font-weight:700;padding:16px;border-radius:15px;font-size:17px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.action{background:white;padding:20px 10px;border-radius:17px;font-size:25px;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.action span{display:block;font-size:14px;margin-top:6px}
+h3{margin-top:24px}
+.screenhead{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.back{width:42px;height:42px;border-radius:12px;background:#e2e9ee;font-size:25px;color:#15324b}
+.screenhead h2{margin:0}
+label{display:block;font-weight:650;margin:14px 0;font-size:14px}
+input,textarea,select{width:100%;margin-top:7px;padding:14px;border:1px solid #d6e0e6;background:white;border-radius:13px;font-size:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.result{background:white;margin-top:18px;border-left:5px solid #2c7a38;padding:18px;border-radius:17px;display:none}
+.result small{color:#6f7a84}.result strong{display:block;font-size:38px;margin:7px 0}
+.resultbuttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.resultbuttons button{padding:13px;border-radius:12px;font-weight:700}
+.secondary{background:#e4ebf0;color:#15324b}.green{background:#2c7a38;color:white}
+.item{background:white;border-radius:15px;padding:14px;margin-bottom:10px;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+.item strong{display:block}.item small{color:#6f7a84}.price{float:right;color:#2c7a38;font-weight:800}
+.empty{background:white;border-radius:15px;padding:25px;text-align:center;color:#77828d}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:650px;margin:auto;background:white;border-top:1px solid #d8e0e6;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 4px calc(8px + env(safe-area-inset-bottom))}
+nav button{background:white;color:#15324b;font-size:20px}nav span{display:block;font-size:11px;margin-top:3px}
+</style>
+</head>
+<body>
+<header><small>TradePro UK</small><h1>Plumber Edition</h1></header>
+<main>
+<section id="home" class="screen active">
+<div class="hero"><small>This month</small><h2 id="sales">£0.00</h2><div>Sales recorded</div></div>
+<div class="stats">
+<div class="card"><small>Quotes</small><strong id="quoteCount">0</strong></div>
+<div class="card"><small>Invoices</small><strong id="invoiceCount">0</strong></div>
+<div class="card"><small>Outstanding</small><strong id="outstanding">£0</strong></div>
+<div class="card"><small>Customers</small><strong id="customerCount">0</strong></div>
+</div>
+<button class="primary" onclick="show('job')">＋ New Job</button>
+<h3>Quick actions</h3>
+<div class="actions">
+<button class="action" onclick="show('customers')">👤<span>Customers</span></button>
+<button class="action" onclick="show('quotes')">🧾<span>Quotes</span></button>
+<button class="action" onclick="show('invoices')">💷<span>Invoices</span></button>
+<button class="action" onclick="show('pricebook')">🔧<span>Price Book</span></button>
+</div>
+</section>
+
+<section id="job" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>New Job</h2></div>
+<label>Customer name<input id="customer" placeholder="Customer name"></label>
+<label>Job description<textarea id="description" rows="3" placeholder="Describe the plumbing work"></textarea></label>
+<label>Common job
+<select id="jobtype" onchange="preset()">
+<option value="">Choose a job</option>
+<option value="tap">Replace kitchen tap</option>
+<option value="fill">Replace WC fill valve</option>
+<option value="pipe">Repair burst pipe</option>
+<option value="rad">Replace radiator</option>
+<option value="designer">Designer radiator / alter pipes</option>
+<option value="shower">Replace mixer bar shower</option>
+<option value="bath">Remove and replace bath</option>
+<option value="bathroom">Full bathroom installation</option>
+</select></label>
+<div class="two"><label>Hours<input id="hours" type="number" step=".25" value="1"></label><label>Materials £<input id="materials" type="number" value="0"></label></div>
+<label>Difficulty
+<select id="difficulty"><option>Easy</option><option selected>Standard</option><option>Complex</option><option>Very Complex</option></select>
+</label>
+<button class="primary" onclick="calculate()">Calculate Price</button>
+<div id="result" class="result">
+<small>Recommended customer price</small><strong id="recommended">£0.00</strong><small id="breakdown"></small>
+<div class="resultbuttons"><button class="secondary" onclick="saveQuote()">Save Quote</button><button class="green" onclick="saveInvoice()">Create Invoice</button></div>
+</div>
+</section>
+
+<section id="customers" class="screen"><div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Customers</h2></div><div id="customerList"></div></section>
+<section id="quotes" class="screen"><div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Quotes</h2></div><div id="quoteList"></div></section>
+<section id="invoices" class="screen"><div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Invoices</h2></div><div id="invoiceList"></div></section>
+
+<section id="pricebook" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Price Book</h2></div>
+<div class="item"><span class="price">£85–£130</span><strong>Replace kitchen tap</strong></div>
+<div class="item"><span class="price">£80–£120</span><strong>Replace WC fill valve</strong></div>
+<div class="item"><span class="price">£130–£220</span><strong>Repair accessible burst pipe</strong></div>
+<div class="item"><span class="price">£120–£210</span><strong>Replace radiator</strong></div>
+<div class="item"><span class="price">£160–£300</span><strong>Designer radiator / alter pipes</strong></div>
+<div class="item"><span class="price">£110–£190</span><strong>Replace mixer bar shower</strong></div>
+<div class="item"><span class="price">£350–£650</span><strong>Remove and replace bath</strong></div>
+<div class="item"><span class="price">£2,200–£3,600</span><strong>Full bathroom labour installation</strong></div>
+</section>
+
+<section id="settings" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Business Settings</h2></div>
+<label>Hourly labour rate £<input id="rate" type="number" value="55"></label>
+<label>Call-out / travel £<input id="travel" type="number" value="15"></label>
+<label>Material markup %<input id="markup" type="number" value="20"></label>
+<label>Overhead %<input id="overheadRate" type="number" value="10"></label>
+<label>Contingency %<input id="contingency" type="number" value="5"></label>
+<label>Profit margin %<input id="profit" type="number" value="20"></label>
+<button class="primary" onclick="saveSettings()">Save Settings</button>
+</section>
+</main>
+
+<nav>
+<button onclick="show('home')">⌂<span>Home</span></button>
+<button onclick="show('job')">＋<span>New Job</span></button>
+<button onclick="show('quotes')">🧾<span>Quotes</span></button>
+<button onclick="show('settings')">⚙️<span>Settings</span></button>
+</nav>
+
+<script>
+let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
+let currentPrice=0;
+const presets={tap:[1,8],fill:[0.75,25],pipe:[2,20],rad:[1.5,15],designer:[2,20],shower:[1.25,15],bath:[5,35],bathroom:[40,180]};
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");render();window.scrollTo(0,0)}
+function preset(){let key=document.getElementById("jobtype").value;if(!presets[key])return;hours.value=presets[key][0];materials.value=presets[key][1]}
+function setting(id,def){let value=parseFloat(localStorage.getItem(id));return isNaN(value)?def:value}
+function calculate(){
+let h=parseFloat(hours.value)||0,m=parseFloat(materials.value)||0;
+let rate=setting("rate",55),travel=setting("travel",15),markup=setting("markup",20)/100,overhead=setting("overheadRate",10)/100,contingency=setting("contingency",5)/100,profit=setting("profit",20)/100;
+let difficulty=document.getElementById("difficulty").value;
+let multiplier={"Easy":0.9,"Standard":1,"Complex":1.15,"Very Complex":1.3}[difficulty];
+let labour=h*rate,subtotal=labour+m*(1+markup)+travel+(labour+m)*overhead,cost=subtotal*multiplier*(1+contingency),price=cost/(1-profit);
+currentPrice=Math.round(price/5)*5;
+recommended.innerText="£"+currentPrice.toFixed(2);
+breakdown.innerText="Labour £"+labour.toFixed(2)+" · Materials £"+m.toFixed(2)+" · "+difficulty;
+result.style.display="block"
+}
+function customerName(){return customer.value.trim()||"Unnamed customer"}
+function jobName(){return description.value.trim()||jobtype.options[jobtype.selectedIndex].text||"Plumbing job"}
+function addCustomer(){let name=customerName();if(!data.customers.includes(name))data.customers.push(name);return name}
+function saveQuote(){if(!currentPrice)calculate();let name=addCustomer();data.quotes.unshift({customer:name,job:jobName(),price:currentPrice,date:new Date().toLocaleDateString("en-GB")});save();show("quotes")}
+function saveInvoice(){if(!currentPrice)calculate();let name=addCustomer();data.invoices.unshift({customer:name,job:jobName(),price:currentPrice,date:new Date().toLocaleDateString("en-GB")});save();show("invoices")}
+function save(){localStorage.setItem("tradepro",JSON.stringify(data));render()}
+function saveSettings(){["rate","travel","markup","overheadRate","contingency","profit"].forEach(id=>localStorage.setItem(id,document.getElementById(id).value));alert("Settings saved")}
+function render(){
+quoteCount.innerText=data.quotes.length;invoiceCount.innerText=data.invoices.length;customerCount.innerText=data.customers.length;
+let owed=data.invoices.reduce((a,b)=>a+b.price,0);outstanding.innerText="£"+owed.toFixed(0);sales.innerText="£"+owed.toFixed(2);
+customerList.innerHTML=data.customers.length?data.customers.map(x=>'<div class="item"><strong>'+x+'</strong><small>Customer record</small></div>').join(""):'<div class="empty">No customers saved yet.</div>';
+quoteList.innerHTML=data.quotes.length?data.quotes.map(x=>'<div class="item"><span class="price">£'+x.price.toFixed(2)+'</span><strong>'+x.customer+'</strong><small>'+x.job+' · '+x.date+'</small></div>').join(""):'<div class="empty">No quotes saved yet.</div>';
+invoiceList.innerHTML=data.invoices.length?data.invoices.map(x=>'<div class="item"><span class="price">£'+x.price.toFixed(2)+'</span><strong>'+x.customer+'</strong><small>'+x.job+' · '+x.date+' · Unpaid</small></div>').join(""):'<div class="empty">No invoices saved yet.</div>';
+["rate","travel","markup","overheadRate","contingency","profit"].forEach(id=>{let saved=localStorage.getItem(id);if(saved!==null)document.getElementById(id).value=saved})
+}
+render();
+</script>
+</body>
+</html>
