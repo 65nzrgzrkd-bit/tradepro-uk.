@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#15324b">
+<title>TradePro UK</title>
+<style>
+*{box-sizing:border-box}
+:root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--navy);color:#fff;padding:22px 18px 18px}
+header small{text-transform:uppercase;letter-spacing:1px;opacity:.75}
+header h1{margin:4px 0 0;font-size:26px}
+main{max-width:680px;margin:auto;padding:16px 16px 105px}
+.screen{display:none}.screen.active{display:block}
+.hero{background:linear-gradient(135deg,#205d89,#27808c);color:#fff;border-radius:22px;padding:20px;margin-bottom:14px}
+.hero small{opacity:.8}.hero h2{font-size:34px;margin:8px 0 2px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.card,.item,.detail{background:#fff;border-radius:17px;padding:16px;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.card small,.item small,.detail small{color:var(--muted)}.card strong{display:block;font-size:23px;margin-top:5px}
+button{border:0;font:inherit;cursor:pointer}
+.primary{width:100%;background:var(--green);color:#fff;font-weight:700;padding:16px;border-radius:15px;font-size:17px}
+.secondary{background:#e4ebf0;color:var(--navy)}.green{background:var(--green);color:#fff}.danger{background:var(--danger);color:#fff}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.action{background:#fff;padding:20px 10px;border-radius:17px;font-size:25px;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.action span{display:block;font-size:14px;margin-top:6px}
+h3{margin-top:24px}
+.screenhead{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.back{width:42px;height:42px;border-radius:12px;background:#e2e9ee;font-size:25px;color:var(--navy)}
+.screenhead h2{margin:0}
+label{display:block;font-weight:650;margin:14px 0;font-size:14px}
+input,textarea,select{width:100%;margin-top:7px;padding:14px;border:1px solid #d6e0e6;background:#fff;border-radius:13px;font-size:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.result{background:#fff;margin-top:18px;border-left:5px solid var(--green);padding:18px;border-radius:17px;display:none}
+.result small{color:var(--muted)}.result strong{display:block;font-size:38px;margin:7px 0}
+.resultbuttons,.detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.resultbuttons button,.detail-actions button{padding:13px;border-radius:12px;font-weight:700}
+.item{margin-bottom:10px}.clickable{cursor:pointer}.item strong{display:block}.price{float:right;color:var(--green);font-weight:800}
+.empty{background:#fff;border-radius:15px;padding:25px;text-align:center;color:#77828d}
+.bigprice{font-size:40px;font-weight:800;color:var(--green);margin:6px 0 18px}
+.detailrow{padding:12px 0;border-bottom:1px solid #e7edf1}
+.detailrow:last-of-type{border-bottom:0}.detailrow span{display:block;color:var(--muted);font-size:13px;margin-bottom:3px}
+.status{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef4ef;font-size:13px;font-weight:700}
+.notice{background:#fff8e6;border:1px solid #f0d58a;border-radius:12px;padding:12px;margin:12px 0;color:#6a5200}
+.pricebook-tools{display:flex;gap:10px;margin:0 0 14px}.pricebook-tools button{flex:1;padding:13px;border-radius:12px;font-weight:700}
+.qrbox{text-align:center;background:#fff;border-radius:20px;padding:20px;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.qrbox img{width:min(78vw,320px);height:min(78vw,320px);max-width:320px;max-height:320px;background:#fff;border:12px solid #fff;border-radius:14px}
+.qr-amount{font-size:38px;font-weight:800;color:var(--green);margin:8px 0}.qr-ref{color:var(--muted);margin-bottom:14px}.smallnote{font-size:12px;color:var(--muted);line-height:1.45}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:680px;margin:auto;background:#fff;border-top:1px solid #d8e0e6;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 4px calc(8px + env(safe-area-inset-bottom))}
+nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:block;font-size:10px;margin-top:3px}
+@media print{
+  @page{size:A4 portrait;margin:10mm}
+  header,nav,.screenhead,.detail-actions,.no-print{display:none!important}
+  body,main{background:#fff;padding:0}
+  .screen{display:none!important}
+  #invoicePrint{display:block!important}
+  #invoicePrint .detail{box-shadow:none;border-radius:0;padding:5mm!important;width:auto!important;max-width:none!important;font-size:12pt;line-height:1.35}
+  #invoicePaper h1{font-size:24pt!important} #invoicePaper h2{font-size:18pt!important} #invoicePaper h3{font-size:13pt!important}
+}
+
+</style>
+</head>
+<body>
+<header><small>TradePro UK · Build 1.5</small><h1>Plumber Edition</h1></header>
+<main>
+
+<section id="home" class="screen active">
+<div class="hero"><small>This month</small><h2 id="sales">£0.00</h2><div>Sales recorded</div></div>
+<div class="stats">
+<div class="card"><small>Quotes</small><strong id="quoteCount">0</strong></div>
+<div class="card"><small>Invoices</small><strong id="invoiceCount">0</strong></div>
+<div class="card"><small>Outstanding</small><strong id="outstanding">£0</strong></div>
+<div class="card"><small>Customers</small><strong id="customerCount">0</strong></div>
+</div>
+<button class="primary" onclick="newJob()">＋ New Job</button>
+<h3>Quick actions</h3>
+<div class="actions">
+<button class="action" onclick="show('customers')">👤<span>Customers</span></button>
+<button class="action" onclick="show('quotes')">🧾<span>Quotes</span></button>
+<button class="action" onclick="show('invoices')">💷<span>Invoices</span></button>
+<button class="action" onclick="show('pricebook')">🔧<span>Price Book</span></button>
+</div>
+</section>
+
+<section id="job" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>New Job</h2></div>
+
+<h3>Customer</h3>
+<label>Customer name<input id="customer" placeholder="Customer name"></label>
+<div class="two">
+<label>Phone<input id="phone" type="tel" placeholder="07..."></label>
+<label>Email<input id="email" type="email" placeholder="name@email.com"></label>
+</div>
+<label>Address line 1<input id="address1" placeholder="House number and street"></label>
+<label>Address line 2<input id="address2" placeholder="Area / village (optional)"></label>
+<div class="two">
+<label>Town / City<input id="town" placeholder="Town"></label>
+<label>Postcode<input id="postcode" placeholder="Postcode"></label>
+</div>
+<label><input id="differentJobAddress" type="checkbox" onchange="toggleJobAddress()" style="width:auto;margin-right:8px">Job address is different</label>
+<div id="jobAddressBlock" style="display:none">
+<label>Job address<input id="jobAddress" placeholder="Full job address"></label>
+</div>
+
+<h3>Work</h3>
+<label>Job description<textarea id="description" rows="3" placeholder="Describe the plumbing work"></textarea></label>
+<label>Common job
+<select id="jobtype" onchange="preset()"><option value="">Choose a job</option></select></label>
+
+<div class="two">
+<label>Hours<input id="hours" type="number" step=".25" value="1"></label>
+<label>Materials £<input id="materials" type="number" value="0"></label>
+</div>
+
+<label>Difficulty
+<select id="difficulty"><option>Easy</option><option selected>Standard</option><option>Complex</option><option>Very Complex</option></select>
+</label>
+<button class="primary" onclick="calculate()">Calculate Price</button>
+
+<div id="result" class="result">
+<small>Recommended customer price</small><strong id="recommended">£0.00</strong><small id="breakdown"></small>
+<div class="resultbuttons"><button class="secondary" onclick="saveQuote()">Save Quote</button><button class="green" onclick="createInvoiceFromJob()">Create Invoice</button></div>
+</div>
+</section>
+
+<section id="customers" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Customers</h2></div>
+<div id="customerList"></div>
+</section>
+
+<section id="quotes" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Quotes</h2></div>
+<div id="quoteList"></div>
+</section>
+
+<section id="quoteDetail" class="screen">
+<div class="screenhead"><button class="back" onclick="show('quotes')">‹</button><h2>Quote Details</h2></div>
+<div class="detail">
+<div class="bigprice" id="qdPrice">£0.00</div>
+<div class="detailrow"><span>Customer</span><strong id="qdCustomer"></strong></div>
+<div class="detailrow"><span>Address</span><strong id="qdAddress"></strong></div>
+<div class="detailrow"><span>Contact</span><strong id="qdContact"></strong></div>
+<div class="detailrow"><span>Job</span><strong id="qdJob"></strong></div>
+<div class="detailrow"><span>Date</span><strong id="qdDate"></strong></div>
+<div class="detailrow"><span>Status</span><strong>Draft</strong></div>
+<div class="detail-actions">
+<button class="green" onclick="convertSelectedQuoteToInvoice()">Create Invoice</button>
+<button class="danger" onclick="deleteSelectedQuote()">Delete Quote</button>
+</div>
+</div>
+</section>
+
+<section id="invoices" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Invoices</h2></div>
+<div id="invoiceList"></div>
+</section>
+
+<section id="invoiceDetail" class="screen">
+<div class="screenhead"><button class="back" onclick="show('invoices')">‹</button><h2>Invoice Details</h2></div>
+
+<div id="invoiceView" class="detail">
+<div class="detailrow"><span>Invoice number</span><strong id="idNumber"></strong></div>
+<div class="bigprice" id="idPrice">£0.00</div>
+<div class="detailrow"><span>Customer</span><strong id="idCustomer"></strong></div>
+<div class="detailrow"><span>Address</span><strong id="idAddress"></strong></div>
+<div class="detailrow"><span>Phone / Email</span><strong id="idContact"></strong></div>
+<div class="detailrow"><span>Job</span><strong id="idJob"></strong></div>
+<div class="detailrow"><span>Job address</span><strong id="idJobAddress"></strong></div>
+<div class="detailrow"><span>Invoice date</span><strong id="idDate"></strong></div>
+<div class="detailrow"><span>Due date</span><strong id="idDueDate"></strong></div>
+<div class="detailrow"><span>Status</span><strong id="idStatus" class="status"></strong></div>
+<div class="detailrow"><span>Amount paid</span><strong id="idPaid"></strong></div>
+<div class="detailrow"><span>Balance due</span><strong id="idBalance"></strong></div>
+
+<div class="detail-actions">
+<button class="secondary" onclick="editSelectedInvoice()">Edit Invoice</button>
+<button id="paidToggleBtn" type="button" class="green" onclick="togglePaid(event)">Mark as Paid</button>
+<button type="button" class="secondary" onclick="showPaymentQR()">Show Payment QR</button>
+<button class="secondary" onclick="previewInvoice()">Preview Invoice</button>
+<button class="secondary" onclick="sendInvoice()">Send / Share Invoice</button>
+<button class="secondary" onclick="printInvoice()">Print / Save PDF</button>
+<button class="danger" onclick="deleteSelectedInvoice()">Delete Invoice</button>
+</div>
+</div>
+
+<div id="invoiceEdit" class="detail" style="display:none">
+<h3>Edit Invoice</h3>
+
+<label>Customer name<input id="editCustomerName"></label>
+
+<div class="two">
+<label>Phone<input id="editPhone" type="tel"></label>
+<label>Email<input id="editEmail" type="email"></label>
+</div>
+
+<label>Address line 1<input id="editAddress1"></label>
+<label>Address line 2<input id="editAddress2"></label>
+
+<div class="two">
+<label>Town / City<input id="editTown"></label>
+<label>Postcode<input id="editPostcode"></label>
+</div>
+
+<label>Job description<textarea id="editJob" rows="3"></textarea></label>
+<label>Job address<textarea id="editJobAddress" rows="2"></textarea></label>
+
+<div class="two">
+<label>Invoice date<input id="editInvoiceDate"></label>
+<label>Due date<input id="editDueDate"></label>
+</div>
+
+<div class="two">
+<label>Total £<input id="editPrice" type="number" step="0.01"></label>
+<label>Amount paid £<input id="editPaid" type="number" step="0.01"></label>
+</div>
+
+<label>Status
+<select id="editStatus">
+<option>Unpaid</option>
+<option>Paid</option>
+<option>Part Paid</option>
+<option>Overdue</option>
+</select>
+</label>
+
+<div class="detail-actions">
+<button class="green" onclick="saveInvoiceEdits()">Save Changes</button>
+<button class="secondary" onclick="cancelInvoiceEdit()">Cancel</button>
+</div>
+</div>
+</section>
+
+<section id="invoicePrint" class="screen">
+<div class="screenhead no-print"><button class="back" onclick="show('invoiceDetail')">‹</button><h2>Invoice Preview</h2></div>
+<div class="detail" id="invoicePaper">
+<div style="display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px">
+<div>
+<img id="pLogo" alt="" style="display:none;max-width:180px;max-height:90px;object-fit:contain;margin-bottom:10px">
+<h2 id="pBusinessName" style="margin:0 0 6px"></h2>
+<div id="pBusinessDetails" style="line-height:1.5"></div>
+</div>
+<div style="text-align:right">
+<h1 style="margin:0;color:#15324b">INVOICE</h1>
+<div style="margin-top:8px"><strong id="pNumber"></strong></div>
+<div>Date: <span id="pDate"></span></div>
+<div>Due: <span id="pDue"></span></div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0">
+<div>
+<h3 style="margin-top:0">Bill to</h3>
+<div id="pCustomer"></div>
+<div id="pAddress"></div>
+<div id="pContact"></div>
+</div>
+<div>
+<h3 style="margin-top:0">Job</h3>
+<div id="pJob"></div>
+<div id="pJobAddress"></div>
+</div>
+</div>
+
+<div style="border-top:2px solid #15324b;border-bottom:1px solid #dce5eb;padding:16px 0;margin-top:24px">
+<div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800">
+<span>Total</span><span id="pTotal"></span>
+</div>
+</div>
+
+<div style="display:flex;justify-content:space-between;gap:20px;margin-top:18px">
+<div>
+<div>Status: <strong id="pStatus"></strong></div>
+</div>
+<div style="text-align:right">
+<div>Paid: <strong id="pPaid"></strong></div>
+<div>Balance due: <strong id="pBalance"></strong></div>
+</div>
+</div>
+
+<div id="pPaymentBlock" style="margin-top:28px;padding:16px;background:#f6f8fa;border-radius:12px">
+<h3 style="margin-top:0">Payment details</h3>
+<div id="pBankDetails"></div>
+<div id="pPaymentNote" style="margin-top:6px"></div>
+<div id="pQRWrap" style="display:none;margin-top:16px;text-align:center">
+<div style="font-weight:700;margin-bottom:8px">Scan to pay</div>
+<img id="pQR" alt="Payment QR code" style="width:145px;height:145px;background:white;border:8px solid white">
+<div id="pQRRef" style="font-size:11px;color:#6f7a84;margin-top:5px"></div>
+</div>
+</div>
+
+<div id="pCompanyFooter" style="margin-top:26px;font-size:12px;color:#6f7a84;text-align:center"></div>
+</div>
+<div class="detail-actions no-print" style="margin:14px 0 90px">
+<button class="green" onclick="printInvoiceFromPreview()">Print / Save PDF</button>
+<button class="secondary" onclick="sendInvoice()">Send / Share</button>
+<button class="secondary" onclick="show('invoiceDetail')">Back to Invoice</button>
+</div>
+</section>
+
+
+<section id="heatingTools" class="screen">
+  <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Heating Tools</h2></div>
+  <div class="notice"><strong>Radiator Room Sizing</strong><br>Fast on-site estimating aid. For final system design, heat pumps and compliance-critical work, verify against a full room-by-room heat-loss calculation and manufacturer data.</div>
+  <div class="grid2">
+    <label>Room length (m)<input id="radLength" type="number" step="0.1" value="4"></label>
+    <label>Room width (m)<input id="radWidth" type="number" step="0.1" value="3"></label>
+    <label>Room height (m)<input id="radHeight" type="number" step="0.1" value="2.4"></label>
+    <label>Room type
+      <select id="radRoom">
+        <option value="21">Living room / dining</option>
+        <option value="18">Bedroom</option>
+        <option value="22">Bathroom</option>
+        <option value="20">Kitchen</option>
+        <option value="18">Hall / landing</option>
+      </select>
+    </label>
+    <label>Insulation
+      <select id="radIns">
+        <option value="0.75">Modern / very good</option>
+        <option value="1" selected>Average</option>
+        <option value="1.25">Older / limited</option>
+        <option value="1.45">Poor / exposed</option>
+      </select>
+    </label>
+    <label>External walls
+      <select id="radWalls">
+        <option value="1">1 external wall</option>
+        <option value="1.10">2 external walls</option>
+        <option value="1.20">3+ external walls</option>
+        <option value="0.9">No external walls</option>
+      </select>
+    </label>
+    <label>Windows
+      <select id="radWindows">
+        <option value="0.95">Small / triple glazed</option>
+        <option value="1" selected>Typical double glazed</option>
+        <option value="1.12">Large glazing</option>
+        <option value="1.22">Older single glazing</option>
+      </select>
+    </label>
+    <label>Heat source
+      <select id="radSource">
+        <option value="1" selected>Boiler / conventional radiator temperatures</option>
+        <option value="1.35">Low-temperature / heat-pump starting allowance</option>
+      </select>
+    </label>
+  </div>
+  <button onclick="calcRadiator()">Calculate radiator requirement</button>
+  <div id="radResult" class="result" style="display:none;margin-top:16px"></div>
+  <div class="notice" style="margin-top:16px">
+    <strong>Coming through the same Heating section:</strong><br>
+    Full heating-system pricing, boiler/heating installation allowances, unvented hot-water systems, heat-pump installation pricing and gas-work estimating entries. Gas work must be undertaken by appropriately Gas Safe registered engineers; unvented and heat-pump work must meet applicable competence, manufacturer and regulatory requirements.
+  </div>
+</section>
+
+<section id="pricebook" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Price Book</h2></div>
+<div class="pricebook-tools"><button class="green" type="button" onclick="addPriceBookItem()">＋ Add Job</button><button class="secondary" type="button" onclick="resetPriceBook()">Reset Defaults</button></div>
+<div class="notice">TradePro includes a comprehensive UK plumbing starter catalogue. Tap any job to personalise category, labour/supply type, time, materials and price range. Your changes are saved on this device.</div>
+<div id="priceBookList"></div>
+</section>
+
+<section id="pricebookEdit" class="screen">
+<div class="screenhead"><button class="back" onclick="show('pricebook')">‹</button><h2 id="priceBookEditTitle">Edit Price</h2></div>
+<div class="detail">
+<label>Category<input id="pbCategory" placeholder="e.g. Taps, Toilets, Bathrooms"></label>
+<label>Job name<input id="pbName"></label>
+<div class="two"><label>Pricing type<select id="pbPricingType"><option>Labour only</option><option>Supply & fit</option></select></label><label>Hours<input id="pbHours" type="number" min="0" step="0.25"></label></div>
+<label>Materials allowance £<input id="pbMaterials" type="number" min="0" step="0.01"></label>
+<div class="two"><label>Minimum price £<input id="pbMin" type="number" min="0" step="1"></label><label>Maximum price £<input id="pbMax" type="number" min="0" step="1"></label></div>
+<label>Notes<textarea id="pbNotes" rows="3"></textarea></label>
+<div class="detail-actions"><button class="green" type="button" onclick="savePriceBookItem()">Save Price</button><button id="pbDeleteBtn" class="danger" type="button" onclick="deletePriceBookItem()">Delete Job</button></div>
+</div>
+</section>
+
+<section id="paymentQR" class="screen">
+<div class="screenhead"><button class="back" onclick="show('invoiceDetail')">‹</button><h2>Customer Payment</h2></div>
+<div class="qrbox">
+<div class="smallnote">Ask the customer to scan this code with their smartphone camera.</div>
+<div id="qrAmount" class="qr-amount">£0.00</div>
+<div id="qrReference" class="qr-ref"></div>
+<img id="paymentQRImage" alt="Payment QR code">
+<div style="margin-top:14px;font-weight:700">Scan to open secure payment page</div>
+<div class="smallnote" style="margin-top:7px">The payment methods available are controlled by your chosen payment provider.</div>
+<div class="detail-actions" style="margin-top:18px"><button class="green" type="button" onclick="openPaymentLink()">Open Payment Page</button><button class="secondary" type="button" onclick="show('invoiceDetail')">Back to Invoice</button></div>
+</div>
+</section>
+
+<section id="settings" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Business Settings</h2></div>
+
+<h3>Branding</h3>
+<label>Business name<input id="businessName" value="TradePro UK"></label>
+<label>Owner / Contact name<input id="ownerName" placeholder="Your name"></label>
+<label>Business logo<input id="logoUpload" type="file" accept="image/*" onchange="saveLogo(event)"></label>
+<div id="logoPreviewWrap" style="display:none;margin:10px 0 18px">
+<img id="logoPreview" alt="Business logo preview" style="max-width:180px;max-height:100px;object-fit:contain;background:white;border-radius:12px;padding:8px;border:1px solid #dce5eb">
+<br><button class="secondary" style="margin-top:8px;padding:10px 14px;border-radius:10px" onclick="removeLogo()">Remove Logo</button>
+</div>
+
+<h3>Business Contact</h3>
+<label>Business address line 1<input id="businessAddress1" placeholder="Street"></label>
+<label>Business address line 2<input id="businessAddress2" placeholder="Area (optional)"></label>
+<div class="two">
+<label>Town / City<input id="businessTown" placeholder="Town"></label>
+<label>Postcode<input id="businessPostcode" placeholder="Postcode"></label>
+</div>
+<div class="two">
+<label>Phone<input id="businessPhone" type="tel" placeholder="Phone"></label>
+<label>Email<input id="businessEmail" type="email" placeholder="Email"></label>
+</div>
+<label>Website<input id="businessWebsite" placeholder="www.example.co.uk"></label>
+
+<h3>Company / VAT</h3>
+<div class="two">
+<label>Company number<input id="companyNumber" placeholder="Optional"></label>
+<label>VAT number<input id="vatNumber" placeholder="Optional"></label>
+</div>
+
+<h3>Payment Details</h3>
+<label>Account name<input id="accountName" placeholder="Account name"></label>
+<div class="two">
+<label>Sort code<input id="sortCode" placeholder="00-00-00"></label>
+<label>Account number<input id="accountNumber" placeholder="12345678"></label>
+</div>
+<label>Payment note<textarea id="paymentNote" rows="2" placeholder="e.g. Please use invoice number as payment reference"></textarea></label>
+<label>Secure payment page link<input id="paymentLink" type="url" inputmode="url" placeholder="https://your-payment-provider-link"></label>
+<label><input id="showQROnInvoice" type="checkbox" style="width:auto;margin-right:8px">Show payment QR on printed/PDF invoices</label>
+<div class="smallnote">Use a payment link supplied by your bank or payment provider. TradePro does not collect or process card details.</div>
+
+<h3>Pricing</h3>
+<label>Hourly labour rate £<input id="rate" type="number" value="55"></label>
+<label>Call-out / travel £<input id="travel" type="number" value="15"></label>
+<label>Material markup %<input id="markup" type="number" value="20"></label>
+<label>Overhead %<input id="overheadRate" type="number" value="10"></label>
+<label>Contingency %<input id="contingency" type="number" value="5"></label>
+<label>Profit margin %<input id="profit" type="number" value="20"></label>
+<label>Invoice payment terms (days)<input id="paymentDays" type="number" value="14"></label>
+
+<button class="primary" onclick="saveSettings()">Save Settings</button>
+</section>
+
+</main>
+
+<nav>
+<button onclick="show('home')">⌂<span>Home</span></button>
+<button onclick="newJob()">＋<span>New Job</span></button>
+<button onclick="show('quotes')">🧾<span>Quotes</span></button>
+<button onclick="show('invoices')">💷<span>Invoices</span></button>
+<button onclick="show('settings')">⚙️<span>Settings</span></button>
+</nav>
+
+<script>
+const TRADEPRO_VERSION="7.0";
+let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
+if(!Array.isArray(data.customers)) data.customers=[];
+if(!Array.isArray(data.quotes)) data.quotes=[];
+if(!Array.isArray(data.invoices)) data.invoices=[];
+const DEFAULT_PRICE_BOOK=[
+{category:"Taps",name:"Repair dripping tap / replace washer",pricingType:"Labour only",hours:0.75,materials:5,min:55,max:90,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Replace tap cartridge / valve",pricingType:"Supply & fit",hours:1,materials:15,min:65,max:110,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Replace kitchen tap",pricingType:"Labour only",hours:1,materials:8,min:70,max:110,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Replace kitchen tap",pricingType:"Supply & fit",hours:1,materials:70,min:120,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Replace basin taps / pair",pricingType:"Labour only",hours:1,materials:8,min:70,max:120,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Fit outside tap",pricingType:"Supply & fit",hours:2,materials:35,min:120,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Replace WC fill valve",pricingType:"Supply & fit",hours:0.75,materials:25,min:80,max:120,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Replace WC flush valve",pricingType:"Supply & fit",hours:1,materials:30,min:95,max:150,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Replace toilet seat",pricingType:"Labour only",hours:0.5,materials:5,min:45,max:80,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Remove and replace WC",pricingType:"Labour only",hours:2.5,materials:20,min:150,max:250,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Supply and fit standard WC",pricingType:"Supply & fit",hours:3,materials:180,min:300,max:500,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Repair leaking WC / pan connector",pricingType:"Supply & fit",hours:1.5,materials:20,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Basins & Sinks",name:"Replace basin",pricingType:"Labour only",hours:2.5,materials:20,min:150,max:260,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Basins & Sinks",name:"Replace basin waste / trap",pricingType:"Supply & fit",hours:1,materials:20,min:75,max:130,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Basins & Sinks",name:"Replace kitchen sink",pricingType:"Labour only",hours:3,materials:25,min:180,max:320,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Basins & Sinks",name:"Supply and fit kitchen sink",pricingType:"Supply & fit",hours:3.5,materials:160,min:320,max:550,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Repair accessible burst pipe",pricingType:"Supply & fit",hours:2,materials:20,min:130,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Trace and repair water leak",pricingType:"Supply & fit",hours:2.5,materials:25,min:160,max:320,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Alter small pipe run up to 3m",pricingType:"Supply & fit",hours:2,materials:25,min:140,max:250,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Replace stop tap",pricingType:"Supply & fit",hours:1.5,materials:30,min:110,max:190,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Install appliance water connection",pricingType:"Supply & fit",hours:1.5,materials:25,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Emergency call-out first hour",pricingType:"Labour only",hours:1,materials:10,min:90,max:160,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Replace standard radiator",pricingType:"Labour only",hours:1.5,materials:15,min:120,max:210,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Supply and fit standard radiator",pricingType:"Supply & fit",hours:2,materials:140,min:260,max:450,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Designer radiator / alter pipes",pricingType:"Labour only",hours:2.5,materials:25,min:180,max:330,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Replace radiator valves pair",pricingType:"Supply & fit",hours:1.5,materials:35,min:120,max:200,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Fit TRV and lockshield",pricingType:"Supply & fit",hours:1.5,materials:40,min:125,max:210,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Powerflush / system clean",pricingType:"Supply & fit",hours:6,materials:80,min:450,max:750,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Replace mixer bar shower",pricingType:"Labour only",hours:1.25,materials:15,min:110,max:190,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Supply and fit mixer bar shower",pricingType:"Supply & fit",hours:1.5,materials:120,min:230,max:400,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Replace shower valve concealed",pricingType:"Labour only",hours:3,materials:30,min:220,max:400,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Install shower over bath pipework",pricingType:"Labour only",hours:3,materials:35,min:220,max:380,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Fit shower screen",pricingType:"Labour only",hours:1.5,materials:10,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Remove and replace bath",pricingType:"Labour only",hours:5,materials:35,min:350,max:650,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Supply and fit standard bath",pricingType:"Supply & fit",hours:6,materials:260,min:650,max:1050,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Replace bath waste / trap",pricingType:"Supply & fit",hours:1.5,materials:25,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Replace bath taps",pricingType:"Labour only",hours:1.5,materials:10,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Reseal bath / shower",pricingType:"Supply & fit",hours:1.5,materials:15,min:90,max:160,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Cylinders & Hot Water",name:"Replace immersion heater element",pricingType:"Supply & fit",hours:1.5,materials:45,min:140,max:240,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Cylinders & Hot Water",name:"Replace cylinder thermostat",pricingType:"Supply & fit",hours:1,materials:35,min:100,max:170,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Cylinders & Hot Water",name:"Replace vented hot water cylinder",pricingType:"Supply & fit",hours:7,materials:450,min:850,max:1500,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Cylinders & Hot Water",name:"Replace shower / booster pump",pricingType:"Supply & fit",hours:3,materials:180,min:350,max:650,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Bathroom rip-out",pricingType:"Labour only",hours:8,materials:50,min:450,max:750,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Fit bath, WC and basin suite",pricingType:"Labour only",hours:16,materials:80,min:900,max:1500,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Fit bathroom wall panels / boards",pricingType:"Labour only",hours:12,materials:100,min:700,max:1300,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Full bathroom labour installation",pricingType:"Labour only",hours:40,materials:180,min:2200,max:3600,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Full bathroom supply & fit",pricingType:"Supply & fit",hours:50,materials:2500,min:5000,max:9500,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Kitchens & Appliances",name:"Connect washing machine / dishwasher",pricingType:"Supply & fit",hours:1,materials:15,min:70,max:120,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Kitchens & Appliances",name:"Install dishwasher plumbing",pricingType:"Supply & fit",hours:2,materials:30,min:120,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Kitchens & Appliances",name:"Install fridge water supply",pricingType:"Supply & fit",hours:2,materials:30,min:120,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Boilers & Heating",name:"Boiler installation - labour allowance",pricingType:"Labour only",hours:16,materials:100,min:900,max:1600,notes:"Gas work must be carried out by an appropriately Gas Safe registered engineer. Personalise this allowance."},
+{category:"Boilers & Heating",name:"Boiler installation - supply & fit allowance",pricingType:"Supply & fit",hours:20,materials:1800,min:2600,max:4500,notes:"Gas work must be carried out by an appropriately Gas Safe registered engineer. Personalise this allowance."},
+{category:"Boilers & Heating",name:"Heating system alteration / upgrade",pricingType:"Labour only",hours:8,materials:150,min:550,max:1200,notes:"Indicative UK starting range \u2013 personalise to your business."},
+];
+if(!Array.isArray(data.priceBook)||!data.priceBook.length||data.priceBook.length<=8) data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));
+let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null;
+
+function show(id){
+document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+render();
+window.scrollTo(0,0)
+}
+function newJob(){currentPrice=0;result.style.display="none";show("job")}
+function toggleJobAddress(){jobAddressBlock.style.display=differentJobAddress.checked?"block":"none"}
+function preset(){let idx=parseInt(jobtype.value,10);if(isNaN(idx)||!data.priceBook[idx])return;let p=data.priceBook[idx];hours.value=p.hours||0;materials.value=p.materials||0;if(!description.value.trim())description.value=(p.name||"")+(p.pricingType?" – "+p.pricingType:"")}
+function setting(id,def){let v=localStorage.getItem(id);return v===null?def:v}
+function settingNum(id,def){let v=parseFloat(localStorage.getItem(id));return isNaN(v)?def:v}
+
+function calculate(){
+let h=parseFloat(hours.value)||0,m=parseFloat(materials.value)||0;
+let rate=settingNum("rate",55),travel=settingNum("travel",15),markup=settingNum("markup",20)/100,overhead=settingNum("overheadRate",10)/100,contingency=settingNum("contingency",5)/100,profit=settingNum("profit",20)/100;
+let diff=difficulty.value,mult={"Easy":0.9,"Standard":1,"Complex":1.15,"Very Complex":1.3}[diff];
+let labour=h*rate,subtotal=labour+m*(1+markup)+travel+(labour+m)*overhead,cost=subtotal*mult*(1+contingency),price=cost/(1-profit);
+currentPrice=Math.round(price/5)*5;
+recommended.innerText="£"+currentPrice.toFixed(2);
+breakdown.innerText="Labour £"+labour.toFixed(2)+" · Materials £"+m.toFixed(2)+" · "+diff;
+result.style.display="block"
+}
+
+function collectCustomer(){
+return {
+name:customer.value.trim()||"Unnamed customer",
+phone:phone.value.trim(),email:email.value.trim(),
+address1:address1.value.trim(),address2:address2.value.trim(),
+town:town.value.trim(),postcode:postcode.value.trim()
+}}
+function fullAddress(c){return [c.address1,c.address2,c.town,c.postcode].filter(Boolean).join(", ")||"Not entered"}
+function contactText(c){return [c.phone,c.email].filter(Boolean).join(" · ")||"Not entered"}
+function getJobAddress(c){return differentJobAddress.checked&&jobAddress.value.trim()?jobAddress.value.trim():fullAddress(c)}
+function jobName(){return description.value.trim()||jobtype.options[jobtype.selectedIndex].text||"Plumbing job"}
+
+function upsertCustomer(c){
+let idx=data.customers.findIndex(x=>(typeof x==="string"?x:x.name).toLowerCase()===c.name.toLowerCase());
+if(idx>=0) data.customers[idx]=c; else data.customers.push(c);
+}
+function todayUK(){return new Date().toLocaleDateString("en-GB")}
+function addDaysUK(days){
+let d=new Date();d.setDate(d.getDate()+days);return d.toLocaleDateString("en-GB")
+}
+function nextInvoiceNumber(){
+let max=0;
+data.invoices.forEach(x=>{let m=String(x.number||"").match(/(\d+)$/);if(m)max=Math.max(max,parseInt(m[1]))});
+return "TP-"+String(max+1).padStart(4,"0")
+}
+function buildRecord(){
+let c=collectCustomer();upsertCustomer(c);
+return {customer:c,job:jobName(),jobAddress:getJobAddress(c),price:currentPrice,date:todayUK()}
+}
+
+function saveQuote(){
+if(!currentPrice)calculate();
+let r=buildRecord();
+data.quotes.unshift({...r,status:"Draft"});
+save();show("quotes")
+}
+
+function createInvoiceFromJob(){
+if(!currentPrice)calculate();
+let r=buildRecord();
+let duplicate=data.invoices.find(x=>x.customer?.name===r.customer.name&&x.job===r.job&&x.price===r.price&&x.status!=="Deleted");
+if(duplicate){alert("An invoice for this job already exists.");show("invoices");return}
+let terms=settingNum("paymentDays",14);
+data.invoices.unshift({...r,number:nextInvoiceNumber(),dueDate:addDaysUK(terms),status:"Unpaid",paid:0});
+save();show("invoices")
+}
+
+function openQuote(i){
+selectedQuoteIndex=i;let q=data.quotes[i],c=normalizeCustomer(q.customer);
+qdPrice.innerText="£"+q.price.toFixed(2);qdCustomer.innerText=c.name;qdAddress.innerText=fullAddress(c);qdContact.innerText=contactText(c);qdJob.innerText=q.job;qdDate.innerText=q.date;show("quoteDetail")
+}
+function convertSelectedQuoteToInvoice(){
+if(selectedQuoteIndex===null)return;
+let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer);
+let duplicate=data.invoices.find(x=>
+x.quoteKey===quoteKey(q) ||
+(normalizeCustomer(x.customer).name===c.name && x.job===q.job && Number(x.price)===Number(q.price))
+);
+if(duplicate){alert("This quote has already been converted to invoice "+duplicate.number+".");openInvoice(data.invoices.indexOf(duplicate));return}
+let terms=settingNum("paymentDays",14);
+data.invoices.unshift({customer:c,job:q.job,jobAddress:q.jobAddress||fullAddress(c),price:q.price,date:todayUK(),dueDate:addDaysUK(terms),number:nextInvoiceNumber(),status:"Unpaid",paid:0,quoteKey:quoteKey(q)});
+save();show("invoices")
+}
+function quoteKey(q){let c=normalizeCustomer(q.customer);return [c.name,q.job,q.price,q.date].join("|")}
+function deleteSelectedQuote(){if(selectedQuoteIndex===null)return;if(confirm("Delete this quote?")){data.quotes.splice(selectedQuoteIndex,1);selectedQuoteIndex=null;save();show("quotes")}}
+
+function normalizeCustomer(c){return typeof c==="string"?{name:c,phone:"",email:"",address1:"",address2:"",town:"",postcode:""}:c}
+
+function openInvoice(i){
+selectedInvoiceIndex=i;let inv=data.invoices[i],c=normalizeCustomer(inv.customer);
+if(document.getElementById("invoiceView")) invoiceView.style.display="block";
+if(document.getElementById("invoiceEdit")) invoiceEdit.style.display="none";
+idNumber.innerText=inv.number||("TP-"+String(i+1).padStart(4,"0"));
+idPrice.innerText="£"+Number(inv.price||0).toFixed(2);
+idCustomer.innerText=c.name;idAddress.innerText=fullAddress(c);idContact.innerText=contactText(c);
+idJob.innerText=inv.job;idJobAddress.innerText=inv.jobAddress||fullAddress(c);idDate.innerText=inv.date;idDueDate.innerText=inv.dueDate||"Not set";
+idStatus.innerText=inv.status||"Unpaid";idPaid.innerText="£"+Number(inv.paid||0).toFixed(2);idBalance.innerText="£"+Math.max(0,Number(inv.price||0)-Number(inv.paid||0)).toFixed(2);
+let btn=document.getElementById("paidToggleBtn");if(btn)btn.textContent=(inv.status==="Paid"?"Mark as Unpaid":"Mark as Paid");
+show("invoiceDetail")
+}
+
+
+function editSelectedInvoice(){
+if(selectedInvoiceIndex===null)return;
+let inv=data.invoices[selectedInvoiceIndex],c=normalizeCustomer(inv.customer);
+
+editCustomerName.value=c.name||"";
+editPhone.value=c.phone||"";
+editEmail.value=c.email||"";
+editAddress1.value=c.address1||"";
+editAddress2.value=c.address2||"";
+editTown.value=c.town||"";
+editPostcode.value=c.postcode||"";
+
+editJob.value=inv.job||"";
+editJobAddress.value=inv.jobAddress||"";
+editInvoiceDate.value=inv.date||"";
+editDueDate.value=inv.dueDate||"";
+editPrice.value=Number(inv.price||0).toFixed(2);
+editPaid.value=Number(inv.paid||0).toFixed(2);
+editStatus.value=inv.status||"Unpaid";
+
+invoiceView.style.display="none";
+invoiceEdit.style.display="block";
+window.scrollTo(0,0);
+}
+
+function cancelInvoiceEdit(){
+invoiceEdit.style.display="none";
+invoiceView.style.display="block";
+window.scrollTo(0,0);
+}
+
+function saveInvoiceEdits(){
+if(selectedInvoiceIndex===null)return;
+
+let inv=data.invoices[selectedInvoiceIndex];
+let c={
+name:editCustomerName.value.trim()||"Unnamed customer",
+phone:editPhone.value.trim(),
+email:editEmail.value.trim(),
+address1:editAddress1.value.trim(),
+address2:editAddress2.value.trim(),
+town:editTown.value.trim(),
+postcode:editPostcode.value.trim()
+};
+
+inv.customer=c;
+inv.job=editJob.value.trim()||"Plumbing job";
+inv.jobAddress=editJobAddress.value.trim()||fullAddress(c);
+inv.date=editInvoiceDate.value.trim()||todayUK();
+inv.dueDate=editDueDate.value.trim();
+inv.price=Math.max(0,parseFloat(editPrice.value)||0);
+inv.paid=Math.max(0,parseFloat(editPaid.value)||0);
+
+let chosenStatus=editStatus.value;
+if(inv.paid>=inv.price && inv.price>0){
+inv.paid=inv.price;
+inv.status="Paid";
+}else if(inv.paid>0){
+inv.status="Part Paid";
+}else{
+inv.status=chosenStatus==="Paid"?"Unpaid":chosenStatus;
+}
+
+upsertCustomer(c);
+save();
+
+invoiceEdit.style.display="none";
+invoiceView.style.display="block";
+openInvoice(selectedInvoiceIndex);
+}
+function togglePaid(evt){
+if(evt){evt.preventDefault();evt.stopPropagation();}
+if(selectedInvoiceIndex===null || !data.invoices[selectedInvoiceIndex]){alert("Please open an invoice first.");return false;}
+let inv=data.invoices[selectedInvoiceIndex];
+let total=Math.max(0,Number(inv.price||0));
+if((inv.status||"")==="Paid" || Number(inv.paid||0)>=total && total>0){inv.status="Unpaid";inv.paid=0;}
+else{inv.status="Paid";inv.paid=total;}
+save();
+openInvoice(selectedInvoiceIndex);
+return false;
+}
+function deleteSelectedInvoice(){
+if(selectedInvoiceIndex===null)return;
+if(confirm("Delete this invoice?")){data.invoices.splice(selectedInvoiceIndex,1);selectedInvoiceIndex=null;save();show("invoices")}
+}
+
+function invoiceText(inv){
+let c=normalizeCustomer(inv.customer);
+let companyBits=[
+setting("companyNumber","") ? "Company No: "+setting("companyNumber","") : "",
+setting("vatNumber","") ? "VAT No: "+setting("vatNumber","") : ""
+].filter(Boolean).join(" · ");
+let bankBits=[
+setting("accountName","") ? "Account: "+setting("accountName","") : "",
+setting("sortCode","") ? "Sort code: "+setting("sortCode","") : "",
+setting("accountNumber","") ? "Account no: "+setting("accountNumber","") : ""
+].filter(Boolean).join("\n");
+return `${setting("businessName","TradePro UK")}
+${businessDetailsText()}
+${companyBits}
+
+INVOICE ${inv.number||""}
+Date: ${inv.date}
+Due: ${inv.dueDate||""}
+
+Customer: ${c.name}
+Address: ${fullAddress(c)}
+Phone/Email: ${contactText(c)}
+
+Work: ${inv.job}
+Job address: ${inv.jobAddress||fullAddress(c)}
+
+Total: £${inv.price.toFixed(2)}
+Paid: £${Number(inv.paid||0).toFixed(2)}
+Balance due: £${Math.max(0,inv.price-Number(inv.paid||0)).toFixed(2)}
+Status: ${inv.status||"Unpaid"}
+
+${bankBits}
+${setting("paymentNote","")}
+
+Thank you for your business.`;
+}
+
+async function sendInvoice(){
+if(selectedInvoiceIndex===null)return;
+let inv=data.invoices[selectedInvoiceIndex];
+let text=invoiceText(inv);
+if(navigator.share){
+try{await navigator.share({title:`Invoice ${inv.number||""} - ${normalizeCustomer(inv.customer).name}`,text});return}catch(e){}
+}
+let subject=encodeURIComponent(`Invoice ${inv.number||""} - ${normalizeCustomer(inv.customer).name}`);
+let body=encodeURIComponent(text);
+window.location.href=`mailto:${encodeURIComponent(normalizeCustomer(inv.customer).email||"")}?subject=${subject}&body=${body}`;
+}
+
+function populateInvoicePaper(){
+if(selectedInvoiceIndex===null)return false;
+let inv=data.invoices[selectedInvoiceIndex],c=normalizeCustomer(inv.customer);
+
+pBusinessName.innerText=setting("businessName","TradePro UK");
+pBusinessDetails.innerText=businessDetailsText();
+
+let logo=localStorage.getItem("businessLogo");
+if(logo){
+pLogo.src=logo;
+pLogo.style.display="block";
+}else{
+pLogo.removeAttribute("src");
+pLogo.style.display="none";
+}
+
+pNumber.innerText=inv.number||"";
+pDate.innerText=inv.date||"";
+pDue.innerText=inv.dueDate||"";
+pCustomer.innerText=c.name;
+pAddress.innerText=fullAddress(c);
+pContact.innerText=contactText(c);
+pJob.innerText=inv.job||"";
+pJobAddress.innerText="Job address: "+(inv.jobAddress||fullAddress(c));
+pTotal.innerText="£"+Number(inv.price||0).toFixed(2);
+pStatus.innerText=inv.status||"Unpaid";
+pPaid.innerText="£"+Number(inv.paid||0).toFixed(2);
+pBalance.innerText="£"+Math.max(0,Number(inv.price||0)-Number(inv.paid||0)).toFixed(2);
+
+let bank=[
+setting("accountName","") ? "Account name: "+setting("accountName","") : "",
+setting("sortCode","") ? "Sort code: "+setting("sortCode","") : "",
+setting("accountNumber","") ? "Account number: "+setting("accountNumber","") : ""
+].filter(Boolean);
+pBankDetails.innerText=bank.join("\n") || "Payment details not entered";
+pPaymentNote.innerText=setting("paymentNote","");
+let payLink=paymentLinkForInvoice(inv),showQR=localStorage.getItem("showQROnInvoice")==="1";
+if(showQR && /^https?:\/\//i.test(payLink)){pQR.src=qrImageURL(payLink,180);pQRRef.innerText="Invoice "+(inv.number||"")+" · £"+Number(inv.price||0).toFixed(2);pQRWrap.style.display="block";}else{pQRWrap.style.display="none";pQR.removeAttribute("src");}
+
+let footer=[
+setting("companyNumber","") ? "Company No: "+setting("companyNumber","") : "",
+setting("vatNumber","") ? "VAT No: "+setting("vatNumber","") : ""
+].filter(Boolean);
+pCompanyFooter.innerText=footer.join(" · ");
+return true;
+}
+
+function previewInvoice(){
+if(!populateInvoicePaper())return;
+show("invoicePrint");
+}
+
+function printInvoice(){
+if(!populateInvoicePaper())return;
+show("invoicePrint");
+setTimeout(()=>window.print(),180);
+}
+
+function printInvoiceFromPreview(){
+if(!populateInvoicePaper())return;
+window.print();
+}
+function renderJobTypeOptions(){
+if(!document.getElementById("jobtype"))return;
+let selected=jobtype.value;
+jobtype.innerHTML='<option value="">Choose a job</option>'+data.priceBook.map((p,i)=>`<option value="${i}">${esc(p.category||"General")} — ${esc(p.name)}${p.pricingType?" ("+esc(p.pricingType)+")":""}</option>`).join("");
+if([...jobtype.options].some(o=>o.value===selected))jobtype.value=selected;
+}
+function renderPriceBook(){
+let box=document.getElementById("priceBookList");if(!box)return;
+box.innerHTML=data.priceBook.length?data.priceBook.map((p,i)=>`<div class="item clickable" onclick="editPriceBookItem(${i})"><span class="price">£${Number(p.min||0).toLocaleString('en-GB')}–£${Number(p.max||0).toLocaleString('en-GB')}</span><strong>${esc(p.name)}</strong><small>${esc(p.category||"General")} · ${esc(p.pricingType||"Labour only")} · ${Number(p.hours||0)} hr · Materials £${Number(p.materials||0).toFixed(2)}${p.notes?'<br>'+esc(p.notes):''}</small></div>`).join(""):'<div class="empty">No price-book jobs yet.</div>';
+}
+function editPriceBookItem(i){selectedPriceBookIndex=i;let p=data.priceBook[i];if(!p)return;priceBookEditTitle.textContent="Edit Price";pbCategory.value=p.category||"General";pbName.value=p.name||"";pbPricingType.value=p.pricingType||"Labour only";pbHours.value=p.hours??0;pbMaterials.value=p.materials??0;pbMin.value=p.min??0;pbMax.value=p.max??0;pbNotes.value=p.notes||"";pbDeleteBtn.style.display="block";show("pricebookEdit");}
+function addPriceBookItem(){selectedPriceBookIndex=-1;priceBookEditTitle.textContent="Add Price Book Job";pbCategory.value="General";pbName.value="";pbPricingType.value="Labour only";pbHours.value=1;pbMaterials.value=0;pbMin.value=0;pbMax.value=0;pbNotes.value="";pbDeleteBtn.style.display="none";show("pricebookEdit");}
+function savePriceBookItem(){let item={category:pbCategory.value.trim()||"General",name:pbName.value.trim()||"New plumbing job",pricingType:pbPricingType.value||"Labour only",hours:Math.max(0,Number(pbHours.value)||0),materials:Math.max(0,Number(pbMaterials.value)||0),min:Math.max(0,Number(pbMin.value)||0),max:Math.max(0,Number(pbMax.value)||0),notes:pbNotes.value.trim()};if(item.max<item.min){let t=item.max;item.max=item.min;item.min=t;}if(selectedPriceBookIndex===-1)data.priceBook.push(item);else if(data.priceBook[selectedPriceBookIndex])data.priceBook[selectedPriceBookIndex]=item;save();show("pricebook");}
+function deletePriceBookItem(){if(selectedPriceBookIndex<0)return;if(confirm("Delete this price-book job?")){data.priceBook.splice(selectedPriceBookIndex,1);selectedPriceBookIndex=null;save();show("pricebook");}}
+function resetPriceBook(){if(confirm("Reset the Price Book to the original TradePro defaults? Your edits will be replaced.")){data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));save();show("pricebook");}}
+
+function paymentLinkForInvoice(inv){return setting("paymentLink","").trim();}
+function qrImageURL(text,size=320){return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=8&data=${encodeURIComponent(text)}`;}
+function showPaymentQR(){
+if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex];let link=paymentLinkForInvoice(inv);
+if(!/^https?:\/\//i.test(link)){alert("Add your secure payment page link in Settings first.");show("settings");return;}
+qrAmount.textContent="£"+Number(inv.price||0).toFixed(2);qrReference.textContent="Invoice "+(inv.number||"");paymentQRImage.src=qrImageURL(link,320);paymentQRImage.dataset.link=link;show("paymentQR");
+}
+function openPaymentLink(){let link=document.getElementById("paymentQRImage")?.dataset.link||"";if(link)window.open(link,"_blank","noopener");}
+
+function save(){localStorage.setItem("tradepro",JSON.stringify(data));render()}
+
+function saveLogo(event){
+let file=event.target.files && event.target.files[0];
+if(!file)return;
+if(!file.type.startsWith("image/")){alert("Please choose an image file.");return;}
+let reader=new FileReader();
+reader.onload=function(e){
+let img=new Image();
+img.onload=function(){
+try{
+let maxW=700,maxH=350,scale=Math.min(1,maxW/img.width,maxH/img.height);
+let w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
+let canvas=document.createElement("canvas");canvas.width=w;canvas.height=h;
+let ctx=canvas.getContext("2d");
+ctx.fillStyle="#ffffff";ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);
+let compressed=canvas.toDataURL("image/jpeg",0.86);
+localStorage.setItem("businessLogo",compressed);
+updateLogoPreview();
+alert("Logo saved");
+}catch(err){
+console.error(err);alert("That image is too large to save. Please choose a smaller logo image.");
+}
+};
+img.onerror=function(){alert("Could not read that image. Please try another one.");};
+img.src=e.target.result;
+};
+reader.onerror=function(){alert("Could not read that image.");};
+reader.readAsDataURL(file);
+}
+function removeLogo(){
+localStorage.removeItem("businessLogo");
+updateLogoPreview();
+}
+
+function updateLogoPreview(){
+let logo=localStorage.getItem("businessLogo");
+if(logo){
+logoPreview.src=logo;
+logoPreviewWrap.style.display="block";
+}else{
+logoPreview.removeAttribute("src");
+logoPreviewWrap.style.display="none";
+}
+}
+
+function businessAddressText(){
+return [
+setting("businessAddress1",""),
+setting("businessAddress2",""),
+setting("businessTown",""),
+setting("businessPostcode","")
+].filter(Boolean).join(", ");
+}
+
+function businessDetailsText(){
+return [
+setting("ownerName",""),
+businessAddressText(),
+setting("businessPhone",""),
+setting("businessEmail",""),
+setting("businessWebsite","")
+].filter(Boolean).join("\n");
+}
+function saveSettings(){
+[
+"businessName","ownerName",
+"businessAddress1","businessAddress2","businessTown","businessPostcode",
+"businessPhone","businessEmail","businessWebsite",
+"companyNumber","vatNumber",
+"accountName","sortCode","accountNumber","paymentNote","paymentLink",
+"rate","travel","markup","overheadRate","contingency","profit","paymentDays"
+].forEach(id=>{
+let el=document.getElementById(id);
+if(el)localStorage.setItem(id,el.value);
+});
+localStorage.setItem("showQROnInvoice",document.getElementById("showQROnInvoice").checked?"1":"0");
+updateLogoPreview();
+alert("Business settings saved");
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
+
+function render(){
+quoteCount.innerText=data.quotes.length;invoiceCount.innerText=data.invoices.length;customerCount.innerText=data.customers.length;
+let owed=data.invoices.filter(x=>(x.status||"Unpaid")!=="Paid").reduce((a,b)=>a+Math.max(0,b.price-Number(b.paid||0)),0);
+let total=data.invoices.reduce((a,b)=>a+b.price,0);outstanding.innerText="£"+owed.toFixed(0);sales.innerText="£"+total.toFixed(2);
+
+customerList.innerHTML=data.customers.length?data.customers.map(x=>{let c=normalizeCustomer(x);return `<div class="item"><strong>${esc(c.name)}</strong><small>${esc(fullAddress(c))}<br>${esc(contactText(c))}</small></div>`}).join(""):'<div class="empty">No customers saved yet.</div>';
+
+quoteList.innerHTML=data.quotes.length?data.quotes.map((x,i)=>{let c=normalizeCustomer(x.customer);return `<div class="item clickable" onclick="openQuote(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)}</small></div>`}).join(""):'<div class="empty">No quotes saved yet.</div>';
+
+invoiceList.innerHTML=data.invoices.length?data.invoices.map((x,i)=>{let c=normalizeCustomer(x.customer);return `<div class="item clickable" onclick="openInvoice(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Invoice")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Unpaid")}</small></div>`}).join(""):'<div class="empty">No invoices saved yet.</div>';
+
+[
+"businessName","ownerName",
+"businessAddress1","businessAddress2","businessTown","businessPostcode",
+"businessPhone","businessEmail","businessWebsite",
+"companyNumber","vatNumber",
+"accountName","sortCode","accountNumber","paymentNote","paymentLink",
+"rate","travel","markup","overheadRate","contingency","profit","paymentDays"
+].forEach(id=>{let v=localStorage.getItem(id);if(v!==null&&document.getElementById(id))document.getElementById(id).value=v});
+if(document.getElementById("showQROnInvoice"))showQROnInvoice.checked=localStorage.getItem("showQROnInvoice")==="1";
+if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
+renderPriceBook();renderJobTypeOptions();
+}
+render();
+
+function calcRadiator(){
+  let L=parseFloat(document.getElementById("radLength").value)||0;
+  let W=parseFloat(document.getElementById("radWidth").value)||0;
+  let H=parseFloat(document.getElementById("radHeight").value)||0;
+  if(!L||!W||!H){alert("Enter the room length, width and height.");return}
+  let target=parseFloat(document.getElementById("radRoom").value)||21;
+  let ins=parseFloat(document.getElementById("radIns").value)||1;
+  let walls=parseFloat(document.getElementById("radWalls").value)||1;
+  let windows=parseFloat(document.getElementById("radWindows").value)||1;
+  let source=parseFloat(document.getElementById("radSource").value)||1;
+  let volume=L*W*H;
+  // Screening estimate only: volume x baseline W/m3, adjusted for target temp/exposure.
+  let tempFactor=Math.max(.85,Math.min(1.15,target/21));
+  let watts=Math.round(volume*50*ins*walls*windows*tempFactor);
+  let selected=Math.ceil((watts*source)/100)*100;
+  let btu=Math.round(watts*3.412);
+  let selectedBtu=Math.round(selected*3.412);
+  let r=document.getElementById("radResult");
+  r.style.display="block";
+  r.innerHTML="<div class='small'>Estimated room heat requirement</div><div class='big'>"+watts.toLocaleString()+" W</div>"+
+    "<div style='margin-top:6px'>≈ "+btu.toLocaleString()+" BTU/hr</div>"+
+    "<hr style='border:0;border-top:1px solid #dce5eb;margin:14px 0'>"+
+    "<strong>Radiator selection starting point:</strong> "+selected.toLocaleString()+" W / "+selectedBtu.toLocaleString()+" BTU/hr"+
+    (source>1?"<div class='notice' style='margin-top:12px'>Low-temperature systems require radiator output to be checked at the actual design flow/return/room temperatures. Use manufacturer correction factors or a full heat-loss/emitter design before specifying equipment.</div>":"")+
+    "<div class='small' style='margin-top:10px'>Estimate only — verify design-critical selections with a recognised room-by-room heat-loss method.</div>";
+}
+</script>
+</body>
+</html>
