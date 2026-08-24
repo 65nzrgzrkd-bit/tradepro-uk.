@@ -73,10 +73,12 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .versionline{font-size:12px;color:var(--muted);text-align:center;margin:16px 0 2px}
 @media(max-width:430px){.grid2,.toolgrid{grid-template-columns:1fr}.toolbuttons{grid-template-columns:1fr}}
 
+
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(18px);background:#15324b;color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;box-shadow:0 8px 28px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:.22s;z-index:9999;max-width:88%;text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 2.1 · V11</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 2.2 · V12</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -530,6 +532,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 </main>
 
+<div id="appToast" class="toast" role="status" aria-live="polite"></div>
+
 <nav>
 <button onclick="show('home')">⌂<span>Home</span></button>
 <button onclick="newJob()">＋<span>New Job</span></button>
@@ -539,7 +543,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="11.0";
+const TRADEPRO_VERSION="12.0";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -619,7 +623,23 @@ if(localStorage.getItem('tradepro_migrated_v10')!=='1'){
 }
 
 
+function syncDataFromStorage(){
+ try{
+  const fresh=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
+  if(fresh&&typeof fresh==="object"){
+   if(!Array.isArray(fresh.customers))fresh.customers=[];
+   if(!Array.isArray(fresh.quotes))fresh.quotes=[];
+   if(!Array.isArray(fresh.invoices))fresh.invoices=[];
+   if(!Array.isArray(fresh.priceBook)||!fresh.priceBook.length)fresh.priceBook=(data.priceBook&&data.priceBook.length?data.priceBook:DEFAULT_PRICE_BOOK.map(x=>({...x})));
+   data=fresh;
+  }
+ }catch(e){console.warn("TradePro data refresh failed",e)}
+}
+function toast(msg){
+ const el=document.getElementById("appToast");if(!el)return;el.textContent=msg;el.classList.add("show");clearTimeout(window.__tradeproToastTimer);window.__tradeproToastTimer=setTimeout(()=>el.classList.remove("show"),2200);
+}
 function show(id){
+syncDataFromStorage();
 document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
 document.getElementById(id).classList.add("active");
 render();
@@ -682,10 +702,12 @@ return {customer:c,job:jobName(),jobAddress:getJobAddress(c),price:currentPrice,
 
 function saveQuote(){
 if(!currentPrice)calculate();
+syncDataFromStorage();
 let r=buildRecord();
 let validDays=settingNum("quoteValidDays",30),depositPct=settingNum("depositPercent",20);
-data.quotes.unshift({...r,number:nextQuoteNumber(),validUntil:addDaysFromUK(r.date,validDays),depositPercent:depositPct,status:"Draft"});
-save();show("quotes")
+let quote={...r,number:nextQuoteNumber(),validUntil:addDaysFromUK(r.date,validDays),depositPercent:depositPct,status:"Draft",savedAt:new Date().toISOString()};
+data.quotes.unshift(quote);
+if(save()){show("quotes");toast(quote.number+" saved · £"+Number(quote.price||0).toFixed(2));}
 }
 
 function createInvoiceFromJob(){
@@ -991,7 +1013,10 @@ qrAmount.textContent="£"+Number(inv.price||0).toFixed(2);qrReference.textConten
 }
 function openPaymentLink(){let link=document.getElementById("paymentQRImage")?.dataset.link||"";if(link)window.open(link,"_blank","noopener");}
 
-function save(){localStorage.setItem("tradepro",JSON.stringify(data));render()}
+function save(){
+ try{localStorage.setItem("tradepro",JSON.stringify(data));render();return true}
+ catch(e){console.error(e);alert("TradePro could not save this change. Please check Safari storage and try again.");return false}
+}
 
 function saveLogo(event){
 let file=event.target.files && event.target.files[0];
@@ -1097,7 +1122,9 @@ if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
 renderPriceBook();renderJobTypeOptions();
 }
 render();
-
+window.addEventListener("storage",e=>{if(e.key==="tradepro"){syncDataFromStorage();render();toast("TradePro data refreshed")}});
+window.addEventListener("focus",()=>{syncDataFromStorage();render()});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){syncDataFromStorage();render()}});
 
 let lastToolResult={description:"",price:0,hours:0,materials:0};
 function showToolPanel(id){
