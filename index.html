@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 4.0</title>
+<title>TradePro UK · Plumber Edition · Build 4.1</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -111,7 +111,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .dashboard-note{background:#fff;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.45}
 @media(max-width:430px){.customer-actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
 /* Build 3.4 field actions and connected job status */
-/* Build 4.0 report period filters, UK tax-year view and zero-bar polish */
+/* Build 4.1 commercial readiness, setup health, backup status and onboarding polish */
 .booking-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.booking-quick button{padding:13px;border-radius:12px;font-weight:700}.status-progress{background:#fff4df;color:#7a5200}.status-invoiced{background:#eef4ff;color:#2457a7}.status-paid{background:#e8f5e9;color:#226b28}.appt-meta{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.45}.appointment .appt-value{display:inline-block;margin-top:5px;font-weight:800;color:var(--green)}.diary-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.diary-filter{padding:11px 8px;border-radius:12px;background:#e6edf2;color:var(--navy);font-weight:800;font-size:13px}.diary-filter.active{background:var(--navy);color:#fff}.diary-summary{background:#fff;border-radius:15px;padding:14px 16px;margin:10px 0 4px;box-shadow:0 4px 14px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.4}.diary-summary strong{color:var(--text);font-size:16px}.appt-meta:empty{display:none}
 @media(max-width:430px){.booking-quick{grid-template-columns:1fr 1fr}}
 .appt-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
@@ -150,6 +150,19 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .report-period-title{font-size:12px;color:var(--muted);margin:-4px 0 10px;text-align:center}
 .month-bar.zero i{display:none}
 @media(max-width:430px){.report-periods{grid-template-columns:1fr 1fr}}
+.setup-health{background:#fff;border-radius:18px;padding:16px;margin:14px 0;box-shadow:0 5px 18px rgba(0,0,0,.05)}
+.setup-health-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.setup-health strong{font-size:17px}.setup-health .pct{font-size:20px;font-weight:900;color:var(--green)}
+.setup-progress{height:9px;background:#e5ebef;border-radius:999px;overflow:hidden;margin:11px 0 8px}.setup-progress i{display:block;height:100%;background:var(--green);border-radius:999px}
+.setup-health small{display:block;color:var(--muted);line-height:1.4}
+.setup-health button{margin-top:10px;padding:10px 13px;border-radius:11px;font-weight:800;background:#e6edf2;color:var(--navy)}
+.readiness-list{display:grid;gap:8px;margin:12px 0 18px}
+.readiness-item{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f7f9fa;border:1px solid #e2e8ec;border-radius:12px;padding:11px 12px;font-size:13px}
+.readiness-item b{font-size:13px}.ready-ok{color:#2d762e}.ready-warn{color:#996515}
+.backup-status{background:#f7f9fa;border:1px solid #e2e8ec;border-radius:14px;padding:13px;margin:10px 0}
+.backup-status strong{display:block;margin-bottom:4px}.backup-status span{font-size:12px;color:var(--muted);line-height:1.45}
+.install-tip{background:#eef5f8;border-radius:14px;padding:13px;margin:12px 0;font-size:12px;line-height:1.5;color:#425466}
+
 
 @media(max-width:430px){.report-grid{grid-template-columns:1fr 1fr}}
 
@@ -157,7 +170,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 4.0 · V16.8</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 4.1 · V16.9</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -174,6 +187,12 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="card workload-card" onclick="openDiary()"><small>Upcoming jobs</small><strong id="upcomingCount">0</strong><div class="mini" id="nextJobText">Nothing booked</div></div>
 <div class="card workload-card" onclick="openDiary()"><small>Completed this month</small><strong id="completedMonthCount">0</strong><div class="mini" id="completedMonthText">No completed jobs</div></div>
 <div class="card workload-card" onclick="openDiary()"><small>Next 7 days</small><strong id="weekJobsCount">0</strong><div class="mini" id="weekJobsText">No booked visits</div></div>
+</div>
+<div id="setupHealthCard" class="setup-health">
+<div class="setup-health-top"><strong id="setupHealthTitle">Business setup</strong><span id="setupHealthPct" class="pct">0%</span></div>
+<div class="setup-progress"><i id="setupHealthBar" style="width:0%"></i></div>
+<small id="setupHealthText">Checking your business setup…</small>
+<button onclick="show('settings')">Review business setup</button>
 </div>
 <button class="primary" onclick="newJob()">＋ New Job</button>
 <h3>Quick actions</h3>
@@ -685,6 +704,13 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <section id="settings" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Business Settings</h2></div>
 
+<div class="setup-health">
+<div class="setup-health-top"><strong>App readiness</strong><span id="settingsReadyPct" class="pct">0%</span></div>
+<div class="setup-progress"><i id="settingsReadyBar" style="width:0%"></i></div>
+<small id="settingsReadyText">Complete the essentials below so quotes and invoices are ready for customers.</small>
+</div>
+<div id="readinessList" class="readiness-list"></div>
+
 <h3>Branding</h3>
 <label>Business name<input id="businessName" value="TradePro UK"></label>
 <label>Owner / Contact name<input id="ownerName" placeholder="Your name"></label>
@@ -740,12 +766,14 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <h3>Data Backup</h3>
 <div class="notice">Your customers, quotes, invoices and personalised price book are stored on this device. Export a backup before changing phones, clearing browser data or making a major app update.</div>
+<div id="backupStatus" class="backup-status"><strong>Backup status</strong><span id="backupStatusText">No backup recorded yet.</span></div>
 <div class="detail-actions">
 <button class="secondary" type="button" onclick="exportBackup()">Export Backup</button>
 <button class="secondary" type="button" onclick="document.getElementById('backupImport').click()">Import Backup</button>
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
-<div class="versionline">TradePro UK · Plumber Edition · Build 2.7 · Engine V15.2</div>
+<div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 4.1 · V16.9</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -763,7 +791,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="16.8";
+const TRADEPRO_VERSION="16.9";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1342,6 +1370,45 @@ setting("businessEmail","").trim(),
 setting("businessWebsite","").trim()
 ].filter(Boolean).join("\n");
 }
+function setupReadiness(){
+ let checks=[
+  {name:'Business name',ok:!!String(setting('businessName','')).trim(),note:'Shown on quotes and invoices'},
+  {name:'Contact details',ok:!!String(setting('businessPhone','')).trim()||!!String(setting('businessEmail','')).trim(),note:'Phone or email saved'},
+  {name:'Business address',ok:!!businessAddressText(),note:'Used on customer documents'},
+  {name:'Payment details',ok:!!String(setting('accountName','')).trim()&&!!String(setting('sortCode','')).trim()&&!!String(setting('accountNumber','')).trim(),note:'For getting paid by bank transfer'},
+  {name:'Pricing defaults',ok:Number(setting('rate','0'))>0&&Number(setting('profit','0'))>=0,note:'Labour rate and profit settings'},
+  {name:'Backup',ok:!!localStorage.getItem('lastBackupAt'),note:'Protect your customer and invoice data'}
+ ];
+ let done=checks.filter(x=>x.ok).length,pct=Math.round(done/checks.length*100);
+ return {checks,done,total:checks.length,pct};
+}
+function formatSavedTime(v){
+ if(!v)return 'Never';
+ let d=new Date(v);if(isNaN(d))return 'Unknown';
+ return d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function renderReadiness(){
+ let r=setupReadiness(),home=document.getElementById('setupHealthCard');
+ if(document.getElementById('setupHealthPct'))setupHealthPct.textContent=r.pct+'%';
+ if(document.getElementById('setupHealthBar'))setupHealthBar.style.width=r.pct+'%';
+ if(document.getElementById('setupHealthTitle'))setupHealthTitle.textContent=r.pct===100?'TradePro ready':'Finish business setup';
+ if(document.getElementById('setupHealthText')){
+   let missing=r.checks.filter(x=>!x.ok).map(x=>x.name);
+   setupHealthText.textContent=r.pct===100?'Business details, pricing and backup are all set.':(missing.length?'Still to check: '+missing.join(', ')+'.':'Setup looks good.');
+ }
+ if(home)home.style.display=r.pct===100?'none':'block';
+ if(document.getElementById('settingsReadyPct'))settingsReadyPct.textContent=r.pct+'%';
+ if(document.getElementById('settingsReadyBar'))settingsReadyBar.style.width=r.pct+'%';
+ if(document.getElementById('settingsReadyText'))settingsReadyText.textContent=r.pct===100?'TradePro is ready for day-to-day customer work.':'Complete the remaining items before relying on TradePro as your main job record.';
+ let list=document.getElementById('readinessList');
+ if(list)list.innerHTML=r.checks.map(x=>`<div class="readiness-item"><div><b>${esc(x.name)}</b><br><span class="small">${esc(x.note)}</span></div><strong class="${x.ok?'ready-ok':'ready-warn'}">${x.ok?'✓ Ready':'Needs setup'}</strong></div>`).join('');
+ let last=localStorage.getItem('lastBackupAt'),restore=localStorage.getItem('lastRestoreAt'),bst=document.getElementById('backupStatusText');
+ if(bst){
+   let msg=last?'Last backup exported: '+formatSavedTime(last)+'.':'No backup has been exported from this device yet.';
+   if(restore)msg+=' Last restore: '+formatSavedTime(restore)+'.';
+   bst.textContent=msg;
+ }
+}
 function saveSettings(){
 [
 "businessName","ownerName",
@@ -1357,7 +1424,8 @@ if(el)localStorage.setItem(id,el.value);
 localStorage.setItem("showQROnInvoice",document.getElementById("showQROnInvoice").checked?"1":"0");
 localStorage.setItem("vatRegistered",document.getElementById("vatRegistered").checked?"1":"0");
 updateLogoPreview();
-alert("Business settings saved");
+renderReadiness();
+toast("Business settings saved");
 }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
 
@@ -1594,7 +1662,7 @@ let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let i
 if(document.getElementById("showQROnInvoice"))showQROnInvoice.checked=localStorage.getItem("showQROnInvoice")==="1";
 if(document.getElementById("vatRegistered"))vatRegistered.checked=localStorage.getItem("vatRegistered")==="1";
 if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
-renderPriceBook();renderJobTypeOptions();renderDiary();if(document.getElementById('reports'))renderReports();
+renderPriceBook();renderJobTypeOptions();renderDiary();if(document.getElementById('reports'))renderReports();renderReadiness();
 }
 render();
 window.addEventListener("storage",e=>{if(e.key==="tradepro"){syncDataFromStorage();render();toast("TradePro data refreshed")}});
@@ -1650,11 +1718,12 @@ function calcHeatPump(){
 }
 function exportBackup(){
  let payload={app:'TradePro UK Plumber Edition',version:TRADEPRO_VERSION,exportedAt:new Date().toISOString(),data,settings:{}};
- ['businessName','ownerName','businessAddress1','businessAddress2','businessTown','businessPostcode','businessPhone','businessEmail','businessWebsite','companyNumber','vatNumber','vatRegistered','vatRate','accountName','sortCode','accountNumber','paymentNote','paymentLink','rate','travel','markup','overheadRate','contingency','profit','paymentDays','showQROnInvoice','businessLogo'].forEach(k=>payload.settings[k]=localStorage.getItem(k));
+ ['businessName','ownerName','businessAddress1','businessAddress2','businessTown','businessPostcode','businessPhone','businessEmail','businessWebsite','companyNumber','vatNumber','vatRegistered','vatRate','accountName','sortCode','accountNumber','paymentNote','paymentLink','rate','travel','markup','overheadRate','contingency','profit','paymentDays','quoteValidDays','depositPercent','showQROnInvoice','businessLogo','lastBackupAt'].forEach(k=>payload.settings[k]=localStorage.getItem(k));
  let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='TradePro_Backup_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ localStorage.setItem('lastBackupAt',new Date().toISOString());renderReadiness();toast('Backup exported');
 }
 function importBackup(event){
- let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let p=JSON.parse(reader.result);if(!p||!p.data)throw new Error('Invalid backup');if(!confirm('Import this TradePro backup? Current data on this device will be replaced.'))return;data=p.data;if(!Array.isArray(data.customers))data.customers=[];if(!Array.isArray(data.quotes))data.quotes=[];if(!Array.isArray(data.invoices))data.invoices=[];if(!Array.isArray(data.appointments))data.appointments=[];if(!Array.isArray(data.priceBook)||!data.priceBook.length)data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));Object.entries(p.settings||{}).forEach(([k,v])=>{if(v===null||v===undefined)localStorage.removeItem(k);else localStorage.setItem(k,String(v))});save();alert('Backup imported successfully');show('home')}catch(e){alert('Could not import that backup file.')}};reader.readAsText(file);event.target.value='';
+ let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let p=JSON.parse(reader.result);if(!p||!p.data)throw new Error('Invalid backup');if(!confirm('Import this TradePro backup? Current data on this device will be replaced.'))return;data=p.data;if(!Array.isArray(data.customers))data.customers=[];if(!Array.isArray(data.quotes))data.quotes=[];if(!Array.isArray(data.invoices))data.invoices=[];if(!Array.isArray(data.appointments))data.appointments=[];if(!Array.isArray(data.priceBook)||!data.priceBook.length)data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));Object.entries(p.settings||{}).forEach(([k,v])=>{if(v===null||v===undefined)localStorage.removeItem(k);else localStorage.setItem(k,String(v))});localStorage.setItem('lastRestoreAt',new Date().toISOString());save();renderReadiness();alert('Backup imported successfully');show('home')}catch(e){alert('Could not import that backup file.')}};reader.readAsText(file);event.target.value='';
 }
 
 function calcRadiator(){
