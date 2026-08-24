@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 2.1</title>
+<title>TradePro UK · Plumber Edition · Build 2.3</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -75,10 +75,12 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 
 .toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(18px);background:#15324b;color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;box-shadow:0 8px 28px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:.22s;z-index:9999;max-width:88%;text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.searchbox{margin:0 0 14px}.searchbox input{margin-top:0;background:#fff}.moneybreak{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-top:8px}.moneybreak strong{color:var(--text)}.status-accepted{background:#e8f5e9;color:#226b28}.status-converted{background:#eaf2f7;color:#15324b}.status-overdue{background:#fdecec;color:#9b1c1c}.status-part{background:#fff4df;color:#7a5200}
+@media(max-width:520px){#invoicePaper,#quotePaper{padding:14px!important}#invoicePaper>div:first-child,#quotePaper>div:first-child{gap:10px!important;margin-bottom:16px!important}#invoicePaper img,#quotePaper img{max-width:135px!important;max-height:72px!important}#invoicePaper h1,#quotePaper h1{font-size:27px!important}#invoicePaper h2,#quotePaper h2{font-size:23px!important}#invoicePaper>div[style*="grid-template-columns:1fr 1fr"],#quotePaper>div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important;gap:14px!important;margin:16px 0!important}.detail-actions{grid-template-columns:1fr}.bigprice{font-size:38px}}
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 2.2 · V12</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 2.3 · V13</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -149,6 +151,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <section id="quotes" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Quotes</h2></div>
+<div class="searchbox"><input id="quoteSearch" placeholder="Search quotes, customers or jobs" oninput="render()"></div>
 <div id="quoteList"></div>
 </section>
 
@@ -163,10 +166,12 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="detailrow"><span>Quote number</span><strong id="qdNumber"></strong></div>
 <div class="detailrow"><span>Date</span><strong id="qdDate"></strong></div>
 <div class="detailrow"><span>Valid until</span><strong id="qdValidUntil"></strong></div>
+<div class="detailrow" id="qdVatRow" style="display:none"><span>VAT breakdown</span><strong><span id="qdNet"></span> + <span id="qdVat"></span> VAT</strong></div>
 <div class="detailrow"><span>Suggested deposit</span><strong id="qdDeposit"></strong></div>
-<div class="detailrow"><span>Status</span><strong id="qdStatus">Draft</strong></div>
+<div class="detailrow"><span>Status</span><strong id="qdStatus" class="status">Draft</strong></div>
 <div class="detail-actions">
 <button class="green" onclick="convertSelectedQuoteToInvoice()">Create Invoice</button>
+<button class="secondary" onclick="toggleQuoteAccepted()">Accept / Reopen Quote</button>
 <button class="secondary" onclick="previewQuote()">Preview Quote</button>
 <button class="secondary" onclick="sendQuote()">Send / Share Quote</button>
 <button class="secondary" onclick="printQuote()">Print / Save PDF</button>
@@ -186,7 +191,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div><h3 style="margin-top:0">Quote for</h3><div id="qCustomer"></div><div id="qAddress"></div><div id="qContact"></div></div>
 <div><h3 style="margin-top:0">Work</h3><div id="qJob"></div><div id="qJobAddress"></div></div>
 </div>
-<div style="border-top:2px solid #15324b;border-bottom:1px solid #dce5eb;padding:16px 0;margin-top:24px"><div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800"><span>Quoted total</span><span id="qTotal"></span></div></div>
+<div style="border-top:2px solid #15324b;border-bottom:1px solid #dce5eb;padding:16px 0;margin-top:24px"><div id="qVatBreak" style="display:none"><div style="display:flex;justify-content:space-between"><span>Net</span><span id="qNet"></span></div><div style="display:flex;justify-content:space-between"><span>VAT</span><span id="qVat"></span></div></div><div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800;margin-top:6px"><span>Quoted total</span><span id="qTotal"></span></div></div>
 <div id="qDepositBlock" style="margin-top:18px;padding:16px;background:#f6f8fa;border-radius:12px"><strong>Suggested deposit: <span id="qDeposit"></span></strong><div class="smallnote" style="margin-top:5px">Deposit requirements can be agreed with the customer before booking.</div></div>
 <div style="margin-top:22px;font-size:12px;line-height:1.5;color:#495661">This quotation is based on the work described above. Any additional work or unforeseen issues may require a revised price and customer approval.</div>
 <div id="qCompanyFooter" style="margin-top:26px;font-size:12px;color:#6f7a84;text-align:center"></div>
@@ -196,6 +201,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <section id="invoices" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Invoices</h2></div>
+<div class="searchbox"><input id="invoiceSearch" placeholder="Search invoices, customers or jobs" oninput="render()"></div>
 <div id="invoiceList"></div>
 </section>
 
@@ -212,6 +218,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="detailrow"><span>Job address</span><strong id="idJobAddress"></strong></div>
 <div class="detailrow"><span>Invoice date</span><strong id="idDate"></strong></div>
 <div class="detailrow"><span>Due date</span><strong id="idDueDate"></strong></div>
+<div class="detailrow" id="idVatRow" style="display:none"><span>VAT breakdown</span><strong><span id="idNet"></span> + <span id="idVat"></span> VAT</strong></div>
 <div class="detailrow"><span>Status</span><strong id="idStatus" class="status"></strong></div>
 <div class="detailrow"><span>Amount paid</span><strong id="idPaid"></strong></div>
 <div class="detailrow"><span>Balance due</span><strong id="idBalance"></strong></div>
@@ -219,6 +226,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="detail-actions">
 <button class="secondary" onclick="editSelectedInvoice()">Edit Invoice</button>
 <button id="paidToggleBtn" type="button" class="green" onclick="togglePaid(event)">Mark as Paid</button>
+<button type="button" class="secondary" onclick="recordPayment()">Record Payment</button>
 <button type="button" class="secondary" onclick="showPaymentQR()">Show Payment QR</button>
 <button class="secondary" onclick="previewInvoice()">Preview Invoice</button>
 <button class="secondary" onclick="sendInvoice()">Send / Share Invoice</button>
@@ -306,7 +314,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 
 <div style="border-top:2px solid #15324b;border-bottom:1px solid #dce5eb;padding:16px 0;margin-top:24px">
-<div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800">
+<div id="pVatBreak" style="display:none"><div style="display:flex;justify-content:space-between"><span>Net</span><span id="pNet"></span></div><div style="display:flex;justify-content:space-between"><span>VAT</span><span id="pVat"></span></div></div>
+<div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800;margin-top:6px">
 <span>Total</span><span id="pTotal"></span>
 </div>
 </div>
@@ -344,7 +353,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <section id="heatingTools" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Heating & System Tools</h2></div>
-<div class="notice"><strong>Build 2.1 heating suite</strong><br>Fast estimating tools for radiator sizing, full heating-system pricing, gas-load planning, unvented cylinders and heat-pump jobs. Figures are starting points and remain editable.</div>
+<div class="notice"><strong>Build 2.3 heating suite</strong><br>Fast estimating tools for radiator sizing, full heating-system pricing, gas-load planning, unvented cylinders and heat-pump jobs. Figures are starting points and remain editable.</div>
 <div class="toolgrid">
 <button class="toolcard" onclick="showToolPanel('radPanel')"><span class="toolicon">🌡️</span><b>Radiator Sizing</b><small>Room heat requirement in W and BTU/hr.</small></button>
 <button class="toolcard" onclick="showToolPanel('systemPanel')"><span class="toolicon">🏠</span><b>Full Heating System</b><small>Estimate labour, pipework, emitters and plant.</small></button>
@@ -495,6 +504,9 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <label>Company number<input id="companyNumber" placeholder="Optional"></label>
 <label>VAT number<input id="vatNumber" placeholder="Optional"></label>
 </div>
+<label><input id="vatRegistered" type="checkbox" style="width:auto;margin-right:8px">VAT registered — add VAT to new quotes/invoices</label>
+<label>VAT rate %<input id="vatRate" type="number" value="20" step="0.1"></label>
+<div class="smallnote">VAT is only added to new prices when VAT registered is switched on. Existing saved documents keep their original totals.</div>
 
 <h3>Payment Details</h3>
 <label>Account name<input id="accountName" placeholder="Account name"></label>
@@ -525,7 +537,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <button class="secondary" type="button" onclick="document.getElementById('backupImport').click()">Import Backup</button>
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
-<div class="versionline">TradePro UK · Plumber Edition · Build 2.1 · Engine V11.0</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 2.3 · Engine V13.0</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -543,7 +555,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="12.0";
+const TRADEPRO_VERSION="13.0";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -650,15 +662,20 @@ function toggleJobAddress(){jobAddressBlock.style.display=differentJobAddress.ch
 function preset(){let idx=parseInt(jobtype.value,10);if(isNaN(idx)||!data.priceBook[idx])return;let p=data.priceBook[idx];hours.value=p.hours||0;materials.value=p.materials||0;if(!description.value.trim())description.value=(p.name||"")+(p.pricingType?" – "+p.pricingType:"")}
 function setting(id,def){let v=localStorage.getItem(id);return v===null?def:v}
 function settingNum(id,def){let v=parseFloat(localStorage.getItem(id));return isNaN(v)?def:v}
+function settingBool(id,def=false){let v=localStorage.getItem(id);return v===null?def:v==="1"}
+let currentNet=0,currentVat=0;
 
 function calculate(){
 let h=parseFloat(hours.value)||0,m=parseFloat(materials.value)||0;
 let rate=settingNum("rate",55),travel=settingNum("travel",15),markup=settingNum("markup",20)/100,overhead=settingNum("overheadRate",10)/100,contingency=settingNum("contingency",5)/100,profit=settingNum("profit",20)/100;
 let diff=difficulty.value,mult={"Easy":0.9,"Standard":1,"Complex":1.15,"Very Complex":1.3}[diff];
 let labour=h*rate,subtotal=labour+m*(1+markup)+travel+(labour+m)*overhead,cost=subtotal*mult*(1+contingency),price=cost/(1-profit);
-currentPrice=Math.round(price/5)*5;
+currentNet=Math.round(price/5)*5;
+let vatOn=settingBool("vatRegistered",false),vatRateVal=settingNum("vatRate",20);
+currentVat=vatOn?currentNet*(vatRateVal/100):0;
+currentPrice=Math.round((currentNet+currentVat)*100)/100;
 recommended.innerText="£"+currentPrice.toFixed(2);
-breakdown.innerText="Labour £"+labour.toFixed(2)+" · Materials £"+m.toFixed(2)+" · "+diff;
+breakdown.innerText="Labour £"+labour.toFixed(2)+" · Materials £"+m.toFixed(2)+" · "+diff+(vatOn?" · Net £"+currentNet.toFixed(2)+" + VAT £"+currentVat.toFixed(2):"");
 result.style.display="block"
 }
 
@@ -697,7 +714,7 @@ let m=String(dateText||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);let d=m?new 
 }
 function buildRecord(){
 let c=collectCustomer();upsertCustomer(c);
-return {customer:c,job:jobName(),jobAddress:getJobAddress(c),price:currentPrice,date:todayUK()}
+return {customer:c,job:jobName(),jobAddress:getJobAddress(c),price:currentPrice,net:currentNet||currentPrice,vat:currentVat||0,vatRate:settingNum("vatRate",20),vatRegistered:settingBool("vatRegistered",false),date:todayUK()}
 }
 
 function saveQuote(){
@@ -723,7 +740,10 @@ save();show("invoices")
 function openQuote(i){
 selectedQuoteIndex=i;let q=data.quotes[i],c=normalizeCustomer(q.customer);
 if(!q.number){q.number=nextQuoteNumber();q.validUntil=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));q.depositPercent=Number.isFinite(Number(q.depositPercent))?Number(q.depositPercent):settingNum("depositPercent",20);save();}
-qdPrice.innerText="£"+Number(q.price||0).toFixed(2);qdCustomer.innerText=c.name;qdAddress.innerText=fullAddress(c);qdContact.innerText=contactText(c);qdJob.innerText=q.job;qdNumber.innerText=q.number||"";qdDate.innerText=q.date;qdValidUntil.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));qdDeposit.innerText="£"+(Number(q.price||0)*(Number(q.depositPercent??settingNum("depositPercent",20))/100)).toFixed(2)+" ("+Number(q.depositPercent??settingNum("depositPercent",20))+"%)";qdStatus.innerText=q.status||"Draft";show("quoteDetail")
+qdPrice.innerText="£"+Number(q.price||0).toFixed(2);qdCustomer.innerText=c.name;qdAddress.innerText=fullAddress(c);qdContact.innerText=contactText(c);qdJob.innerText=q.job;qdNumber.innerText=q.number||"";qdDate.innerText=q.date;qdValidUntil.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));let qNetVal=Number(q.net??q.price??0),qVatVal=Number(q.vat||0);qdNet.innerText="£"+qNetVal.toFixed(2);qdVat.innerText="£"+qVatVal.toFixed(2);qdVatRow.style.display=qVatVal>0?"block":"none";qdDeposit.innerText="£"+(Number(q.price||0)*(Number(q.depositPercent??settingNum("depositPercent",20))/100)).toFixed(2)+" ("+Number(q.depositPercent??settingNum("depositPercent",20))+"%)";qdStatus.innerText=q.status||"Draft";qdStatus.className="status "+((q.status||"")==="Accepted"?"status-accepted":(q.status||"")==="Converted"?"status-converted":"");show("quoteDetail")
+}
+function toggleQuoteAccepted(){
+if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex];q.status=(q.status==="Accepted"?"Draft":"Accepted");q.statusChangedAt=new Date().toISOString();save();openQuote(selectedQuoteIndex);toast(q.number+" · "+q.status);
 }
 function convertSelectedQuoteToInvoice(){
 if(selectedQuoteIndex===null)return;
@@ -734,7 +754,7 @@ x.quoteKey===quoteKey(q) ||
 );
 if(duplicate){alert("This quote has already been converted to invoice "+duplicate.number+".");openInvoice(data.invoices.indexOf(duplicate));return}
 let terms=settingNum("paymentDays",14);
-data.invoices.unshift({customer:c,job:q.job,jobAddress:q.jobAddress||fullAddress(c),price:q.price,date:todayUK(),dueDate:addDaysUK(terms),number:nextInvoiceNumber(),status:"Unpaid",paid:0,quoteKey:quoteKey(q)});
+data.invoices.unshift({customer:c,job:q.job,jobAddress:q.jobAddress||fullAddress(c),price:q.price,net:q.net??q.price,vat:q.vat||0,vatRate:q.vatRate||0,vatRegistered:!!q.vatRegistered,date:todayUK(),dueDate:addDaysUK(terms),number:nextInvoiceNumber(),status:"Unpaid",paid:0,quoteKey:quoteKey(q)});
 q.status="Converted";save();show("invoices")
 }
 function quoteKey(q){let c=normalizeCustomer(q.customer);return [c.name,q.job,q.price,q.date].join("|")}
@@ -756,7 +776,7 @@ Phone/Email: ${contactText(c)}
 Work: ${q.job||""}
 Job address: ${q.jobAddress||fullAddress(c)}
 
-Quoted total: £${Number(q.price||0).toFixed(2)}
+${Number(q.vat||0)>0?`Net: £${Number(q.net??q.price??0).toFixed(2)}\nVAT: £${Number(q.vat||0).toFixed(2)}\n`:``}Quoted total: £${Number(q.price||0).toFixed(2)}
 Suggested deposit (${depPct}%): £${dep.toFixed(2)}
 
 Any additional work or unforeseen issues may require a revised price and customer approval.`;
@@ -769,7 +789,7 @@ let subject=encodeURIComponent(`Quotation ${q.number||""} - ${c.name}`),body=enc
 function populateQuotePaper(){
 if(selectedQuoteIndex===null)return false;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),depPct=Number(q.depositPercent??settingNum("depositPercent",20));
 qBusinessName.innerText=setting("businessName","TradePro UK");qBusinessDetails.innerText=businessDetailsText();let logo=localStorage.getItem("businessLogo");if(logo){qLogo.src=logo;qLogo.style.display="block"}else{qLogo.removeAttribute("src");qLogo.style.display="none"}
-qNumber.innerText=q.number||"";qDate.innerText=q.date||"";qValid.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));qCustomer.innerText=c.name;qAddress.innerText=fullAddress(c);qContact.innerText=contactText(c);qJob.innerText=q.job||"";qJobAddress.innerText="Job address: "+(q.jobAddress||fullAddress(c));qTotal.innerText="£"+Number(q.price||0).toFixed(2);qDeposit.innerText="£"+(Number(q.price||0)*depPct/100).toFixed(2)+" ("+depPct+"%)";qDepositBlock.style.display=depPct>0?"block":"none";let footer=[setting("companyNumber","")?"Company No: "+setting("companyNumber",""):"",setting("vatNumber","")?"VAT No: "+setting("vatNumber",""):""].filter(Boolean);qCompanyFooter.innerText=footer.join(" · ");return true;
+qNumber.innerText=q.number||"";qDate.innerText=q.date||"";qValid.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));qCustomer.innerText=c.name;qAddress.innerText=fullAddress(c);qContact.innerText=contactText(c);qJob.innerText=q.job||"";qJobAddress.innerText="Job address: "+(q.jobAddress||fullAddress(c));let qn=Number(q.net??q.price??0),qv=Number(q.vat||0);qNet.innerText="£"+qn.toFixed(2);qVat.innerText="£"+qv.toFixed(2);qVatBreak.style.display=qv>0?"block":"none";qTotal.innerText="£"+Number(q.price||0).toFixed(2);qDeposit.innerText="£"+(Number(q.price||0)*depPct/100).toFixed(2)+" ("+depPct+"%)";qDepositBlock.style.display=depPct>0?"block":"none";let footer=[setting("companyNumber","")?"Company No: "+setting("companyNumber",""):"",setting("vatNumber","")?"VAT No: "+setting("vatNumber",""):""].filter(Boolean);qCompanyFooter.innerText=footer.join(" · ");return true;
 }
 function previewQuote(){if(!populateQuotePaper())return;show("quotePrint")}
 function printQuote(){if(!populateQuotePaper())return;show("quotePrint");setTimeout(()=>window.print(),180)}
@@ -785,12 +805,15 @@ idNumber.innerText=inv.number||("TP-"+String(i+1).padStart(4,"0"));
 idPrice.innerText="£"+Number(inv.price||0).toFixed(2);
 idCustomer.innerText=c.name;idAddress.innerText=fullAddress(c);idContact.innerText=contactText(c);
 idJob.innerText=inv.job;idJobAddress.innerText=inv.jobAddress||fullAddress(c);idDate.innerText=inv.date;idDueDate.innerText=inv.dueDate||"Not set";
-idStatus.innerText=inv.status||"Unpaid";idPaid.innerText="£"+Number(inv.paid||0).toFixed(2);idBalance.innerText="£"+Math.max(0,Number(inv.price||0)-Number(inv.paid||0)).toFixed(2);
+let inNet=Number(inv.net??inv.price??0),inVat=Number(inv.vat||0);idNet.innerText="£"+inNet.toFixed(2);idVat.innerText="£"+inVat.toFixed(2);idVatRow.style.display=inVat>0?"block":"none";idStatus.innerText=inv.status||"Unpaid";idStatus.className="status "+((inv.status||"")==="Overdue"?"status-overdue":(inv.status||"")==="Part Paid"?"status-part":"");idPaid.innerText="£"+Number(inv.paid||0).toFixed(2);idBalance.innerText="£"+Math.max(0,Number(inv.price||0)-Number(inv.paid||0)).toFixed(2);
 let btn=document.getElementById("paidToggleBtn");if(btn)btn.textContent=(inv.status==="Paid"?"Mark as Unpaid":"Mark as Paid");
 show("invoiceDetail")
 }
 
 
+function recordPayment(){
+if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));if(balance<=0){toast("Invoice already paid");return}let raw=prompt("Payment received (£)",balance.toFixed(2));if(raw===null)return;let amt=parseFloat(raw);if(!isFinite(amt)||amt<=0){alert("Enter a valid payment amount.");return}inv.paid=Math.min(Number(inv.price||0),Number(inv.paid||0)+amt);inv.status=inv.paid>=Number(inv.price||0)?"Paid":"Part Paid";inv.lastPaymentAt=new Date().toISOString();save();openInvoice(selectedInvoiceIndex);toast("Payment recorded · £"+amt.toFixed(2));
+}
 function editSelectedInvoice(){
 if(selectedInvoiceIndex===null)return;
 let inv=data.invoices[selectedInvoiceIndex],c=normalizeCustomer(inv.customer);
@@ -950,7 +973,7 @@ pAddress.innerText=fullAddress(c);
 pContact.innerText=contactText(c);
 pJob.innerText=inv.job||"";
 pJobAddress.innerText="Job address: "+(inv.jobAddress||fullAddress(c));
-pTotal.innerText="£"+Number(inv.price||0).toFixed(2);
+let pn=Number(inv.net??inv.price??0),pv=Number(inv.vat||0);pNet.innerText="£"+pn.toFixed(2);pVat.innerText="£"+pv.toFixed(2);pVatBreak.style.display=pv>0?"block":"none";pTotal.innerText="£"+Number(inv.price||0).toFixed(2);
 pStatus.innerText=inv.status||"Unpaid";
 pPaid.innerText="£"+Number(inv.paid||0).toFixed(2);
 pBalance.innerText="£"+Math.max(0,Number(inv.price||0)-Number(inv.paid||0)).toFixed(2);
@@ -1085,7 +1108,7 @@ function saveSettings(){
 "businessName","ownerName",
 "businessAddress1","businessAddress2","businessTown","businessPostcode",
 "businessPhone","businessEmail","businessWebsite",
-"companyNumber","vatNumber",
+"companyNumber","vatNumber","vatRate",
 "accountName","sortCode","accountNumber","paymentNote","paymentLink",
 "rate","travel","markup","overheadRate","contingency","profit","paymentDays","quoteValidDays","depositPercent"
 ].forEach(id=>{
@@ -1093,6 +1116,7 @@ let el=document.getElementById(id);
 if(el)localStorage.setItem(id,el.value);
 });
 localStorage.setItem("showQROnInvoice",document.getElementById("showQROnInvoice").checked?"1":"0");
+localStorage.setItem("vatRegistered",document.getElementById("vatRegistered").checked?"1":"0");
 updateLogoPreview();
 alert("Business settings saved");
 }
@@ -1105,19 +1129,20 @@ let total=data.invoices.reduce((a,b)=>a+Number(b.price||0),0);outstanding.innerT
 
 customerList.innerHTML=data.customers.length?data.customers.map(x=>{let c=normalizeCustomer(x);return `<div class="item"><strong>${esc(c.name)}</strong><small>${esc(fullAddress(c))}<br>${esc(contactText(c))}</small></div>`}).join(""):'<div class="empty">No customers saved yet.</div>';
 
-quoteList.innerHTML=data.quotes.length?data.quotes.map((x,i)=>{let c=normalizeCustomer(x.customer);return `<div class="item clickable" onclick="openQuote(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Quote")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Draft")}</small></div>`}).join(""):'<div class="empty">No quotes saved yet.</div>';
+let qs=(document.getElementById("quoteSearch")?.value||"").toLowerCase();let qrows=data.quotes.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!qs||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(qs));quoteList.innerHTML=qrows.length?qrows.map(({x,i,c})=>`<div class="item clickable" onclick="openQuote(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Quote")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Draft")}</small></div>`).join(""):(data.quotes.length?'<div class="empty">No matching quotes.</div>':'<div class="empty">No quotes saved yet.</div>');
 
-invoiceList.innerHTML=data.invoices.length?data.invoices.map((x,i)=>{let c=normalizeCustomer(x.customer);return `<div class="item clickable" onclick="openInvoice(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Invoice")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Unpaid")}</small></div>`}).join(""):'<div class="empty">No invoices saved yet.</div>';
+let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let irows=data.invoices.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!is||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(is));invoiceList.innerHTML=irows.length?irows.map(({x,i,c})=>`<div class="item clickable" onclick="openInvoice(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Invoice")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Unpaid")}</small></div>`).join(""):(data.invoices.length?'<div class="empty">No matching invoices.</div>':'<div class="empty">No invoices saved yet.</div>');
 
 [
 "businessName","ownerName",
 "businessAddress1","businessAddress2","businessTown","businessPostcode",
 "businessPhone","businessEmail","businessWebsite",
-"companyNumber","vatNumber",
+"companyNumber","vatNumber","vatRate",
 "accountName","sortCode","accountNumber","paymentNote","paymentLink",
 "rate","travel","markup","overheadRate","contingency","profit","paymentDays","quoteValidDays","depositPercent"
 ].forEach(id=>{let v=localStorage.getItem(id);if(v!==null&&document.getElementById(id))document.getElementById(id).value=v});
 if(document.getElementById("showQROnInvoice"))showQROnInvoice.checked=localStorage.getItem("showQROnInvoice")==="1";
+if(document.getElementById("vatRegistered"))vatRegistered.checked=localStorage.getItem("vatRegistered")==="1";
 if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
 renderPriceBook();renderJobTypeOptions();
 }
@@ -1175,7 +1200,7 @@ function calcHeatPump(){
 }
 function exportBackup(){
  let payload={app:'TradePro UK Plumber Edition',version:TRADEPRO_VERSION,exportedAt:new Date().toISOString(),data,settings:{}};
- ['businessName','ownerName','businessAddress1','businessAddress2','businessTown','businessPostcode','businessPhone','businessEmail','businessWebsite','companyNumber','vatNumber','accountName','sortCode','accountNumber','paymentNote','paymentLink','rate','travel','markup','overheadRate','contingency','profit','paymentDays','showQROnInvoice','businessLogo'].forEach(k=>payload.settings[k]=localStorage.getItem(k));
+ ['businessName','ownerName','businessAddress1','businessAddress2','businessTown','businessPostcode','businessPhone','businessEmail','businessWebsite','companyNumber','vatNumber','vatRegistered','vatRate','accountName','sortCode','accountNumber','paymentNote','paymentLink','rate','travel','markup','overheadRate','contingency','profit','paymentDays','showQROnInvoice','businessLogo'].forEach(k=>payload.settings[k]=localStorage.getItem(k));
  let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='TradePro_Backup_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function importBackup(event){
