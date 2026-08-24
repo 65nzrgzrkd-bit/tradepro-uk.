@@ -81,7 +81,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .vat-line{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.vat-line strong{font-size:16px}.finance-summary{background:#f6f8fa;border-radius:14px;padding:14px;margin-top:14px}.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.finance-cell{background:#fff;border:1px solid #e1e8ed;border-radius:12px;padding:12px}.finance-cell span{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}.finance-cell strong{font-size:18px}.progress-track{height:10px;background:#dfe7ec;border-radius:999px;overflow:hidden;margin:12px 0 4px}.progress-fill{height:100%;background:var(--green);width:0%;transition:.25s}.deposit-paid-badge{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#e8f5e9;color:#226b28;font-size:12px;font-weight:800}.deposit-due-badge{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#fff4df;color:#7a5200;font-size:12px;font-weight:800}.converted-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4}
 @media(max-width:430px){.finance-grid{grid-template-columns:1fr 1fr}.vat-line{align-items:flex-start}}
 
-/* Build 2.7 customer-facing document polish */
+/* Build 2.8 document and mobile polish */
 .doc-summary{margin-top:22px;border:1px solid #dce5eb;border-radius:14px;overflow:hidden;background:#fff}
 .doc-summary-row{display:flex;justify-content:space-between;gap:18px;padding:10px 14px;border-bottom:1px solid #edf1f4}
 .doc-summary-row:last-child{border-bottom:0}.doc-summary-row strong{font-weight:800}.doc-summary-row.total{font-size:19px;background:#f8fafb}
@@ -90,10 +90,20 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .doc-badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;background:#eef4ef}.doc-badge.paid{background:#e8f5e9;color:#226b28}.doc-badge.part{background:#fff4df;color:#7a5200}.doc-badge.unpaid{background:#fdecec;color:#9b1c1c}
 .doc-note{font-size:12px;line-height:1.5;color:#596672;margin-top:18px}.doc-ref{font-weight:700;margin-top:8px}
 @media print{.doc-due,.doc-summary{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* Build 2.8 responsive document header and spacing */
+.doc-header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}
+.doc-business{min-width:0;flex:1}.doc-business-details{line-height:1.45;white-space:pre-line;color:#263544}
+.doc-meta{text-align:right;min-width:180px}.doc-meta h1{margin:0;color:#15324b}.doc-number{margin:8px 0 5px;font-size:17px}
+.doc-meta>div:not(.doc-number){display:flex;justify-content:flex-end;gap:8px;line-height:1.45}.doc-meta>div:not(.doc-number)>span{color:#6f7a84}.doc-meta>div:not(.doc-number)>strong{font-weight:700}
+.doc-summary-row span{padding-right:14px}.doc-summary-row strong{margin-left:auto;white-space:nowrap;text-align:right}.doc-summary-row.total strong{font-size:20px}
+#pDepositRow span,#qDepositBlock strong{white-space:normal}.doc-ref{line-height:1.35}
+@media(max-width:520px){.doc-header{gap:14px;margin-bottom:18px}.doc-meta{min-width:145px}.doc-meta h1{font-size:28px!important}.doc-number{font-size:16px}.doc-meta>div:not(.doc-number){font-size:14px;gap:6px}.doc-business-details{font-size:14px}.doc-summary-row{padding:11px 12px}.doc-summary-row.total{font-size:18px}.doc-due{padding:14px}.doc-due strong{font-size:22px}}
+@media(max-width:390px){.doc-header{display:grid;grid-template-columns:1fr auto}.doc-business img{max-width:120px!important}.doc-business h2{font-size:20px!important}.doc-meta{min-width:130px}.doc-meta h1{font-size:25px!important}}
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 2.7 · V15.2</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 2.8 · V15.3</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -196,9 +206,9 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <section id="quotePrint" class="screen">
 <div class="screenhead no-print"><button class="back" onclick="show('quoteDetail')">‹</button><h2>Quote Preview</h2></div>
 <div class="detail" id="quotePaper">
-<div style="display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px">
-<div><img id="qLogo" alt="" style="display:none;max-width:180px;max-height:90px;object-fit:contain;margin-bottom:10px"><h2 id="qBusinessName" style="margin:0 0 6px"></h2><div id="qBusinessDetails" style="line-height:1.5"></div></div>
-<div style="text-align:right"><h1 style="margin:0;color:#15324b">QUOTATION</h1><div style="margin-top:8px"><strong id="qNumber"></strong></div><div>Date: <span id="qDate"></span></div><div>Valid until: <span id="qValid"></span></div></div>
+<div class="doc-header">
+<div class="doc-business"><img id="qLogo" alt="" style="display:none;max-width:180px;max-height:90px;object-fit:contain;margin-bottom:10px"><h2 id="qBusinessName" style="margin:0 0 6px"></h2><div id="qBusinessDetails" class="doc-business-details"></div></div>
+<div class="doc-meta"><h1>QUOTATION</h1><div class="doc-number"><strong id="qNumber"></strong></div><div><span>Date</span><strong id="qDate"></strong></div><div><span>Valid until</span><strong id="qValid"></strong></div></div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0">
 <div><h3 style="margin-top:0">Quote for</h3><div id="qCustomer"></div><div id="qAddress"></div><div id="qContact"></div></div>
@@ -309,17 +319,17 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <section id="invoicePrint" class="screen">
 <div class="screenhead no-print"><button class="back" onclick="show('invoiceDetail')">‹</button><h2>Invoice Preview</h2></div>
 <div class="detail" id="invoicePaper">
-<div style="display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px">
-<div>
+<div class="doc-header">
+<div class="doc-business">
 <img id="pLogo" alt="" style="display:none;max-width:180px;max-height:90px;object-fit:contain;margin-bottom:10px">
 <h2 id="pBusinessName" style="margin:0 0 6px"></h2>
-<div id="pBusinessDetails" style="line-height:1.5"></div>
+<div id="pBusinessDetails" class="doc-business-details"></div>
 </div>
-<div style="text-align:right">
-<h1 style="margin:0;color:#15324b">INVOICE</h1>
-<div style="margin-top:8px"><strong id="pNumber"></strong></div>
-<div>Date: <span id="pDate"></span></div>
-<div>Due: <span id="pDue"></span></div>
+<div class="doc-meta">
+<h1>INVOICE</h1>
+<div class="doc-number"><strong id="pNumber"></strong></div>
+<div><span>Date</span><strong id="pDate"></strong></div>
+<div><span>Due</span><strong id="pDue"></strong></div>
 </div>
 </div>
 
@@ -572,7 +582,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="15.2";
+const TRADEPRO_VERSION="15.3";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -819,7 +829,7 @@ let subject=encodeURIComponent(`Quotation ${q.number||""} - ${c.name}`),body=enc
 }
 function populateQuotePaper(){
 if(selectedQuoteIndex===null)return false;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),depInfo=quoteDepositInfo(q);
-qBusinessName.innerText=setting("businessName","TradePro UK");qBusinessDetails.innerText=businessDetailsText();let logo=localStorage.getItem("businessLogo");if(logo){qLogo.src=logo;qLogo.style.display="block"}else{qLogo.removeAttribute("src");qLogo.style.display="none"}
+qBusinessName.innerText=setting("businessName","TradePro UK");qBusinessDetails.innerText=businessDetailsText();qBusinessDetails.style.whiteSpace="pre-line";let logo=localStorage.getItem("businessLogo");if(logo){qLogo.src=logo;qLogo.style.display="block"}else{qLogo.removeAttribute("src");qLogo.style.display="none"}
 qNumber.innerText=q.number||"";qDate.innerText=q.date||"";qValid.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));qCustomer.innerText=c.name;qAddress.innerText=addressLines(c);qAddress.style.whiteSpace="pre-line";qContact.innerText=contactText(c);qJob.innerText=q.job||"";qJobAddress.innerText="Job address: "+(q.jobAddress||fullAddress(c));let qn=Number(q.net??q.price??0),qv=Number(q.vat||0);qNet.innerText="£"+qn.toFixed(2);qVat.innerText="£"+qv.toFixed(2);qVatBreak.style.display=qv>0?"block":"none";qTotal.innerText="£"+Number(q.price||0).toFixed(2);qDeposit.innerText=depInfo.label;qDepositBlock.style.display=depInfo.amount>0?"block":"none";let footer=[setting("companyNumber","")?"Company No: "+setting("companyNumber",""):"",setting("vatNumber","")?"VAT No: "+setting("vatNumber",""):""].filter(Boolean);qCompanyFooter.innerText=footer.join(" · ");return true;
 }
 function previewQuote(){if(!populateQuotePaper())return;show("quotePrint")}
@@ -992,7 +1002,7 @@ if(selectedInvoiceIndex===null)return false;
 let inv=data.invoices[selectedInvoiceIndex],c=normalizeCustomer(inv.customer);
 
 pBusinessName.innerText=setting("businessName","TradePro UK");
-pBusinessDetails.innerText=businessDetailsText();
+pBusinessDetails.innerText=businessDetailsText();pBusinessDetails.style.whiteSpace="pre-line";
 
 let logo=localStorage.getItem("businessLogo");
 if(logo){
@@ -1127,14 +1137,18 @@ logoPreviewWrap.style.display="none";
 function businessAddressText(){
 return [setting("businessAddress1",""),setting("businessAddress2",""),setting("businessTown",""),setting("businessPostcode","")].map(x=>String(x||"").trim()).filter(Boolean).join(", ");
 }
+function businessAddressLines(){
+let town=setting("businessTown","").trim(),postcode=setting("businessPostcode","").trim();
+return [setting("businessAddress1","").trim(),setting("businessAddress2","").trim(),[town,postcode].filter(Boolean).join(" ")].filter(Boolean).join("\n");
+}
 
 function businessDetailsText(){
 return [
-setting("ownerName",""),
-businessAddressText(),
-setting("businessPhone",""),
-setting("businessEmail",""),
-setting("businessWebsite","")
+setting("ownerName","").trim(),
+businessAddressLines(),
+setting("businessPhone","").trim(),
+setting("businessEmail","").trim(),
+setting("businessWebsite","").trim()
 ].filter(Boolean).join("\n");
 }
 function saveSettings(){
