@@ -81,7 +81,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .vat-line{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.vat-line strong{font-size:16px}.finance-summary{background:#f6f8fa;border-radius:14px;padding:14px;margin-top:14px}.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.finance-cell{background:#fff;border:1px solid #e1e8ed;border-radius:12px;padding:12px}.finance-cell span{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}.finance-cell strong{font-size:18px}.progress-track{height:10px;background:#dfe7ec;border-radius:999px;overflow:hidden;margin:12px 0 4px}.progress-fill{height:100%;background:var(--green);width:0%;transition:.25s}.deposit-paid-badge{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#e8f5e9;color:#226b28;font-size:12px;font-weight:800}.deposit-due-badge{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#fff4df;color:#7a5200;font-size:12px;font-weight:800}.converted-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4}
 @media(max-width:430px){.finance-grid{grid-template-columns:1fr 1fr}.vat-line{align-items:flex-start}}
 
-/* Build 2.8 document and mobile polish */
+/* Build 2.9 customer history, dashboard and diary */
 .doc-summary{margin-top:22px;border:1px solid #dce5eb;border-radius:14px;overflow:hidden;background:#fff}
 .doc-summary-row{display:flex;justify-content:space-between;gap:18px;padding:10px 14px;border-bottom:1px solid #edf1f4}
 .doc-summary-row:last-child{border-bottom:0}.doc-summary-row strong{font-weight:800}.doc-summary-row.total{font-size:19px;background:#f8fafb}
@@ -100,10 +100,20 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 #pDepositRow span,#qDepositBlock strong{white-space:normal}.doc-ref{line-height:1.35}
 @media(max-width:520px){.doc-header{gap:14px;margin-bottom:18px}.doc-meta{min-width:145px}.doc-meta h1{font-size:28px!important}.doc-number{font-size:16px}.doc-meta>div:not(.doc-number){font-size:14px;gap:6px}.doc-business-details{font-size:14px}.doc-summary-row{padding:11px 12px}.doc-summary-row.total{font-size:18px}.doc-due{padding:14px}.doc-due strong{font-size:22px}}
 @media(max-width:390px){.doc-header{display:grid;grid-template-columns:1fr auto}.doc-business img{max-width:120px!important}.doc-business h2{font-size:20px!important}.doc-meta{min-width:130px}.doc-meta h1{font-size:25px!important}}
+
+/* Build 2.9 CRM, dashboard insights and diary */
+.insight-danger{color:#9b1c1c}.insight-good{color:#226b28}.mini{font-size:12px;color:var(--muted)}
+.customer-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.customer-actions button{padding:13px;border-radius:12px;font-weight:700}
+.history-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 10px}.history-title h3{margin:0}
+.history-badge{padding:4px 8px;border-radius:999px;background:#eaf2f7;font-size:12px;font-weight:700;color:var(--navy)}
+.diary-day{margin:18px 0 8px;font-weight:800;color:var(--navy)}.appointment{position:relative}.appointment .appt-time{font-weight:800;color:var(--navy);margin-right:8px}.appointment .appt-status{float:right}
+.status-booked{background:#eaf2f7;color:#15324b}.status-completed{background:#e8f5e9;color:#226b28}.status-cancelled{background:#fdecec;color:#9b1c1c}
+.dashboard-note{background:#fff;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.45}
+@media(max-width:430px){.customer-actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 2.8 · V15.3</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 2.9 · V15.4</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -113,6 +123,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="card"><small>Invoices</small><strong id="invoiceCount">0</strong></div>
 <div class="card"><small>Outstanding</small><strong id="outstanding">£0</strong></div>
 <div class="card"><small>Customers</small><strong id="customerCount">0</strong></div>
+<div class="card"><small>Overdue invoices</small><strong id="overdueCount">0</strong><div class="mini" id="overdueValue">£0 overdue</div></div>
+<div class="card"><small>Upcoming jobs</small><strong id="upcomingCount">0</strong><div class="mini" id="nextJobText">Nothing booked</div></div>
 </div>
 <button class="primary" onclick="newJob()">＋ New Job</button>
 <h3>Quick actions</h3>
@@ -122,6 +134,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <button class="action" onclick="show('invoices')">💷<span>Invoices</span></button>
 <button class="action" onclick="show('pricebook')">🔧<span>Price Book</span></button>
 <button class="action" onclick="show('heatingTools')">🔥<span>Heating Tools</span></button>
+<button class="action" onclick="openDiary()">📅<span>Diary</span></button>
 <button class="action" onclick="show('settings')">🛡️<span>Backup & Settings</span></button>
 </div>
 </section>
@@ -169,7 +182,45 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <section id="customers" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Customers</h2></div>
+<div class="searchbox"><input id="customerSearch" placeholder="Search customers" oninput="render()"></div>
 <div id="customerList"></div>
+</section>
+
+<section id="customerDetail" class="screen">
+<div class="screenhead"><button class="back" onclick="show('customers')">‹</button><h2>Customer</h2></div>
+<div class="detail">
+<div class="detailrow"><span>Name</span><strong id="cdName"></strong></div>
+<div class="detailrow"><span>Address</span><strong id="cdAddress"></strong></div>
+<div class="detailrow"><span>Phone / Email</span><strong id="cdContact"></strong></div>
+<div class="customer-actions">
+<button class="green" onclick="newJobForSelectedCustomer()">＋ New Job</button>
+<button class="secondary" onclick="bookSelectedCustomer()">📅 Book Job</button>
+<button class="secondary" onclick="contactSelectedCustomer('phone')">Call Customer</button>
+<button class="secondary" onclick="contactSelectedCustomer('email')">Email Customer</button>
+</div>
+<div class="history-title"><h3>History</h3><span class="history-badge" id="cdHistoryCount">0 records</span></div>
+<div id="customerHistory"></div>
+</div>
+</section>
+
+<section id="diary" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Job Diary</h2></div>
+<button class="primary" onclick="newAppointment()">＋ Book Job</button>
+<div class="dashboard-note">Keep upcoming visits in one place. Bookings are stored on this device and included in TradePro backups.</div>
+<div id="diaryList"></div>
+</section>
+
+<section id="appointmentEdit" class="screen">
+<div class="screenhead"><button class="back" onclick="openDiary()">‹</button><h2 id="appointmentTitle">Book Job</h2></div>
+<div class="detail">
+<label>Date<input id="apptDate" type="date"></label>
+<div class="two"><label>Time<input id="apptTime" type="time"></label><label>Status<select id="apptStatus"><option>Booked</option><option>Completed</option><option>Cancelled</option></select></label></div>
+<label>Customer<input id="apptCustomer" placeholder="Customer name"></label>
+<label>Job / visit<textarea id="apptJob" rows="3" placeholder="e.g. Fit kitchen tap"></textarea></label>
+<label>Address<textarea id="apptAddress" rows="2" placeholder="Job address"></textarea></label>
+<label>Notes<textarea id="apptNotes" rows="3" placeholder="Access details, parts to bring, etc."></textarea></label>
+<div class="detail-actions"><button class="green" onclick="saveAppointment()">Save Booking</button><button id="apptDeleteBtn" class="danger" onclick="deleteAppointment()">Delete Booking</button></div>
+</div>
 </section>
 
 <section id="quotes" class="screen">
@@ -582,11 +633,12 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="15.3";
+const TRADEPRO_VERSION="15.4";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
 if(!Array.isArray(data.invoices)) data.invoices=[];
+if(!Array.isArray(data.appointments)) data.appointments=[];
 const DEFAULT_PRICE_BOOK=[
 {category:"Taps",name:"Repair dripping tap / replace washer",pricingType:"Labour only",hours:0.75,materials:5,min:55,max:90,notes:"Indicative UK starting range \u2013 personalise to your business."},
 {category:"Taps",name:"Replace tap cartridge / valve",pricingType:"Supply & fit",hours:1,materials:15,min:65,max:110,notes:"Indicative UK starting range \u2013 personalise to your business."},
@@ -651,7 +703,7 @@ const DEFAULT_PRICE_BOOK=[
 {category:"Gas Work",name:"Gas pipework alteration / upgrade - estimate only",pricingType:"Supply & fit",hours:6,materials:120,min:450,max:950,notes:"Gas Safe registered work. Verify gas rate, pressure loss, pipe sizing and applicable standards before installation."},
 ];
 if(!Array.isArray(data.priceBook)||!data.priceBook.length||data.priceBook.length<=8) data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));
-let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null;
+let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null,selectedCustomerIndex=null,selectedAppointmentIndex=null;
 
 // V10 migration marker: preserve user records/settings; add new default jobs once.
 if(localStorage.getItem('tradepro_migrated_v10')!=='1'){
@@ -669,6 +721,7 @@ function syncDataFromStorage(){
    if(!Array.isArray(fresh.customers))fresh.customers=[];
    if(!Array.isArray(fresh.quotes))fresh.quotes=[];
    if(!Array.isArray(fresh.invoices))fresh.invoices=[];
+   if(!Array.isArray(fresh.appointments))fresh.appointments=[];
    if(!Array.isArray(fresh.priceBook)||!fresh.priceBook.length)fresh.priceBook=(data.priceBook&&data.priceBook.length?data.priceBook:DEFAULT_PRICE_BOOK.map(x=>({...x})));
    data=fresh;
   }
@@ -1170,13 +1223,33 @@ alert("Business settings saved");
 }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
 
+function customerKey(c){c=normalizeCustomer(c);return String(c.name||'').trim().toLowerCase();}
+function openCustomer(i){selectedCustomerIndex=i;let c=normalizeCustomer(data.customers[i]);if(!c)return;cdName.textContent=c.name||'Unnamed customer';cdAddress.textContent=fullAddress(c);cdContact.textContent=contactText(c);renderCustomerHistory(c);show('customerDetail');}
+function renderCustomerHistory(c){let key=customerKey(c),rows=[];data.quotes.forEach((q,i)=>{if(customerKey(q.customer)===key)rows.push({type:'Quote',date:q.date||'',number:q.number||'Quote',job:q.job||'',price:Number(q.price||0),status:q.status||'Draft',open:`openQuote(${i})`})});data.invoices.forEach((inv,i)=>{if(customerKey(inv.customer)===key)rows.push({type:'Invoice',date:inv.date||'',number:inv.number||'Invoice',job:inv.job||'',price:Number(inv.price||0),status:inv.status||'Unpaid',open:`openInvoice(${i})`})});rows.sort((a,b)=>ukDateValue(b.date)-ukDateValue(a.date));cdHistoryCount.textContent=rows.length+' record'+(rows.length===1?'':'s');customerHistory.innerHTML=rows.length?rows.map(r=>`<div class="item clickable" onclick="${r.open}"><span class="price">£${r.price.toFixed(2)}</span><strong>${esc(r.type)} · ${esc(r.number)}</strong><small>${esc(r.date)} · ${esc(r.status)}<br>${esc(r.job)}</small></div>`).join(''):'<div class="empty">No quotes or invoices for this customer yet.</div>';}
+function newJobForSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newJob();customer.value=c.name||'';phone.value=c.phone||'';email.value=c.email||'';address1.value=c.address1||'';address2.value=c.address2||'';town.value=c.town||'';postcode.value=c.postcode||'';}
+function bookSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newAppointment(c);}
+function contactSelectedCustomer(kind){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);if(kind==='phone'){if(c.phone)location.href='tel:'+c.phone.replace(/\s+/g,'');else toast('No phone number saved');}else{if(c.email)location.href='mailto:'+c.email;else toast('No email saved');}}
+function ukDateValue(t){let m=String(t||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(+m[3],+m[2]-1,+m[1]).getTime():0;}
+function isoToday(){let d=new Date(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${d.getFullYear()}-${m}-${day}`;}
+function isoToUK(v){if(!v)return'';let p=v.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:v;}
+function appointmentTimeValue(a){if(!a?.date)return Infinity;let t=new Date(a.date+'T'+(a.time||'00:00'));return isNaN(t)?Infinity:t.getTime();}
+function openDiary(){show('diary');renderDiary();}
+function renderDiary(){let box=document.getElementById('diaryList');if(!box)return;let rows=(data.appointments||[]).map((a,i)=>({a,i})).sort((x,y)=>appointmentTimeValue(x.a)-appointmentTimeValue(y.a));if(!rows.length){box.innerHTML='<div class="empty" style="margin-top:14px">No jobs booked yet.</div>';return}let last='';box.innerHTML=rows.map(({a,i})=>{let day=isoToUK(a.date),head=day!==last?`<div class="diary-day">${esc(day)}</div>`:'';last=day;let cls=a.status==='Completed'?'status-completed':a.status==='Cancelled'?'status-cancelled':'status-booked';return head+`<div class="item clickable appointment" onclick="editAppointment(${i})"><span class="status appt-status ${cls}">${esc(a.status||'Booked')}</span><strong><span class="appt-time">${esc(a.time||'Time TBC')}</span>${esc(a.customer||'Customer')}</strong><small>${esc(a.job||'Job visit')}${a.address?'<br>'+esc(a.address):''}</small></div>`}).join('');}
+function newAppointment(c=null){selectedAppointmentIndex=-1;appointmentTitle.textContent='Book Job';apptDate.value=isoToday();apptTime.value='09:00';apptStatus.value='Booked';apptCustomer.value=c?.name||'';apptJob.value='';apptAddress.value=c?fullAddress(c):'';apptNotes.value='';apptDeleteBtn.style.display='none';show('appointmentEdit');}
+function editAppointment(i){selectedAppointmentIndex=i;let a=data.appointments[i];if(!a)return;appointmentTitle.textContent='Edit Booking';apptDate.value=a.date||isoToday();apptTime.value=a.time||'';apptStatus.value=a.status||'Booked';apptCustomer.value=a.customer||'';apptJob.value=a.job||'';apptAddress.value=a.address||'';apptNotes.value=a.notes||'';apptDeleteBtn.style.display='block';show('appointmentEdit');}
+function saveAppointment(){let a={date:apptDate.value||isoToday(),time:apptTime.value||'',status:apptStatus.value||'Booked',customer:apptCustomer.value.trim()||'Customer',job:apptJob.value.trim()||'Job visit',address:apptAddress.value.trim(),notes:apptNotes.value.trim(),updatedAt:new Date().toISOString()};if(selectedAppointmentIndex===-1){a.createdAt=a.updatedAt;data.appointments.push(a);}else if(data.appointments[selectedAppointmentIndex])data.appointments[selectedAppointmentIndex]={...data.appointments[selectedAppointmentIndex],...a};save();toast('Booking saved');openDiary();}
+function deleteAppointment(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;if(confirm('Delete this booking?')){data.appointments.splice(selectedAppointmentIndex,1);selectedAppointmentIndex=null;save();openDiary();}}
+function upcomingAppointments(){let now=Date.now()-3600000;return (data.appointments||[]).filter(a=>(a.status||'Booked')==='Booked'&&appointmentTimeValue(a)>=now).sort((a,b)=>appointmentTimeValue(a)-appointmentTimeValue(b));}
+
 function render(){
 data.invoices.forEach(updateInvoiceStatus);
 quoteCount.innerText=data.quotes.length;invoiceCount.innerText=data.invoices.length;customerCount.innerText=data.customers.length;
 let owed=data.invoices.filter(x=>(x.status||"Unpaid")!=="Paid").reduce((a,b)=>a+Math.max(0,Number(b.price||0)-Number(b.paid||0)),0);
 let totalPaid=data.invoices.reduce((a,b)=>a+Number(b.paid||0),0);outstanding.innerText="£"+owed.toFixed(0);sales.innerText="£"+totalPaid.toFixed(2);
+let overdue=data.invoices.filter(x=>(x.status||'')==='Overdue'),overdueAmt=overdue.reduce((a,b)=>a+Math.max(0,Number(b.price||0)-Number(b.paid||0)),0);overdueCount.innerText=overdue.length;overdueValue.innerText='£'+overdueAmt.toFixed(0)+' overdue';
+let upcoming=upcomingAppointments();upcomingCount.innerText=upcoming.length;nextJobText.innerText=upcoming[0]?(isoToUK(upcoming[0].date)+(upcoming[0].time?' · '+upcoming[0].time:'')):'Nothing booked';
 
-customerList.innerHTML=data.customers.length?data.customers.map(x=>{let c=normalizeCustomer(x);return `<div class="item"><strong>${esc(c.name)}</strong><small>${esc(fullAddress(c))}<br>${esc(contactText(c))}</small></div>`}).join(""):'<div class="empty">No customers saved yet.</div>';
+let cs=(document.getElementById('customerSearch')?.value||'').toLowerCase();let crows=data.customers.map((x,i)=>({c:normalizeCustomer(x),i})).filter(r=>!cs||[r.c.name,fullAddress(r.c),contactText(r.c)].join(' ').toLowerCase().includes(cs));customerList.innerHTML=crows.length?crows.map(({c,i})=>`<div class="item clickable" onclick="openCustomer(${i})"><strong>${esc(c.name)}</strong><small>${esc(fullAddress(c))}<br>${esc(contactText(c))}</small></div>`).join(''):(data.customers.length?'<div class="empty">No matching customers.</div>':'<div class="empty">No customers saved yet.</div>');
 
 let qs=(document.getElementById("quoteSearch")?.value||"").toLowerCase();let qrows=data.quotes.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!qs||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(qs));quoteList.innerHTML=qrows.length?qrows.map(({x,i,c})=>`<div class="item clickable" onclick="openQuote(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Quote")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Draft")}</small></div>`).join(""):(data.quotes.length?'<div class="empty">No matching quotes.</div>':'<div class="empty">No quotes saved yet.</div>');
 
@@ -1193,7 +1266,7 @@ let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let i
 if(document.getElementById("showQROnInvoice"))showQROnInvoice.checked=localStorage.getItem("showQROnInvoice")==="1";
 if(document.getElementById("vatRegistered"))vatRegistered.checked=localStorage.getItem("vatRegistered")==="1";
 if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
-renderPriceBook();renderJobTypeOptions();
+renderPriceBook();renderJobTypeOptions();renderDiary();
 }
 render();
 window.addEventListener("storage",e=>{if(e.key==="tradepro"){syncDataFromStorage();render();toast("TradePro data refreshed")}});
@@ -1253,7 +1326,7 @@ function exportBackup(){
  let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='TradePro_Backup_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function importBackup(event){
- let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let p=JSON.parse(reader.result);if(!p||!p.data)throw new Error('Invalid backup');if(!confirm('Import this TradePro backup? Current data on this device will be replaced.'))return;data=p.data;if(!Array.isArray(data.customers))data.customers=[];if(!Array.isArray(data.quotes))data.quotes=[];if(!Array.isArray(data.invoices))data.invoices=[];if(!Array.isArray(data.priceBook)||!data.priceBook.length)data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));Object.entries(p.settings||{}).forEach(([k,v])=>{if(v===null||v===undefined)localStorage.removeItem(k);else localStorage.setItem(k,String(v))});save();alert('Backup imported successfully');show('home')}catch(e){alert('Could not import that backup file.')}};reader.readAsText(file);event.target.value='';
+ let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let p=JSON.parse(reader.result);if(!p||!p.data)throw new Error('Invalid backup');if(!confirm('Import this TradePro backup? Current data on this device will be replaced.'))return;data=p.data;if(!Array.isArray(data.customers))data.customers=[];if(!Array.isArray(data.quotes))data.quotes=[];if(!Array.isArray(data.invoices))data.invoices=[];if(!Array.isArray(data.appointments))data.appointments=[];if(!Array.isArray(data.priceBook)||!data.priceBook.length)data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));Object.entries(p.settings||{}).forEach(([k,v])=>{if(v===null||v===undefined)localStorage.removeItem(k);else localStorage.setItem(k,String(v))});save();alert('Backup imported successfully');show('home')}catch(e){alert('Could not import that backup file.')}};reader.readAsText(file);event.target.value='';
 }
 
 function calcRadiator(){
