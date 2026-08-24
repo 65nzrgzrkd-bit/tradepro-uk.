@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 4.1</title>
+<title>TradePro UK · Plumber Edition · Build 4.2</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -111,7 +111,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .dashboard-note{background:#fff;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.45}
 @media(max-width:430px){.customer-actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
 /* Build 3.4 field actions and connected job status */
-/* Build 4.1 commercial readiness, setup health, backup status and onboarding polish */
+/* Build 4.2 release candidate: navigation polish, safer records and data-integrity checks */
 .booking-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.booking-quick button{padding:13px;border-radius:12px;font-weight:700}.status-progress{background:#fff4df;color:#7a5200}.status-invoiced{background:#eef4ff;color:#2457a7}.status-paid{background:#e8f5e9;color:#226b28}.appt-meta{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.45}.appointment .appt-value{display:inline-block;margin-top:5px;font-weight:800;color:var(--green)}.diary-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.diary-filter{padding:11px 8px;border-radius:12px;background:#e6edf2;color:var(--navy);font-weight:800;font-size:13px}.diary-filter.active{background:var(--navy);color:#fff}.diary-summary{background:#fff;border-radius:15px;padding:14px 16px;margin:10px 0 4px;box-shadow:0 4px 14px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.4}.diary-summary strong{color:var(--text);font-size:16px}.appt-meta:empty{display:none}
 @media(max-width:430px){.booking-quick{grid-template-columns:1fr 1fr}}
 .appt-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
@@ -162,6 +162,14 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .backup-status{background:#f7f9fa;border:1px solid #e2e8ec;border-radius:14px;padding:13px;margin:10px 0}
 .backup-status strong{display:block;margin-bottom:4px}.backup-status span{font-size:12px;color:var(--muted);line-height:1.45}
 .install-tip{background:#eef5f8;border-radius:14px;padding:13px;margin:12px 0;font-size:12px;line-height:1.5;color:#425466}
+nav button{border-radius:11px;transition:.15s}nav button.active{background:#edf4f7;color:var(--green);font-weight:800}
+.list-status{display:inline-block;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;margin-left:5px;vertical-align:1px}
+.empty-action{margin-top:12px;padding:10px 14px;border-radius:11px;background:var(--green);color:#fff;font-weight:800}
+.release-badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#e8f5e9;color:#226b28;font-size:11px;font-weight:800;margin-top:7px}
+.integrity-card{background:#fff;border-radius:16px;padding:15px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05)}
+.integrity-card strong{font-size:16px}.integrity-card small{display:block;color:var(--muted);margin-top:5px;line-height:1.4}
+.integrity-ok{color:#2d762e}.integrity-warn{color:#996515}
+
 
 
 @media(max-width:430px){.report-grid{grid-template-columns:1fr 1fr}}
@@ -170,7 +178,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 4.1 · V16.9</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 4.2 · V17.0 RC</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -710,6 +718,10 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <small id="settingsReadyText">Complete the essentials below so quotes and invoices are ready for customers.</small>
 </div>
 <div id="readinessList" class="readiness-list"></div>
+<div id="integrityCard" class="integrity-card">
+<strong id="integrityTitle">Checking record integrity…</strong>
+<small id="integrityText">Checking links between quotes, jobs, invoices and payments.</small>
+</div>
 
 <h3>Branding</h3>
 <label>Business name<input id="businessName" value="TradePro UK"></label>
@@ -773,7 +785,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 4.1 · V16.9</div>
+<div class="release-badge">Release Candidate · V17.0</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 4.2 · V17.0 RC</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -783,15 +796,15 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div id="appToast" class="toast" role="status" aria-live="polite"></div>
 
 <nav>
-<button onclick="show('home')">⌂<span>Home</span></button>
-<button onclick="newJob()">＋<span>New Job</span></button>
-<button onclick="show('quotes')">🧾<span>Quotes</span></button>
-<button onclick="show('invoices')">💷<span>Invoices</span></button>
-<button onclick="show('settings')">⚙️<span>Settings</span></button>
+<button data-nav="home" onclick="show('home')">⌂<span>Home</span></button>
+<button data-nav="job" onclick="newJob()">＋<span>New Job</span></button>
+<button data-nav="quotes" onclick="show('quotes')">🧾<span>Quotes</span></button>
+<button data-nav="invoices" onclick="show('invoices')">💷<span>Invoices</span></button>
+<button data-nav="settings" onclick="show('settings')">⚙️<span>Settings</span></button>
 </nav>
 
 <script>
-const TRADEPRO_VERSION="16.9";
+const TRADEPRO_VERSION="17.0";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -888,10 +901,20 @@ function syncDataFromStorage(){
 function toast(msg){
  const el=document.getElementById("appToast");if(!el)return;el.textContent=msg;el.classList.add("show");clearTimeout(window.__tradeproToastTimer);window.__tradeproToastTimer=setTimeout(()=>el.classList.remove("show"),2200);
 }
+function updateNavState(id){
+ let main=id;
+ if(['customerDetail','customers'].includes(id))main='home';
+ if(['quoteDetail','quotePreview'].includes(id))main='quotes';
+ if(['invoiceDetail','invoicePreview','paymentQR'].includes(id))main='invoices';
+ if(['diary','appointmentEdit','reports','pricebook','priceBookEdit','heatingTools'].includes(id))main='home';
+ document.querySelectorAll('nav button[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===main));
+}
 function show(id){
 syncDataFromStorage();
 document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+let target=document.getElementById(id);if(!target){toast('Screen unavailable');return}
+target.classList.add("active");
+updateNavState(id);
 render();
 window.scrollTo(0,0)
 }
@@ -1017,7 +1040,15 @@ let depInfo=quoteDepositInfo(q);let inv={customer:c,job:q.job,jobAddress:q.jobAd
 data.invoices.unshift(inv);q.status="Converted";q.convertedInvoiceNumber=inv.number;q.convertedAt=new Date().toISOString();let linked=(data.appointments||[]).find(a=>a.quoteKey===quoteKey(q));if(linked){linked.invoiceNumber=inv.number;linked.status='Invoiced';linked.statusChangedAt=new Date().toISOString();if(linked.address)inv.jobAddress=linked.address;}save();openInvoice(0);toast(inv.number+" created from "+(q.number||"quote"))
 }
 function quoteKey(q){let c=normalizeCustomer(q.customer);return [c.name,q.job,q.price,q.date].join("|")}
-function deleteSelectedQuote(){if(selectedQuoteIndex===null)return;if(confirm("Delete this quote?")){data.quotes.splice(selectedQuoteIndex,1);selectedQuoteIndex=null;save();show("quotes")}}
+function deleteSelectedQuote(){
+ if(selectedQuoteIndex===null)return;
+ let q=data.quotes[selectedQuoteIndex],num=q?.number||'this quote';
+ let linkedInv=(data.invoices||[]).find(i=>String(i.sourceQuoteNumber||'')===String(q?.number||''));
+ let linkedJob=(data.appointments||[]).find(a=>String(a.sourceQuoteNumber||'')===String(q?.number||''));
+ if(linkedInv){alert(num+' is linked to invoice '+(linkedInv.number||'')+'. Keep the quote for the customer audit trail.');return}
+ if(linkedJob&&!confirm(num+' is linked to a booked job. Delete the quote anyway? The booking will remain.'))return;
+ if(confirm('Delete '+num+' permanently? This cannot be undone.')){data.quotes.splice(selectedQuoteIndex,1);selectedQuoteIndex=null;save();toast('Quote deleted');show('quotes')}
+}
 
 function quoteText(q){
 let c=normalizeCustomer(q.customer),depInfo=quoteDepositInfo(q);
@@ -1163,8 +1194,10 @@ openInvoice(selectedInvoiceIndex);
 return false;
 }
 function deleteSelectedInvoice(){
-if(selectedInvoiceIndex===null)return;
-if(confirm("Delete this invoice?")){data.invoices.splice(selectedInvoiceIndex,1);selectedInvoiceIndex=null;save();show("invoices")}
+ if(selectedInvoiceIndex===null)return;
+ let inv=data.invoices[selectedInvoiceIndex],num=inv?.number||'this invoice',hasPayments=Number(inv?.paid||0)>0||(Array.isArray(inv?.payments)&&inv.payments.length>0);
+ if(hasPayments){alert(num+' has payment history and is protected from deletion. Keep it as part of the financial record.');return}
+ if(confirm('Delete '+num+' permanently? This cannot be undone.')){data.invoices.splice(selectedInvoiceIndex,1);selectedInvoiceIndex=null;save();toast('Invoice deleted');show('invoices')}
 }
 
 function invoiceText(inv){
@@ -1370,6 +1403,25 @@ setting("businessEmail","").trim(),
 setting("businessWebsite","").trim()
 ].filter(Boolean).join("\n");
 }
+function recordIntegrity(){
+ let issues=[];
+ (data.invoices||[]).forEach(inv=>{
+   if(Number(inv.paid||0)>Number(inv.price||0)+0.01)issues.push((inv.number||'Invoice')+' has payments above invoice total');
+   if(inv.sourceQuoteNumber&&!((data.quotes||[]).some(q=>String(q.number||'')===String(inv.sourceQuoteNumber))))issues.push((inv.number||'Invoice')+' links to a missing quote');
+ });
+ (data.appointments||[]).forEach(a=>{
+   if(a.invoiceNumber&&!((data.invoices||[]).some(i=>String(i.number||'')===String(a.invoiceNumber))))issues.push('A booking links to a missing invoice');
+   if(a.sourceQuoteNumber&&!((data.quotes||[]).some(q=>String(q.number||'')===String(a.sourceQuoteNumber))))issues.push('A booking links to a missing quote');
+ });
+ return {ok:issues.length===0,issues};
+}
+function renderIntegrity(){
+ let r=recordIntegrity(),title=document.getElementById('integrityTitle'),body=document.getElementById('integrityText'),card=document.getElementById('integrityCard');
+ if(!title||!body||!card)return;
+ title.className=r.ok?'integrity-ok':'integrity-warn';
+ title.textContent=r.ok?'✓ Record integrity looks good':'⚠ Check linked records';
+ body.textContent=r.ok?'Quotes, bookings, invoices and payment totals have no obvious broken links.':r.issues.slice(0,3).join(' · ')+(r.issues.length>3?' · +'+(r.issues.length-3)+' more':'');
+}
 function setupReadiness(){
  let checks=[
   {name:'Business name',ok:!!String(setting('businessName','')).trim(),note:'Shown on quotes and invoices'},
@@ -1408,6 +1460,7 @@ function renderReadiness(){
    if(restore)msg+=' Last restore: '+formatSavedTime(restore)+'.';
    bst.textContent=msg;
  }
+ renderIntegrity();
 }
 function saveSettings(){
 [
@@ -1569,7 +1622,13 @@ function editAppointment(i){
 function appointmentFormData(){return {date:apptDate.value||isoToday(),time:apptTime.value||'',status:apptStatus.value||'Booked',customer:apptCustomer.value.trim()||'Customer',job:apptJob.value.trim()||'Job visit',address:apptAddress.value.trim(),notes:apptNotes.value.trim(),quotedValue:Math.max(0,Number(apptValue.value||0)),updatedAt:new Date().toISOString()};}
 function saveAppointment(){let a=appointmentFormData();if(selectedAppointmentIndex===-1){a.createdAt=a.updatedAt;if(appointmentSourceMeta)a={...a,...appointmentSourceMeta,quotedValue:Number(apptValue.value||appointmentSourceMeta.quotedValue||0)};data.appointments.push(a);selectedAppointmentIndex=data.appointments.length-1;}else if(data.appointments[selectedAppointmentIndex]){let old=data.appointments[selectedAppointmentIndex],q=linkedQuoteForAppointment(old);if(Number(a.quotedValue||0)<=0&&q&&Number(q.price||0)>0)a.quotedValue=Number(q.price||0);data.appointments[selectedAppointmentIndex]={...old,...a};}save();toast('Booking saved');openDiary();}
 function setAppointmentStatus(status){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex];if(!a)return;if(['Invoiced','Paid'].includes(a.status)&&['Booked','In Progress','Completed'].includes(status)&&!confirm('This job is linked to an invoice. Change the job status anyway?'))return;let next=(a.status===status)?'Booked':status;let nowIso=new Date().toISOString();a={...a,...appointmentFormData(),status:next,statusChangedAt:nowIso};if(next==='Completed'&&!a.completedAt)a.completedAt=nowIso;if(next==='Booked'&&status==='Completed')delete a.completedAt;data.appointments[selectedAppointmentIndex]=a;save();toast(next==='In Progress'?'Job started':next==='Completed'?'Job marked completed':next==='Cancelled'?'Booking cancelled':'Booking updated');editAppointment(selectedAppointmentIndex);}
-function deleteAppointment(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;if(confirm('Delete this booking?')){data.appointments.splice(selectedAppointmentIndex,1);selectedAppointmentIndex=null;save();openDiary();}}
+function deleteAppointment(){
+ if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;
+ let a=data.appointments[selectedAppointmentIndex];
+ if(a?.invoiceNumber){alert('This booking is linked to invoice '+a.invoiceNumber+'. Keep it for the job history.');return}
+ let extra=a?.sourceQuoteNumber?' It is linked to '+a.sourceQuoteNumber+'.':'';
+ if(confirm('Delete this booking permanently?'+extra+' This cannot be undone.')){data.appointments.splice(selectedAppointmentIndex,1);selectedAppointmentIndex=null;save();toast('Booking deleted');openDiary();}
+}
 function findCustomerForAppointment(a){let key=String(a?.customer||'').trim().toLowerCase();let found=(data.customers||[]).map(normalizeCustomer).find(c=>String(c.name||'').trim().toLowerCase()===key);if(found)return found;return {name:a?.customer||'Customer',phone:'',email:'',address1:a?.address||'',address2:'',town:'',postcode:''};}
 function invoiceAppointmentFromQuote(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a={...data.appointments[selectedAppointmentIndex],...appointmentFormData()};data.appointments[selectedAppointmentIndex]=a;let existing=linkedInvoiceForAppointment(a);if(existing){save();openInvoice(data.invoices.indexOf(existing));return;}if(a.quoteKey){let qi=data.quotes.findIndex(q=>quoteKey(q)===a.quoteKey);if(qi>=0){let q=data.quotes[qi];if(a.address)q.jobAddress=a.address;selectedQuoteIndex=qi;save();convertSelectedQuoteToInvoice();return;}}loadAppointmentIntoJob('invoice');}
 function loadAppointmentIntoJob(target){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a={...data.appointments[selectedAppointmentIndex],...appointmentFormData()};data.appointments[selectedAppointmentIndex]=a;save();let c=findCustomerForAppointment(a);newJob();customer.value=c.name||a.customer||'';phone.value=c.phone||'';email.value=c.email||'';address1.value=c.address1||'';address2.value=c.address2||'';town.value=c.town||'';postcode.value=c.postcode||'';description.value=a.job||'Job visit';let home=fullAddress(c),addr=a.address||home;if(addr&&addr!==home){differentJobAddress.checked=true;jobAddress.value=addr;toggleJobAddress();}if(a.notes)description.value+=(description.value?'\n':'')+'Notes: '+a.notes;toast(target==='invoice'?'Booking loaded — calculate price then Create Invoice':'Booking loaded — calculate price then Save Quote');}
@@ -1645,11 +1704,11 @@ let accepted=data.quotes.filter(q=>(q.status||"")==="Accepted"),acceptedValue=ac
 let overdue=data.invoices.filter(x=>(x.status||'')==='Overdue'),overdueAmt=overdue.reduce((a,b)=>a+Math.max(0,Number(b.price||0)-Number(b.paid||0)),0);overdueCount.innerText=overdue.length;overdueValue.innerText='£'+overdueAmt.toFixed(0)+' overdue';
 let upcoming=upcomingAppointments();upcomingCount.innerText=upcoming.length;nextJobText.innerText=upcoming[0]?(dayLabelForAppointment(upcoming[0])+(upcoming[0].time?' · '+upcoming[0].time:'')+' · '+(upcoming[0].customer||'Customer')):'Nothing booked';let weekJobs=appointmentsNext7Days();if(document.getElementById('weekJobsCount'))weekJobsCount.innerText=weekJobs.length;if(document.getElementById('weekJobsText'))weekJobsText.innerText=weekJobs.length?(weekJobs.length+' booked visit'+(weekJobs.length===1?'':'s')+' in next 7 days'):'No booked visits';let completedMonth=completedAppointmentsThisMonth();if(document.getElementById('completedMonthCount'))completedMonthCount.innerText=completedMonth.length;if(document.getElementById('completedMonthText'))completedMonthText.innerText=completedMonth.length?(completedMonth.length+' job'+(completedMonth.length===1?'':'s')+' completed'):'No completed jobs';
 
-let cs=(document.getElementById('customerSearch')?.value||'').toLowerCase();let crows=data.customers.map((x,i)=>({c:normalizeCustomer(x),i})).filter(r=>!cs||[r.c.name,fullAddress(r.c),contactText(r.c)].join(' ').toLowerCase().includes(cs));customerList.innerHTML=crows.length?crows.map(({c,i})=>`<div class="item clickable" onclick="openCustomer(${i})"><strong>${esc(c.name)}</strong><small>${esc(fullAddress(c))}<br>${esc(contactText(c))}</small></div>`).join(''):(data.customers.length?'<div class="empty">No matching customers.</div>':'<div class="empty">No customers saved yet.</div>');
+let cs=(document.getElementById('customerSearch')?.value||'').toLowerCase();let crows=data.customers.map((x,i)=>({c:normalizeCustomer(x),i})).filter(r=>!cs||[r.c.name,fullAddress(r.c),contactText(r.c)].join(' ').toLowerCase().includes(cs));customerList.innerHTML=crows.length?crows.map(({c,i})=>`<div class="item clickable" onclick="openCustomer(${i})"><strong>${esc(c.name)}</strong><small>${esc(fullAddress(c))}<br>${esc(contactText(c))}</small></div>`).join(''):(data.customers.length?'<div class="empty">No matching customers.</div>':'<div class="empty"><strong>No customers yet</strong><br>Your first saved quote or invoice can create the customer record automatically.<br><button class="empty-action" onclick="newJob()">Create first job</button></div>');
 
-let qs=(document.getElementById("quoteSearch")?.value||"").toLowerCase();let qrows=data.quotes.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!qs||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(qs));quoteList.innerHTML=qrows.length?qrows.map(({x,i,c})=>`<div class="item clickable" onclick="openQuote(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Quote")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Draft")}</small></div>`).join(""):(data.quotes.length?'<div class="empty">No matching quotes.</div>':'<div class="empty">No quotes saved yet.</div>');
+let qs=(document.getElementById("quoteSearch")?.value||"").toLowerCase();let qrows=data.quotes.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!qs||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(qs));quoteList.innerHTML=qrows.length?qrows.map(({x,i,c})=>{let st=x.status||'Draft',cls=st==='Accepted'?'status-accepted':st==='Declined'?'status-declined':st==='Converted'?'status-converted':st==='Sent'?'status-sent':'';return `<div class="item clickable" onclick="openQuote(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Quote")} · ${esc(c.name)} <span class="list-status ${cls}">${esc(st)}</span></strong><small>${esc(x.job)} · ${esc(x.date)}</small></div>`}).join(""):(data.quotes.length?'<div class="empty">No matching quotes.</div>':'<div class="empty"><strong>No quotes yet</strong><br>Price a job and save it as a professional quote.<br><button class="empty-action" onclick="newJob()">Create quote</button></div>');
 
-let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let irows=data.invoices.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!is||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(is));invoiceList.innerHTML=irows.length?irows.map(({x,i,c})=>`<div class="item clickable" onclick="openInvoice(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Invoice")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Unpaid")}</small></div>`).join(""):(data.invoices.length?'<div class="empty">No matching invoices.</div>':'<div class="empty">No invoices saved yet.</div>');
+let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let irows=data.invoices.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!is||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(is));invoiceList.innerHTML=irows.length?irows.map(({x,i,c})=>{let st=x.status||'Unpaid',cls=st==='Paid'?'status-accepted':st==='Overdue'?'status-overdue':st==='Part Paid'?'status-part':st==='Sent'?'status-sent':'';return `<div class="item clickable" onclick="openInvoice(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Invoice")} · ${esc(c.name)} <span class="list-status ${cls}">${esc(st)}</span></strong><small>${esc(x.job)} · ${esc(x.date)}</small></div>`}).join(""):(data.invoices.length?'<div class="empty">No matching invoices.</div>':'<div class="empty"><strong>No invoices yet</strong><br>Create an invoice from a completed job or accepted quote.</div>');
 
 [
 "businessName","ownerName",
