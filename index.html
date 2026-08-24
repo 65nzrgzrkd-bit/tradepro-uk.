@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 3.9</title>
+<title>TradePro UK · Plumber Edition · Build 4.0</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -111,7 +111,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .dashboard-note{background:#fff;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.45}
 @media(max-width:430px){.customer-actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
 /* Build 3.4 field actions and connected job status */
-/* Build 3.9 business reports, customer account status and clearer payment history */
+/* Build 4.0 report period filters, UK tax-year view and zero-bar polish */
 .booking-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.booking-quick button{padding:13px;border-radius:12px;font-weight:700}.status-progress{background:#fff4df;color:#7a5200}.status-invoiced{background:#eef4ff;color:#2457a7}.status-paid{background:#e8f5e9;color:#226b28}.appt-meta{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.45}.appointment .appt-value{display:inline-block;margin-top:5px;font-weight:800;color:var(--green)}.diary-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.diary-filter{padding:11px 8px;border-radius:12px;background:#e6edf2;color:var(--navy);font-weight:800;font-size:13px}.diary-filter.active{background:var(--navy);color:#fff}.diary-summary{background:#fff;border-radius:15px;padding:14px 16px;margin:10px 0 4px;box-shadow:0 4px 14px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.4}.diary-summary strong{color:var(--text);font-size:16px}.appt-meta:empty{display:none}
 @media(max-width:430px){.booking-quick{grid-template-columns:1fr 1fr}}
 .appt-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
@@ -144,13 +144,20 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .month-row:last-child{border-bottom:0}.month-bar{height:10px;background:#e5ebef;border-radius:999px;overflow:hidden}.month-bar i{display:block;height:100%;background:#3d8737;border-radius:999px}
 .month-values{text-align:right;font-weight:800}.month-values small{display:block;font-weight:500;color:var(--muted);font-size:10px}
 .report-note{font-size:12px;color:var(--muted);line-height:1.45}
+.report-periods{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:0 0 14px}
+.report-period{padding:10px 5px;border-radius:11px;background:#e6edf2;color:var(--navy);font-size:11px;font-weight:800}
+.report-period.active{background:var(--navy);color:#fff}
+.report-period-title{font-size:12px;color:var(--muted);margin:-4px 0 10px;text-align:center}
+.month-bar.zero i{display:none}
+@media(max-width:430px){.report-periods{grid-template-columns:1fr 1fr}}
+
 @media(max-width:430px){.report-grid{grid-template-columns:1fr 1fr}}
 
 
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 3.9 · V16.7</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 4.0 · V16.8</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -647,11 +654,18 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <section id="reports" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Business Reports</h2></div>
+<div class="report-periods">
+<button id="rpFilterMonth" class="report-period active" onclick="setReportPeriod('month')">This month</button>
+<button id="rpFilter3" class="report-period" onclick="setReportPeriod('3m')">Last 3 months</button>
+<button id="rpFilter12" class="report-period" onclick="setReportPeriod('12m')">Last 12 months</button>
+<button id="rpFilterTax" class="report-period" onclick="setReportPeriod('tax')">This tax year</button>
+</div>
+<div id="reportPeriodTitle" class="report-period-title">This month</div>
 <div class="report-grid">
-<div class="report-card hero-report"><span>Payments received this month</span><strong id="rpMonthPaid">£0.00</strong><div id="rpMonthPaidNote">0 payments</div></div>
-<div class="report-card"><span>Invoiced this month</span><strong id="rpMonthInvoiced">£0</strong></div>
+<div class="report-card hero-report"><span id="rpPaidLabel">Payments received this month</span><strong id="rpMonthPaid">£0.00</strong><div id="rpMonthPaidNote">0 payments</div></div>
+<div class="report-card"><span id="rpInvLabel">Invoiced this month</span><strong id="rpMonthInvoiced">£0</strong></div>
 <div class="report-card"><span>Outstanding</span><strong id="rpOutstanding">£0</strong></div>
-<div class="report-card"><span>Jobs completed this month</span><strong id="rpCompleted">0</strong></div>
+<div class="report-card"><span id="rpCompletedLabel">Jobs completed this month</span><strong id="rpCompleted">0</strong></div>
 <div class="report-card"><span>Average invoice value</span><strong id="rpAverageJob">£0</strong></div>
 <div class="report-card"><span>Quote acceptance</span><strong id="rpWinRate">0%</strong></div>
 <div class="report-card"><span>Work won remaining</span><strong id="rpWonRemaining">£0</strong></div>
@@ -749,7 +763,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="16.7";
+const TRADEPRO_VERSION="16.8";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -819,7 +833,7 @@ const DEFAULT_PRICE_BOOK=[
 {category:"Gas Work",name:"Gas pipework alteration / upgrade - estimate only",pricingType:"Supply & fit",hours:6,materials:120,min:450,max:950,notes:"Gas Safe registered work. Verify gas rate, pressure loss, pipe sizing and applicable standards before installation."},
 ];
 if(!Array.isArray(data.priceBook)||!data.priceBook.length||data.priceBook.length<=8) data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));
-let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null,selectedCustomerIndex=null,selectedAppointmentIndex=null,customerHistoryFilter='all';
+let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null,selectedCustomerIndex=null,selectedAppointmentIndex=null,customerHistoryFilter='all',reportPeriod='month';
 
 // V10 migration marker: preserve user records/settings; add new default jobs once.
 if(localStorage.getItem('tradepro_migrated_v10')!=='1'){
@@ -1499,36 +1513,55 @@ function completedAppointmentsThisMonth(){let d=new Date(),y=d.getFullYear(),m=d
 
 function reportMonthKeyFromUK(v){let m=String(v||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?m[3]+'-'+String(m[2]).padStart(2,'0'):''}
 function reportMonthKeyFromISO(v){if(!v)return '';let d=new Date(v);return isNaN(d)?'':d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function reportDateFromUK(v){let m=String(v||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(Number(m[3]),Number(m[2])-1,Number(m[1]),12):null}
+function reportDateFromAny(uk,iso){return reportDateFromUK(uk)||(iso?new Date(iso):null)}
 function reportPaymentRows(){
  let rows=[];
  (data.invoices||[]).forEach(inv=>{
    let ps=Array.isArray(inv.payments)?inv.payments:[];
-   if(ps.length)ps.forEach(p=>rows.push({amount:Number(p.amount||0),month:reportMonthKeyFromUK(p.date)||reportMonthKeyFromISO(p.at),type:p.type||'Payment'}));
-   else if(Number(inv.paid||0)>0)rows.push({amount:Number(inv.paid||0),month:reportMonthKeyFromISO(inv.lastPaymentAt)||reportMonthKeyFromUK(inv.date),type:'Payment'});
+   if(ps.length)ps.forEach(p=>rows.push({amount:Number(p.amount||0),date:reportDateFromAny(p.date,p.at),month:reportMonthKeyFromUK(p.date)||reportMonthKeyFromISO(p.at),type:p.type||'Payment'}));
+   else if(Number(inv.paid||0)>0)rows.push({amount:Number(inv.paid||0),date:reportDateFromAny(inv.date,inv.lastPaymentAt),month:reportMonthKeyFromISO(inv.lastPaymentAt)||reportMonthKeyFromUK(inv.date),type:'Payment'});
  });
  return rows;
 }
+function reportRange(period){
+ let now=new Date(),start,end=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+ if(period==='month'){start=new Date(now.getFullYear(),now.getMonth(),1);return {start,end,label:now.toLocaleDateString('en-GB',{month:'long',year:'numeric'}),short:'this month'}}
+ if(period==='3m'){start=new Date(now.getFullYear(),now.getMonth()-2,1);return {start,end,label:'Last 3 months',short:'in the last 3 months'}}
+ if(period==='12m'){start=new Date(now.getFullYear(),now.getMonth()-11,1);return {start,end,label:'Last 12 months',short:'in the last 12 months'}}
+ let y=now.getFullYear(),taxStart=new Date(y,3,6);if(now<taxStart)taxStart=new Date(y-1,3,6);let taxEnd=new Date(taxStart.getFullYear()+1,3,6);
+ return {start:taxStart,end:now<taxEnd?end:taxEnd,label:'UK tax year '+taxStart.getFullYear()+'/'+String(taxStart.getFullYear()+1).slice(-2),short:'this tax year'};
+}
+function reportInRange(d,r){return d instanceof Date&&!isNaN(d)&&d>=r.start&&d<r.end}
+function setReportPeriod(p){reportPeriod=p;renderReports()}
 function openReports(){show('reports');renderReports();}
 function renderReports(){
  if(!document.getElementById('reports'))return;
- let now=new Date(),mk=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
- let payments=reportPaymentRows(),monthPayments=payments.filter(p=>p.month===mk),paidMonth=monthPayments.reduce((n,p)=>n+p.amount,0);
- let monthInv=(data.invoices||[]).filter(inv=>(reportMonthKeyFromUK(inv.date)||reportMonthKeyFromISO(inv.createdAt))===mk),monthInvValue=monthInv.reduce((n,i)=>n+Number(i.price||0),0);
+ let r=reportRange(reportPeriod);
+ [['Month','month'],['3','3m'],['12','12m'],['Tax','tax']].forEach(([id,p])=>{let el=document.getElementById('rpFilter'+id);if(el)el.classList.toggle('active',reportPeriod===p)});
+ reportPeriodTitle.textContent=r.label;
+ rpPaidLabel.textContent='Payments received '+r.short;rpInvLabel.textContent='Invoiced '+r.short;rpCompletedLabel.textContent='Jobs completed '+r.short;
+ let payments=reportPaymentRows(),periodPayments=payments.filter(p=>reportInRange(p.date,r)),paidPeriod=periodPayments.reduce((n,p)=>n+p.amount,0);
+ let periodInv=(data.invoices||[]).filter(inv=>reportInRange(reportDateFromAny(inv.date,inv.createdAt),r)),periodInvValue=periodInv.reduce((n,i)=>n+Number(i.price||0),0);
  let owed=(data.invoices||[]).reduce((n,i)=>n+Math.max(0,Number(i.price||0)-Number(i.paid||0)),0);
- let complete=completedAppointmentsThisMonth().length;
- let invTotal=(data.invoices||[]).reduce((n,i)=>n+Number(i.price||0),0),avg=(data.invoices||[]).length?invTotal/data.invoices.length:0;
- let eligible=(data.quotes||[]).filter(q=>['Accepted','Declined'].includes(q.status||'')),accepted=eligible.filter(q=>q.status==='Accepted').length,win=eligible.length?Math.round(accepted/eligible.length*100):0;
+ let complete=(data.appointments||[]).filter(a=>['Completed','Invoiced','Paid'].includes(a.status||'')&&reportInRange(reportDateFromAny(a.completedDate||a.date,a.completedAt),r)).length;
+ let avg=periodInv.length?periodInvValue/periodInv.length:0;
+ let periodQuotes=(data.quotes||[]).filter(q=>reportInRange(reportDateFromAny(q.date,q.createdAt),r));
+ let eligible=periodQuotes.filter(q=>['Accepted','Declined'].includes(q.status||'')),accepted=eligible.filter(q=>q.status==='Accepted').length,win=eligible.length?Math.round(accepted/eligible.length*100):0;
  let openWon=(data.quotes||[]).filter(q=>q.status==='Accepted').reduce((n,q)=>n+Number(q.price||0),0);
  let overdue=(data.invoices||[]).filter(i=>i.status==='Overdue').reduce((n,i)=>n+Math.max(0,Number(i.price||0)-Number(i.paid||0)),0);
- rpMonthPaid.textContent='£'+paidMonth.toFixed(2);rpMonthPaidNote.textContent=monthPayments.length+' payment'+(monthPayments.length===1?'':'s')+' recorded';rpMonthInvoiced.textContent='£'+monthInvValue.toFixed(0);rpOutstanding.textContent='£'+owed.toFixed(0);rpCompleted.textContent=complete;rpAverageJob.textContent='£'+avg.toFixed(0);rpWinRate.textContent=eligible.length?win+'%':'—';rpWonRemaining.textContent='£'+openWon.toFixed(0);rpOverdue.textContent='£'+overdue.toFixed(0);
- let months=[];for(let i=11;i>=0;i--){let d=new Date(now.getFullYear(),now.getMonth()-i,1),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');months.push({key,label:d.toLocaleDateString('en-GB',{month:'short'}),inv:0,paid:0})}
+ rpMonthPaid.textContent='£'+paidPeriod.toFixed(2);rpMonthPaidNote.textContent=periodPayments.length+' payment'+(periodPayments.length===1?'':'s')+' recorded';
+ rpMonthInvoiced.textContent='£'+periodInvValue.toFixed(0);rpOutstanding.textContent='£'+owed.toFixed(0);rpCompleted.textContent=complete;rpAverageJob.textContent=periodInv.length?'£'+avg.toFixed(0):'—';rpWinRate.textContent=eligible.length?win+'%':'—';rpWonRemaining.textContent='£'+openWon.toFixed(0);rpOverdue.textContent='£'+overdue.toFixed(0);
+
+ let now=new Date(),months=[];for(let i=11;i>=0;i--){let d=new Date(now.getFullYear(),now.getMonth()-i,1),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');months.push({key,label:d.toLocaleDateString('en-GB',{month:'short'}),inv:0,paid:0})}
  let map=Object.fromEntries(months.map(m=>[m.key,m]));
  (data.invoices||[]).forEach(inv=>{let key=reportMonthKeyFromUK(inv.date)||reportMonthKeyFromISO(inv.createdAt);if(map[key])map[key].inv+=Number(inv.price||0)});
  payments.forEach(p=>{if(map[p.month])map[p.month].paid+=Number(p.amount||0)});
  let max=Math.max(1,...months.map(m=>m.inv));
- report12Months.innerHTML=months.map(m=>`<div class="month-row"><strong>${m.label}</strong><div class="month-bar"><i style="width:${Math.max(1,m.inv/max*100)}%"></i></div><div class="month-values">£${m.inv.toFixed(0)}<small>Paid £${m.paid.toFixed(0)}</small></div></div>`).join('');
- let lifetimePaid=payments.reduce((n,p)=>n+p.amount,0),allCompleted=(data.appointments||[]).filter(a=>['Completed','Invoiced','Paid'].includes(a.status||'')).length;
- reportSnapshot.innerHTML=`<strong>Lifetime invoiced:</strong> £${invTotal.toFixed(2)}<br><strong>Lifetime payments recorded:</strong> £${lifetimePaid.toFixed(2)}<br><strong>Invoices:</strong> ${(data.invoices||[]).length} · <strong>Quotes:</strong> ${(data.quotes||[]).length} · <strong>Customers:</strong> ${(data.customers||[]).length}<br><strong>Completed jobs recorded:</strong> ${allCompleted}<br><br>Figures are based on the records stored in TradePro on this device.`;
+ report12Months.innerHTML=months.map(m=>{let pct=m.inv>0?Math.max(3,m.inv/max*100):0;return `<div class="month-row"><strong>${m.label}</strong><div class="month-bar ${m.inv>0?'':'zero'}"><i style="width:${pct}%"></i></div><div class="month-values">£${m.inv.toFixed(0)}<small>Paid £${m.paid.toFixed(0)}</small></div></div>`}).join('');
+
+ let invTotal=(data.invoices||[]).reduce((n,i)=>n+Number(i.price||0),0),lifetimePaid=payments.reduce((n,p)=>n+p.amount,0),allCompleted=(data.appointments||[]).filter(a=>['Completed','Invoiced','Paid'].includes(a.status||'')).length;
+ reportSnapshot.innerHTML=`<strong>Selected period:</strong> ${esc(r.label)}<br><strong>Period invoiced:</strong> £${periodInvValue.toFixed(2)} · <strong>Period received:</strong> £${paidPeriod.toFixed(2)}<br><br><strong>Lifetime invoiced:</strong> £${invTotal.toFixed(2)}<br><strong>Lifetime payments recorded:</strong> £${lifetimePaid.toFixed(2)}<br><strong>Invoices:</strong> ${(data.invoices||[]).length} · <strong>Quotes:</strong> ${(data.quotes||[]).length} · <strong>Customers:</strong> ${(data.customers||[]).length}<br><strong>Completed jobs recorded:</strong> ${allCompleted}<br><br>Figures are based on the records stored in TradePro on this device.`;
 }
 function render(){
 data.invoices.forEach(updateInvoiceStatus);
