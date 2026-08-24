@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 4.2</title>
+<title>TradePro UK · Plumber Edition · Release 1.0</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -111,7 +111,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .dashboard-note{background:#fff;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.45}
 @media(max-width:430px){.customer-actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
 /* Build 3.4 field actions and connected job status */
-/* Build 4.2 release candidate: navigation polish, safer records and data-integrity checks */
+/* Release 1.0 · Build 4.3: first plumber edition production release */
 .booking-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.booking-quick button{padding:13px;border-radius:12px;font-weight:700}.status-progress{background:#fff4df;color:#7a5200}.status-invoiced{background:#eef4ff;color:#2457a7}.status-paid{background:#e8f5e9;color:#226b28}.appt-meta{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.45}.appointment .appt-value{display:inline-block;margin-top:5px;font-weight:800;color:var(--green)}.diary-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.diary-filter{padding:11px 8px;border-radius:12px;background:#e6edf2;color:var(--navy);font-weight:800;font-size:13px}.diary-filter.active{background:var(--navy);color:#fff}.diary-summary{background:#fff;border-radius:15px;padding:14px 16px;margin:10px 0 4px;box-shadow:0 4px 14px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.4}.diary-summary strong{color:var(--text);font-size:16px}.appt-meta:empty{display:none}
 @media(max-width:430px){.booking-quick{grid-template-columns:1fr 1fr}}
 .appt-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
@@ -169,6 +169,11 @@ nav button{border-radius:11px;transition:.15s}nav button.active{background:#edf4
 .integrity-card{background:#fff;border-radius:16px;padding:15px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05)}
 .integrity-card strong{font-size:16px}.integrity-card small{display:block;color:var(--muted);margin-top:5px;line-height:1.4}
 .integrity-ok{color:#2d762e}.integrity-warn{color:#996515}
+.release-panel{background:#eef5f0;border:1px solid #d7e8d6;border-radius:16px;padding:15px;margin:12px 0 18px}
+.release-panel strong{display:block;font-size:17px;color:#24662a;margin-bottom:5px}
+.release-panel span{display:block;font-size:12px;color:#55656f;line-height:1.5}
+.release-panel .release-date{font-weight:800;color:#31434d;margin-top:7px}
+
 
 
 
@@ -178,7 +183,7 @@ nav button{border-radius:11px;transition:.15s}nav button.active{background:#edf4
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 4.2 · V17.0 RC</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · RELEASE 1.0 · BUILD 4.3</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -722,6 +727,11 @@ nav button{border-radius:11px;transition:.15s}nav button.active{background:#edf4
 <strong id="integrityTitle">Checking record integrity…</strong>
 <small id="integrityText">Checking links between quotes, jobs, invoices and payments.</small>
 </div>
+<div class="release-panel">
+<strong>TradePro UK Plumber Edition · Release 1.0</strong>
+<span>Core workflow ready: pricing, quotes, deposits, diary, job status, invoicing, payments, customer accounts, reports, heating tools and backup/restore.</span>
+<span class="release-date">Production release · 24 August 2026</span>
+</div>
 
 <h3>Branding</h3>
 <label>Business name<input id="businessName" value="TradePro UK"></label>
@@ -785,8 +795,8 @@ nav button{border-radius:11px;transition:.15s}nav button.active{background:#edf4
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="release-badge">Release Candidate · V17.0</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 4.2 · V17.0 RC</div>
+<div class="release-badge">Release 1.0 · Plumber Edition</div>
+<div class="versionline">TradePro UK · Plumber Edition · Release 1.0 · Build 4.3</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -804,7 +814,7 @@ nav button{border-radius:11px;transition:.15s}nav button.active{background:#edf4
 </nav>
 
 <script>
-const TRADEPRO_VERSION="17.0";
+const TRADEPRO_VERSION="1.0";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1405,6 +1415,9 @@ setting("businessWebsite","").trim()
 }
 function recordIntegrity(){
  let issues=[];
+ let qNums=(data.quotes||[]).map(q=>String(q.number||'')).filter(Boolean),iNums=(data.invoices||[]).map(i=>String(i.number||'')).filter(Boolean);
+ if(new Set(qNums).size!==qNums.length)issues.push('Duplicate quote numbers detected');
+ if(new Set(iNums).size!==iNums.length)issues.push('Duplicate invoice numbers detected');
  (data.invoices||[]).forEach(inv=>{
    if(Number(inv.paid||0)>Number(inv.price||0)+0.01)issues.push((inv.number||'Invoice')+' has payments above invoice total');
    if(inv.sourceQuoteNumber&&!((data.quotes||[]).some(q=>String(q.number||'')===String(inv.sourceQuoteNumber))))issues.push((inv.number||'Invoice')+' links to a missing quote');
@@ -1478,7 +1491,7 @@ localStorage.setItem("showQROnInvoice",document.getElementById("showQROnInvoice"
 localStorage.setItem("vatRegistered",document.getElementById("vatRegistered").checked?"1":"0");
 updateLogoPreview();
 renderReadiness();
-toast("Business settings saved");
+toast("Settings saved");
 }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
 
