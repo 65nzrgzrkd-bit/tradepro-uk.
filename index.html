@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 3.7</title>
+<title>TradePro UK · Plumber Edition · Build 3.8</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -111,7 +111,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .dashboard-note{background:#fff;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.45}
 @media(max-width:430px){.customer-actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
 /* Build 3.4 field actions and connected job status */
-/* Build 3.7 quote-linked booking value recovery and direct Open Quote action */
+/* Build 3.8 customer account dashboard, payment timeline and CRM quick actions */
 .booking-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.booking-quick button{padding:13px;border-radius:12px;font-weight:700}.status-progress{background:#fff4df;color:#7a5200}.status-invoiced{background:#eef4ff;color:#2457a7}.status-paid{background:#e8f5e9;color:#226b28}.appt-meta{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.45}.appointment .appt-value{display:inline-block;margin-top:5px;font-weight:800;color:var(--green)}.diary-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.diary-filter{padding:11px 8px;border-radius:12px;background:#e6edf2;color:var(--navy);font-weight:800;font-size:13px}.diary-filter.active{background:var(--navy);color:#fff}.diary-summary{background:#fff;border-radius:15px;padding:14px 16px;margin:10px 0 4px;box-shadow:0 4px 14px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.4}.diary-summary strong{color:var(--text);font-size:16px}.appt-meta:empty{display:none}
 @media(max-width:430px){.booking-quick{grid-template-columns:1fr 1fr}}
 .appt-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
@@ -120,10 +120,22 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .booking-value-note{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.35}
 .customer-picker{margin-bottom:0}
 @media(max-width:430px){.appt-actions{grid-template-columns:repeat(3,1fr)}}
+.customer-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.customer-summary-card{background:#f7f9fa;border:1px solid #e2e8ec;border-radius:14px;padding:13px}
+.customer-summary-card span{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}
+.customer-summary-card strong{font-size:20px;color:var(--text)}
+.customer-summary-card.owing strong{color:#9b1c1c}.customer-summary-card.paid strong{color:#226b28}
+.customer-history-filters{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0 14px}
+.customer-history-filter{padding:9px 4px;border-radius:10px;background:#e6edf2;color:var(--navy);font-size:11px;font-weight:800}
+.customer-history-filter.active{background:var(--navy);color:#fff}
+.history-type{display:inline-block;font-size:11px;font-weight:800;padding:3px 7px;border-radius:999px;background:#eef3f6;margin-right:5px}
+.history-payment{border-left:4px solid #3d8737}
+@media(max-width:430px){.customer-summary{grid-template-columns:1fr 1fr}.customer-history-filters{grid-template-columns:repeat(4,1fr)}}
+
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 3.7 · V16.5</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 3.8 · V16.6</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -202,18 +214,37 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </section>
 
 <section id="customerDetail" class="screen">
-<div class="screenhead"><button class="back" onclick="show('customers')">‹</button><h2>Customer</h2></div>
+<div class="screenhead"><button class="back" onclick="show('customers')">‹</button><h2>Customer Account</h2></div>
 <div class="detail">
 <div class="detailrow"><span>Name</span><strong id="cdName"></strong></div>
 <div class="detailrow"><span>Address</span><strong id="cdAddress"></strong></div>
 <div class="detailrow"><span>Phone / Email</span><strong id="cdContact"></strong></div>
+
+<div class="customer-summary">
+<div class="customer-summary-card"><span>Quoted</span><strong id="cdQuoted">£0.00</strong></div>
+<div class="customer-summary-card"><span>Invoiced</span><strong id="cdInvoiced">£0.00</strong></div>
+<div class="customer-summary-card paid"><span>Paid</span><strong id="cdPaid">£0.00</strong></div>
+<div class="customer-summary-card owing"><span>Outstanding</span><strong id="cdOutstanding">£0.00</strong></div>
+<div class="customer-summary-card"><span>Active jobs</span><strong id="cdActiveJobs">0</strong></div>
+<div class="customer-summary-card"><span>Completed jobs</span><strong id="cdCompletedJobs">0</strong></div>
+</div>
+
 <div class="customer-actions">
 <button class="green" onclick="newJobForSelectedCustomer()">＋ New Job</button>
 <button class="secondary" onclick="bookSelectedCustomer()">📅 Book Job</button>
-<button class="secondary" onclick="contactSelectedCustomer('phone')">Call Customer</button>
-<button class="secondary" onclick="contactSelectedCustomer('email')">Email Customer</button>
+<button class="secondary" onclick="contactSelectedCustomer('phone')">📞 Call</button>
+<button class="secondary" onclick="contactSelectedCustomer('message')">💬 Message</button>
+<button class="secondary" onclick="contactSelectedCustomer('map')">📍 Navigate</button>
+<button class="secondary" onclick="contactSelectedCustomer('email')">✉️ Email</button>
 </div>
-<div class="history-title"><h3>History</h3><span class="history-badge" id="cdHistoryCount">0 records</span></div>
+
+<div class="history-title"><h3>Account history</h3><span class="history-badge" id="cdHistoryCount">0 records</span></div>
+<div class="customer-history-filters">
+<button class="customer-history-filter active" id="chAll" onclick="setCustomerHistoryFilter('all')">All</button>
+<button class="customer-history-filter" id="chJobs" onclick="setCustomerHistoryFilter('jobs')">Jobs</button>
+<button class="customer-history-filter" id="chDocs" onclick="setCustomerHistoryFilter('docs')">Quotes / Invoices</button>
+<button class="customer-history-filter" id="chPayments" onclick="setCustomerHistoryFilter('payments')">Payments</button>
+</div>
 <div id="customerHistory"></div>
 </div>
 </section>
@@ -678,7 +709,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="16.5";
+const TRADEPRO_VERSION="16.6";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -748,7 +779,7 @@ const DEFAULT_PRICE_BOOK=[
 {category:"Gas Work",name:"Gas pipework alteration / upgrade - estimate only",pricingType:"Supply & fit",hours:6,materials:120,min:450,max:950,notes:"Gas Safe registered work. Verify gas rate, pressure loss, pipe sizing and applicable standards before installation."},
 ];
 if(!Array.isArray(data.priceBook)||!data.priceBook.length||data.priceBook.length<=8) data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));
-let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null,selectedCustomerIndex=null,selectedAppointmentIndex=null;
+let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null,selectedCustomerIndex=null,selectedAppointmentIndex=null,customerHistoryFilter='all';
 
 // V10 migration marker: preserve user records/settings; add new default jobs once.
 if(localStorage.getItem('tradepro_migrated_v10')!=='1'){
@@ -1277,11 +1308,43 @@ alert("Business settings saved");
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
 
 function customerKey(c){c=normalizeCustomer(c);return String(c.name||'').trim().toLowerCase();}
-function openCustomer(i){selectedCustomerIndex=i;let c=normalizeCustomer(data.customers[i]);if(!c)return;cdName.textContent=c.name||'Unnamed customer';cdAddress.textContent=fullAddress(c);cdContact.textContent=contactText(c);renderCustomerHistory(c);show('customerDetail');}
-function renderCustomerHistory(c){let key=customerKey(c),rows=[];data.quotes.forEach((q,i)=>{if(customerKey(q.customer)===key)rows.push({type:'Quote',date:q.date||'',number:q.number||'Quote',job:q.job||'',price:Number(q.price||0),status:q.status||'Draft',open:`openQuote(${i})`})});data.invoices.forEach((inv,i)=>{if(customerKey(inv.customer)===key)rows.push({type:'Invoice',date:inv.date||'',number:inv.number||'Invoice',job:inv.job||'',price:Number(inv.price||0),status:inv.status||'Unpaid',open:`openInvoice(${i})`})});data.appointments.forEach((a,i)=>{if(String(a.customer||'').trim().toLowerCase()===String(c.name||'').trim().toLowerCase())rows.push({type:'Booking',date:isoToUK(a.date),number:a.sourceQuoteNumber||'Job',job:a.job||'',price:Number(a.quotedValue||0),status:a.status||'Booked',open:`editAppointment(${i})`})});rows.sort((a,b)=>ukDateValue(b.date)-ukDateValue(a.date));cdHistoryCount.textContent=rows.length+' record'+(rows.length===1?'':'s');customerHistory.innerHTML=rows.length?rows.map(r=>`<div class="item clickable" onclick="${r.open}"><span class="price">£${r.price.toFixed(2)}</span><strong>${esc(r.type)} · ${esc(r.number)}</strong><small>${esc(r.date)} · ${esc(r.status)}<br>${esc(r.job)}</small></div>`).join(''):'<div class="empty">No quotes or invoices for this customer yet.</div>';}
+function customerAccountStats(c){
+ let key=customerKey(c),quoted=0,invoiced=0,paid=0,outstanding=0,activeJobs=0,completedJobs=0;
+ (data.quotes||[]).forEach(q=>{if(customerKey(q.customer)===key)quoted+=Number(q.price||0)});
+ (data.invoices||[]).forEach(inv=>{if(customerKey(inv.customer)!==key)return;let total=Number(inv.price||0),p=Math.min(total,Number(inv.paid||0));invoiced+=total;paid+=p;outstanding+=Math.max(0,total-p)});
+ (data.appointments||[]).forEach(a=>{if(String(a.customer||'').trim().toLowerCase()!==String(c.name||'').trim().toLowerCase())return;let s=a.status||'Booked';if(['Completed','Invoiced','Paid'].includes(s))completedJobs++;else if(s!=='Cancelled')activeJobs++});
+ return {quoted,invoiced,paid,outstanding,activeJobs,completedJobs};
+}
+function setCustomerHistoryFilter(f){customerHistoryFilter=f;['all','jobs','docs','payments'].forEach(x=>{let id=x==='all'?'chAll':x==='jobs'?'chJobs':x==='docs'?'chDocs':'chPayments',el=document.getElementById(id);if(el)el.classList.toggle('active',x===f)});if(selectedCustomerIndex!==null){let c=normalizeCustomer(data.customers[selectedCustomerIndex]);renderCustomerHistory(c)}}
+function openCustomer(i){
+ selectedCustomerIndex=i;customerHistoryFilter='all';let c=normalizeCustomer(data.customers[i]);if(!c)return;
+ cdName.textContent=c.name||'Unnamed customer';cdAddress.textContent=fullAddress(c);cdContact.textContent=contactText(c);
+ let s=customerAccountStats(c);cdQuoted.textContent='£'+s.quoted.toFixed(2);cdInvoiced.textContent='£'+s.invoiced.toFixed(2);cdPaid.textContent='£'+s.paid.toFixed(2);cdOutstanding.textContent='£'+s.outstanding.toFixed(2);cdActiveJobs.textContent=s.activeJobs;cdCompletedJobs.textContent=s.completedJobs;
+ ['All','Jobs','Docs','Payments'].forEach(x=>{let el=document.getElementById('ch'+x);if(el)el.classList.toggle('active',x==='All')});
+ renderCustomerHistory(c);show('customerDetail');
+}
+function renderCustomerHistory(c){
+ let key=customerKey(c),rows=[];
+ (data.quotes||[]).forEach((q,i)=>{if(customerKey(q.customer)===key)rows.push({group:'docs',type:'Quote',date:q.date||'',number:q.number||'Quote',job:q.job||'',price:Number(q.price||0),status:q.status||'Draft',open:`openQuote(${i})`})});
+ (data.invoices||[]).forEach((inv,i)=>{
+   if(customerKey(inv.customer)!==key)return;
+   rows.push({group:'docs',type:'Invoice',date:inv.date||'',number:inv.number||'Invoice',job:inv.job||'',price:Number(inv.price||0),status:inv.status||'Unpaid',open:`openInvoice(${i})`});
+   (Array.isArray(inv.payments)?inv.payments:[]).forEach(p=>rows.push({group:'payments',type:p.type||'Payment',date:p.date||'',number:inv.number||'Invoice',job:inv.job||'',price:Number(p.amount||0),status:'Received',open:`openInvoice(${i})`,at:p.at||''}));
+ });
+ (data.appointments||[]).forEach((a,i)=>{if(String(a.customer||'').trim().toLowerCase()===String(c.name||'').trim().toLowerCase())rows.push({group:'jobs',type:'Job',date:isoToUK(a.date),number:a.sourceQuoteNumber||a.invoiceNumber||'Booking',job:a.job||'',price:Number(a.quotedValue||0),status:a.status||'Booked',open:`editAppointment(${i})`})});
+ let visible=rows.filter(r=>customerHistoryFilter==='all'||r.group===customerHistoryFilter).sort((a,b)=>{let av=a.at?new Date(a.at).getTime():ukDateValue(a.date),bv=b.at?new Date(b.at).getTime():ukDateValue(b.date);return bv-av;});
+ cdHistoryCount.textContent=visible.length+' record'+(visible.length===1?'':'s');
+ customerHistory.innerHTML=visible.length?visible.map(r=>{let pay=r.group==='payments',priceLabel=pay?'+ £'+r.price.toFixed(2):'£'+r.price.toFixed(2);return `<div class="item clickable ${pay?'history-payment':''}" onclick="${r.open}"><span class="price">${priceLabel}</span><strong><span class="history-type">${esc(r.type)}</span>${esc(r.number)}</strong><small>${esc(r.date)} · ${esc(r.status)}${r.job?'<br>'+esc(r.job):''}</small></div>`;}).join(''):'<div class="empty">No records in this view.</div>';
+}
 function newJobForSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newJob();customer.value=c.name||'';phone.value=c.phone||'';email.value=c.email||'';address1.value=c.address1||'';address2.value=c.address2||'';town.value=c.town||'';postcode.value=c.postcode||'';}
 function bookSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newAppointment(c);}
-function contactSelectedCustomer(kind){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);if(kind==='phone'){if(c.phone)location.href='tel:'+c.phone.replace(/\s+/g,'');else toast('No phone number saved');}else{if(c.email)location.href='mailto:'+c.email;else toast('No email saved');}}
+function contactSelectedCustomer(kind){
+ if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);
+ if(kind==='phone'){if(c.phone)location.href='tel:'+c.phone.replace(/[^+\d]/g,'');else toast('No phone number saved');return}
+ if(kind==='message'){if(c.phone)location.href='sms:'+c.phone.replace(/[^+\d]/g,'')+'?&body='+encodeURIComponent('Hi '+(c.name||'')+', ');else toast('No phone number saved');return}
+ if(kind==='email'){if(c.email)location.href='mailto:'+c.email;else toast('No email saved');return}
+ if(kind==='map'){let a=fullAddress(c);if(a&&a!=='Not entered')window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a),'_blank');else toast('No address saved');}
+}
 function ukDateValue(t){let m=String(t||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(+m[3],+m[2]-1,+m[1]).getTime():0;}
 function isoToday(){let d=new Date(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${d.getFullYear()}-${m}-${day}`;}
 function isoToUK(v){if(!v)return'';let p=v.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:v;}
