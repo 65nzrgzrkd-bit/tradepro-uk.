@@ -77,10 +77,13 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(18px);background:#15324b;color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;box-shadow:0 8px 28px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:.22s;z-index:9999;max-width:88%;text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .searchbox{margin:0 0 14px}.searchbox input{margin-top:0;background:#fff}.moneybreak{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-top:8px}.moneybreak strong{color:var(--text)}.status-accepted{background:#e8f5e9;color:#226b28}.status-converted{background:#eaf2f7;color:#15324b}.status-overdue{background:#fdecec;color:#9b1c1c}.status-part{background:#fff4df;color:#7a5200}.status-sent{background:#eef4ff;color:#2457a7}.status-declined{background:#fdecec;color:#9b1c1c}.payment-history{margin-top:14px}.payment-entry{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #e7edf1;font-size:13px}.payment-entry:last-child{border-bottom:0}.mini{font-size:12px;color:var(--muted)}.balance-card{background:#f6f8fa;border-radius:12px;padding:14px;margin-top:12px}.balance-card strong{font-size:20px}.quote-status-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.quote-status-grid button{padding:11px;border-radius:11px;font-weight:700}
 @media(max-width:520px){#invoicePaper,#quotePaper{padding:14px!important}#invoicePaper>div:first-child,#quotePaper>div:first-child{gap:10px!important;margin-bottom:16px!important}#invoicePaper img,#quotePaper img{max-width:135px!important;max-height:72px!important}#invoicePaper h1,#quotePaper h1{font-size:27px!important}#invoicePaper h2,#quotePaper h2{font-size:23px!important}#invoicePaper>div[style*="grid-template-columns:1fr 1fr"],#quotePaper>div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important;gap:14px!important;margin:16px 0!important}.detail-actions{grid-template-columns:1fr}.bigprice{font-size:38px}}
+
+.vat-line{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.vat-line strong{font-size:16px}.finance-summary{background:#f6f8fa;border-radius:14px;padding:14px;margin-top:14px}.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.finance-cell{background:#fff;border:1px solid #e1e8ed;border-radius:12px;padding:12px}.finance-cell span{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}.finance-cell strong{font-size:18px}.progress-track{height:10px;background:#dfe7ec;border-radius:999px;overflow:hidden;margin:12px 0 4px}.progress-fill{height:100%;background:var(--green);width:0%;transition:.25s}.deposit-paid-badge{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#e8f5e9;color:#226b28;font-size:12px;font-weight:800}.deposit-due-badge{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#fff4df;color:#7a5200;font-size:12px;font-weight:800}.converted-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4}
+@media(max-width:430px){.finance-grid{grid-template-columns:1fr 1fr}.vat-line{align-items:flex-start}}
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 2.5 · V15</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 2.6 · V15.1</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -166,12 +169,12 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="detailrow"><span>Quote number</span><strong id="qdNumber"></strong></div>
 <div class="detailrow"><span>Date</span><strong id="qdDate"></strong></div>
 <div class="detailrow"><span>Valid until</span><strong id="qdValidUntil"></strong></div>
-<div class="detailrow" id="qdVatRow" style="display:none"><span>VAT breakdown</span><strong><span id="qdNet"></span> + <span id="qdVat"></span> VAT</strong></div>
+<div class="detailrow" id="qdVatRow" style="display:none"><span>VAT breakdown</span><div class="vat-line"><strong>Net <span id="qdNet"></span></strong><strong>VAT <span id="qdVat"></span></strong></div></div>
 <div class="detailrow"><span>Deposit required</span><strong id="qdDeposit"></strong></div>
 <div class="detailrow" style="display:block"><span style="display:block;margin-bottom:8px">Edit deposit for this quote</span><div class="two"><label>Type<select id="qdDepositType"><option value="percent">Percentage %</option><option value="fixed">Fixed amount £</option></select></label><label>Value<input id="qdDepositValue" type="number" min="0" step="0.01"></label></div><button class="secondary" style="width:100%;margin-top:8px" onclick="saveQuoteDeposit()">Save Deposit</button></div>
 <div class="detailrow"><span>Status</span><strong id="qdStatus" class="status">Draft</strong><div class="quote-status-grid"><button class="secondary" onclick="setQuoteStatus('Draft')">Draft</button><button class="secondary" onclick="setQuoteStatus('Sent')">Sent</button><button class="green" onclick="setQuoteStatus('Accepted')">Accepted</button><button class="danger" onclick="setQuoteStatus('Declined')">Declined</button></div></div>
 <div class="detail-actions">
-<button class="green" onclick="convertSelectedQuoteToInvoice()">Create Invoice</button>
+<button id="quoteCreateInvoiceBtn" class="green" onclick="convertSelectedQuoteToInvoice()">Create Invoice</button>
 <button class="secondary" onclick="previewQuote()">Preview Quote</button>
 <button class="secondary" onclick="sendQuote()">Send / Share Quote</button>
 <button class="secondary" onclick="printQuote()">Print / Save PDF</button>
@@ -218,13 +221,20 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="detailrow"><span>Job address</span><strong id="idJobAddress"></strong></div>
 <div class="detailrow"><span>Invoice date</span><strong id="idDate"></strong></div>
 <div class="detailrow"><span>Due date</span><strong id="idDueDate"></strong></div>
-<div class="detailrow" id="idVatRow" style="display:none"><span>VAT breakdown</span><strong><span id="idNet"></span> + <span id="idVat"></span> VAT</strong></div>
+<div class="detailrow" id="idVatRow" style="display:none"><span>VAT breakdown</span><div class="vat-line"><strong>Net <span id="idNet"></span></strong><strong>VAT <span id="idVat"></span></strong></div></div>
 <div class="detailrow"><span>Status</span><strong id="idStatus" class="status"></strong></div>
 <div class="detailrow" id="idSourceQuoteRow" style="display:none"><span>Source quote</span><strong id="idSourceQuote"></strong></div>
-<div class="detailrow" id="idDepositRow" style="display:none"><span>Deposit required</span><strong id="idDepositRequired"></strong></div>
-<div class="detailrow"><span>Amount paid</span><strong id="idPaid"></strong></div>
-<div class="detailrow"><span>Balance due</span><strong id="idBalance"></strong></div>
-<div class="balance-card"><div class="mini">Payment progress</div><strong id="idPaymentProgress">£0.00 of £0.00 paid</strong><div id="idPaymentHistory" class="payment-history"></div></div>
+<div class="detailrow" id="idDepositRow" style="display:none"><span>Deposit required</span><strong id="idDepositRequired"></strong><div id="idDepositState"></div></div>
+<div class="finance-summary">
+  <div class="finance-grid">
+    <div class="finance-cell"><span>Invoice total</span><strong id="idFinanceTotal">£0.00</strong></div>
+    <div class="finance-cell"><span>Paid so far</span><strong id="idPaid">£0.00</strong></div>
+    <div class="finance-cell"><span>Deposit</span><strong id="idFinanceDeposit">£0.00</strong></div>
+    <div class="finance-cell"><span>Balance due</span><strong id="idBalance">£0.00</strong></div>
+  </div>
+  <div class="progress-track"><div id="idProgressFill" class="progress-fill"></div></div>
+  <div class="balance-card" style="margin-top:10px"><div class="mini">Payment progress</div><strong id="idPaymentProgress">£0.00 of £0.00 paid</strong><div id="idPaymentHistory" class="payment-history"></div></div>
+</div>
 
 <div class="detail-actions">
 <button class="secondary" onclick="editSelectedInvoice()">Edit Invoice</button>
@@ -543,7 +553,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <button class="secondary" type="button" onclick="document.getElementById('backupImport').click()">Import Backup</button>
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
-<div class="versionline">TradePro UK · Plumber Edition · Build 2.5 · Engine V15.0</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 2.6 · Engine V15.1</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -561,7 +571,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="15.0";
+const TRADEPRO_VERSION="15.1";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -757,7 +767,7 @@ save();show("invoices")
 function openQuote(i){
 selectedQuoteIndex=i;let q=data.quotes[i],c=normalizeCustomer(q.customer);
 if(!q.number){q.number=nextQuoteNumber();q.validUntil=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));q.depositPercent=Number.isFinite(Number(q.depositPercent))?Number(q.depositPercent):settingNum("depositPercent",20);save();}
-qdPrice.innerText="£"+Number(q.price||0).toFixed(2);qdCustomer.innerText=c.name;qdAddress.innerText=fullAddress(c);qdContact.innerText=contactText(c);qdJob.innerText=q.job;qdNumber.innerText=q.number||"";qdDate.innerText=q.date;qdValidUntil.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));let qNetVal=Number(q.net??q.price??0),qVatVal=Number(q.vat||0);qdNet.innerText="£"+qNetVal.toFixed(2);qdVat.innerText="£"+qVatVal.toFixed(2);qdVatRow.style.display=qVatVal>0?"block":"none";let depInfo=quoteDepositInfo(q);qdDeposit.innerText=depInfo.label;qdDepositType.value=depInfo.type;qdDepositValue.value=depInfo.value;qdStatus.innerText=q.status||"Draft";let qsc={Accepted:"status-accepted",Converted:"status-converted",Sent:"status-sent",Declined:"status-declined"}[q.status]||"";qdStatus.className="status "+qsc;show("quoteDetail")
+qdPrice.innerText="£"+Number(q.price||0).toFixed(2);qdCustomer.innerText=c.name;qdAddress.innerText=fullAddress(c);qdContact.innerText=contactText(c);qdJob.innerText=q.job;qdNumber.innerText=q.number||"";qdDate.innerText=q.date;qdValidUntil.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));let qNetVal=Number(q.net??q.price??0),qVatVal=Number(q.vat||0);qdNet.innerText="£"+qNetVal.toFixed(2);qdVat.innerText="£"+qVatVal.toFixed(2);qdVatRow.style.display=qVatVal>0?"block":"none";let depInfo=quoteDepositInfo(q);qdDeposit.innerText=depInfo.label;qdDepositType.value=depInfo.type;qdDepositValue.value=depInfo.value;qdStatus.innerText=q.status||"Draft";let qsc={Accepted:"status-accepted",Converted:"status-converted",Sent:"status-sent",Declined:"status-declined"}[q.status]||"";qdStatus.className="status "+qsc;let qci=document.getElementById("quoteCreateInvoiceBtn");if(qci){let converted=q.status==="Converted";qci.disabled=converted;qci.style.opacity=converted?".55":"1";qci.textContent=converted?"Invoice Already Created":"Create Invoice";}show("quoteDetail")
 }
 function setQuoteStatus(status){
 if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex];if(q.status==="Converted"&&status!=="Converted"&&!confirm("This quote has already been converted to an invoice. Change its status anyway?"))return;q.status=status;q.statusChangedAt=new Date().toISOString();save();openQuote(selectedQuoteIndex);toast((q.number||"Quote")+" · "+q.status);
@@ -825,8 +835,8 @@ idNumber.innerText=inv.number||("TP-"+String(i+1).padStart(4,"0"));
 idPrice.innerText="£"+Number(inv.price||0).toFixed(2);
 idCustomer.innerText=c.name;idAddress.innerText=fullAddress(c);idContact.innerText=contactText(c);
 idJob.innerText=inv.job;idJobAddress.innerText=inv.jobAddress||fullAddress(c);idDate.innerText=inv.date;idDueDate.innerText=inv.dueDate||"Not set";
-updateInvoiceStatus(inv);let inNet=Number(inv.net??inv.price??0),inVat=Number(inv.vat||0);idNet.innerText="£"+inNet.toFixed(2);idVat.innerText="£"+inVat.toFixed(2);idVatRow.style.display=inVat>0?"block":"none";idStatus.innerText=inv.status||"Unpaid";idStatus.className="status "+((inv.status||"")==="Overdue"?"status-overdue":(inv.status||"")==="Part Paid"?"status-part":"");idPaid.innerText="£"+Number(inv.paid||0).toFixed(2);let bal=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));idBalance.innerText="£"+bal.toFixed(2);
-let dep=Math.max(0,Number(inv.depositRequired||0));idDepositRequired.innerText="£"+dep.toFixed(2);idDepositRow.style.display=dep>0?"block":"none";idSourceQuote.innerText=inv.sourceQuoteNumber||"";idSourceQuoteRow.style.display=inv.sourceQuoteNumber?"block":"none";idPaymentProgress.innerText="£"+Number(inv.paid||0).toFixed(2)+" of £"+Number(inv.price||0).toFixed(2)+" paid";renderPaymentHistory(inv);
+updateInvoiceStatus(inv);let inNet=Number(inv.net??inv.price??0),inVat=Number(inv.vat||0);idNet.innerText="£"+inNet.toFixed(2);idVat.innerText="£"+inVat.toFixed(2);idVatRow.style.display=inVat>0?"block":"none";idStatus.innerText=inv.status||"Unpaid";idStatus.className="status "+((inv.status||"")==="Overdue"?"status-overdue":(inv.status||"")==="Part Paid"?"status-part":(inv.status||"")==="Paid"?"status-accepted":"");let paidAmt=Number(inv.paid||0),totalAmt=Number(inv.price||0),bal=Math.max(0,totalAmt-paidAmt);idPaid.innerText="£"+paidAmt.toFixed(2);idBalance.innerText="£"+bal.toFixed(2);if(document.getElementById("idFinanceTotal"))idFinanceTotal.innerText="£"+totalAmt.toFixed(2);
+let dep=Math.max(0,Number(inv.depositRequired||0));if(document.getElementById("idFinanceDeposit"))idFinanceDeposit.innerText="£"+dep.toFixed(2);idDepositRequired.innerText="£"+dep.toFixed(2);idDepositRow.style.display=dep>0?"block":"none";if(document.getElementById("idDepositState")){idDepositState.innerHTML=dep>0?(paidAmt>=dep?'<span class="deposit-paid-badge">✓ Deposit paid</span>':'<span class="deposit-due-badge">Deposit still due</span>'):'';}let pct=totalAmt>0?Math.min(100,Math.max(0,paidAmt/totalAmt*100)):0;if(document.getElementById("idProgressFill"))idProgressFill.style.width=pct.toFixed(1)+"%";idSourceQuote.innerText=inv.sourceQuoteNumber||"";idSourceQuoteRow.style.display=inv.sourceQuoteNumber?"block":"none";idPaymentProgress.innerText="£"+paidAmt.toFixed(2)+" of £"+totalAmt.toFixed(2)+" paid";renderPaymentHistory(inv);
 let btn=document.getElementById("paidToggleBtn");if(btn)btn.textContent=(inv.status==="Paid"?"Mark as Unpaid":"Mark as Paid");let db=document.getElementById("depositPaidBtn");if(db){db.style.display=dep>0&&Number(inv.paid||0)<dep?"block":"none";db.textContent="Record Deposit Paid · £"+Math.max(0,dep-Number(inv.paid||0)).toFixed(2)};
 show("invoiceDetail")
 }
