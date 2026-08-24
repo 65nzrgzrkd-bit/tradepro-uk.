@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK</title>
+<title>TradePro UK · Plumber Edition · Build 2.0</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -59,10 +59,24 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
   #invoicePaper h1{font-size:24pt!important} #invoicePaper h2{font-size:18pt!important} #invoicePaper h3{font-size:13pt!important}
 }
 
+
+.toolgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.toolcard{background:#fff;border-radius:17px;padding:17px;text-align:left;box-shadow:0 5px 18px rgba(0,0,0,.06);color:var(--text)}
+.toolcard b{display:block;font-size:16px;margin:7px 0 3px}.toolcard small{color:var(--muted);line-height:1.35}
+.toolicon{font-size:27px}.sectioncard{background:#fff;border-radius:17px;padding:16px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05)}
+.sectioncard h3{margin:0 0 8px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toolresult{background:#fff;border-left:5px solid var(--green);padding:18px;border-radius:17px;margin-top:16px;display:none}
+.toolresult .big{font-size:34px;font-weight:800;color:var(--green);margin:5px 0}.toolresult .small{font-size:12px;color:var(--muted);line-height:1.45}
+.toolbuttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.toolbuttons button{padding:13px;border-radius:12px;font-weight:700}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eaf2f7;color:var(--navy);font-size:12px;font-weight:700;margin:2px 4px 2px 0}
+.safety{background:#fff4e5;border:1px solid #f2c66d;border-radius:12px;padding:12px;margin:12px 0;color:#664800;font-size:12px;line-height:1.45}
+.versionline{font-size:12px;color:var(--muted);text-align:center;margin:16px 0 2px}
+@media(max-width:430px){.grid2,.toolgrid{grid-template-columns:1fr}.toolbuttons{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 1.5</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 2.0 · V10</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -80,6 +94,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <button class="action" onclick="show('quotes')">🧾<span>Quotes</span></button>
 <button class="action" onclick="show('invoices')">💷<span>Invoices</span></button>
 <button class="action" onclick="show('pricebook')">🔧<span>Price Book</span></button>
+<button class="action" onclick="show('heatingTools')">🔥<span>Heating Tools</span></button>
+<button class="action" onclick="show('settings')">🛡️<span>Backup & Settings</span></button>
 </div>
 </section>
 
@@ -300,58 +316,93 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 
 <section id="heatingTools" class="screen">
-  <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Heating Tools</h2></div>
-  <div class="notice"><strong>Radiator Room Sizing</strong><br>Fast on-site estimating aid. For final system design, heat pumps and compliance-critical work, verify against a full room-by-room heat-loss calculation and manufacturer data.</div>
-  <div class="grid2">
-    <label>Room length (m)<input id="radLength" type="number" step="0.1" value="4"></label>
-    <label>Room width (m)<input id="radWidth" type="number" step="0.1" value="3"></label>
-    <label>Room height (m)<input id="radHeight" type="number" step="0.1" value="2.4"></label>
-    <label>Room type
-      <select id="radRoom">
-        <option value="21">Living room / dining</option>
-        <option value="18">Bedroom</option>
-        <option value="22">Bathroom</option>
-        <option value="20">Kitchen</option>
-        <option value="18">Hall / landing</option>
-      </select>
-    </label>
-    <label>Insulation
-      <select id="radIns">
-        <option value="0.75">Modern / very good</option>
-        <option value="1" selected>Average</option>
-        <option value="1.25">Older / limited</option>
-        <option value="1.45">Poor / exposed</option>
-      </select>
-    </label>
-    <label>External walls
-      <select id="radWalls">
-        <option value="1">1 external wall</option>
-        <option value="1.10">2 external walls</option>
-        <option value="1.20">3+ external walls</option>
-        <option value="0.9">No external walls</option>
-      </select>
-    </label>
-    <label>Windows
-      <select id="radWindows">
-        <option value="0.95">Small / triple glazed</option>
-        <option value="1" selected>Typical double glazed</option>
-        <option value="1.12">Large glazing</option>
-        <option value="1.22">Older single glazing</option>
-      </select>
-    </label>
-    <label>Heat source
-      <select id="radSource">
-        <option value="1" selected>Boiler / conventional radiator temperatures</option>
-        <option value="1.35">Low-temperature / heat-pump starting allowance</option>
-      </select>
-    </label>
-  </div>
-  <button onclick="calcRadiator()">Calculate radiator requirement</button>
-  <div id="radResult" class="result" style="display:none;margin-top:16px"></div>
-  <div class="notice" style="margin-top:16px">
-    <strong>Coming through the same Heating section:</strong><br>
-    Full heating-system pricing, boiler/heating installation allowances, unvented hot-water systems, heat-pump installation pricing and gas-work estimating entries. Gas work must be undertaken by appropriately Gas Safe registered engineers; unvented and heat-pump work must meet applicable competence, manufacturer and regulatory requirements.
-  </div>
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Heating & System Tools</h2></div>
+<div class="notice"><strong>Build 2.0 heating suite</strong><br>Fast estimating tools for radiator sizing, full heating-system pricing, gas-load planning, unvented cylinders and heat-pump jobs. Figures are starting points and remain editable.</div>
+<div class="toolgrid">
+<button class="toolcard" onclick="showToolPanel('radPanel')"><span class="toolicon">🌡️</span><b>Radiator Sizing</b><small>Room heat requirement in W and BTU/hr.</small></button>
+<button class="toolcard" onclick="showToolPanel('systemPanel')"><span class="toolicon">🏠</span><b>Full Heating System</b><small>Estimate labour, pipework, emitters and plant.</small></button>
+<button class="toolcard" onclick="showToolPanel('gasPanel')"><span class="toolicon">🔥</span><b>Gas Load Worksheet</b><small>Total connected kW and indicative gas rate.</small></button>
+<button class="toolcard" onclick="showToolPanel('unventedPanel')"><span class="toolicon">🚿</span><b>Unvented Cylinder</b><small>Replacement/new-install pricing estimator.</small></button>
+<button class="toolcard" onclick="showToolPanel('heatPumpPanel')"><span class="toolicon">♻️</span><b>Heat Pump</b><small>Labour and installation-cost estimator.</small></button>
+<button class="toolcard" onclick="show('pricebook')"><span class="toolicon">📘</span><b>Heating Price Book</b><small>Use/edit your full job library.</small></button>
+</div>
+
+<div id="radPanel" class="sectioncard heatingPanel">
+<h3>Radiator Room Sizing</h3>
+<div class="grid2">
+<label>Room length (m)<input id="radLength" type="number" step="0.1" value="4"></label>
+<label>Room width (m)<input id="radWidth" type="number" step="0.1" value="3"></label>
+<label>Room height (m)<input id="radHeight" type="number" step="0.1" value="2.4"></label>
+<label>Room type<select id="radRoom"><option value="21">Living / dining</option><option value="18">Bedroom</option><option value="22">Bathroom</option><option value="20">Kitchen</option><option value="18">Hall / landing</option></select></label>
+<label>Insulation<select id="radIns"><option value="0.75">Modern / very good</option><option value="1" selected>Average</option><option value="1.25">Older / limited</option><option value="1.45">Poor / exposed</option></select></label>
+<label>External walls<select id="radWalls"><option value="1">1 external wall</option><option value="1.10">2 external walls</option><option value="1.20">3+ external walls</option><option value="0.9">No external walls</option></select></label>
+<label>Windows<select id="radWindows"><option value="0.95">Small / triple glazed</option><option value="1" selected>Typical double glazed</option><option value="1.12">Large glazing</option><option value="1.22">Older single glazing</option></select></label>
+<label>Heat source<select id="radSource"><option value="1" selected>Boiler / conventional temperatures</option><option value="1.35">Low-temperature / heat pump allowance</option></select></label>
+</div>
+<button class="primary" onclick="calcRadiator()">Calculate radiator requirement</button>
+<div id="radResult" class="toolresult"></div>
+</div>
+
+<div id="systemPanel" class="sectioncard heatingPanel" style="display:none">
+<h3>Full Heating System Estimator</h3>
+<div class="grid2">
+<label>Number of radiators<input id="hsRads" type="number" min="0" step="1" value="8"></label>
+<label>Approx. new pipework (m)<input id="hsPipe" type="number" min="0" step="1" value="45"></label>
+<label>Plant / heat source<select id="hsPlant"><option value="none">No new heat source</option><option value="combi">Combi boiler installation allowance</option><option value="system">System boiler installation allowance</option><option value="heatpump">Heat-pump plant allowance</option></select></label>
+<label>Heating zones<input id="hsZones" type="number" min="1" step="1" value="1"></label>
+<label>System work<select id="hsFlush"><option value="0">No flush included</option><option value="5">Flush / clean / inhibitor allowance</option></select></label>
+<label>Materials / equipment allowance £<input id="hsMaterials" type="number" min="0" step="50" value="2200"></label>
+<label>Difficulty<select id="hsDifficulty"><option>Easy</option><option selected>Standard</option><option>Complex</option><option>Very Complex</option></select></label>
+<label>Notes<input id="hsNotes" placeholder="e.g. occupied house, floors up"></label>
+</div>
+<button class="primary" onclick="calcHeatingSystem()">Price full heating system</button>
+<div id="hsResult" class="toolresult"></div>
+</div>
+
+<div id="gasPanel" class="sectioncard heatingPanel" style="display:none">
+<h3>Gas Load & Pipe-Sizing Worksheet</h3>
+<div class="safety"><strong>Safety / compliance:</strong> this worksheet totals appliance demand only. It does not replace a pressure-loss calculation or select a pipe diameter. Final gas pipe sizing and installation must be verified by an appropriately Gas Safe registered engineer using the applicable standards, appliance data and measured supply conditions.</div>
+<div class="grid2">
+<label>Boiler input (kW)<input id="gasBoiler" type="number" min="0" step="0.1" value="30"></label>
+<label>Cooker / hob (kW)<input id="gasCooker" type="number" min="0" step="0.1" value="10"></label>
+<label>Fire / other 1 (kW)<input id="gasOther1" type="number" min="0" step="0.1" value="0"></label>
+<label>Other appliance 2 (kW)<input id="gasOther2" type="number" min="0" step="0.1" value="0"></label>
+<label>Approx. developed pipe run (m)<input id="gasRun" type="number" min="0" step="0.5" value="12"></label>
+<label>Number of significant fittings<input id="gasFittings" type="number" min="0" step="1" value="6"></label>
+</div>
+<button class="primary" onclick="calcGasLoad()">Calculate connected gas load</button>
+<div id="gasResult" class="toolresult"></div>
+</div>
+
+<div id="unventedPanel" class="sectioncard heatingPanel" style="display:none">
+<h3>Unvented Cylinder Estimator</h3>
+<div class="grid2">
+<label>Cylinder size<select id="uvSize"><option value="150">150 L</option><option value="180" selected>180 L</option><option value="210">210 L</option><option value="250">250 L</option><option value="300">300 L</option></select></label>
+<label>Job type<select id="uvType"><option value="replace">Replace existing cylinder</option><option value="new">New installation / conversion</option></select></label>
+<label>Pipework alterations<select id="uvPipe"><option value="2">Minor</option><option value="5" selected>Standard</option><option value="9">Major / relocation</option></select></label>
+<label>Discharge route<select id="uvDischarge"><option value="2">Straightforward</option><option value="5" selected>Standard</option><option value="9">Complex route</option></select></label>
+<label>Controls / wiring allowance<select id="uvControls"><option value="2">Minimal</option><option value="4" selected>Standard</option><option value="7">Significant changes</option></select></label>
+<label>Materials / cylinder allowance £<input id="uvMaterials" type="number" min="0" step="50" value="950"></label>
+</div>
+<button class="primary" onclick="calcUnvented()">Price unvented job</button>
+<div id="uvResult" class="toolresult"></div>
+<div class="safety">Unvented hot-water work is competence and Building Regulations sensitive. Final design, safety devices, discharge arrangements and commissioning must follow manufacturer instructions and applicable requirements.</div>
+</div>
+
+<div id="heatPumpPanel" class="sectioncard heatingPanel" style="display:none">
+<h3>Heat-Pump Installation Estimator</h3>
+<div class="grid2">
+<label>Property / system size<select id="hpSize"><option value="28">Small / straightforward</option><option value="40" selected>Typical whole-house</option><option value="56">Large / complex</option></select></label>
+<label>Emitters to change / upgrade<input id="hpEmitters" type="number" min="0" step="1" value="5"></label>
+<label>New cylinder?<select id="hpCylinder"><option value="0">No</option><option value="8" selected>Yes</option></select></label>
+<label>Pipework alteration<select id="hpPipe"><option value="4">Minor</option><option value="10" selected>Standard</option><option value="18">Major</option></select></label>
+<label>Controls / commissioning allowance<select id="hpControls"><option value="5">Simple</option><option value="9" selected>Standard</option><option value="14">Complex</option></select></label>
+<label>Equipment / materials allowance £<input id="hpMaterials" type="number" min="0" step="100" value="6500"></label>
+</div>
+<button class="primary" onclick="calcHeatPump()">Price heat-pump job</button>
+<div id="hpResult" class="toolresult"></div>
+<div class="safety">Use a full room-by-room heat-loss calculation, emitter performance at design temperatures, manufacturer requirements and competent design/commissioning before specifying equipment. Electrical, refrigerant and other regulated work must be completed by appropriately competent persons where required.</div>
+</div>
 </section>
 
 <section id="pricebook" class="screen">
@@ -438,6 +489,16 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <label>Profit margin %<input id="profit" type="number" value="20"></label>
 <label>Invoice payment terms (days)<input id="paymentDays" type="number" value="14"></label>
 
+
+<h3>Data Backup</h3>
+<div class="notice">Your customers, quotes, invoices and personalised price book are stored on this device. Export a backup before changing phones, clearing browser data or making a major app update.</div>
+<div class="detail-actions">
+<button class="secondary" type="button" onclick="exportBackup()">Export Backup</button>
+<button class="secondary" type="button" onclick="document.getElementById('backupImport').click()">Import Backup</button>
+</div>
+<input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
+<div class="versionline">TradePro UK · Plumber Edition · Build 2.0 · Engine V10.0</div>
+
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
 
@@ -452,7 +513,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="7.0";
+const TRADEPRO_VERSION="10.0";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -511,9 +572,26 @@ const DEFAULT_PRICE_BOOK=[
 {category:"Boilers & Heating",name:"Boiler installation - labour allowance",pricingType:"Labour only",hours:16,materials:100,min:900,max:1600,notes:"Gas work must be carried out by an appropriately Gas Safe registered engineer. Personalise this allowance."},
 {category:"Boilers & Heating",name:"Boiler installation - supply & fit allowance",pricingType:"Supply & fit",hours:20,materials:1800,min:2600,max:4500,notes:"Gas work must be carried out by an appropriately Gas Safe registered engineer. Personalise this allowance."},
 {category:"Boilers & Heating",name:"Heating system alteration / upgrade",pricingType:"Labour only",hours:8,materials:150,min:550,max:1200,notes:"Indicative UK starting range \u2013 personalise to your business."},
+
+{category:"Full Heating Systems",name:"Full heating system - 6 radiators + new pipework",pricingType:"Supply & fit",hours:34,materials:1800,min:3500,max:6000,notes:"Starting allowance only. Size and personalise to property, heat source and specification."},
+{category:"Full Heating Systems",name:"Full heating system - 10 radiators + new pipework",pricingType:"Supply & fit",hours:50,materials:2600,min:5000,max:8500,notes:"Starting allowance only. Size and personalise to property, heat source and specification."},
+{category:"Unvented Hot Water",name:"Replace unvented cylinder",pricingType:"Supply & fit",hours:16,materials:950,min:1700,max:3000,notes:"Competence/regulatory-sensitive work. Verify cylinder, controls, discharge route and commissioning requirements."},
+{category:"Unvented Hot Water",name:"New unvented cylinder installation / conversion",pricingType:"Supply & fit",hours:24,materials:1250,min:2400,max:4200,notes:"Starting allowance only. Final design and discharge arrangement must be verified."},
+{category:"Heat Pumps",name:"Heat-pump installation labour / plumbing package",pricingType:"Labour only",hours:48,materials:350,min:2800,max:5200,notes:"Exclude or separately price equipment, electrical and specialist works as applicable."},
+{category:"Heat Pumps",name:"Heat-pump radiator / emitter upgrade",pricingType:"Supply & fit",hours:2.5,materials:180,min:300,max:550,notes:"Emitter output must be checked at the actual design temperatures."},
+{category:"Gas Work",name:"Gas pipework alteration / upgrade - estimate only",pricingType:"Supply & fit",hours:6,materials:120,min:450,max:950,notes:"Gas Safe registered work. Verify gas rate, pressure loss, pipe sizing and applicable standards before installation."},
 ];
 if(!Array.isArray(data.priceBook)||!data.priceBook.length||data.priceBook.length<=8) data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));
 let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null;
+
+// V10 migration marker: preserve user records/settings; add new default jobs once.
+if(localStorage.getItem('tradepro_migrated_v10')!=='1'){
+ const existing=new Set((data.priceBook||[]).map(x=>(x.category+'|'+x.name).toLowerCase()));
+ DEFAULT_PRICE_BOOK.forEach(x=>{let k=(x.category+'|'+x.name).toLowerCase();if(!existing.has(k))data.priceBook.push({...x});});
+ localStorage.setItem('tradepro_migrated_v10','1');
+ localStorage.setItem('tradepro',JSON.stringify(data));
+}
+
 
 function show(id){
 document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
@@ -949,31 +1027,72 @@ renderPriceBook();renderJobTypeOptions();
 }
 render();
 
+
+let lastToolResult={description:"",price:0,hours:0,materials:0};
+function showToolPanel(id){
+ document.querySelectorAll('.heatingPanel').forEach(p=>p.style.display='none');
+ let el=document.getElementById(id);if(el)el.style.display='block';
+ setTimeout(()=>el?.scrollIntoView({behavior:'smooth',block:'start'}),40);
+}
+function pricingFromInputs(h,m,diff='Standard'){
+ h=Math.max(0,Number(h)||0);m=Math.max(0,Number(m)||0);
+ let rate=settingNum('rate',55),travel=settingNum('travel',15),markup=settingNum('markup',20)/100,overhead=settingNum('overheadRate',10)/100,cont=settingNum('contingency',5)/100,profit=settingNum('profit',20)/100;
+ let mult={Easy:.9,Standard:1,Complex:1.15,'Very Complex':1.3}[diff]||1;
+ let labour=h*rate,subtotal=labour+m*(1+markup)+travel+(labour+m)*overhead,cost=subtotal*mult*(1+cont),price=cost/Math.max(.05,1-profit);
+ return {hours:h,materials:m,labour,price:Math.round(price/5)*5};
+}
+function setToolResult(boxId,title,desc,p){
+ lastToolResult={description:desc,price:p.price,hours:p.hours,materials:p.materials};
+ let b=document.getElementById(boxId);if(!b)return;b.style.display='block';
+ b.innerHTML=`<div class="small">${esc(title)}</div><div class="big">£${Number(p.price).toFixed(2)}</div><div>${Number(p.hours).toFixed(1)} labour hours · Materials allowance £${Number(p.materials).toFixed(2)}</div><div class="toolbuttons"><button class="green" onclick="useLastToolInJob()">Use in New Job</button><button class="secondary" onclick="show('pricebook')">Open Price Book</button></div><div class="small" style="margin-top:10px">Calculated from your saved labour rate, markup, overhead, contingency and profit settings. Review before quoting.</div>`;
+}
+function useLastToolInJob(){
+ show('job');description.value=lastToolResult.description||'Heating job';hours.value=lastToolResult.hours||0;materials.value=lastToolResult.materials||0;difficulty.value='Standard';
+ currentPrice=Number(lastToolResult.price)||0;recommended.innerText='£'+currentPrice.toFixed(2);breakdown.innerText='Imported from Heating Tools — review before saving';result.style.display='block';
+}
+function calcHeatingSystem(){
+ let r=Math.max(0,Number(hsRads.value)||0),pipe=Math.max(0,Number(hsPipe.value)||0),zones=Math.max(1,Number(hsZones.value)||1),m=Math.max(0,Number(hsMaterials.value)||0);
+ let plantHours={none:0,combi:16,system:20,heatpump:40}[hsPlant.value]||0;
+ let h=r*1.75+pipe*.18+plantHours+Math.max(0,zones-1)*2+(Number(hsFlush.value)||0)+4;
+ let p=pricingFromInputs(h,m,hsDifficulty.value);
+ let plantName=hsPlant.options[hsPlant.selectedIndex].text;
+ let desc=`Full heating system: ${r} radiators, approx. ${pipe}m pipework, ${plantName}, ${zones} zone(s)${hsNotes.value.trim()?'. '+hsNotes.value.trim():''}`;
+ setToolResult('hsResult','Recommended customer price',desc,p);
+}
+function calcGasLoad(){
+ let total=['gasBoiler','gasCooker','gasOther1','gasOther2'].reduce((a,id)=>a+(Number(document.getElementById(id).value)||0),0);
+ let m3h=total/10.76,run=Number(gasRun.value)||0,fittings=Number(gasFittings.value)||0;
+ gasResult.style.display='block';
+ gasResult.innerHTML=`<div class="small">Total connected appliance input</div><div class="big">${total.toFixed(1)} kW</div><div>Indicative gas volume ≈ <strong>${m3h.toFixed(2)} m³/h</strong></div><div style="margin-top:8px"><span class="badge">Run ${run.toFixed(1)} m</span><span class="badge">${fittings} fittings</span></div><div class="safety" style="margin-top:12px">Do not select pipe diameter from this figure alone. Complete the required gas pipe pressure-loss/sizing calculation using the applicable standard, actual pipe material/fittings, meter/regulator conditions, appliance requirements and permitted pressure drop.</div>`;
+}
+function calcUnvented(){
+ let base=uvType.value==='new'?14:9;let h=base+(Number(uvPipe.value)||0)+(Number(uvDischarge.value)||0)+(Number(uvControls.value)||0);let m=Math.max(0,Number(uvMaterials.value)||0);let p=pricingFromInputs(h,m,'Standard');
+ let desc=`${uvType.value==='new'?'New unvented cylinder installation':'Replace unvented cylinder'} — ${uvSize.value}L, pipework ${uvPipe.options[uvPipe.selectedIndex].text.toLowerCase()}, discharge ${uvDischarge.options[uvDischarge.selectedIndex].text.toLowerCase()}`;
+ setToolResult('uvResult','Recommended customer price',desc,p);
+}
+function calcHeatPump(){
+ let emit=Math.max(0,Number(hpEmitters.value)||0);let h=(Number(hpSize.value)||0)+emit*2.25+(Number(hpCylinder.value)||0)+(Number(hpPipe.value)||0)+(Number(hpControls.value)||0);let m=Math.max(0,Number(hpMaterials.value)||0);let p=pricingFromInputs(h,m,'Standard');
+ let desc=`Heat-pump installation estimate: ${hpSize.options[hpSize.selectedIndex].text}, ${emit} emitter upgrade(s)${Number(hpCylinder.value)?', new cylinder':''}`;
+ setToolResult('hpResult','Recommended customer price',desc,p);
+}
+function exportBackup(){
+ let payload={app:'TradePro UK Plumber Edition',version:TRADEPRO_VERSION,exportedAt:new Date().toISOString(),data,settings:{}};
+ ['businessName','ownerName','businessAddress1','businessAddress2','businessTown','businessPostcode','businessPhone','businessEmail','businessWebsite','companyNumber','vatNumber','accountName','sortCode','accountNumber','paymentNote','paymentLink','rate','travel','markup','overheadRate','contingency','profit','paymentDays','showQROnInvoice','businessLogo'].forEach(k=>payload.settings[k]=localStorage.getItem(k));
+ let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='TradePro_Backup_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function importBackup(event){
+ let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let p=JSON.parse(reader.result);if(!p||!p.data)throw new Error('Invalid backup');if(!confirm('Import this TradePro backup? Current data on this device will be replaced.'))return;data=p.data;if(!Array.isArray(data.customers))data.customers=[];if(!Array.isArray(data.quotes))data.quotes=[];if(!Array.isArray(data.invoices))data.invoices=[];if(!Array.isArray(data.priceBook)||!data.priceBook.length)data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));Object.entries(p.settings||{}).forEach(([k,v])=>{if(v===null||v===undefined)localStorage.removeItem(k);else localStorage.setItem(k,String(v))});save();alert('Backup imported successfully');show('home')}catch(e){alert('Could not import that backup file.')}};reader.readAsText(file);event.target.value='';
+}
+
 function calcRadiator(){
-  let L=parseFloat(document.getElementById("radLength").value)||0;
-  let W=parseFloat(document.getElementById("radWidth").value)||0;
-  let H=parseFloat(document.getElementById("radHeight").value)||0;
-  if(!L||!W||!H){alert("Enter the room length, width and height.");return}
-  let target=parseFloat(document.getElementById("radRoom").value)||21;
-  let ins=parseFloat(document.getElementById("radIns").value)||1;
-  let walls=parseFloat(document.getElementById("radWalls").value)||1;
-  let windows=parseFloat(document.getElementById("radWindows").value)||1;
-  let source=parseFloat(document.getElementById("radSource").value)||1;
-  let volume=L*W*H;
-  // Screening estimate only: volume x baseline W/m3, adjusted for target temp/exposure.
-  let tempFactor=Math.max(.85,Math.min(1.15,target/21));
-  let watts=Math.round(volume*50*ins*walls*windows*tempFactor);
-  let selected=Math.ceil((watts*source)/100)*100;
-  let btu=Math.round(watts*3.412);
-  let selectedBtu=Math.round(selected*3.412);
-  let r=document.getElementById("radResult");
-  r.style.display="block";
-  r.innerHTML="<div class='small'>Estimated room heat requirement</div><div class='big'>"+watts.toLocaleString()+" W</div>"+
-    "<div style='margin-top:6px'>≈ "+btu.toLocaleString()+" BTU/hr</div>"+
-    "<hr style='border:0;border-top:1px solid #dce5eb;margin:14px 0'>"+
-    "<strong>Radiator selection starting point:</strong> "+selected.toLocaleString()+" W / "+selectedBtu.toLocaleString()+" BTU/hr"+
-    (source>1?"<div class='notice' style='margin-top:12px'>Low-temperature systems require radiator output to be checked at the actual design flow/return/room temperatures. Use manufacturer correction factors or a full heat-loss/emitter design before specifying equipment.</div>":"")+
-    "<div class='small' style='margin-top:10px'>Estimate only — verify design-critical selections with a recognised room-by-room heat-loss method.</div>";
+ let L=parseFloat(radLength.value)||0,W=parseFloat(radWidth.value)||0,H=parseFloat(radHeight.value)||0;if(!L||!W||!H){alert('Enter the room length, width and height.');return}
+ let target=parseFloat(radRoom.value)||21,ins=parseFloat(radIns.value)||1,walls=parseFloat(radWalls.value)||1,windows=parseFloat(radWindows.value)||1,source=parseFloat(radSource.value)||1;
+ let volume=L*W*H,tempFactor=Math.max(.85,Math.min(1.15,target/21)),watts=Math.round(volume*50*ins*walls*windows*tempFactor),selected=Math.ceil((watts*source)/100)*100,btu=Math.round(watts*3.412),selectedBtu=Math.round(selected*3.412);
+ let low=source>1;radResult.style.display='block';
+ radResult.innerHTML=`<div class="small">Estimated room heat requirement</div><div class="big">${watts.toLocaleString()} W</div><div>≈ ${btu.toLocaleString()} BTU/hr</div><hr style="border:0;border-top:1px solid #dce5eb;margin:14px 0"><strong>Emitter selection starting point:</strong> ${selected.toLocaleString()} W / ${selectedBtu.toLocaleString()} BTU/hr${low?'<div class="safety" style="margin-top:12px">Low-temperature systems require emitter output to be checked at the actual design flow/return/room temperatures using manufacturer data/correction factors.</div>':''}<div class="toolbuttons"><button class="green" onclick="useRadiatorInJob(${selected},${selectedBtu})">Use in New Job</button><button class="secondary" onclick="showToolPanel('systemPanel')">Full System</button></div><div class="small" style="margin-top:10px">Screening estimate only — verify design-critical selections with a recognised room-by-room heat-loss method.</div>`;
+}
+function useRadiatorInJob(watts,btu){
+ lastToolResult={description:`Radiator / emitter for room — target approx. ${watts} W (${btu} BTU/hr)`,price:0,hours:1.5,materials:15};show('job');description.value=lastToolResult.description;hours.value=1.5;materials.value=15;difficulty.value='Standard';calculate();
 }
 </script>
 </body>
