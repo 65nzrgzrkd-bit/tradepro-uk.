@@ -113,7 +113,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 3.0 · V15.5</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 3.1 · V15.6</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -641,7 +641,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="15.5";
+const TRADEPRO_VERSION="15.6";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1254,7 +1254,7 @@ function loadAppointmentIntoJob(target){if(selectedAppointmentIndex===null||sele
 function upcomingAppointments(){let now=Date.now()-3600000;return (data.appointments||[]).filter(a=>(a.status||'Booked')==='Booked'&&appointmentTimeValue(a)>=now).sort((a,b)=>appointmentTimeValue(a)-appointmentTimeValue(b));}
 function startOfToday(){let d=new Date();d.setHours(0,0,0,0);return d.getTime();}
 function dayLabelForAppointment(a){let t=appointmentTimeValue(a),base=startOfToday(),day=86400000;if(t>=base&&t<base+day)return'Today';if(t>=base+day&&t<base+2*day)return'Tomorrow';return isoToUK(a.date);}
-function appointmentsNext7Days(){let base=startOfToday(),end=base+7*86400000;return (data.appointments||[]).filter(a=>(a.status||'Booked')==='Booked'&&appointmentTimeValue(a)>=base&&appointmentTimeValue(a)<end).sort((a,b)=>appointmentTimeValue(a)-appointmentTimeValue(b));}
+function appointmentsNext7Days(){let now=Date.now(),end=now+7*86400000;return (data.appointments||[]).filter(a=>(a.status||'Booked')==='Booked'&&appointmentTimeValue(a)>=now&&appointmentTimeValue(a)<end).sort((a,b)=>appointmentTimeValue(a)-appointmentTimeValue(b));}
 
 function render(){
 data.invoices.forEach(updateInvoiceStatus);
