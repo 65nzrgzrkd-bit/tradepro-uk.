@@ -113,7 +113,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 3.1 · V15.6</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 3.2 · V16.0</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -123,6 +123,9 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="card"><small>Invoices</small><strong id="invoiceCount">0</strong></div>
 <div class="card"><small>Outstanding</small><strong id="outstanding">£0</strong></div>
 <div class="card"><small>Customers</small><strong id="customerCount">0</strong></div>
+<div class="card"><small>Invoiced this month</small><strong id="monthInvoiced">£0</strong><div class="mini" id="monthInvoiceCount">0 invoices</div></div>
+<div class="card"><small>Deposits received</small><strong id="monthDeposits">£0</strong><div class="mini">This month</div></div>
+<div class="card"><small>Accepted work</small><strong id="acceptedWork">£0</strong><div class="mini" id="acceptedQuoteCount">0 accepted quotes</div></div>
 <div class="card"><small>Overdue invoices</small><strong id="overdueCount">0</strong><div class="mini" id="overdueValue">£0 overdue</div></div>
 <div class="card workload-card" onclick="openDiary()"><small>Upcoming jobs</small><strong id="upcomingCount">0</strong><div class="mini" id="nextJobText">Nothing booked</div></div>
 <div class="card workload-card" onclick="openDiary()"><small>Next 7 days</small><strong id="weekJobsCount">0</strong><div class="mini" id="weekJobsText">No booked visits</div></div>
@@ -254,6 +257,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="detailrow"><span>Status</span><strong id="qdStatus" class="status">Draft</strong><div class="quote-status-grid"><button class="secondary" onclick="setQuoteStatus('Draft')">Draft</button><button class="secondary" onclick="setQuoteStatus('Sent')">Sent</button><button class="green" onclick="setQuoteStatus('Accepted')">Accepted</button><button class="danger" onclick="setQuoteStatus('Declined')">Declined</button></div></div>
 <div class="detail-actions">
 <button id="quoteCreateInvoiceBtn" class="green" onclick="convertSelectedQuoteToInvoice()">Create Invoice</button>
+<button class="secondary" onclick="bookSelectedQuoteJob()">📅 Book Job</button>
 <button class="secondary" onclick="previewQuote()">Preview Quote</button>
 <button class="secondary" onclick="sendQuote()">Send / Share Quote</button>
 <button class="secondary" onclick="printQuote()">Print / Save PDF</button>
@@ -641,7 +645,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="15.6";
+const TRADEPRO_VERSION="16.0";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -845,6 +849,12 @@ function setQuoteStatus(status){
 if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex];if(q.status==="Converted"&&status!=="Converted"&&!confirm("This quote has already been converted to an invoice. Change its status anyway?"))return;q.status=status;q.statusChangedAt=new Date().toISOString();save();openQuote(selectedQuoteIndex);toast((q.number||"Quote")+" · "+q.status);
 }
 function toggleQuoteAccepted(){if(selectedQuoteIndex===null)return;setQuoteStatus(data.quotes[selectedQuoteIndex].status==="Accepted"?"Draft":"Accepted")}
+function bookSelectedQuoteJob(){
+if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer);
+if(q.status==="Declined"&&!confirm("This quote is marked Declined. Reopen it and book the job?"))return;
+if(q.status!=="Converted"){q.status="Accepted";q.acceptedAt=q.acceptedAt||new Date().toISOString();q.statusChangedAt=new Date().toISOString();save();}
+newAppointment(c);apptCustomer.value=c.name||"Customer";apptJob.value=q.job||"Quoted work";apptAddress.value=q.jobAddress||fullAddress(c);apptNotes.value=(q.number?"From "+q.number+". ":"")+"Quoted value £"+Number(q.price||0).toFixed(2);toast("Quote accepted — choose the job date and save booking");
+}
 function convertSelectedQuoteToInvoice(){
 if(selectedQuoteIndex===null)return;
 let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer);
@@ -1260,7 +1270,13 @@ function render(){
 data.invoices.forEach(updateInvoiceStatus);
 quoteCount.innerText=data.quotes.length;invoiceCount.innerText=data.invoices.length;customerCount.innerText=data.customers.length;
 let owed=data.invoices.filter(x=>(x.status||"Unpaid")!=="Paid").reduce((a,b)=>a+Math.max(0,Number(b.price||0)-Number(b.paid||0)),0);
-let totalPaid=data.invoices.reduce((a,b)=>a+Number(b.paid||0),0);outstanding.innerText="£"+owed.toFixed(0);sales.innerText="£"+totalPaid.toFixed(2);
+let nowMonth=new Date(),monthKey=nowMonth.getFullYear()+"-"+String(nowMonth.getMonth()+1).padStart(2,"0");
+function sameMonthUKDate(v){let m=String(v||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return !!m&&(m[3]+"-"+String(m[2]).padStart(2,"0"))===monthKey}
+function sameMonthISO(v){if(!v)return false;let d=new Date(v);return !isNaN(d)&&d.getFullYear()===nowMonth.getFullYear()&&d.getMonth()===nowMonth.getMonth()}
+let totalPaidThisMonth=0,depositPaidThisMonth=0;data.invoices.forEach(inv=>{let payments=Array.isArray(inv.payments)?inv.payments:[];if(payments.length){payments.forEach(p=>{if(sameMonthUKDate(p.date)||sameMonthISO(p.at)){let a=Number(p.amount||0);totalPaidThisMonth+=a;if(String(p.type||"").toLowerCase().includes("deposit"))depositPaidThisMonth+=a;}})}else if(Number(inv.paid||0)>0&&(sameMonthISO(inv.lastPaymentAt)||sameMonthUKDate(inv.date))){totalPaidThisMonth+=Number(inv.paid||0);}});
+outstanding.innerText="£"+owed.toFixed(0);sales.innerText="£"+totalPaidThisMonth.toFixed(2);
+let monthInv=data.invoices.filter(inv=>sameMonthUKDate(inv.date)||sameMonthISO(inv.createdAt)),monthInvValue=monthInv.reduce((a,b)=>a+Number(b.price||0),0);if(document.getElementById("monthInvoiced"))monthInvoiced.innerText="£"+monthInvValue.toFixed(0);if(document.getElementById("monthInvoiceCount"))monthInvoiceCount.innerText=monthInv.length+" invoice"+(monthInv.length===1?"":"s");if(document.getElementById("monthDeposits"))monthDeposits.innerText="£"+depositPaidThisMonth.toFixed(0);
+let accepted=data.quotes.filter(q=>(q.status||"")==="Accepted"),acceptedValue=accepted.reduce((a,b)=>a+Number(b.price||0),0);if(document.getElementById("acceptedWork"))acceptedWork.innerText="£"+acceptedValue.toFixed(0);if(document.getElementById("acceptedQuoteCount"))acceptedQuoteCount.innerText=accepted.length+" accepted quote"+(accepted.length===1?"":"s");
 let overdue=data.invoices.filter(x=>(x.status||'')==='Overdue'),overdueAmt=overdue.reduce((a,b)=>a+Math.max(0,Number(b.price||0)-Number(b.paid||0)),0);overdueCount.innerText=overdue.length;overdueValue.innerText='£'+overdueAmt.toFixed(0)+' overdue';
 let upcoming=upcomingAppointments();upcomingCount.innerText=upcoming.length;nextJobText.innerText=upcoming[0]?(dayLabelForAppointment(upcoming[0])+(upcoming[0].time?' · '+upcoming[0].time:'')+' · '+(upcoming[0].customer||'Customer')):'Nothing booked';let weekJobs=appointmentsNext7Days();if(document.getElementById('weekJobsCount'))weekJobsCount.innerText=weekJobs.length;if(document.getElementById('weekJobsText'))weekJobsText.innerText=weekJobs.length?(weekJobs.length+' booked visit'+(weekJobs.length===1?'':'s')+' in next 7 days'):'No booked visits';
 
