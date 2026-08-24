@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 3.8</title>
+<title>TradePro UK · Plumber Edition · Build 3.9</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -111,7 +111,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .dashboard-note{background:#fff;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.45}
 @media(max-width:430px){.customer-actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
 /* Build 3.4 field actions and connected job status */
-/* Build 3.8 customer account dashboard, payment timeline and CRM quick actions */
+/* Build 3.9 business reports, customer account status and clearer payment history */
 .booking-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.booking-quick button{padding:13px;border-radius:12px;font-weight:700}.status-progress{background:#fff4df;color:#7a5200}.status-invoiced{background:#eef4ff;color:#2457a7}.status-paid{background:#e8f5e9;color:#226b28}.appt-meta{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.45}.appointment .appt-value{display:inline-block;margin-top:5px;font-weight:800;color:var(--green)}.diary-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.diary-filter{padding:11px 8px;border-radius:12px;background:#e6edf2;color:var(--navy);font-weight:800;font-size:13px}.diary-filter.active{background:var(--navy);color:#fff}.diary-summary{background:#fff;border-radius:15px;padding:14px 16px;margin:10px 0 4px;box-shadow:0 4px 14px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.4}.diary-summary strong{color:var(--text);font-size:16px}.appt-meta:empty{display:none}
 @media(max-width:430px){.booking-quick{grid-template-columns:1fr 1fr}}
 .appt-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
@@ -131,11 +131,26 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .history-type{display:inline-block;font-size:11px;font-weight:800;padding:3px 7px;border-radius:999px;background:#eef3f6;margin-right:5px}
 .history-payment{border-left:4px solid #3d8737}
 @media(max-width:430px){.customer-summary{grid-template-columns:1fr 1fr}.customer-history-filters{grid-template-columns:repeat(4,1fr)}}
+.account-status{border-radius:14px;padding:13px 15px;margin:12px 0;font-weight:800}
+.account-status.clear{background:#e8f4e6;color:#24662a}.account-status.owing{background:#fff0eb;color:#8f261c}
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.report-card{background:#fff;border-radius:16px;padding:15px;box-shadow:0 5px 18px rgba(0,0,0,.05)}
+.report-card span{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}.report-card strong{font-size:24px;color:var(--text)}
+.report-card.hero-report{grid-column:1/-1;background:linear-gradient(135deg,#315e88,#3e8790);color:#fff}
+.report-card.hero-report span,.report-card.hero-report strong{color:#fff}.report-card.hero-report strong{font-size:36px}
+.report-section{background:#fff;border-radius:17px;padding:16px;margin:14px 0;box-shadow:0 5px 18px rgba(0,0,0,.05)}
+.report-section h3{margin-top:0}
+.month-row{display:grid;grid-template-columns:52px 1fr 80px;gap:9px;align-items:center;padding:8px 0;border-bottom:1px solid #edf1f3;font-size:12px}
+.month-row:last-child{border-bottom:0}.month-bar{height:10px;background:#e5ebef;border-radius:999px;overflow:hidden}.month-bar i{display:block;height:100%;background:#3d8737;border-radius:999px}
+.month-values{text-align:right;font-weight:800}.month-values small{display:block;font-weight:500;color:var(--muted);font-size:10px}
+.report-note{font-size:12px;color:var(--muted);line-height:1.45}
+@media(max-width:430px){.report-grid{grid-template-columns:1fr 1fr}}
+
 
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 3.8 · V16.6</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 3.9 · V16.7</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -162,6 +177,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <button class="action" onclick="show('pricebook')">🔧<span>Price Book</span></button>
 <button class="action" onclick="show('heatingTools')">🔥<span>Heating Tools</span></button>
 <button class="action" onclick="openDiary()">📅<span>Diary</span></button>
+<button class="action" onclick="openReports()">📊<span>Reports</span></button>
 <button class="action" onclick="show('settings')">🛡️<span>Backup & Settings</span></button>
 </div>
 </section>
@@ -228,6 +244,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="customer-summary-card"><span>Active jobs</span><strong id="cdActiveJobs">0</strong></div>
 <div class="customer-summary-card"><span>Completed jobs</span><strong id="cdCompletedJobs">0</strong></div>
 </div>
+<div id="cdAccountStatus" class="account-status clear">Account clear</div>
 
 <div class="customer-actions">
 <button class="green" onclick="newJobForSelectedCustomer()">＋ New Job</button>
@@ -628,6 +645,29 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 </section>
 
+<section id="reports" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Business Reports</h2></div>
+<div class="report-grid">
+<div class="report-card hero-report"><span>Payments received this month</span><strong id="rpMonthPaid">£0.00</strong><div id="rpMonthPaidNote">0 payments</div></div>
+<div class="report-card"><span>Invoiced this month</span><strong id="rpMonthInvoiced">£0</strong></div>
+<div class="report-card"><span>Outstanding</span><strong id="rpOutstanding">£0</strong></div>
+<div class="report-card"><span>Jobs completed this month</span><strong id="rpCompleted">0</strong></div>
+<div class="report-card"><span>Average invoice value</span><strong id="rpAverageJob">£0</strong></div>
+<div class="report-card"><span>Quote acceptance</span><strong id="rpWinRate">0%</strong></div>
+<div class="report-card"><span>Work won remaining</span><strong id="rpWonRemaining">£0</strong></div>
+<div class="report-card"><span>Overdue</span><strong id="rpOverdue">£0</strong></div>
+</div>
+<div class="report-section">
+<h3>Last 12 months</h3>
+<div class="report-note">Green bars show invoiced value. The figures on the right show invoiced value, then payments received underneath.</div>
+<div id="report12Months"></div>
+</div>
+<div class="report-section">
+<h3>Business snapshot</h3>
+<div id="reportSnapshot" class="report-note"></div>
+</div>
+</section>
+
 <section id="settings" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Business Settings</h2></div>
 
@@ -709,7 +749,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="16.6";
+const TRADEPRO_VERSION="16.7";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1320,6 +1360,7 @@ function openCustomer(i){
  selectedCustomerIndex=i;customerHistoryFilter='all';let c=normalizeCustomer(data.customers[i]);if(!c)return;
  cdName.textContent=c.name||'Unnamed customer';cdAddress.textContent=fullAddress(c);cdContact.textContent=contactText(c);
  let s=customerAccountStats(c);cdQuoted.textContent='£'+s.quoted.toFixed(2);cdInvoiced.textContent='£'+s.invoiced.toFixed(2);cdPaid.textContent='£'+s.paid.toFixed(2);cdOutstanding.textContent='£'+s.outstanding.toFixed(2);cdActiveJobs.textContent=s.activeJobs;cdCompletedJobs.textContent=s.completedJobs;
+ let stat=document.getElementById('cdAccountStatus');if(stat){stat.className='account-status '+(s.outstanding>0?'owing':'clear');stat.textContent=s.outstanding>0?'£'+s.outstanding.toFixed(2)+' outstanding on this account':'Account clear · no money outstanding';}
  ['All','Jobs','Docs','Payments'].forEach(x=>{let el=document.getElementById('ch'+x);if(el)el.classList.toggle('active',x==='All')});
  renderCustomerHistory(c);show('customerDetail');
 }
@@ -1334,7 +1375,7 @@ function renderCustomerHistory(c){
  (data.appointments||[]).forEach((a,i)=>{if(String(a.customer||'').trim().toLowerCase()===String(c.name||'').trim().toLowerCase())rows.push({group:'jobs',type:'Job',date:isoToUK(a.date),number:a.sourceQuoteNumber||a.invoiceNumber||'Booking',job:a.job||'',price:Number(a.quotedValue||0),status:a.status||'Booked',open:`editAppointment(${i})`})});
  let visible=rows.filter(r=>customerHistoryFilter==='all'||r.group===customerHistoryFilter).sort((a,b)=>{let av=a.at?new Date(a.at).getTime():ukDateValue(a.date),bv=b.at?new Date(b.at).getTime():ukDateValue(b.date);return bv-av;});
  cdHistoryCount.textContent=visible.length+' record'+(visible.length===1?'':'s');
- customerHistory.innerHTML=visible.length?visible.map(r=>{let pay=r.group==='payments',priceLabel=pay?'+ £'+r.price.toFixed(2):'£'+r.price.toFixed(2);return `<div class="item clickable ${pay?'history-payment':''}" onclick="${r.open}"><span class="price">${priceLabel}</span><strong><span class="history-type">${esc(r.type)}</span>${esc(r.number)}</strong><small>${esc(r.date)} · ${esc(r.status)}${r.job?'<br>'+esc(r.job):''}</small></div>`;}).join(''):'<div class="empty">No records in this view.</div>';
+ customerHistory.innerHTML=visible.length?visible.map(r=>{let pay=r.group==='payments',zeroJob=r.group==='jobs'&&Number(r.price||0)<=0,priceLabel=pay?'+ £'+r.price.toFixed(2):(zeroJob?'Value not set':'£'+r.price.toFixed(2));let typeLabel=r.type;if(pay){let t=String(r.type||'Payment').toLowerCase();typeLabel=t.includes('deposit')?'Deposit received':t.includes('full')?'Final payment received':'Payment received';}return `<div class="item clickable ${pay?'history-payment':''}" onclick="${r.open}"><span class="price">${priceLabel}</span><strong><span class="history-type">${esc(typeLabel)}</span>${esc(r.number)}</strong><small>${esc(r.date)} · ${esc(r.status)}${r.job?'<br>'+esc(r.job):''}</small></div>`;}).join(''):'<div class="empty">No records in this view.</div>';
 }
 function newJobForSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newJob();customer.value=c.name||'';phone.value=c.phone||'';email.value=c.email||'';address1.value=c.address1||'';address2.value=c.address2||'';town.value=c.town||'';postcode.value=c.postcode||'';}
 function bookSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newAppointment(c);}
@@ -1456,6 +1497,39 @@ function dayLabelForAppointment(a){let t=appointmentTimeValue(a),base=startOfTod
 function appointmentsNext7Days(){let now=Date.now(),end=now+7*86400000;return (data.appointments||[]).filter(a=>(a.status||'Booked')==='Booked'&&appointmentTimeValue(a)>=now&&appointmentTimeValue(a)<end).sort((a,b)=>appointmentTimeValue(a)-appointmentTimeValue(b));}
 function completedAppointmentsThisMonth(){let d=new Date(),y=d.getFullYear(),m=d.getMonth();return (data.appointments||[]).filter(a=>{if(!['Completed','Invoiced','Paid'].includes(a.status||''))return false;let x=a.completedAt?new Date(a.completedAt):new Date((a.date||'')+'T12:00:00');return !isNaN(x)&&x.getFullYear()===y&&x.getMonth()===m;});}
 
+function reportMonthKeyFromUK(v){let m=String(v||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?m[3]+'-'+String(m[2]).padStart(2,'0'):''}
+function reportMonthKeyFromISO(v){if(!v)return '';let d=new Date(v);return isNaN(d)?'':d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function reportPaymentRows(){
+ let rows=[];
+ (data.invoices||[]).forEach(inv=>{
+   let ps=Array.isArray(inv.payments)?inv.payments:[];
+   if(ps.length)ps.forEach(p=>rows.push({amount:Number(p.amount||0),month:reportMonthKeyFromUK(p.date)||reportMonthKeyFromISO(p.at),type:p.type||'Payment'}));
+   else if(Number(inv.paid||0)>0)rows.push({amount:Number(inv.paid||0),month:reportMonthKeyFromISO(inv.lastPaymentAt)||reportMonthKeyFromUK(inv.date),type:'Payment'});
+ });
+ return rows;
+}
+function openReports(){show('reports');renderReports();}
+function renderReports(){
+ if(!document.getElementById('reports'))return;
+ let now=new Date(),mk=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+ let payments=reportPaymentRows(),monthPayments=payments.filter(p=>p.month===mk),paidMonth=monthPayments.reduce((n,p)=>n+p.amount,0);
+ let monthInv=(data.invoices||[]).filter(inv=>(reportMonthKeyFromUK(inv.date)||reportMonthKeyFromISO(inv.createdAt))===mk),monthInvValue=monthInv.reduce((n,i)=>n+Number(i.price||0),0);
+ let owed=(data.invoices||[]).reduce((n,i)=>n+Math.max(0,Number(i.price||0)-Number(i.paid||0)),0);
+ let complete=completedAppointmentsThisMonth().length;
+ let invTotal=(data.invoices||[]).reduce((n,i)=>n+Number(i.price||0),0),avg=(data.invoices||[]).length?invTotal/data.invoices.length:0;
+ let eligible=(data.quotes||[]).filter(q=>['Accepted','Declined'].includes(q.status||'')),accepted=eligible.filter(q=>q.status==='Accepted').length,win=eligible.length?Math.round(accepted/eligible.length*100):0;
+ let openWon=(data.quotes||[]).filter(q=>q.status==='Accepted').reduce((n,q)=>n+Number(q.price||0),0);
+ let overdue=(data.invoices||[]).filter(i=>i.status==='Overdue').reduce((n,i)=>n+Math.max(0,Number(i.price||0)-Number(i.paid||0)),0);
+ rpMonthPaid.textContent='£'+paidMonth.toFixed(2);rpMonthPaidNote.textContent=monthPayments.length+' payment'+(monthPayments.length===1?'':'s')+' recorded';rpMonthInvoiced.textContent='£'+monthInvValue.toFixed(0);rpOutstanding.textContent='£'+owed.toFixed(0);rpCompleted.textContent=complete;rpAverageJob.textContent='£'+avg.toFixed(0);rpWinRate.textContent=eligible.length?win+'%':'—';rpWonRemaining.textContent='£'+openWon.toFixed(0);rpOverdue.textContent='£'+overdue.toFixed(0);
+ let months=[];for(let i=11;i>=0;i--){let d=new Date(now.getFullYear(),now.getMonth()-i,1),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');months.push({key,label:d.toLocaleDateString('en-GB',{month:'short'}),inv:0,paid:0})}
+ let map=Object.fromEntries(months.map(m=>[m.key,m]));
+ (data.invoices||[]).forEach(inv=>{let key=reportMonthKeyFromUK(inv.date)||reportMonthKeyFromISO(inv.createdAt);if(map[key])map[key].inv+=Number(inv.price||0)});
+ payments.forEach(p=>{if(map[p.month])map[p.month].paid+=Number(p.amount||0)});
+ let max=Math.max(1,...months.map(m=>m.inv));
+ report12Months.innerHTML=months.map(m=>`<div class="month-row"><strong>${m.label}</strong><div class="month-bar"><i style="width:${Math.max(1,m.inv/max*100)}%"></i></div><div class="month-values">£${m.inv.toFixed(0)}<small>Paid £${m.paid.toFixed(0)}</small></div></div>`).join('');
+ let lifetimePaid=payments.reduce((n,p)=>n+p.amount,0),allCompleted=(data.appointments||[]).filter(a=>['Completed','Invoiced','Paid'].includes(a.status||'')).length;
+ reportSnapshot.innerHTML=`<strong>Lifetime invoiced:</strong> £${invTotal.toFixed(2)}<br><strong>Lifetime payments recorded:</strong> £${lifetimePaid.toFixed(2)}<br><strong>Invoices:</strong> ${(data.invoices||[]).length} · <strong>Quotes:</strong> ${(data.quotes||[]).length} · <strong>Customers:</strong> ${(data.customers||[]).length}<br><strong>Completed jobs recorded:</strong> ${allCompleted}<br><br>Figures are based on the records stored in TradePro on this device.`;
+}
 function render(){
 data.invoices.forEach(updateInvoiceStatus);
 quoteCount.innerText=data.quotes.length;invoiceCount.innerText=data.invoices.length;customerCount.innerText=data.customers.length;
@@ -1487,7 +1561,7 @@ let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let i
 if(document.getElementById("showQROnInvoice"))showQROnInvoice.checked=localStorage.getItem("showQROnInvoice")==="1";
 if(document.getElementById("vatRegistered"))vatRegistered.checked=localStorage.getItem("vatRegistered")==="1";
 if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
-renderPriceBook();renderJobTypeOptions();renderDiary();
+renderPriceBook();renderJobTypeOptions();renderDiary();if(document.getElementById('reports'))renderReports();
 }
 render();
 window.addEventListener("storage",e=>{if(e.key==="tradepro"){syncDataFromStorage();render();toast("TradePro data refreshed")}});
