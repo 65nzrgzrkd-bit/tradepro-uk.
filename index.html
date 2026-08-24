@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 2.3</title>
+<title>TradePro UK · Plumber Edition · Build 2.4</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -80,7 +80,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 2.3 · V13</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 2.4 · V14</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -167,7 +167,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="detailrow"><span>Date</span><strong id="qdDate"></strong></div>
 <div class="detailrow"><span>Valid until</span><strong id="qdValidUntil"></strong></div>
 <div class="detailrow" id="qdVatRow" style="display:none"><span>VAT breakdown</span><strong><span id="qdNet"></span> + <span id="qdVat"></span> VAT</strong></div>
-<div class="detailrow"><span>Suggested deposit</span><strong id="qdDeposit"></strong></div>
+<div class="detailrow"><span>Deposit required</span><strong id="qdDeposit"></strong></div>
+<div class="detailrow" style="display:block"><span style="display:block;margin-bottom:8px">Edit deposit for this quote</span><div class="two"><label>Type<select id="qdDepositType"><option value="percent">Percentage %</option><option value="fixed">Fixed amount £</option></select></label><label>Value<input id="qdDepositValue" type="number" min="0" step="0.01"></label></div><button class="secondary" style="width:100%;margin-top:8px" onclick="saveQuoteDeposit()">Save Deposit</button></div>
 <div class="detailrow"><span>Status</span><strong id="qdStatus" class="status">Draft</strong></div>
 <div class="detail-actions">
 <button class="green" onclick="convertSelectedQuoteToInvoice()">Create Invoice</button>
@@ -192,7 +193,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div><h3 style="margin-top:0">Work</h3><div id="qJob"></div><div id="qJobAddress"></div></div>
 </div>
 <div style="border-top:2px solid #15324b;border-bottom:1px solid #dce5eb;padding:16px 0;margin-top:24px"><div id="qVatBreak" style="display:none"><div style="display:flex;justify-content:space-between"><span>Net</span><span id="qNet"></span></div><div style="display:flex;justify-content:space-between"><span>VAT</span><span id="qVat"></span></div></div><div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800;margin-top:6px"><span>Quoted total</span><span id="qTotal"></span></div></div>
-<div id="qDepositBlock" style="margin-top:18px;padding:16px;background:#f6f8fa;border-radius:12px"><strong>Suggested deposit: <span id="qDeposit"></span></strong><div class="smallnote" style="margin-top:5px">Deposit requirements can be agreed with the customer before booking.</div></div>
+<div id="qDepositBlock" style="margin-top:18px;padding:16px;background:#f6f8fa;border-radius:12px"><strong>Deposit required: <span id="qDeposit"></span></strong><div class="smallnote" style="margin-top:5px">This deposit is required to secure the booking and can be changed for each quote.</div></div>
 <div style="margin-top:22px;font-size:12px;line-height:1.5;color:#495661">This quotation is based on the work described above. Any additional work or unforeseen issues may require a revised price and customer approval.</div>
 <div id="qCompanyFooter" style="margin-top:26px;font-size:12px;color:#6f7a84;text-align:center"></div>
 </div>
@@ -353,7 +354,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <section id="heatingTools" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Heating & System Tools</h2></div>
-<div class="notice"><strong>Build 2.3 heating suite</strong><br>Fast estimating tools for radiator sizing, full heating-system pricing, gas-load planning, unvented cylinders and heat-pump jobs. Figures are starting points and remain editable.</div>
+<div class="notice"><strong>Build 2.4 heating suite</strong><br>Fast estimating tools for radiator sizing, full heating-system pricing, gas-load planning, unvented cylinders and heat-pump jobs. Figures are starting points and remain editable.</div>
 <div class="toolgrid">
 <button class="toolcard" onclick="showToolPanel('radPanel')"><span class="toolicon">🌡️</span><b>Radiator Sizing</b><small>Room heat requirement in W and BTU/hr.</small></button>
 <button class="toolcard" onclick="showToolPanel('systemPanel')"><span class="toolicon">🏠</span><b>Full Heating System</b><small>Estimate labour, pipework, emitters and plant.</small></button>
@@ -527,7 +528,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <label>Contingency %<input id="contingency" type="number" value="5"></label>
 <label>Profit margin %<input id="profit" type="number" value="20"></label>
 <label>Invoice payment terms (days)<input id="paymentDays" type="number" value="14"></label>
-<div class="two"><label>Quote valid for (days)<input id="quoteValidDays" type="number" value="30"></label><label>Suggested deposit %<input id="depositPercent" type="number" value="20"></label></div>
+<div class="two"><label>Quote valid for (days)<input id="quoteValidDays" type="number" value="30"></label><label>Default deposit %<input id="depositPercent" type="number" value="20"></label></div>
 
 
 <h3>Data Backup</h3>
@@ -537,7 +538,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <button class="secondary" type="button" onclick="document.getElementById('backupImport').click()">Import Backup</button>
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
-<div class="versionline">TradePro UK · Plumber Edition · Build 2.3 · Engine V13.0</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 2.4 · Engine V14.0</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -555,7 +556,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="13.0";
+const TRADEPRO_VERSION="14.0";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -717,12 +718,22 @@ let c=collectCustomer();upsertCustomer(c);
 return {customer:c,job:jobName(),jobAddress:getJobAddress(c),price:currentPrice,net:currentNet||currentPrice,vat:currentVat||0,vatRate:settingNum("vatRate",20),vatRegistered:settingBool("vatRegistered",false),date:todayUK()}
 }
 
+function quoteDepositInfo(q){
+let type=q.depositType||"percent";
+let value=Number(q.depositValue);
+if(!Number.isFinite(value)){value=Number(q.depositPercent??settingNum("depositPercent",20));type="percent";}
+if(type==="fixed"){let amount=Math.max(0,Math.min(Number(q.price||0),value));return {type,value:amount,amount,label:"£"+amount.toFixed(2)};}
+let pct=Math.max(0,value);let amount=Number(q.price||0)*pct/100;return {type:"percent",value:pct,amount,label:"£"+amount.toFixed(2)+" ("+pct+"%)"};
+}
+function saveQuoteDeposit(){
+if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex];let type=qdDepositType.value;let value=parseFloat(qdDepositValue.value);if(!Number.isFinite(value)||value<0){alert("Enter a valid deposit amount or percentage.");return}if(type==="fixed"&&value>Number(q.price||0)){alert("The deposit cannot be more than the quote total.");return}q.depositType=type;q.depositValue=value;if(type==="percent")q.depositPercent=value;q.depositUpdatedAt=new Date().toISOString();save();openQuote(selectedQuoteIndex);toast((q.number||"Quote")+" deposit updated");
+}
 function saveQuote(){
 if(!currentPrice)calculate();
 syncDataFromStorage();
 let r=buildRecord();
 let validDays=settingNum("quoteValidDays",30),depositPct=settingNum("depositPercent",20);
-let quote={...r,number:nextQuoteNumber(),validUntil:addDaysFromUK(r.date,validDays),depositPercent:depositPct,status:"Draft",savedAt:new Date().toISOString()};
+let quote={...r,number:nextQuoteNumber(),validUntil:addDaysFromUK(r.date,validDays),depositPercent:depositPct,depositType:"percent",depositValue:depositPct,status:"Draft",savedAt:new Date().toISOString()};
 data.quotes.unshift(quote);
 if(save()){show("quotes");toast(quote.number+" saved · £"+Number(quote.price||0).toFixed(2));}
 }
@@ -740,7 +751,7 @@ save();show("invoices")
 function openQuote(i){
 selectedQuoteIndex=i;let q=data.quotes[i],c=normalizeCustomer(q.customer);
 if(!q.number){q.number=nextQuoteNumber();q.validUntil=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));q.depositPercent=Number.isFinite(Number(q.depositPercent))?Number(q.depositPercent):settingNum("depositPercent",20);save();}
-qdPrice.innerText="£"+Number(q.price||0).toFixed(2);qdCustomer.innerText=c.name;qdAddress.innerText=fullAddress(c);qdContact.innerText=contactText(c);qdJob.innerText=q.job;qdNumber.innerText=q.number||"";qdDate.innerText=q.date;qdValidUntil.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));let qNetVal=Number(q.net??q.price??0),qVatVal=Number(q.vat||0);qdNet.innerText="£"+qNetVal.toFixed(2);qdVat.innerText="£"+qVatVal.toFixed(2);qdVatRow.style.display=qVatVal>0?"block":"none";qdDeposit.innerText="£"+(Number(q.price||0)*(Number(q.depositPercent??settingNum("depositPercent",20))/100)).toFixed(2)+" ("+Number(q.depositPercent??settingNum("depositPercent",20))+"%)";qdStatus.innerText=q.status||"Draft";qdStatus.className="status "+((q.status||"")==="Accepted"?"status-accepted":(q.status||"")==="Converted"?"status-converted":"");show("quoteDetail")
+qdPrice.innerText="£"+Number(q.price||0).toFixed(2);qdCustomer.innerText=c.name;qdAddress.innerText=fullAddress(c);qdContact.innerText=contactText(c);qdJob.innerText=q.job;qdNumber.innerText=q.number||"";qdDate.innerText=q.date;qdValidUntil.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));let qNetVal=Number(q.net??q.price??0),qVatVal=Number(q.vat||0);qdNet.innerText="£"+qNetVal.toFixed(2);qdVat.innerText="£"+qVatVal.toFixed(2);qdVatRow.style.display=qVatVal>0?"block":"none";let depInfo=quoteDepositInfo(q);qdDeposit.innerText=depInfo.label;qdDepositType.value=depInfo.type;qdDepositValue.value=depInfo.value;qdStatus.innerText=q.status||"Draft";qdStatus.className="status "+((q.status||"")==="Accepted"?"status-accepted":(q.status||"")==="Converted"?"status-converted":"");show("quoteDetail")
 }
 function toggleQuoteAccepted(){
 if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex];q.status=(q.status==="Accepted"?"Draft":"Accepted");q.statusChangedAt=new Date().toISOString();save();openQuote(selectedQuoteIndex);toast(q.number+" · "+q.status);
@@ -754,14 +765,14 @@ x.quoteKey===quoteKey(q) ||
 );
 if(duplicate){alert("This quote has already been converted to invoice "+duplicate.number+".");openInvoice(data.invoices.indexOf(duplicate));return}
 let terms=settingNum("paymentDays",14);
-data.invoices.unshift({customer:c,job:q.job,jobAddress:q.jobAddress||fullAddress(c),price:q.price,net:q.net??q.price,vat:q.vat||0,vatRate:q.vatRate||0,vatRegistered:!!q.vatRegistered,date:todayUK(),dueDate:addDaysUK(terms),number:nextInvoiceNumber(),status:"Unpaid",paid:0,quoteKey:quoteKey(q)});
+let depInfo=quoteDepositInfo(q);data.invoices.unshift({customer:c,job:q.job,jobAddress:q.jobAddress||fullAddress(c),price:q.price,net:q.net??q.price,vat:q.vat||0,vatRate:q.vatRate||0,vatRegistered:!!q.vatRegistered,date:todayUK(),dueDate:addDaysUK(terms),number:nextInvoiceNumber(),status:"Unpaid",paid:0,depositRequired:depInfo.amount,quoteKey:quoteKey(q)});
 q.status="Converted";save();show("invoices")
 }
 function quoteKey(q){let c=normalizeCustomer(q.customer);return [c.name,q.job,q.price,q.date].join("|")}
 function deleteSelectedQuote(){if(selectedQuoteIndex===null)return;if(confirm("Delete this quote?")){data.quotes.splice(selectedQuoteIndex,1);selectedQuoteIndex=null;save();show("quotes")}}
 
 function quoteText(q){
-let c=normalizeCustomer(q.customer),depPct=Number(q.depositPercent??settingNum("depositPercent",20)),dep=Number(q.price||0)*depPct/100;
+let c=normalizeCustomer(q.customer),depInfo=quoteDepositInfo(q);
 return `${setting("businessName","TradePro UK")}
 ${businessDetailsText()}
 
@@ -777,7 +788,7 @@ Work: ${q.job||""}
 Job address: ${q.jobAddress||fullAddress(c)}
 
 ${Number(q.vat||0)>0?`Net: £${Number(q.net??q.price??0).toFixed(2)}\nVAT: £${Number(q.vat||0).toFixed(2)}\n`:``}Quoted total: £${Number(q.price||0).toFixed(2)}
-Suggested deposit (${depPct}%): £${dep.toFixed(2)}
+Deposit required: ${depInfo.label}
 
 Any additional work or unforeseen issues may require a revised price and customer approval.`;
 }
@@ -787,9 +798,9 @@ if(navigator.share){try{await navigator.share({title:`Quotation ${q.number||""} 
 let subject=encodeURIComponent(`Quotation ${q.number||""} - ${c.name}`),body=encodeURIComponent(text);window.location.href=`mailto:${encodeURIComponent(c.email||"")}?subject=${subject}&body=${body}`;
 }
 function populateQuotePaper(){
-if(selectedQuoteIndex===null)return false;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),depPct=Number(q.depositPercent??settingNum("depositPercent",20));
+if(selectedQuoteIndex===null)return false;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),depInfo=quoteDepositInfo(q);
 qBusinessName.innerText=setting("businessName","TradePro UK");qBusinessDetails.innerText=businessDetailsText();let logo=localStorage.getItem("businessLogo");if(logo){qLogo.src=logo;qLogo.style.display="block"}else{qLogo.removeAttribute("src");qLogo.style.display="none"}
-qNumber.innerText=q.number||"";qDate.innerText=q.date||"";qValid.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));qCustomer.innerText=c.name;qAddress.innerText=fullAddress(c);qContact.innerText=contactText(c);qJob.innerText=q.job||"";qJobAddress.innerText="Job address: "+(q.jobAddress||fullAddress(c));let qn=Number(q.net??q.price??0),qv=Number(q.vat||0);qNet.innerText="£"+qn.toFixed(2);qVat.innerText="£"+qv.toFixed(2);qVatBreak.style.display=qv>0?"block":"none";qTotal.innerText="£"+Number(q.price||0).toFixed(2);qDeposit.innerText="£"+(Number(q.price||0)*depPct/100).toFixed(2)+" ("+depPct+"%)";qDepositBlock.style.display=depPct>0?"block":"none";let footer=[setting("companyNumber","")?"Company No: "+setting("companyNumber",""):"",setting("vatNumber","")?"VAT No: "+setting("vatNumber",""):""].filter(Boolean);qCompanyFooter.innerText=footer.join(" · ");return true;
+qNumber.innerText=q.number||"";qDate.innerText=q.date||"";qValid.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));qCustomer.innerText=c.name;qAddress.innerText=fullAddress(c);qContact.innerText=contactText(c);qJob.innerText=q.job||"";qJobAddress.innerText="Job address: "+(q.jobAddress||fullAddress(c));let qn=Number(q.net??q.price??0),qv=Number(q.vat||0);qNet.innerText="£"+qn.toFixed(2);qVat.innerText="£"+qv.toFixed(2);qVatBreak.style.display=qv>0?"block":"none";qTotal.innerText="£"+Number(q.price||0).toFixed(2);qDeposit.innerText=depInfo.label;qDepositBlock.style.display=depInfo.amount>0?"block":"none";let footer=[setting("companyNumber","")?"Company No: "+setting("companyNumber",""):"",setting("vatNumber","")?"VAT No: "+setting("vatNumber",""):""].filter(Boolean);qCompanyFooter.innerText=footer.join(" · ");return true;
 }
 function previewQuote(){if(!populateQuotePaper())return;show("quotePrint")}
 function printQuote(){if(!populateQuotePaper())return;show("quotePrint");setTimeout(()=>window.print(),180)}
