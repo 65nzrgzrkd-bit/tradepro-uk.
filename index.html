@@ -944,8 +944,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="7.6";
-const TRADEPRO_VERSION="20.3";
+const TRADEPRO_BUILD="7.7";
+const TRADEPRO_VERSION="20.4";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2192,11 +2192,16 @@ function runTechDataIntegrityAudit(){
   Object.entries(CATEGORY_MODEL_CATALOGUES).forEach(([cat,makes])=>Object.entries(makes||{}).forEach(([make,models])=>(models||[]).forEach(model=>{
     if(broadCataloguePattern.test(String(model||"")))warnings.push(`${cat} · ${make}: broad catalogue placeholder should be replaced with exact models: ${model}`);
   })));
+  Object.entries(OFFICIAL_MODEL_SOURCES).forEach(([key,url])=>{
+    const split=key.indexOf("|");const make=key.slice(0,split),model=key.slice(split+1);
+    const exists=Object.values(CATEGORY_MODEL_CATALOGUES).some(cat=>(cat?.[make]||[]).some(x=>normaliseModelName(x)===normaliseModelName(model)));
+    if(!exists)issues.push(`Official model source points to unknown catalogue model: ${make} · ${model}`);
+    if(!/^https:\/\//i.test(url))issues.push(`Official model source is not HTTPS: ${make} · ${model}`);
+  });
   window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues,warnings};
   if(issues.length)console.warn("TradePro technical-library integrity audit",issues);else console.info(`TradePro technical-library audit passed: ${DIRECT_MANUALS.length} built-in documents checked`);
   return window.TRADEPRO_TECH_AUDIT;
 }
-runTechDataIntegrityAudit();
 
 const MANUFACTURER_SOURCES={
  "Baxi":"https://www.baxi.co.uk/support/literature-library",
@@ -2217,6 +2222,38 @@ const MANUFACTURER_SOURCES={
  "LG":"https://www.lg.com/uk/business/manual"
 };
 function officialSourceButton(make){const u=MANUFACTURER_SOURCES[make];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official manufacturer library</button>`:''}
+
+/* Build 7.7: exact model-source links and search aliases. Manufacturer webpages are
+   deliberately rendered as model-page buttons, never as PDF/manual buttons. */
+const OFFICIAL_MODEL_SOURCES={
+ "Panasonic|Etherea R32 KIT-Z20-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z20-cke-cs-z20ckew-cu-z20cke/",
+ "Panasonic|Etherea R32 KIT-Z25-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z25-cke-cs-z25ckew-cu-z25cke/",
+ "Panasonic|Etherea R32 KIT-Z35-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z35-cke-cs-z35ckew-cu-z35cke/",
+ "Panasonic|Etherea R32 KIT-Z42-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z42-cke-cs-z42ckew-cu-z42cke/",
+ "Panasonic|Etherea R32 KIT-Z50-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z50-cke-cs-z50ckew-cu-z50cke/",
+ "Panasonic|Etherea R32 KIT-Z71-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z71-cke-cs-z71ckew-cu-z71cke/",
+ "Panasonic|PACi NX Elite R32 KIT-71PK4ZH45":"https://www.aircon.panasonic.eu/GB_en/model/kit-71pk4zh45-s-5010pk4e-u-71pzh4e5/",
+ "Panasonic|PACi NX Elite R32 KIT-71PF3ZH45":"https://www.aircon.panasonic.eu/GB_en/model/kit-71pf3zh45-s-6071pf3e-u-71pzh4e5/",
+ "Panasonic|PACi NX Elite R32 KIT-71PU3ZH45":"https://www.aircon.panasonic.eu/GB_en/model/kit-71pu3zh45-s-6071pu3e-u-71pzh4e5/",
+ "LG|DUALCOOL Standard Plus PC09SQ":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/pc09sq/",
+ "LG|DUALCOOL Deluxe H09S1D":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/h09s1d/"
+};
+const MODEL_SEARCH_ALIASES={
+ "Panasonic|Etherea R32 KIT-Z20-CKE":["CS-Z20CKEW","CU-Z20CKE"],
+ "Panasonic|Etherea R32 KIT-Z25-CKE":["CS-Z25CKEW","CU-Z25CKE"],
+ "Panasonic|Etherea R32 KIT-Z35-CKE":["CS-Z35CKEW","CU-Z35CKE"],
+ "Panasonic|Etherea R32 KIT-Z42-CKE":["CS-Z42CKEW","CU-Z42CKE"],
+ "Panasonic|Etherea R32 KIT-Z50-CKE":["CS-Z50CKEW","CU-Z50CKE"],
+ "Panasonic|Etherea R32 KIT-Z71-CKE":["CS-Z71CKEW","CU-Z71CKE"],
+ "Panasonic|PACi NX Elite R32 KIT-71PK4ZH45":["S-5010PK4E","U-71PZH4E5"],
+ "Panasonic|PACi NX Elite R32 KIT-71PF3ZH45":["S-6071PF3E","U-71PZH4E5"],
+ "Panasonic|PACi NX Elite R32 KIT-71PU3ZH45":["S-6071PU3E","U-71PZH4E5"]
+};
+function modelAliases(make,model){return MODEL_SEARCH_ALIASES[make+"|"+model]||[]}
+function modelSearchText(make,model){return [make,model,...modelAliases(make,model)].join(" " ).toLowerCase()}
+function officialModelSourceButton(make,model){const u=OFFICIAL_MODEL_SOURCES[make+"|"+model];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official model page</button>`:''}
+function modelAliasMeta(make,model){const a=modelAliases(make,model);return a.length?` · Unit codes: ${a.map(esc).join(" / " )}`:''}
+runTechDataIntegrityAudit();
 
 const FAULT_GUIDE=[
 {make:"Vaillant",code:"F.22",meaning:"Low water pressure / dry-fire protection on many ecoTEC models.",checks:["Check the system pressure shown on the appliance.","Look for obvious water loss or visible leaks around the heating system.","If the exact manufacturer instructions allow it, restore pressure to the stated cold-fill range.","If pressure repeatedly falls, investigate the cause rather than repeatedly topping up."],keywords:["f22","f.22"]},
@@ -2258,11 +2295,11 @@ function renderManufacturerLibrary(){
  let makes=[...(entry?.makes||[])];
  manualsForFilter().forEach(x=>{if(!makes.includes(x.make))makes.push(x.make)});
  const q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();
- if(q)makes=makes.filter(make=>make.toLowerCase().includes(q)||allModelsForMake(make).some(model=>model.toLowerCase().includes(q))||uniqueDirectDocsForMake(make).some(d=>(d.title+" "+d.model).toLowerCase().includes(q)));
+ if(q)makes=makes.filter(make=>make.toLowerCase().includes(q)||allModelsForMake(make).some(model=>modelSearchText(make,model).includes(q))||uniqueDirectDocsForMake(make).some(d=>(d.title+" "+d.model).toLowerCase().includes(q)));
  if(c)c.textContent=makes.length+" make"+(makes.length===1?"":"s");
  box.innerHTML=makes.length?makes.map(make=>{
    let models=allModelsForMake(make);
-   if(q)models=models.filter(model=>make.toLowerCase().includes(q)||model.toLowerCase().includes(q)||directManualsFor(make,model).some(d=>(d.title+" "+d.note).toLowerCase().includes(q)));
+   if(q)models=models.filter(model=>modelSearchText(make,model).includes(q)||directManualsFor(make,model).some(d=>(d.title+" "+d.note).toLowerCase().includes(q)));
    const key=makeKey(make),autoOpen=!!q&&models.length>0;
    const coveredCount=models.filter(model=>directManualsFor(make,model).length>0).length;
    const docCount=uniqueDirectDocsForMake(make).length;
@@ -2277,12 +2314,12 @@ function renderManufacturerLibrary(){
     <div class="make-body">${models.length?models.map(model=>{
       const docs=directManualsFor(make,model);
       if(docs.length){
-        return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${docs.length} verified document${docs.length===1?"":"s"}</div><div class="model-actions">${docs.map(manual=>{
+        return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${docs.length} verified document${docs.length===1?"":"s"}${modelAliasMeta(make,model)}</div><div class="model-actions">${docs.map(manual=>{
           const mi=DIRECT_MANUALS.indexOf(manual),fav=isFav(manual);
           return `<button class="green" type="button" onclick="viewDirectManual(${mi})">${esc(manual.title||"Open PDF")}</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★":"☆"}</button>`;
-        }).join("")}</div></div>`;
+        }).join("")}${officialModelSourceButton(make,model)}</div></div>`;
       }
-      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">Model listed · exact verified direct PDF not loaded yet</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button>${officialSourceButton(make)}</div></div>`;
+      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">Model listed · exact verified direct PDF not loaded yet${modelAliasMeta(make,model)}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}</div></div>`;
     }).join(""):`<div class="smallnote" style="padding:10px 2px">No verified model/range catalogue loaded for this make in this section yet.</div><div class="model-actions" style="padding:0 2px 10px">${officialSourceButton(make)}</div>`}</div>
    </div>`;
  }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
