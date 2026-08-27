@@ -944,8 +944,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="7.1";
-const TRADEPRO_VERSION="19.8";
+const TRADEPRO_BUILD="7.2";
+const TRADEPRO_VERSION="19.9";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1984,6 +1984,7 @@ const DIRECT_MANUALS=[
  {type:"aircon",categories:["aircon"],make:"Mitsubishi Electric",model:"MSZ-AP25/35/42/50VG + VGK",title:"Installation Manual JG79B896H02",url:"https://library.mitsubishielectric.co.uk/pdf/download_full/3754",note:"Official Mitsubishi Electric M-Series split-system installation manual · exact indoor models MSZ-AP25VG/VGK, MSZ-AP35VG/VGK, MSZ-AP42VG/VGK and MSZ-AP50VG/VGK · associated MUZ-AP25/35/42/50VG and VGH outdoor units are listed by Mitsubishi Electric"},
  {type:"aircon",categories:["aircon"],make:"Mitsubishi Electric",model:"MSZ-AP25/35/42/50/60/71VG + VGK",title:"Service Manual OBH788 Revised Edition B",url:"https://library.mitsubishielectric.co.uk/pdf/download_full/3963",note:"Official Mitsubishi Electric M-Series service manual · covers MSZ-AP25/35/42/50/60/71VG and VGK indoor units · includes wiring, refrigerant diagrams, service functions, troubleshooting and disassembly"},
  {type:"heatpump",categories:["heatpump"],make:"Samsung",model:"EHS Mono HT Quiet AE080BXYDEG/EU / AE120BXYDEG/EU",title:"Installation Guide DB68-11904A-05",url:"https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_UK&OriginYN=N&ModelType=N&ModelName=AE080BXYDEG%2FEU&CttFileID=11279967&CDCttType=UM&VPath=UM%2F202602%2F20260205144030530%2FEHS_R-32_MONO_OUTDOOR_IM_EU_DB68-11904A-05_EN.pdf",note:"Official Samsung UK installation guide · version 05 · 5 Feb 2026 · verified on AE080BXYDEG/EU and AE120BXYDEG/EU support pages"},
+ {type:"aircon",categories:["aircon"],make:"Samsung",model:"WindFree R32 legacy AR09NXPXBWKX / AR09NXWXBWKX / AR12NXWXCWKN",title:"Installation Guide DB68-03934A-11",url:"https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_UK&OriginYN=N&ModelType=N&ModelName=AR09NXPXBWKX&CttFileID=6985356&CDCttType=UM&VPath=UM%2F201802%2F20180221194244316%2FRAC_3050-PJT_SIMPLE_MANUAL_IM_EN_DB68-03934A-11_180205.pdf",note:"Official Samsung UK support download · installation guide version 1.1 · February 2018 · attached by Samsung to AR09NXPXBWKX support and the same WindFree R32 family support pages · legacy range only; do not use for current WindFree models"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5",title:"R290 Installer Guidance",url:"https://cdn.aircon.panasonic.eu/uploads/GB/Catalogues/2023/EU%20A4%20R290%20INSTALLER%2023%20LR.pdf",note:"Official Panasonic UK technical guidance · Aquarea L Generation R290 · exact outdoor models WH-WDG05LE5, WH-WDG07LE5 and WH-WDG09LE5 · installer safety and installation considerations · this is guidance, not a substitute for the appliance installation manual"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5",title:"R290 Service Engineer Guidance",url:"https://cdn.aircon.panasonic.eu/uploads/GB/Catalogues/2023/EU%203P%20R290%20ENGINEER%2023%20LR.pdf",note:"Official Panasonic UK service-engineer guidance · Aquarea L Generation R290 · exact outdoor models WH-WDG05LE5, WH-WDG07LE5 and WH-WDG09LE5 · refrigerant safety and service considerations"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea legacy C/D/E series monobloc & split",title:"Installation Manual (C/D/E series)",url:"https://www.panasonicproclub.com/uploads/IE/catalogues/A2W_IM_monobloc%2Bsplit_EN_final_2014-05-15.pdf",note:"Official Panasonic ProClub legacy installation manual · C, D and E series only · not for later Aquarea generations"},];
@@ -2069,7 +2070,8 @@ const CATEGORY_MODEL_CATALOGUES={
   "Fujitsu":["ASTH18/22/24KMTD R32"],
   "Panasonic":["RAC single-split range","PACi commercial range"],
   "Toshiba":["RAS HAORI R32 10/13/16"],
-  "Samsung":["WindFree split range"],
+  // Build 7.2: Samsung WindFree R32 legacy exact model mapping; current range remains pending until exact manuals are verified.
+  "Samsung":["WindFree R32 AR09NXPXBWKX (legacy)","WindFree R32 AR09NXWXBWKX (legacy)","WindFree R32 AR12NXWXCWKN (legacy)","WindFree current range (exact manual pending)"],
   "LG":["Residential split range","Multi V VRF range"],
   "Midea":["Residential split range"]
  }
@@ -2106,6 +2108,7 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Mitsubishi Electric|MSZ-AP25/35/42/50VG + VGK":["MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK"],
   "Mitsubishi Electric|MSZ-AP25/35/42/50/60/71VG + VGK":["MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK","MSZ-AP60VG","MSZ-AP60VGK","MSZ-AP71VG","MSZ-AP71VGK"],
   "Samsung|EHS Mono HT Quiet AE080BXYDEG/EU / AE120BXYDEG/EU":["EHS Mono HT Quiet AE080BXYDEG/EU","EHS Mono HT Quiet AE120BXYDEG/EU"],
+  "Samsung|WindFree R32 legacy AR09NXPXBWKX / AR09NXWXBWKX / AR12NXWXCWKN":["WindFree R32 AR09NXPXBWKX (legacy)","WindFree R32 AR09NXWXBWKX (legacy)","WindFree R32 AR12NXWXCWKN (legacy)"],
   "Panasonic|Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5":["Aquarea L Generation WH-WDG05LE5","Aquarea L Generation WH-WDG07LE5","Aquarea L Generation WH-WDG09LE5"],
   "Viessmann|Vitodens 050-W":["Vitodens 050-W 25kW","Vitodens 050-W 30kW","Vitodens 050-W B0KA"],
   "Viessmann|Vitodens 100-W":["Vitodens 100-W 19kW","Vitodens 100-W 25kW","Vitodens 100-W 32kW","Vitodens 100-W B1KF","Vitodens 100-W B1HF"],
