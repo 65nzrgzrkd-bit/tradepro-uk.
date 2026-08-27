@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 6.2 · V18.9</title>
+<title>TradePro UK · Plumber Edition · Build 6.7 · V19.4</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 6.6 · V19.3</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 6.7 · V19.4</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -926,7 +926,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 6.2 · V18.9</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 6.7 · V19.4</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -1920,8 +1920,8 @@ const DIRECT_MANUALS=[
  {type:"boiler",categories:["naturalgas"],make:"Worcester Bosch",model:"Greenstar Si Compact",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/release/6720643895/12683",note:"Official Worcester Bosch Greenstar 25-30 Si manual"},
  {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar i System",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720806945",note:"Official Worcester Bosch Greenstar 12-24 i System ErP manual"},
 
- {type:"boiler",categories:["naturalgas"],make:"Vaillant",model:"ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant new-generation ecoTEC plus installation manual · exact system boiler outputs: 610, 615, 620, 625, 630 and 635 · do not use for legacy 612/618/624/637 models"},
- {type:"boiler",categories:["naturalgas","lpg"],make:"Vaillant",model:"ecoTEC plus legacy 612/615/618/624/630/637 + 825/832/835/838",title:"Installation & Maintenance Instructions",url:"https://professional.vaillant.co.uk/downloads/product-manuals/ecotec-plus-1/ecotec-plus-combi-and-system-installation-instructions-2422739.pdf",note:"Official Vaillant document 0020244997_07 · exact discontinued ecoTEC plus system models 612, 615, 618, 624, 630, 637 and combi models 825, 832, 835, 838 · dedicated LPG variants confirmed for 618, 630 and 832 on Vaillant product data"},
+ {type:"boiler",categories:["naturalgas"],make:"Vaillant",model:"ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant new-generation ecoTEC plus installation manual · exact CURRENT-GENERATION system boiler outputs: 610, 615, 620, 625, 630 and 635 · select the current-generation catalogue entry; do not use for discontinued /5-5 appliances"},
+ {type:"boiler",categories:["naturalgas","lpg"],make:"Vaillant",model:"ecoTEC plus legacy 612/615/618/624/630/637 + 825/832/835/838",title:"Installation & Maintenance Instructions",url:"https://professional.vaillant.co.uk/downloads/product-manuals/ecotec-plus-1/ecotec-plus-combi-and-system-installation-instructions-2422739.pdf",note:"Official Vaillant document 0020244997_07 · exact DISCONTINUED /5-5 ecoTEC plus system models 612, 615, 618, 624, 630, 637 and combi models 825, 832, 835, 838 · dedicated LPG variants confirmed for 618, 630 and 832 on Vaillant product data"},
  {type:"boiler",categories:["naturalgas","lpg"],make:"Alpha",model:"E-Tec 28 / E-Tec 33",title:"Installation & Servicing Instructions",url:"https://alpha-heating.ams3.digitaloceanspaces.com/wp-content/uploads/2023/09/27121515/E-Tec-Instructions-Jan22.pdf",note:"Alpha Heating Innovation hosted PDF · March 2022 · exact appliances: E-Tec 28 and E-Tec 33 · manual lists NG and LPG GC numbers and approves Natural Gas G20/G20Y20 and LPG G31"},
  {type:"boiler",categories:["naturalgas","lpg"],make:"Alpha",model:"Evoke 28 / Evoke 33",title:"Installation & Servicing Instructions",url:"https://alpha-heating.ams3.digitaloceanspaces.com/wp-content/uploads/2023/09/27121411/Evoke-Instructions-Jan-22.pdf",note:"Alpha Heating Innovation hosted PDF · January 2022 revision · exact appliances: Evoke 28 and Evoke 33 · dedicated installation, commissioning, servicing, wiring and fault-finding information"},
  {type:"boiler",make:"Ideal Heating",model:"Logic MAX Combi² C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/31e4e31bdd6fdb3572d7bb2d539ce903/Logic%20MAX%20Combi%20Installation%20%26%20Servicing%20-%2010.2023%20%28UIN%20237660%20A01%29.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4hw7r7ut3zXch9PphO11t5%2Fb7b554ce47c40395d57623ed81025135%2FLogic_MAX_Combi_Installation___Servicing_-_10.2023__UIN_237660_A01_.pdf",note:"Official Ideal Heating PDF"},
@@ -1959,6 +1959,9 @@ const DIRECT_MANUALS=[
  {type:"oil",make:"Grant UK",model:"Vortex Eco External / External System",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/5029/grant-vortex-eco-external-and-external-system-installer-uk-doc-0125-rev-20-july-2022.pdf",note:"Official Grant UK PDF · DOC 0125 · Rev 2.0"},
  {type:"oil",make:"Grant UK",model:"Vortex Eco Utility / Utility System",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/5677/grant-vortex-eco-utility-and-utility-system-installer-uk-doc-0124-rev-21-february-2024.pdf",note:"Official Grant UK PDF · DOC 0124 · Rev 2.1"},
  {type:"oil",make:"Grant UK",model:"Vortex Boiler House",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/5028/grant-vortex-boilerhouse-installer-uk-doc-0128-rev-2-0-july-2022.pdf",note:"Official Grant UK PDF · DOC 0128 · Rev 2.0"},
+ {type:"oil",categories:["oil"],make:"Warmflow",model:"Agentis B/I/E Series",title:"Boiler Manual 6572 G · User / Installation / Service",url:"https://warmflow.fra1.cdn.digitaloceanspaces.com/uploads/Agentis-Boiler-Manual-6572-G.pdf",note:"Official Warmflow Agentis Boiler Manual 6572 G · exact models declared in the manual include B21/B26/B33, I21/I26/I33/I44, internal pumped/system/combi and Professional variants, plus E21/E26/E33/E44 external pumped/system/combi and Professional variants · for Kerosene, HVO and Gas Oil"},
+ {type:"oil",categories:["oil"],make:"Firebird",model:"Combipac Xceed / Combi Xceed / Slimline Combi",title:"Technical Manual · January 2025",url:"https://firebird.uk.com/wp-content/uploads/2025/01/Envirogreen-Combi-Xceed-Manual-MLOBEBCR011-January-25-Secured.pdf",note:"Official Firebird UK technical manual · January 2025 · exact product families listed on the document cover: Combipac Xceed, Combi Xceed and Slimline Combi"},
+ {type:"heatpump",categories:["heatpump"],make:"Daikin",model:"Altherma 3 M EBLA09-16D / EDLA09-16D",title:"Installation Manual 4PEN620239-1B",url:"https://www.daikin.co.uk/content/dam/document-library/installation-manuals/heat/air-to-water-heat-pump-low-temperature/ebla09-14dv3/EB_DLA09-14D3V3_W1_EB_DLA-D3V3_W1_Installation%20manual_4PEN620239-1B_English.pdf",note:"Official Daikin Altherma 3 M installation manual · covers EBLA09~16D and EDLA09~16D V3/W1/3V3/3W1 variants as listed by Daikin · use only for D-series Altherma 3 M outdoor units"},
  {type:"oil",make:"Firebird",model:"Enviromax Condensing Range",title:"Installation & Servicing Manual",url:"https://firebird.ie/images/Downloads/Enviromax_Manual_8.pdf",note:"Official Firebird Enviromax condensing-range manual"},
  {type:"heatpump",make:"Grant UK",model:"Aerona³ R32",title:"Installation Instructions",url:"https://www.grantuk.com/media/5657/grant-aerona-r32-installer-uk-doc-0136-rev-2-4-february-2024.pdf",note:"Official Grant UK Aerona³ R32 installer manual · DOC 0136 · Rev 2.4"},
  {type:"aircon",make:"Daikin",model:"RZAG35A2V1B / RZAG50A2V1B / RZAG60A2V1B",title:"R32 Split Installation Manual",url:"https://www.daikin.co.uk/content/dam/document-library/installation-manuals/ac/sky-air/rzag-a/RZAG-A_3PEN548265-1B_2018_11_Installation%20manual_English.pdf",note:"Official Daikin Sky Air R32 installation manual"}
@@ -1970,6 +1973,7 @@ const DIRECT_MANUALS=[
  {type:"heatpump",categories:["heatpump"],make:"Mitsubishi Electric",model:"Ecodan PUZ-WM60VAA / PUZ-WM85VAA / PUZ-WM112VAA",title:"Service Manual OCH727A",url:"https://library.mitsubishielectric.co.uk/pdf/book/Ecodan_PUZ-WM50-60-85-112VH-AA_Service_ManualOCH727",note:"Official Mitsubishi Electric service manual · use only for exact listed PUZ-WM VAA variants"},
  {type:"heatpump",categories:["heatpump"],make:"Samsung",model:"EHS Mono HT Quiet AE080BXYDEG/EU / AE120BXYDEG/EU",title:"Installation Guide DB68-11904A-05",url:"https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_UK&OriginYN=N&ModelType=N&ModelName=AE080BXYDEG%2FEU&CttFileID=11279967&CDCttType=UM&VPath=UM%2F202602%2F20260205144030530%2FEHS_R-32_MONO_OUTDOOR_IM_EU_DB68-11904A-05_EN.pdf",note:"Official Samsung UK installation guide · version 05 · 5 Feb 2026 · verified on AE080BXYDEG/EU and AE120BXYDEG/EU support pages"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea legacy C/D/E series monobloc & split",title:"Installation Manual (C/D/E series)",url:"https://www.panasonicproclub.com/uploads/IE/catalogues/A2W_IM_monobloc%2Bsplit_EN_final_2014-05-15.pdf",note:"Official Panasonic ProClub legacy installation manual · C, D and E series only · not for later Aquarea generations"},];
+// Build 6.7 / V19.4: expanded exact oil/heat-pump coverage (Warmflow Agentis, Firebird current combi families, Daikin Altherma 3 M) and retained strict explicit model mapping.
 // Category tags keep existing verified PDFs compatible with the expanded library.
 DIRECT_MANUALS.forEach(m=>{if(!Array.isArray(m.categories)){m.categories=m.type==="boiler"?["naturalgas"]:m.type==="oil"?["oil"]:m.type==="aircon"?["aircon"]:[m.type]}});
 const LPG_GUIDANCE="Use only where the exact manufacturer document confirms LPG/propane suitability, factory LPG variant or approved conversion. Never infer LPG suitability from a natural-gas listing.";
@@ -1991,7 +1995,7 @@ function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&q
 /* Build 5.7 known boiler model catalogue */
 const KNOWN_BOILER_MODELS={
 "Worcester Bosch":["Greenstar 1000","Greenstar 2000","Greenstar 25i ErP","Greenstar 30i ErP","Greenstar 4000 Combi","Greenstar 4000 System","Greenstar 8000 Life Combi","Greenstar 8000 Life System","Greenstar 8000 Style Combi","Greenstar 8000 Style System","Greenstar CDi Compact","Greenstar i System","Greenstar Ri","Greenstar Highflow 440CDi","Greenstar Highflow 550CDi","Greenstar Si Compact","Greenstar 24i Junior","Greenstar 28i Junior","Greenstar 30Si Compact"],
-"Vaillant":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635","ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 838","ecoTEC plus 612","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
+"Vaillant":["ecoTEC plus 610 (current generation)","ecoTEC plus 615 (current generation)","ecoTEC plus 620 (current generation)","ecoTEC plus 625 (current generation)","ecoTEC plus 630 (current generation)","ecoTEC plus 635 (current generation)","ecoTEC plus 825 (legacy /5-5)","ecoTEC plus 832 (legacy /5-5)","ecoTEC plus 835 (legacy /5-5)","ecoTEC plus 838 (legacy /5-5)","ecoTEC plus 612 (legacy /5-5)","ecoTEC plus 615 (legacy /5-5)","ecoTEC plus 618 (legacy /5-5)","ecoTEC plus 624 (legacy /5-5)","ecoTEC plus 630 (legacy /5-5)","ecoTEC plus 637 (legacy /5-5)","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
 "Ideal Heating":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35","Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30","Logic Max Heat2 H12","Logic Max Heat2 H15","Logic Max Heat2 H18","Vogue Max Combi2 C26","Vogue Max Combi2 C32","Vogue Max Combi2 C40","Vogue Gen2","Independent C24","Independent C30"],
 "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 600 System 2 30","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30","Baxi 400 Combi 2 24","Baxi 400 Combi 2 30","Duo-tec 24","Duo-tec 28","Duo-tec 33","Duo-tec 40","Platinum 24","Platinum 28","Platinum 33","Platinum 40","Megaflo System 15","Megaflo System 18","Megaflo System 24","Megaflo System 28","Solo HE 12","Solo HE 15","Solo HE 18","Solo HE 24"],
 "Glow-worm":["Energy7 25C","Energy7 30C","Energy7 35C","Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Energy7 30S","Ultimate3 25C","Ultimate3 30C","Ultimate3 35C","Betacom4 24C","Betacom4 30C","Essential 24C","Essential 28C","Flexicom cx","Flexicom hx","Ultracom2 cx","Ultracom2 hxi"],
@@ -2020,21 +2024,22 @@ const KNOWN_BOILER_MODELS={
 const CATEGORY_MODEL_CATALOGUES={
  naturalgas:KNOWN_BOILER_MODELS,
  lpg:{
-  "Vaillant":["ecoTEC plus 618 LPG","ecoTEC plus 630 LPG","ecoTEC plus 832 LPG"],
+  "Vaillant":["ecoTEC plus 618 LPG (legacy /5-5)","ecoTEC plus 630 LPG (legacy /5-5)","ecoTEC plus 832 LPG (legacy /5-5)"],
   "Alpha":["E-Tec 28","E-Tec 33","Evoke 28","Evoke 33"],
   "Ideal Heating":["Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30"],
   "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 600 System 2 30","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30"]
  },
  oil:{
   "Grant UK":["Vortex Pro 15-26","Vortex Pro 26-46","Vortex Pro 46-70","Vortex Pro System 15-26","Vortex Pro System 26-46","Vortex Pro External 15-26","Vortex Pro External 26-46","Vortex Pro External 46-70","Vortex Pro External Combi 21","Vortex Pro External Combi 26","Vortex Pro External Combi 36","Vortex Pro Combi 21","Vortex Pro Combi 26","Vortex Pro Combi 36","Vortex Pro Combi XS 26","Vortex Eco External / External System","Vortex Eco Utility / Utility System","Vortex Boiler House"],
-  "Firebird":["Enviromax Condensing Range"]
+  "Warmflow":["Agentis B21","Agentis B26","Agentis B33","Agentis I21","Agentis I26","Agentis I33","Agentis I44","Agentis I21PRO","Agentis I26PRO","Agentis I33PRO","Agentis I44PRO","Agentis I21P","Agentis I26P","Agentis I33P","Agentis I44P","Agentis I21S","Agentis I26S","Agentis I33S","Agentis I21C","Agentis I26C","Agentis I33C","Agentis E21","Agentis E26","Agentis E33","Agentis E44","Agentis E21PRO","Agentis E26PRO","Agentis E33PRO","Agentis E44PRO","Agentis E21P","Agentis E26P","Agentis E33P","Agentis E44P","Agentis E21S","Agentis E26S","Agentis E33S","Agentis E21C","Agentis E26C","Agentis E33C"],
+  "Firebird":["Combipac Xceed","Combi Xceed","Slimline Combi","Enviromax Condensing Range (legacy archive)"]
  },
  heatpump:{
   "Worcester Bosch":["Compress 5800i AW outdoor unit"],
   "Vaillant":["aroTHERM plus VWL 105/6 A","aroTHERM plus VWL 125/6 A"],
   "Grant UK":["Aerona³ R32"],
   "Mitsubishi Electric":["Ecodan PUZ-WM50VHA-BS","Ecodan PUZ-WM60VAA","Ecodan PUZ-WM60VAA-BS","Ecodan PUZ-WM85VAA","Ecodan PUZ-WM85VAA-BS","Ecodan PUZ-WM85YAA","Ecodan PUZ-WM85YAA-BS","Ecodan PUZ-WM112VAA","Ecodan PUZ-WM112VAA-BS","Ecodan PUZ-WM112YAA","Ecodan PUZ-WM112YAA-BS"],
-  "Daikin":["Altherma air-to-water heat pump range"],
+  "Daikin":["Altherma 3 M EBLA09-16D","Altherma 3 M EDLA09-16D"],
   "Samsung":["EHS Mono HT Quiet AE080BXYDEG/EU","EHS Mono HT Quiet AE120BXYDEG/EU"],
   "Panasonic":["Aquarea legacy C/D/E series monobloc & split"],
   "LG":["THERMA V air-to-water heat pump range"],
@@ -2057,8 +2062,8 @@ const CATEGORY_MODEL_CATALOGUES={
 const VERIFIED_MANUAL_MODEL_MAP={
   "Worcester Bosch|Greenstar 24i Junior / Greenstar 28i Junior":["Greenstar 24i Junior","Greenstar 28i Junior"],
   "Worcester Bosch|Greenstar 25i ErP / Greenstar 30i ErP":["Greenstar 25i ErP","Greenstar 30i ErP"],
-  "Vaillant|ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635"],
-  "Vaillant|ecoTEC plus legacy 612/615/618/624/630/637 + 825/832/835/838":["ecoTEC plus 612","ecoTEC plus 615","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 630","ecoTEC plus 637","ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 838","ecoTEC plus 618 LPG","ecoTEC plus 630 LPG","ecoTEC plus 832 LPG"],
+  "Vaillant|ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635":["ecoTEC plus 610 (current generation)","ecoTEC plus 615 (current generation)","ecoTEC plus 620 (current generation)","ecoTEC plus 625 (current generation)","ecoTEC plus 630 (current generation)","ecoTEC plus 635 (current generation)"],
+  "Vaillant|ecoTEC plus legacy 612/615/618/624/630/637 + 825/832/835/838":["ecoTEC plus 612 (legacy /5-5)","ecoTEC plus 615 (legacy /5-5)","ecoTEC plus 618 (legacy /5-5)","ecoTEC plus 624 (legacy /5-5)","ecoTEC plus 630 (legacy /5-5)","ecoTEC plus 637 (legacy /5-5)","ecoTEC plus 825 (legacy /5-5)","ecoTEC plus 832 (legacy /5-5)","ecoTEC plus 835 (legacy /5-5)","ecoTEC plus 838 (legacy /5-5)","ecoTEC plus 618 LPG (legacy /5-5)","ecoTEC plus 630 LPG (legacy /5-5)","ecoTEC plus 832 LPG (legacy /5-5)"],
   "Alpha|E-Tec 28 / E-Tec 33":["E-Tec 28","E-Tec 33"],
   "Alpha|Evoke 28 / Evoke 33":["Evoke 28","Evoke 33"],
   "Ideal Heating|Logic MAX Combi² C24/C30/C35":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35"],
@@ -2073,6 +2078,9 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Grant UK|Vortex Pro External Combi":["Vortex Pro External Combi 21","Vortex Pro External Combi 26","Vortex Pro External Combi 36"],
   "Grant UK|Vortex Pro Combi":["Vortex Pro Combi 21","Vortex Pro Combi 26","Vortex Pro Combi 36","Vortex Pro Combi XS 26"],
   "Grant UK|Aerona³ R32":["Aerona³ R32"],
+  "Warmflow|Agentis B/I/E Series":["Agentis B21","Agentis B26","Agentis B33","Agentis I21","Agentis I26","Agentis I33","Agentis I44","Agentis I21PRO","Agentis I26PRO","Agentis I33PRO","Agentis I44PRO","Agentis I21P","Agentis I26P","Agentis I33P","Agentis I44P","Agentis I21S","Agentis I26S","Agentis I33S","Agentis I21C","Agentis I26C","Agentis I33C","Agentis E21","Agentis E26","Agentis E33","Agentis E44","Agentis E21PRO","Agentis E26PRO","Agentis E33PRO","Agentis E44PRO","Agentis E21P","Agentis E26P","Agentis E33P","Agentis E44P","Agentis E21S","Agentis E26S","Agentis E33S","Agentis E21C","Agentis E26C","Agentis E33C"],
+  "Firebird|Combipac Xceed / Combi Xceed / Slimline Combi":["Combipac Xceed","Combi Xceed","Slimline Combi"],
+  "Daikin|Altherma 3 M EBLA09-16D / EDLA09-16D":["Altherma 3 M EBLA09-16D","Altherma 3 M EDLA09-16D"],
   "Daikin|RZAG35A2V1B / RZAG50A2V1B / RZAG60A2V1B":["RZAG35A2V1B","RZAG50A2V1B","RZAG60A2V1B"],
   "Intergas|Xclusive 24 / Xclusive 30 / Xclusive 36":["Xclusive 24","Xclusive 30","Xclusive 36"],
   "Vaillant|aroTHERM plus VWL 105/6 A / VWL 125/6 A":["aroTHERM plus VWL 105/6 A","aroTHERM plus VWL 125/6 A"],
@@ -2118,7 +2126,7 @@ function uniqueDirectDocsForMake(make){
 }
 
 function runTechDataIntegrityAudit(){
-  const issues=[];
+  const issues=[],warnings=[];
   const seenUrls=new Map();
   DIRECT_MANUALS.forEach((m,i)=>{
     if(!m.make||!m.model||!m.title||!m.url)issues.push(`Manual ${i+1} is missing required metadata`);
@@ -2138,9 +2146,9 @@ function runTechDataIntegrityAudit(){
     const declared=VERIFIED_MANUAL_MODEL_MAP[m.make+"|"+m.model]||[];
     if(declared.length)return;
     const exactInCatalogue=(m.categories||[]).some(cat=>(CATEGORY_MODEL_CATALOGUES[cat]?.[m.make]||[]).some(x=>normaliseModelName(x)===normaliseModelName(m.model)));
-    if(!exactInCatalogue&&/[\/]|\brange\b|\bcombi\b|\bsystem\b/i.test(m.model))issues.push(`${m.make} · ${m.model}: broad document label has no explicit verified model map`);
+    if(!exactInCatalogue&&/[\/]|\brange\b|\bcombi\b|\bsystem\b/i.test(m.model))warnings.push(`${m.make} · ${m.model}: broad document label has no explicit verified model map`);
   });
-  window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues};
+  window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues,warnings};
   if(issues.length)console.warn("TradePro technical-library integrity audit",issues);else console.info(`TradePro technical-library audit passed: ${DIRECT_MANUALS.length} built-in documents checked`);
   return window.TRADEPRO_TECH_AUDIT;
 }
@@ -2156,6 +2164,8 @@ const MANUFACTURER_SOURCES={
  "Worcester Bosch":"https://www.worcester-bosch.co.uk/support/literature",
  "Ideal Heating":"https://idealheating.com/support/manuals",
  "Grant UK":"https://www.grantuk.com/professional/product-support/technical-data/",
+ "Warmflow":"https://warmflow.co.uk/support/manuals-brochures",
+ "Daikin":"https://www.daikin.co.uk/en_gb/technical-data.html",
  "Firebird":"https://firebird.uk.com/support/manuals/",
  "Navien":"https://navien.co.uk/",
  "Samsung":"https://www.samsung.com/uk/support/",
@@ -2194,7 +2204,7 @@ function updateTechHealth(){
  set("techHealthModels",models.length);set("techHealthCovered",covered);set("techHealthDocs",docs);set("techHealthPending",pending);
  const status=document.getElementById("techHealthStatus"),note=document.getElementById("techHealthNote");
  const audit=window.TRADEPRO_TECH_AUDIT||{issues:[]};
- if(status)status.textContent=audit.issues.length?audit.issues.length+" audit flag"+(audit.issues.length===1?"":"s"):"Integrity passed";
+ if(status)status.textContent=audit.issues.length?audit.issues.length+" integrity issue"+(audit.issues.length===1?"":"s"):"Strict matching on";
  if(note)note.innerHTML=`${covered} of ${models.length} catalogue models have an exact verified built-in document in this section. <strong>Broad family titles never count as coverage unless their individual models are explicitly mapped.</strong>`;
 }
 function renderManufacturerLibrary(){
