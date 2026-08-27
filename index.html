@@ -944,8 +944,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="6.9";
-const TRADEPRO_VERSION="19.6";
+const TRADEPRO_BUILD="7.0";
+const TRADEPRO_VERSION="19.7";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2047,6 +2047,8 @@ const CATEGORY_MODEL_CATALOGUES={
   "Firebird":["Combipac Xceed","Combi Xceed","Slimline Combi","Enviromax Condensing Range (legacy archive)"]
  },
  heatpump:{
+  // Build 7.0: LG THERMA V R32 Monobloc S exact UK model catalogue from LG product data.
+  // Manuals remain pending until an exact installation/service PDF is positively matched.
   "Worcester Bosch":["Compress 5800i AW outdoor unit"],
   "Vaillant":["aroTHERM plus VWL 105/6 A","aroTHERM plus VWL 125/6 A"],
   "Grant UK":["Aerona³ R32"],
@@ -2054,7 +2056,7 @@ const CATEGORY_MODEL_CATALOGUES={
   "Daikin":["Altherma 3 M EBLA09-16D","Altherma 3 M EDLA09-16D"],
   "Samsung":["EHS Mono HT Quiet AE080BXYDEG/EU","EHS Mono HT Quiet AE120BXYDEG/EU"],
   "Panasonic":["Aquarea legacy C/D/E series monobloc & split"],
-  "LG":["THERMA V air-to-water heat pump range"],
+  "LG":["THERMA V R32 Monobloc S HM051MR U44","THERMA V R32 Monobloc S HM071MR U44","THERMA V R32 Monobloc S HM091MR U44","THERMA V R32 Monobloc S HM121MR U34","THERMA V R32 Monobloc S HM123MR U34","THERMA V R32 Monobloc S HM141MR U34","THERMA V R32 Monobloc S HM143MR U34","THERMA V R32 Monobloc S HM161MR U34","THERMA V R32 Monobloc S HM163MR U34"],
   "Fujitsu":["Waterstage air-to-water heat pump range"],
   "NIBE":["Air source heat pump range"],
   "Kensa":["Ground source heat pump range"]
@@ -2186,7 +2188,8 @@ const MANUFACTURER_SOURCES={
  "Firebird":"https://firebird.uk.com/support/manuals/",
  "Navien":"https://navien.co.uk/",
  "Samsung":"https://www.samsung.com/uk/support/",
- "Panasonic":"https://www.panasonicproclub.com/GB_en/login/"
+ "Panasonic":"https://www.panasonicproclub.com/GB_en/login/",
+ "LG":"https://www.lg.com/uk/business/manual"
 };
 function officialSourceButton(make){const u=MANUFACTURER_SOURCES[make];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official manufacturer library</button>`:''}
 
