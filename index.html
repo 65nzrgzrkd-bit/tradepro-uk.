@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 5.5 · V18.2</title>
+<title>TradePro UK · Plumber Edition · Build 5.6 · V18.3</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -180,7 +180,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 @media(max-width:430px){.manual-toolbar{align-items:flex-start}.manual-toolbar button{font-size:12px}.manual-frame-wrap{height:calc(100vh - 245px);min-height:460px}}
 
 
-/* Build 5.5 Engineer Hub */
+/* Build 5.6 Engineer Hub */
 .engineer-hub-hero{background:linear-gradient(135deg,#15324b,#244d69);color:#fff;border-radius:18px;padding:17px;margin:0 0 14px}
 .engineer-hub-hero h3{margin:0 0 5px;font-size:20px}.engineer-hub-hero p{margin:0;opacity:.9;font-size:12px;line-height:1.45}
 .hub-quick{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:12px 0}
@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 5.5 · V18.2</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 5.6 · V18.3</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -781,7 +781,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <div class="sectioncard">
 <div class="section-title-row"><h3>Manufacturers & Models</h3><span id="manufacturerCount" class="count-pill">0 makes</span></div>
-<div class="smallnote" style="margin:7px 0 10px">Tap a manufacturer to drop down its models. <strong>Open PDF</strong> is only shown for an exact verified model/range match. This build adds a larger verified Worcester Bosch set; unverified models still show <strong>PDF pending</strong>.</div>
+<div class="smallnote" style="margin:7px 0 10px">Tap a manufacturer to drop down its models. <strong>Open PDF</strong> is only shown for an exact verified model/range match. TradePro can now show multiple verified documents under each model — installation, servicing, wiring, fault or user documents where available. Unverified documents still show <strong>PDF pending</strong>.</div>
 <div id="techList" class="tech-list"></div>
 </div>
 
@@ -914,7 +914,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 5.5 · V18.2</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 5.6 · V18.3</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -932,7 +932,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="18.2";
+const TRADEPRO_VERSION="18.3";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1883,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 5.5 five-section technical library + persistent Manual Vault */
+/* Build 5.6 five-section technical library + persistent Manual Vault */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1934,7 +1934,16 @@ const DIRECT_MANUALS=[
  {type:"aircon",make:"Toshiba",model:"RAS HAORI R32 10/13/16",title:"Service Manual",url:"https://www.toshiba-aircon.co.uk/content/dam/public-toshiba/gb/documents/products/r32-split-systems/residential/wall-mounted/ras-haori-high-wall/20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf/_jcr_content/renditions/original./20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf",note:"Official Toshiba PDF"},
  {type:"aircon",make:"Fujitsu",model:"ASTH18/22/24KMTD R32",title:"Operation Manual",url:"https://www.fujitsu-general.com/datafiles/W9387602449-0101_OM_En_ASTH18KMTD.pdf",note:"Official Fujitsu General PDF"},
  {type:"heatpump",categories:["heatpump"],make:"Worcester Bosch",model:"Compress 5800i AW outdoor unit",title:"Installation Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6721866761",note:"Official Worcester Bosch PDF · R290 heat pump"},
- {type:"heatpump",categories:["heatpump"],make:"Grant UK",model:"Aerona³ R32",title:"Installer Manual DOC 0136 Rev 2.4",url:"https://www.grantuk.com/media/5657/grant-aerona-r32-installer-uk-doc-0136-rev-2-4-february-2024.pdf",note:"Official Grant UK PDF · R32 air source heat pump"}
+ {type:"heatpump",categories:["heatpump"],make:"Grant UK",model:"Aerona³ R32",title:"Installer Manual DOC 0136 Rev 2.4",url:"https://www.grantuk.com/media/5657/grant-aerona-r32-installer-uk-doc-0136-rev-2-4-february-2024.pdf",note:"Official Grant UK PDF · R32 air source heat pump"},
+{type:"oil",make:"Grant UK",model:"Vortex Pro External",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/53ffrslr/grant-vortex-pro-external-installer-uk-doc0121-rev2-1-feb2026.pdf",note:"Official Grant UK PDF · DOC 0121 · Rev 2.1 · February 2026"},
+ {type:"oil",make:"Grant UK",model:"Vortex Pro External Combi",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/5676/grant-vortex-pro-external-combi-installer-uk-doc-0123-rev-2-1-february-2024.pdf",note:"Official Grant UK PDF · DOC 0123 · Rev 2.1"},
+ {type:"oil",make:"Grant UK",model:"Vortex Pro Combi",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/5675/grant-vortex-pro-combi-installer-uk-doc-0122-rev-31-february-2024.pdf",note:"Official Grant UK PDF · DOC 0122 · Rev 3.1"},
+ {type:"oil",make:"Grant UK",model:"Vortex Eco External / External System",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/5029/grant-vortex-eco-external-and-external-system-installer-uk-doc-0125-rev-20-july-2022.pdf",note:"Official Grant UK PDF · DOC 0125 · Rev 2.0"},
+ {type:"oil",make:"Grant UK",model:"Vortex Eco Utility / Utility System",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/5677/grant-vortex-eco-utility-and-utility-system-installer-uk-doc-0124-rev-21-february-2024.pdf",note:"Official Grant UK PDF · DOC 0124 · Rev 2.1"},
+ {type:"oil",make:"Grant UK",model:"Vortex Boiler House",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/5028/grant-vortex-boilerhouse-installer-uk-doc-0128-rev-2-0-july-2022.pdf",note:"Official Grant UK PDF · DOC 0128 · Rev 2.0"},
+ {type:"oil",make:"Firebird",model:"Enviromax Condensing Range",title:"Installation & Servicing Manual",url:"https://firebird.ie/images/Downloads/Enviromax_Manual_8.pdf",note:"Official Firebird Enviromax condensing-range manual"},
+ {type:"heatpump",make:"Grant UK",model:"Aerona³ R32",title:"Installation Instructions",url:"https://www.grantuk.com/media/5657/grant-aerona-r32-installer-uk-doc-0136-rev-2-4-february-2024.pdf",note:"Official Grant UK Aerona³ R32 installer manual · DOC 0136 · Rev 2.4"},
+ {type:"aircon",make:"Daikin",model:"RZAG35A2V1B / RZAG50A2V1B / RZAG60A2V1B",title:"R32 Split Installation Manual",url:"https://www.daikin.co.uk/content/dam/document-library/installation-manuals/ac/sky-air/rzag-a/RZAG-A_3PEN548265-1B_2018_11_Installation%20manual_English.pdf",note:"Official Daikin Sky Air R32 installation manual"}
 ];
 // Category tags keep existing verified PDFs compatible with the expanded library.
 DIRECT_MANUALS.forEach(m=>{if(!Array.isArray(m.categories)){m.categories=m.type==="boiler"?["naturalgas"]:m.type==="oil"?["oil"]:m.type==="aircon"?["aircon"]:[m.type]}});
@@ -1952,9 +1961,9 @@ function searchTechnicalWeb(){let q=(document.getElementById("faultSearch")?.val
 function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&quot;")}
 
 
-/* Build 5.5 Engineer Hub helpers */
+/* Build 5.6 Engineer Hub helpers */
 
-/* Build 5.5 known boiler model catalogue */
+/* Build 5.6 known boiler model catalogue */
 const KNOWN_BOILER_MODELS={
 "Worcester Bosch":["Greenstar 1000","Greenstar 2000","Greenstar 25i","Greenstar 30i","Greenstar 4000 Combi","Greenstar 4000 System","Greenstar 8000 Life Combi","Greenstar 8000 Life System","Greenstar 8000 Style Combi","Greenstar 8000 Style System","Greenstar CDi Compact","Greenstar i System","Greenstar Ri","Greenstar Highflow 440CDi","Greenstar Highflow 550CDi","Greenstar Si Compact","Greenstar Junior","Greenstar 24i Junior","Greenstar 28i Junior","Greenstar 30Si Compact"],
 "Vaillant":["ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 837","ecoTEC plus 612","ecoTEC plus 615","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 630","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
@@ -1976,6 +1985,14 @@ const KNOWN_BOILER_MODELS={
 "ACV":["Prestige 24 Solo","Prestige 32 Solo","Prestige 42 Solo","Prestige 50 Solo","Prestige 75 Solo","Prestige 100 Solo","HeatMaster 25 TC","HeatMaster 35 TC","HeatMaster 85 TC","HeatMaster 120 TC"],
 "Rinnai":["E-Series E50C","E-Series E75C","E-Series E110C","M-Series M060S","M-Series M090S","M-Series M120S","I-Series i090CN","I-Series i120CN","I-Series i150SN"]
 };
+
+const KNOWN_ENGINEER_MODELS={
+"Grant UK":["Vortex Pro 15-26","Vortex Pro 26-46","Vortex Pro 46-70","Vortex Pro System 15-26","Vortex Pro System 26-46","Vortex Pro External 15-26","Vortex Pro External 26-46","Vortex Pro External 46-70","Vortex Pro External Combi 21","Vortex Pro External Combi 26","Vortex Pro External Combi 36","Vortex Pro Combi 21","Vortex Pro Combi 26","Vortex Pro Combi 36","Vortex Pro Combi XS 26","Vortex Eco External / External System","Vortex Eco Utility / Utility System","Vortex Boiler House","Aerona³ R32"],
+"Firebird":["Enviromax Condensing Range"],
+"Daikin":["CTXM-R / FTXM-R / ATXM-R","RZAG35A2V1B","RZAG50A2V1B","RZAG60A2V1B"],
+"Toshiba":["RAS HAORI R32 10/13/16"]
+};
+
 function manualMatchesModel(m,model){
   const norm=s=>String(s||"").toLowerCase()
     .replace(/[–—]/g,"-")
@@ -1995,18 +2012,28 @@ function manualMatchesModel(m,model){
     ["Ideal Heating","Logic MAX Combi2 C24/C30/C35",["logic max combi2 c24","logic max combi2 c30","logic max combi2 c35"]],
     ["Glow-worm","Energy7 25C/30C/35C",["energy7 25c","energy7 30c","energy7 35c"]],
     ["Worcester Bosch","Greenstar 24i Junior / Greenstar 28i Junior",["greenstar 24i junior","greenstar 28i junior"]],
-    ["Worcester Bosch","Greenstar 25i / Greenstar 30i",["greenstar 25i","greenstar 30i"]]
+    ["Worcester Bosch","Greenstar 25i / Greenstar 30i",["greenstar 25i","greenstar 30i"]],
+    ["Grant UK","Vortex Pro / Pro System",["vortex pro 15 26","vortex pro 26 46","vortex pro 46 70","vortex pro system 15 26","vortex pro system 26 46"]],
+    ["Grant UK","Vortex Pro External",["vortex pro external 15 26","vortex pro external 26 46","vortex pro external 46 70"]],
+    ["Grant UK","Vortex Pro External Combi",["vortex pro external combi 21","vortex pro external combi 26","vortex pro external combi 36"]],
+    ["Grant UK","Vortex Pro Combi",["vortex pro combi 21","vortex pro combi 26","vortex pro combi 36","vortex pro combi xs 26"]],
+    ["Grant UK","Aerona3 R32",["aerona3 r32","aerona 3 r32"]],
+    ["Daikin","RZAG35A2V1B / RZAG50A2V1B / RZAG60A2V1B",["rzag35a2v1b","rzag50a2v1b","rzag60a2v1b"]]
   ];
   const rule=ranges.find(r=>r[0]===m.make && norm(r[1])===a);
   return !!rule && rule[2].map(norm).includes(b);
 }
+function directManualsFor(make,model){
+  return DIRECT_MANUALS.filter(m=>m.make===make&&manualMatchesModel(m,model));
+}
 function directManualFor(make,model){
-  return DIRECT_MANUALS.find(m=>m.make===make&&manualMatchesModel(m,model))||null;
+  return directManualsFor(make,model)[0]||null;
 }
 function allModelsForMake(make){
- const known=KNOWN_BOILER_MODELS[make]||[];
+ const boilerKnown=KNOWN_BOILER_MODELS[make]||[];
+ const engineerKnown=KNOWN_ENGINEER_MODELS[make]||[];
  const loaded=manualsForFilter().filter(x=>x.make===make).map(x=>x.model);
- return [...new Set([...known,...loaded])];
+ return [...new Set([...boilerKnown,...engineerKnown,...loaded])];
 }
 
 const FAULT_GUIDE=[
@@ -2042,17 +2069,19 @@ function renderManufacturerLibrary(){
    let models=allModelsForMake(make);
    if(q)models=models.filter(model=>make.toLowerCase().includes(q)||model.toLowerCase().includes(q));
    const key=makeKey(make),autoOpen=!!q&&models.length>0;
-   const loadedCount=models.filter(model=>!!directManualFor(make,model)).length;
+   const docCount=models.reduce((n,model)=>n+directManualsFor(make,model).length,0);
    return `<div class="make-card ${autoOpen?"open":""}" id="make-${key}">
     <button class="make-head" type="button" onclick="toggleMake('${key}')">
-      <span><b>${esc(make)}</b><small>${models.length} model${models.length===1?"":"s"} · ${loadedCount} direct PDF${loadedCount===1?"":"s"}</small></span>
+      <span><b>${esc(make)}</b><small>${models.length} model${models.length===1?"":"s"} · ${docCount} verified document${docCount===1?"":"s"}</small></span>
       <span class="make-chevron">›</span>
     </button>
     <div class="make-body">${models.length?models.map(model=>{
-      const manual=directManualFor(make,model);
-      if(manual){
-        const mi=DIRECT_MANUALS.indexOf(manual),fav=isFav(manual);
-        return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(manual.title)}${manual.note?" · "+esc(manual.note):""}</div><div class="model-actions"><button class="green" type="button" onclick="viewDirectManual(${mi})">Open PDF</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★ Favourite":"☆ Favourite"}</button></div></div>`;
+      const docs=directManualsFor(make,model);
+      if(docs.length){
+        return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${docs.length} verified document${docs.length===1?"":"s"}</div><div class="model-actions">${docs.map(manual=>{
+          const mi=DIRECT_MANUALS.indexOf(manual),fav=isFav(manual);
+          return `<button class="green" type="button" onclick="viewDirectManual(${mi})">${esc(manual.title||"Open PDF")}</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★":"☆"}</button>`;
+        }).join("")}</div></div>`;
       }
       return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">Model listed · exact verified direct PDF not loaded yet</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImport()">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button></div></div>`;
     }).join(""):`<div class="smallnote" style="padding:10px 2px">No models listed for this make yet.</div>`}</div>
