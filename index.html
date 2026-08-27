@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 5.1 · V17.8</title>
+<title>TradePro UK · Plumber Edition · Build 5.3 · V18.0</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -180,7 +180,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 @media(max-width:430px){.manual-toolbar{align-items:flex-start}.manual-toolbar button{font-size:12px}.manual-frame-wrap{height:calc(100vh - 245px);min-height:460px}}
 
 
-/* Build 5.1 Engineer Hub */
+/* Build 5.3 Engineer Hub */
 .engineer-hub-hero{background:linear-gradient(135deg,#15324b,#244d69);color:#fff;border-radius:18px;padding:17px;margin:0 0 14px}
 .engineer-hub-hero h3{margin:0 0 5px;font-size:20px}.engineer-hub-hero p{margin:0;opacity:.9;font-size:12px;line-height:1.45}
 .hub-quick{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:12px 0}
@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 5.1 · V17.8</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 5.3 · V18.0</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -781,7 +781,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <div class="sectioncard">
 <div class="section-title-row"><h3>Manufacturers & Models</h3><span id="manufacturerCount" class="count-pill">0 makes</span></div>
-<div class="smallnote" style="margin:7px 0 10px">Tap a manufacturer to drop down the manuals loaded for that make. Search above to jump directly to a model.</div>
+<div class="smallnote" style="margin:7px 0 10px">Tap a manufacturer to drop down its models. <strong>Open PDF</strong> is only shown for an exact verified model/range match. TradePro will not reuse a manual from another boiler just because the names look similar. Unverified models show <strong>PDF pending</strong>.</div>
 <div id="techList" class="tech-list"></div>
 </div>
 
@@ -914,7 +914,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 5.1 · V17.8</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 5.3 · V18.0</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -932,7 +932,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="17.8";
+const TRADEPRO_VERSION="18.0";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1883,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 5.1 five-section technical library + persistent Manual Vault */
+/* Build 5.3 five-section technical library + persistent Manual Vault */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1893,7 +1893,8 @@ const TECH_LIBRARY=[
  {type:"aircon",makes:["Daikin","Mitsubishi Electric","Fujitsu","Panasonic","Toshiba","Midea","Samsung","LG","Hitachi","Carrier","Mitsubishi Heavy Industries","Gree","Haier","Hisense","Bosch","Vaillant","Clivet","Tosot","AUX","York","Trane"]}
 ];
 const DIRECT_MANUALS=[
- {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar 4000 NG / LPG variants",title:"Installation & Maintenance Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720891161?cachedVersion=1574796923",note:"Official Worcester Bosch PDF — includes LPG appliance data; verify exact model/fuel"},
+ {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar 4000 Combi",title:"Installation & Maintenance Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720891161?cachedVersion=1574796923",note:"Official Worcester Bosch Greenstar 4000 Combi manual — verify exact appliance/fuel/revision"},
+ {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar 24i Junior / Greenstar 28i Junior",title:"Installation, Commissioning & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/release/8716115166/12640",note:"Official Worcester Bosch manual specifically covering Greenstar 24i Junior and 28i Junior, Natural Gas and LPG"},
  {type:"boiler",make:"Vaillant",model:"ecoTEC plus 610–635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant PDF"},
  {type:"boiler",make:"Ideal Heating",model:"Logic MAX Combi² C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/31e4e31bdd6fdb3572d7bb2d539ce903/Logic%20MAX%20Combi%20Installation%20%26%20Servicing%20-%2010.2023%20%28UIN%20237660%20A01%29.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4hw7r7ut3zXch9PphO11t5%2Fb7b554ce47c40395d57623ed81025135%2FLogic_MAX_Combi_Installation___Servicing_-_10.2023__UIN_237660_A01_.pdf",note:"Official Ideal Heating PDF"},
  {type:"boiler",make:"Glow-worm",model:"Energy7 25C/30C/35C",title:"Installation & Maintenance Instructions",url:"https://www.glow-worm.co.uk/glow-worm/product-manuals/energy-3/combi-8/energy7-combi-installation-and-maintenance-instructions-1948938.pdf",note:"Official Glow-worm PDF"},
@@ -1938,9 +1939,9 @@ function searchTechnicalWeb(){let q=(document.getElementById("faultSearch")?.val
 function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&quot;")}
 
 
-/* Build 5.1 Engineer Hub helpers */
+/* Build 5.3 Engineer Hub helpers */
 
-/* Build 5.1 known boiler model catalogue */
+/* Build 5.3 known boiler model catalogue */
 const KNOWN_BOILER_MODELS={
 "Worcester Bosch":["Greenstar 1000","Greenstar 2000","Greenstar 25i","Greenstar 30i","Greenstar 4000 Combi","Greenstar 4000 System","Greenstar 8000 Life Combi","Greenstar 8000 Life System","Greenstar 8000 Style Combi","Greenstar 8000 Style System","Greenstar CDi Compact","Greenstar i System","Greenstar Ri","Greenstar Highflow 440CDi","Greenstar Highflow 550CDi","Greenstar Si Compact","Greenstar Junior","Greenstar 24i Junior","Greenstar 28i Junior","Greenstar 30Si Compact"],
 "Vaillant":["ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 837","ecoTEC plus 612","ecoTEC plus 615","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 630","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
@@ -1963,19 +1964,30 @@ const KNOWN_BOILER_MODELS={
 "Rinnai":["E-Series E50C","E-Series E75C","E-Series E110C","M-Series M060S","M-Series M090S","M-Series M120S","I-Series i090CN","I-Series i120CN","I-Series i150SN"]
 };
 function manualMatchesModel(m,model){
- const a=(m.model||"").toLowerCase(),b=(model||"").toLowerCase();
- if(a===b)return true;
- const clean=s=>s.replace(/[^a-z0-9]+/g," ").trim();
- const bt=clean(b).split(/\s+/).filter(x=>x.length>2);
- const at=clean(a);
- return bt.length>0&&bt.every(t=>at.includes(t));
+  const norm=s=>String(s||"").toLowerCase()
+    .replace(/[–—]/g,"-")
+    .replace(/²/g,"2")
+    .replace(/[^a-z0-9]+/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+  const a=norm(m.model), b=norm(model);
+  if(!a||!b)return false;
+  if(a===b)return true;
+
+  // Only allow explicitly safe range matches where one PDF is known to cover
+  // a stated range in DIRECT_MANUALS. Never infer coverage merely because
+  // model names share a manufacturer/family word such as "Greenstar".
+  const ranges=[
+    ["Vaillant","ecoTEC plus 610-635",["ecotec plus 612","ecotec plus 615","ecotec plus 618","ecotec plus 624","ecotec plus 630","ecotec plus 637"]],
+    ["Ideal Heating","Logic MAX Combi2 C24/C30/C35",["logic max combi2 c24","logic max combi2 c30","logic max combi2 c35"]],
+    ["Glow-worm","Energy7 25C/30C/35C",["energy7 25c","energy7 30c","energy7 35c"]],
+    ["Worcester Bosch","Greenstar 24i Junior / Greenstar 28i Junior",["greenstar 24i junior","greenstar 28i junior"]]
+  ];
+  const rule=ranges.find(r=>r[0]===m.make && norm(r[1])===a);
+  return !!rule && rule[2].map(norm).includes(b);
 }
 function directManualFor(make,model){
- let hit=DIRECT_MANUALS.find(m=>m.make===make&&manualMatchesModel(m,model));
- if(hit)return hit;
- const first=(model||"").toLowerCase().replace(/[^a-z0-9]+/g," ").split(/\s+/).find(x=>x.length>4);
- if(first)hit=DIRECT_MANUALS.find(m=>m.make===make&&(m.model||"").toLowerCase().includes(first));
- return hit||null;
+  return DIRECT_MANUALS.find(m=>m.make===make&&manualMatchesModel(m,model))||null;
 }
 function allModelsForMake(make){
  const known=KNOWN_BOILER_MODELS[make]||[];
