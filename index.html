@@ -783,12 +783,14 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="sectioncard">
 <div class="section-title-row"><h3>✅ Library Health</h3><span id="techHealthStatus" class="count-pill">Checking…</span></div>
 <div class="stats" style="margin-top:10px;margin-bottom:0">
-<div class="card"><small>Models in this section</small><strong id="techHealthModels">0</strong></div>
-<div class="card"><small>Verified coverage</small><strong id="techHealthCovered">0</strong></div>
+<div class="card"><small>Exact models</small><strong id="techHealthModels">0</strong></div>
+<div class="card"><small>Verified PDF coverage</small><strong id="techHealthCovered">0</strong></div>
+<div class="card"><small>Official page only</small><strong id="techHealthOfficialOnly">0</strong></div>
 <div class="card"><small>PDFs loaded</small><strong id="techHealthDocs">0</strong></div>
-<div class="card"><small>Pending models</small><strong id="techHealthPending">0</strong></div>
+<div class="card"><small>PDF pending</small><strong id="techHealthPending">0</strong></div>
+<div class="card"><small>Legacy models</small><strong id="techHealthLegacy">0</strong></div>
 </div>
-<div id="techHealthNote" class="smallnote" style="margin-top:10px">Only explicitly mapped exact models count as covered.</div>
+<div id="techHealthNote" class="smallnote" style="margin-top:10px">Only explicitly mapped exact models count as verified PDF coverage.</div>
 </div>
 
 <div class="sectioncard">
@@ -944,8 +946,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="7.9";
-const TRADEPRO_VERSION="20.6";
+const TRADEPRO_BUILD="8.0";
+const TRADEPRO_VERSION="20.7";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2192,7 +2194,7 @@ function runTechDataIntegrityAudit(){
     if(!exactInCatalogue&&/[\/]|\brange\b|\bcombi\b|\bsystem\b/i.test(m.model))warnings.push(`${m.make} · ${m.model}: broad document label has no explicit verified model map`);
   });
   // Build 7.5: catalogue hygiene — broad placeholders must not masquerade as exact selectable models.
-  const broadCataloguePattern=/(?:\brange\b|\bsplit systems?\b|\bvrf systems?\b|\bresidential split\b|\bcommercial range\b|exact manual pending)/i;
+  const broadCataloguePattern=/(?:\brange\b|\bsplit systems?\b|\bvrf systems?\b|\bresidential split\b|\bcommercial range\b|\bair source heat pump range\b|\bground source heat pump range\b|\bwaterstage .* range\b|exact manual pending)/i;
   Object.entries(CATEGORY_MODEL_CATALOGUES).forEach(([cat,makes])=>Object.entries(makes||{}).forEach(([make,models])=>(models||[]).forEach(model=>{
     if(broadCataloguePattern.test(String(model||"")))warnings.push(`${cat} · ${make}: broad catalogue placeholder should be replaced with exact models: ${model}`);
   })));
@@ -2320,18 +2322,34 @@ function recentList(){try{return JSON.parse(localStorage.getItem("tradepro_recen
 function renderRecentManuals(){const box=document.getElementById("recentManuals"),count=document.getElementById("recentManualCount");if(!box)return;const favs=favList(),recent=recentList();let combined=[];favs.forEach(x=>combined.push({...x,_fav:true}));recent.forEach(x=>{if(!combined.some(y=>y.url===x.url))combined.push({...x,_fav:false})});combined=combined.slice(0,8);if(count)count.textContent=combined.length+" saved";box.innerHTML=combined.length?combined.map(x=>{const i=DIRECT_MANUALS.findIndex(m=>m.url===x.url);return `<div class="recent-item"><b>${x._fav?"⭐ ":"🕘 "}${esc(x.make)} · ${esc(x.model)}</b><small>${esc(x.title||"Technical Manual")}</small>${i>=0?`<button class="green" type="button" onclick="viewDirectManual(${i})">Open manual</button>`:""}</div>`}).join(""):'<div class="smallnote">Favourite a manual or open one and it will appear here.</div>'}
 function makeKey(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-")}
 function toggleMake(key){const el=document.getElementById("make-"+key);if(el)el.classList.toggle("open")}
+function modelLibraryState(make,model){
+ const docs=directManualsFor(make,model);
+ const official=!!OFFICIAL_MODEL_SOURCES[make+"|"+model];
+ const legacy=/\blegacy\b|\bdiscontinued\b/i.test(String(model||""));
+ return {docs,official,legacy,status:docs.length?"verified":official?"official-only":"pending"};
+}
+function modelStateLabel(make,model){
+ const st=modelLibraryState(make,model);
+ if(st.status==="verified")return `${st.docs.length} verified document${st.docs.length===1?"":"s"}${st.legacy?" · legacy":""}`;
+ if(st.status==="official-only")return `Official model page verified · exact direct PDF pending${st.legacy?" · legacy":""}`;
+ return `Exact model listed · exact verified direct PDF pending${st.legacy?" · legacy":""}`;
+}
 function updateTechHealth(){
  const catalogue=CATEGORY_MODEL_CATALOGUES[techFilter]||{};
  const makes=TECH_LIBRARY.find(x=>x.type===techFilter)?.makes||Object.keys(catalogue);
  let models=[];makes.forEach(make=>allModelsForMake(make).forEach(model=>models.push([make,model])));
- const covered=models.filter(([make,model])=>directManualsFor(make,model).length>0).length;
- const docs=manualsForFilter().length,pending=Math.max(0,models.length-covered);
+ const states=models.map(([make,model])=>modelLibraryState(make,model));
+ const covered=states.filter(x=>x.status==="verified").length;
+ const officialOnly=states.filter(x=>x.status==="official-only").length;
+ const pending=states.filter(x=>x.status==="pending").length;
+ const legacy=states.filter(x=>x.legacy).length;
+ const docs=manualsForFilter().length;
  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
- set("techHealthModels",models.length);set("techHealthCovered",covered);set("techHealthDocs",docs);set("techHealthPending",pending);
+ set("techHealthModels",models.length);set("techHealthCovered",covered);set("techHealthOfficialOnly",officialOnly);set("techHealthDocs",docs);set("techHealthPending",pending);set("techHealthLegacy",legacy);
  const status=document.getElementById("techHealthStatus"),note=document.getElementById("techHealthNote");
- const audit=window.TRADEPRO_TECH_AUDIT||{issues:[]};
- if(status)status.textContent=audit.issues.length?audit.issues.length+" integrity issue"+(audit.issues.length===1?"":"s"):"Strict matching on";
- if(note)note.innerHTML=`${covered} of ${models.length} catalogue models have an exact verified built-in document in this section. <strong>Broad family titles never count as coverage unless their individual models are explicitly mapped.</strong> Release metadata is also generated from a single build/version source to prevent stale labels in backups and reports.`;
+ const audit=window.TRADEPRO_TECH_AUDIT||{issues:[],warnings:[]};
+ if(status)status.textContent=audit.issues.length?audit.issues.length+" integrity issue"+(audit.issues.length===1?"":"s"):audit.warnings.length?audit.warnings.length+" audit warning"+(audit.warnings.length===1?"":"s"):"Strict matching on";
+ if(note)note.innerHTML=`${covered} of ${models.length} exact catalogue models have verified built-in documents. ${officialOnly} have a verified official model page but still need an exact direct PDF, and ${pending} are exact catalogue models still awaiting document verification. <strong>Legacy status is shown separately and broad family titles never count as exact coverage unless their individual models are explicitly mapped.</strong>`;
 }
 function renderManufacturerLibrary(){
  const box=document.getElementById("techList"),c=document.getElementById("manufacturerCount");if(!box)return;
@@ -2358,12 +2376,12 @@ function renderManufacturerLibrary(){
     <div class="make-body">${models.length?models.map(model=>{
       const docs=directManualsFor(make,model);
       if(docs.length){
-        return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${docs.length} verified document${docs.length===1?"":"s"}${modelAliasMeta(make,model)}</div><div class="model-actions">${docs.map(manual=>{
+        return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}</div><div class="model-actions">${docs.map(manual=>{
           const mi=DIRECT_MANUALS.indexOf(manual),fav=isFav(manual);
           return `<button class="green" type="button" onclick="viewDirectManual(${mi})">${esc(manual.title||"Open PDF")}</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★":"☆"}</button>`;
         }).join("")}${officialModelSourceButton(make,model)}</div></div>`;
       }
-      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">Model listed · exact verified direct PDF not loaded yet${modelAliasMeta(make,model)}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}</div></div>`;
+      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}</div></div>`;
     }).join(""):`<div class="smallnote" style="padding:10px 2px">No verified model/range catalogue loaded for this make in this section yet.</div><div class="model-actions" style="padding:0 2px 10px">${officialSourceButton(make)}</div>`}</div>
    </div>`;
  }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
