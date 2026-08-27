@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 6.3 · V19.0</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 6.4 · V19.1</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -1883,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 6.3 verified Glow-worm expansion + manufacturer-source audit */
+/* Build 6.4 verified Ideal Heating expansion + LPG catalogue audit */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1910,6 +1910,8 @@ const DIRECT_MANUALS=[
 
  {type:"boiler",categories:["naturalgas"],make:"Vaillant",model:"ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant new-generation ecoTEC plus installation manual · exact system boiler outputs: 610, 615, 620, 625, 630 and 635 · do not use for legacy 612/618/624/637 models"},
  {type:"boiler",make:"Ideal Heating",model:"Logic MAX Combi² C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/31e4e31bdd6fdb3572d7bb2d539ce903/Logic%20MAX%20Combi%20Installation%20%26%20Servicing%20-%2010.2023%20%28UIN%20237660%20A01%29.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4hw7r7ut3zXch9PphO11t5%2Fb7b554ce47c40395d57623ed81025135%2FLogic_MAX_Combi_Installation___Servicing_-_10.2023__UIN_237660_A01_.pdf",note:"Official Ideal Heating PDF"},
+ {type:"boiler",categories:["naturalgas","lpg"],make:"Ideal Heating",model:"Logic+ Combi C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/b3b22a7e1594c34276954b43b63ce838/LOGICPLUS-Combi-Installation%26Servicing-10.2023-UIN-237662-A01.pdf.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4X6bKmLPXojsPZKjAt1fpB%2F64b23cd5c9ac7752930e77f05db381fd%2FLOGICPLUS-Combi-Installation_Servicing-10.2023-UIN-237662-A01.pdf.pdf",note:"Official Ideal Heating Logic+ Combi installation & servicing manual · C24/C30/C35 · manual includes Natural Gas and Propane variants · UIN 237662 A01 · October 2023"},
+ {type:"boiler",categories:["naturalgas","lpg"],make:"Ideal Heating",model:"Logic System² S15/S18/S24/S30",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/ffdf538a99df3e215fb6a6ecce13aa8e/Logic%20System2%20Installation%20%26%20Servicing%20-%2009.2024%20UIN%20237665%20A03.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F6J8qVq1M9nYWYCDncBAfJN%2F2b445950b9eebc727705cd642874c060%2FLogic_System2_Installation___Servicing_-_09.2024_UIN_237665_A03.pdf",note:"Official Ideal Heating Logic System² installation & servicing manual · S15/S18/S24/S30 · Natural Gas and Propane covered by the appliance instructions · UIN 237665 A03 · September 2024"},
  {type:"boiler",make:"Glow-worm",model:"Energy7 25C/30C/35C",title:"Installation & Maintenance Instructions",url:"https://www.glow-worm.co.uk/glow-worm/product-manuals/energy-3/combi-8/energy7-combi-installation-and-maintenance-instructions-1948938.pdf",note:"Official Glow-worm PDF"},
  {type:"boiler",categories:["naturalgas"],make:"Glow-worm",model:"Energy7 12S/15S/18S/25S/30S",title:"Installation & Maintenance Instructions",url:"https://www.glow-worm.co.uk/glow-worm/product-manuals/energy-3/system-5/energy7-system-installation-and-maintenance-instructions-1948947.pdf",note:"Official Glow-worm Energy7 system manual · exact appliances: 12S, 15S, 18S, 25S and 30S · document 0020300876_01"},
  {type:"boiler",categories:["naturalgas"],make:"Glow-worm",model:"Betacom4 24C/30C",title:"Installation & Maintenance Instructions",url:"https://www.glow-worm.co.uk/glow-worm/product-manuals/betacom/betacom4-combi-installation-and-maintenance-instructions-1948960.pdf",note:"Official Glow-worm Betacom4 manual · exact appliances: 24C and 30C · document 0020238424_02 · discontinued product"},
@@ -1975,8 +1977,8 @@ function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&q
 const KNOWN_BOILER_MODELS={
 "Worcester Bosch":["Greenstar 1000","Greenstar 2000","Greenstar 25i ErP","Greenstar 30i ErP","Greenstar 4000 Combi","Greenstar 4000 System","Greenstar 8000 Life Combi","Greenstar 8000 Life System","Greenstar 8000 Style Combi","Greenstar 8000 Style System","Greenstar CDi Compact","Greenstar i System","Greenstar Ri","Greenstar Highflow 440CDi","Greenstar Highflow 550CDi","Greenstar Si Compact","Greenstar 24i Junior","Greenstar 28i Junior","Greenstar 30Si Compact"],
 "Vaillant":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635","ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 837","ecoTEC plus 612","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
-"Ideal Heating":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35","Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic Max Heat2 H12","Logic Max Heat2 H15","Logic Max Heat2 H18","Vogue Max Combi2 C26","Vogue Max Combi2 C32","Vogue Max Combi2 C40","Vogue Gen2","Independent C24","Independent C30"],
-"Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 400 Combi 2 24","Baxi 400 Combi 2 30","Duo-tec 24","Duo-tec 28","Duo-tec 33","Duo-tec 40","Platinum 24","Platinum 28","Platinum 33","Platinum 40","Megaflo System 15","Megaflo System 18","Megaflo System 24","Megaflo System 28","Solo HE 12","Solo HE 15","Solo HE 18","Solo HE 24"],
+"Ideal Heating":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35","Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30","Logic Max Heat2 H12","Logic Max Heat2 H15","Logic Max Heat2 H18","Vogue Max Combi2 C26","Vogue Max Combi2 C32","Vogue Max Combi2 C40","Vogue Gen2","Independent C24","Independent C30"],
+"Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 600 System 2 30","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30","Baxi 400 Combi 2 24","Baxi 400 Combi 2 30","Duo-tec 24","Duo-tec 28","Duo-tec 33","Duo-tec 40","Platinum 24","Platinum 28","Platinum 33","Platinum 40","Megaflo System 15","Megaflo System 18","Megaflo System 24","Megaflo System 28","Solo HE 12","Solo HE 15","Solo HE 18","Solo HE 24"],
 "Glow-worm":["Energy7 25C","Energy7 30C","Energy7 35C","Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Energy7 30S","Ultimate3 25C","Ultimate3 30C","Ultimate3 35C","Betacom4 24C","Betacom4 30C","Essential 24C","Essential 28C","Flexicom cx","Flexicom hx","Ultracom2 cx","Ultracom2 hxi"],
 "Viessmann":["Vitodens 050-W 25kW","Vitodens 050-W 30kW","Vitodens 050-W 35kW","Vitodens 100-W 19kW","Vitodens 100-W 25kW","Vitodens 100-W 32kW","Vitodens 100-W 35kW","Vitodens 111-W","Vitodens 200-W","Vitodens 222-F","Vitodens 050-W B0KA","Vitodens 100-W B1KF","Vitodens 100-W B1HF"],
 "Alpha":["E-Tec 20S","E-Tec 25R","E-Tec 28","E-Tec 33","E-Tec 35","E-Tec Plus 28","E-Tec Plus 33","E-Tec Plus 38","Evoke 28","Evoke 33","InTec 26C","InTec 30C","InTec 34C","InTec 24X","InTec 28X"],
@@ -2002,7 +2004,10 @@ const KNOWN_BOILER_MODELS={
    prevents LPG suitability being inferred from a natural-gas catalogue. */
 const CATEGORY_MODEL_CATALOGUES={
  naturalgas:KNOWN_BOILER_MODELS,
- lpg:{},
+ lpg:{
+  "Ideal Heating":["Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30"],
+  "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 600 System 2 30","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30"]
+ },
  oil:{
   "Grant UK":["Vortex Pro 15-26","Vortex Pro 26-46","Vortex Pro 46-70","Vortex Pro System 15-26","Vortex Pro System 26-46","Vortex Pro External 15-26","Vortex Pro External 26-46","Vortex Pro External 46-70","Vortex Pro External Combi 21","Vortex Pro External Combi 26","Vortex Pro External Combi 36","Vortex Pro Combi 21","Vortex Pro Combi 26","Vortex Pro Combi 36","Vortex Pro Combi XS 26","Vortex Eco External / External System","Vortex Eco Utility / Utility System","Vortex Boiler House"],
   "Firebird":["Enviromax Condensing Range"]
@@ -2037,6 +2042,8 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Worcester Bosch|Greenstar 25i ErP / Greenstar 30i ErP":["Greenstar 25i ErP","Greenstar 30i ErP"],
   "Vaillant|ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635"],
   "Ideal Heating|Logic MAX Combi² C24/C30/C35":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35"],
+  "Ideal Heating|Logic+ Combi C24/C30/C35":["Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35"],
+  "Ideal Heating|Logic System² S15/S18/S24/S30":["Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30"],
   "Glow-worm|Energy7 25C/30C/35C":["Energy7 25C","Energy7 30C","Energy7 35C"],
   "Glow-worm|Energy7 12S/15S/18S/25S/30S":["Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Energy7 30S"],
   "Glow-worm|Betacom4 24C/30C":["Betacom4 24C","Betacom4 30C"],
