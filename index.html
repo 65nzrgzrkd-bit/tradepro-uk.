@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 5.4 · V18.1</title>
+<title>TradePro UK · Plumber Edition · Build 5.5 · V18.2</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -180,7 +180,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 @media(max-width:430px){.manual-toolbar{align-items:flex-start}.manual-toolbar button{font-size:12px}.manual-frame-wrap{height:calc(100vh - 245px);min-height:460px}}
 
 
-/* Build 5.4 Engineer Hub */
+/* Build 5.5 Engineer Hub */
 .engineer-hub-hero{background:linear-gradient(135deg,#15324b,#244d69);color:#fff;border-radius:18px;padding:17px;margin:0 0 14px}
 .engineer-hub-hero h3{margin:0 0 5px;font-size:20px}.engineer-hub-hero p{margin:0;opacity:.9;font-size:12px;line-height:1.45}
 .hub-quick{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:12px 0}
@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 5.4 · V18.1</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 5.5 · V18.2</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -914,7 +914,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 5.4 · V18.1</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 5.5 · V18.2</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -932,7 +932,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="18.1";
+const TRADEPRO_VERSION="18.2";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1883,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 5.4 five-section technical library + persistent Manual Vault */
+/* Build 5.5 five-section technical library + persistent Manual Vault */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1906,7 +1906,7 @@ const DIRECT_MANUALS=[
  {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar CDi Compact",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720813276",note:"Official Worcester Bosch Greenstar CDi Compact Combi ErP manual"},
  {type:"boiler",categories:["naturalgas"],make:"Worcester Bosch",model:"Greenstar Ri",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/release/6720821670/31559",note:"Official Worcester Bosch Greenstar 9-24 Ri manual"},
  {type:"boiler",categories:["naturalgas"],make:"Worcester Bosch",model:"Greenstar Si Compact",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/release/6720643895/12683",note:"Official Worcester Bosch Greenstar 25-30 Si manual"},
- {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar i System",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720806945",note:"Official Worcester Bosch Greenstar 12-24 i System ErP manual"}
+ {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar i System",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720806945",note:"Official Worcester Bosch Greenstar 12-24 i System ErP manual"},
 
  {type:"boiler",make:"Vaillant",model:"ecoTEC plus 610–635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant PDF"},
  {type:"boiler",make:"Ideal Heating",model:"Logic MAX Combi² C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/31e4e31bdd6fdb3572d7bb2d539ce903/Logic%20MAX%20Combi%20Installation%20%26%20Servicing%20-%2010.2023%20%28UIN%20237660%20A01%29.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4hw7r7ut3zXch9PphO11t5%2Fb7b554ce47c40395d57623ed81025135%2FLogic_MAX_Combi_Installation___Servicing_-_10.2023__UIN_237660_A01_.pdf",note:"Official Ideal Heating PDF"},
@@ -1952,9 +1952,9 @@ function searchTechnicalWeb(){let q=(document.getElementById("faultSearch")?.val
 function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&quot;")}
 
 
-/* Build 5.4 Engineer Hub helpers */
+/* Build 5.5 Engineer Hub helpers */
 
-/* Build 5.4 known boiler model catalogue */
+/* Build 5.5 known boiler model catalogue */
 const KNOWN_BOILER_MODELS={
 "Worcester Bosch":["Greenstar 1000","Greenstar 2000","Greenstar 25i","Greenstar 30i","Greenstar 4000 Combi","Greenstar 4000 System","Greenstar 8000 Life Combi","Greenstar 8000 Life System","Greenstar 8000 Style Combi","Greenstar 8000 Style System","Greenstar CDi Compact","Greenstar i System","Greenstar Ri","Greenstar Highflow 440CDi","Greenstar Highflow 550CDi","Greenstar Si Compact","Greenstar Junior","Greenstar 24i Junior","Greenstar 28i Junior","Greenstar 30Si Compact"],
 "Vaillant":["ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 837","ecoTEC plus 612","ecoTEC plus 615","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 630","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
