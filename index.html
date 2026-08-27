@@ -205,6 +205,21 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .count-pill{background:#eaf2f7;color:var(--navy);border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800}
 @media(max-width:430px){.hub-quick{grid-template-columns:1fr 1fr}.make-head{padding:13px}.model-actions{display:grid;grid-template-columns:1fr 1fr}.model-actions button{width:100%}}
 
+/* Build 8.1: iPhone Technical Library density / scroll polish. */
+@media(max-width:430px){
+  #techLibrary .tech-search{position:relative;top:auto;z-index:1;padding:2px 0 7px;background:var(--bg)}
+  #techLibrary .tech-search input{margin-top:0;padding:11px 12px;border-radius:12px;font-size:15px;line-height:1.2}
+  #techLibrary .make-card{margin:6px 0;border-radius:13px}
+  #techLibrary .make-head{padding:10px 12px;min-height:58px}
+  #techLibrary .make-head b{font-size:14px;line-height:1.15}
+  #techLibrary .make-head small{font-size:10.5px;line-height:1.25;margin-top:2px}
+  #techLibrary .make-chevron{font-size:18px}
+  #techLibrary .make-body{padding:0 10px 10px}
+  #techLibrary .model-row{padding:10px 2px}
+  #techLibrary .section-title-row h3{font-size:17px}
+  #techLibrary .smallnote{line-height:1.35}
+}
+
 </style>
 </head>
 <body>
@@ -743,6 +758,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 
 
+<!-- Build 8.1: compact iPhone manufacturer list; non-overlapping search during scroll. -->
 <section id="techLibrary" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Engineer Hub</h2></div>
 <div class="engineer-hub-hero"><h3>Plumbing & HVAC at your fingertips</h3><p>Choose the system, manufacturer and exact model. Manuals, fault help, calculators, reports and saved PDFs stay together.</p></div>
@@ -946,8 +962,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="8.0";
-const TRADEPRO_VERSION="20.7";
+const TRADEPRO_BUILD="8.1";
+const TRADEPRO_VERSION="20.8";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
