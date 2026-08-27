@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 5.0 · V17.7</title>
+<title>TradePro UK · Plumber Edition · Build 5.1 · V17.8</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -180,7 +180,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 @media(max-width:430px){.manual-toolbar{align-items:flex-start}.manual-toolbar button{font-size:12px}.manual-frame-wrap{height:calc(100vh - 245px);min-height:460px}}
 
 
-/* Build 5.0 Engineer Hub */
+/* Build 5.1 Engineer Hub */
 .engineer-hub-hero{background:linear-gradient(135deg,#15324b,#244d69);color:#fff;border-radius:18px;padding:17px;margin:0 0 14px}
 .engineer-hub-hero h3{margin:0 0 5px;font-size:20px}.engineer-hub-hero p{margin:0;opacity:.9;font-size:12px;line-height:1.45}
 .hub-quick{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:12px 0}
@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 5.0 · V17.7</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 5.1 · V17.8</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -914,7 +914,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 5.0 · V17.7</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 5.1 · V17.8</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -932,7 +932,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="17.7";
+const TRADEPRO_VERSION="17.8";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1883,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 5.0 five-section technical library + persistent Manual Vault */
+/* Build 5.1 five-section technical library + persistent Manual Vault */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1938,7 +1938,51 @@ function searchTechnicalWeb(){let q=(document.getElementById("faultSearch")?.val
 function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&quot;")}
 
 
-/* Build 5.0 Engineer Hub helpers */
+/* Build 5.1 Engineer Hub helpers */
+
+/* Build 5.1 known boiler model catalogue */
+const KNOWN_BOILER_MODELS={
+"Worcester Bosch":["Greenstar 1000","Greenstar 2000","Greenstar 25i","Greenstar 30i","Greenstar 4000 Combi","Greenstar 4000 System","Greenstar 8000 Life Combi","Greenstar 8000 Life System","Greenstar 8000 Style Combi","Greenstar 8000 Style System","Greenstar CDi Compact","Greenstar i System","Greenstar Ri","Greenstar Highflow 440CDi","Greenstar Highflow 550CDi","Greenstar Si Compact","Greenstar Junior","Greenstar 24i Junior","Greenstar 28i Junior","Greenstar 30Si Compact"],
+"Vaillant":["ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 837","ecoTEC plus 612","ecoTEC plus 615","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 630","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
+"Ideal Heating":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35","Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic Max Heat2 H12","Logic Max Heat2 H15","Logic Max Heat2 H18","Vogue Max Combi2 C26","Vogue Max Combi2 C32","Vogue Max Combi2 C40","Vogue Gen2","Independent C24","Independent C30"],
+"Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 400 Combi 2 24","Baxi 400 Combi 2 30","Duo-tec 24","Duo-tec 28","Duo-tec 33","Duo-tec 40","Platinum 24","Platinum 28","Platinum 33","Platinum 40","Megaflo System 15","Megaflo System 18","Megaflo System 24","Megaflo System 28","Solo HE 12","Solo HE 15","Solo HE 18","Solo HE 24"],
+"Glow-worm":["Energy7 25C","Energy7 30C","Energy7 35C","Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Ultimate3 25C","Ultimate3 30C","Ultimate3 35C","Betacom4 24C","Betacom4 30C","Essential 24C","Essential 28C","Flexicom cx","Flexicom hx","Ultracom2 cx","Ultracom2 hxi"],
+"Viessmann":["Vitodens 050-W 25kW","Vitodens 050-W 30kW","Vitodens 050-W 35kW","Vitodens 100-W 19kW","Vitodens 100-W 25kW","Vitodens 100-W 32kW","Vitodens 100-W 35kW","Vitodens 111-W","Vitodens 200-W","Vitodens 222-F","Vitodens 050-W B0KA","Vitodens 100-W B1KF","Vitodens 100-W B1HF"],
+"Alpha":["E-Tec 20S","E-Tec 25R","E-Tec 28","E-Tec 33","E-Tec 35","E-Tec Plus 28","E-Tec Plus 33","E-Tec Plus 38","Evoke 28","Evoke 33","InTec 26C","InTec 30C","InTec 34C","InTec 24X","InTec 28X"],
+"Intergas":["Rapid 25","Rapid 32","Rapid 40","Xclusive 24","Xclusive 30","Xclusive 36","Xtreme 24","Xtreme 30","Xtreme 36","HRE 24/18","HRE 28/24","HRE 36/30","HRE 36/40","HRE OV 18","HRE OV 24"],
+"ATAG":["iC Economiser 27","iC Economiser 35","iC Economiser 39","iC Economiser 47","iC 24","iC 28","iC 36","iC 40","iR 12","iR 15","iR 18","iR 24","iS 15","iS 18","iS 24","iS 30","QR 25","QR 30","QR 35"],
+"Navien":["NCB-CE 20K","NCB-CE 23K","NCB-CE 28K","NCB-CE 32K","NCB-CE 37K","NCB500-ON Combi","NCB700 Combi","NFB-CE","NH-B series"],
+"Main Heating":["Eco Compact 25","Eco Compact 30","Eco Compact 35","Eco Compact Heat 15","Eco Compact Heat 18","Eco Compact Heat 24","Eco Compact System 15","Eco Compact System 18","Eco Compact System 24","Combi 24 HE","Combi 30 HE","Heat 12 Eco Elite","Heat 15 Eco Elite","Heat 18 Eco Elite","Heat 24 Eco Elite"],
+"Potterton":["Promax Combi 24 HE Plus","Promax Combi 28 HE Plus","Promax Combi 33 HE Plus","Promax System 12 HE Plus","Promax System 15 HE Plus","Promax System 18 HE Plus","Promax System 24 HE Plus","Gold Combi 24 HE","Gold Combi 28 HE","Gold Combi 33 HE"],
+"Keston":["Combi C30","Combi C35","System S30","System S35","Heat 45","Heat 55","Heat 45 Evo","Heat 55 Evo","System 30","System 35"],
+"Remeha":["Avanta 24c","Avanta 28c","Avanta 35c","Avanta 39c","Quinta Ace 30","Quinta Ace 45","Quinta Ace 55","Quinta Ace 65","Quinta Ace 90","Quinta Ace 115","Calenta Ace 25","Calenta Ace 28c","Calenta Ace 35c","Tzerra Ace"],
+"Hamworthy":["Wessex ModuMax mk3","Stratton mk3","Upton","Purewell VariHeat mk2","Fleet","Ensbury","Varmax","Tyneham"],
+"Bosch Commercial":["Condens 7000 WP","Condens 5000W","GB162 50kW","GB162 65kW","GB162 80kW","GB162 100kW","GB402 320kW","GB402 395kW","GB402 470kW","GB402 620kW"],
+"Lochinvar":["Knight XL","Knight","Crest","EcoKnight","Copper-Fin2","Armor","Power-Fin","Veritus"],
+"ACV":["Prestige 24 Solo","Prestige 32 Solo","Prestige 42 Solo","Prestige 50 Solo","Prestige 75 Solo","Prestige 100 Solo","HeatMaster 25 TC","HeatMaster 35 TC","HeatMaster 85 TC","HeatMaster 120 TC"],
+"Rinnai":["E-Series E50C","E-Series E75C","E-Series E110C","M-Series M060S","M-Series M090S","M-Series M120S","I-Series i090CN","I-Series i120CN","I-Series i150SN"]
+};
+function manualMatchesModel(m,model){
+ const a=(m.model||"").toLowerCase(),b=(model||"").toLowerCase();
+ if(a===b)return true;
+ const clean=s=>s.replace(/[^a-z0-9]+/g," ").trim();
+ const bt=clean(b).split(/\s+/).filter(x=>x.length>2);
+ const at=clean(a);
+ return bt.length>0&&bt.every(t=>at.includes(t));
+}
+function directManualFor(make,model){
+ let hit=DIRECT_MANUALS.find(m=>m.make===make&&manualMatchesModel(m,model));
+ if(hit)return hit;
+ const first=(model||"").toLowerCase().replace(/[^a-z0-9]+/g," ").split(/\s+/).find(x=>x.length>4);
+ if(first)hit=DIRECT_MANUALS.find(m=>m.make===make&&(m.model||"").toLowerCase().includes(first));
+ return hit||null;
+}
+function allModelsForMake(make){
+ const known=KNOWN_BOILER_MODELS[make]||[];
+ const loaded=manualsForFilter().filter(x=>x.make===make).map(x=>x.model);
+ return [...new Set([...known,...loaded])];
+}
+
 const FAULT_GUIDE=[
 {make:"Vaillant",code:"F.22",meaning:"Low water pressure / dry-fire protection on many ecoTEC models.",checks:["Check the system pressure shown on the appliance.","Look for obvious water loss or visible leaks around the heating system.","If the exact manufacturer instructions allow it, restore pressure to the stated cold-fill range.","If pressure repeatedly falls, investigate the cause rather than repeatedly topping up."],keywords:["f22","f.22"]},
 {make:"Vaillant",code:"F.28",meaning:"Ignition unsuccessful / flame not established on many ecoTEC models.",checks:["Confirm there is no obvious interruption to the property's gas supply using normal external checks only.","Check whether other gas appliances are operating normally, where appropriate.","Follow the appliance reset procedure only if permitted by the exact manual.","If the fault returns, use the exact model service manual for engineer diagnostics."],keywords:["f28","f.28"]},
@@ -1960,7 +2004,35 @@ function recentList(){try{return JSON.parse(localStorage.getItem("tradepro_recen
 function renderRecentManuals(){const box=document.getElementById("recentManuals"),count=document.getElementById("recentManualCount");if(!box)return;const favs=favList(),recent=recentList();let combined=[];favs.forEach(x=>combined.push({...x,_fav:true}));recent.forEach(x=>{if(!combined.some(y=>y.url===x.url))combined.push({...x,_fav:false})});combined=combined.slice(0,8);if(count)count.textContent=combined.length+" saved";box.innerHTML=combined.length?combined.map(x=>{const i=DIRECT_MANUALS.findIndex(m=>m.url===x.url);return `<div class="recent-item"><b>${x._fav?"⭐ ":"🕘 "}${esc(x.make)} · ${esc(x.model)}</b><small>${esc(x.title||"Technical Manual")}</small>${i>=0?`<button class="green" type="button" onclick="viewDirectManual(${i})">Open manual</button>`:""}</div>`}).join(""):'<div class="smallnote">Favourite a manual or open one and it will appear here.</div>'}
 function makeKey(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-")}
 function toggleMake(key){const el=document.getElementById("make-"+key);if(el)el.classList.toggle("open")}
-function renderManufacturerLibrary(){const box=document.getElementById("techList"),c=document.getElementById("manufacturerCount");if(!box)return;const arr=filteredManuals(),entry=TECH_LIBRARY.find(x=>x.type===techFilter);let makes=[...(entry?.makes||[])];arr.forEach(x=>{if(!makes.includes(x.make))makes.push(x.make)});const q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();if(q)makes=makes.filter(make=>make.toLowerCase().includes(q)||arr.some(x=>x.make===make));if(c)c.textContent=makes.length+" make"+(makes.length===1?"":"s");box.innerHTML=makes.length?makes.map(make=>{const ms=arr.filter(x=>x.make===make),key=makeKey(make),autoOpen=!!q&&ms.length>0;return `<div class="make-card ${autoOpen?"open":""}" id="make-${key}"><button class="make-head" type="button" onclick="toggleMake('${key}')"><span><b>${esc(make)}</b><small>${ms.length} loaded PDF${ms.length===1?"":"s"}${ms.length?" · tap to choose model":" · add exact PDF to Vault"}</small></span><span class="make-chevron">›</span></button><div class="make-body">${ms.length?ms.map(m=>{const i=DIRECT_MANUALS.indexOf(m),fav=isFav(m);return `<div class="model-row"><strong>${esc(m.model)}</strong><div class="model-meta">${esc(m.title)}${m.note?" · "+esc(m.note):""}</div><div class="model-actions"><button class="green" type="button" onclick="viewDirectManual(${i})">Open PDF</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${i})">${fav?"★ Favourite":"☆ Favourite"}</button></div></div>`}).join(""):`<div class="smallnote" style="padding:10px 2px">No built-in direct PDF yet for this make. Use <strong>Add PDF to Vault</strong> to keep the exact manual inside TradePro.</div>`}</div></div>`}).join(""):'<div class="notice">No manufacturer matches this search in the selected section.</div>'}
+function renderManufacturerLibrary(){
+ const box=document.getElementById("techList"),c=document.getElementById("manufacturerCount");if(!box)return;
+ const entry=TECH_LIBRARY.find(x=>x.type===techFilter);
+ let makes=[...(entry?.makes||[])];
+ manualsForFilter().forEach(x=>{if(!makes.includes(x.make))makes.push(x.make)});
+ const q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();
+ if(q)makes=makes.filter(make=>make.toLowerCase().includes(q)||allModelsForMake(make).some(model=>model.toLowerCase().includes(q)));
+ if(c)c.textContent=makes.length+" make"+(makes.length===1?"":"s");
+ box.innerHTML=makes.length?makes.map(make=>{
+   let models=allModelsForMake(make);
+   if(q)models=models.filter(model=>make.toLowerCase().includes(q)||model.toLowerCase().includes(q));
+   const key=makeKey(make),autoOpen=!!q&&models.length>0;
+   const loadedCount=models.filter(model=>!!directManualFor(make,model)).length;
+   return `<div class="make-card ${autoOpen?"open":""}" id="make-${key}">
+    <button class="make-head" type="button" onclick="toggleMake('${key}')">
+      <span><b>${esc(make)}</b><small>${models.length} model${models.length===1?"":"s"} · ${loadedCount} direct PDF${loadedCount===1?"":"s"}</small></span>
+      <span class="make-chevron">›</span>
+    </button>
+    <div class="make-body">${models.length?models.map(model=>{
+      const manual=directManualFor(make,model);
+      if(manual){
+        const mi=DIRECT_MANUALS.indexOf(manual),fav=isFav(manual);
+        return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(manual.title)}${manual.note?" · "+esc(manual.note):""}</div><div class="model-actions"><button class="green" type="button" onclick="viewDirectManual(${mi})">Open PDF</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★ Favourite":"☆ Favourite"}</button></div></div>`;
+      }
+      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">Model listed · exact verified direct PDF not loaded yet</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImport()">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button></div></div>`;
+    }).join(""):`<div class="smallnote" style="padding:10px 2px">No models listed for this make yet.</div>`}</div>
+   </div>`;
+ }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
+}
 function populateFaultMakes(){const s=document.getElementById("faultMake");if(!s||s.options.length>1)return;const makes=[...new Set(FAULT_GUIDE.map(x=>x.make))].sort();s.innerHTML='<option value="">Choose make</option>'+makes.map(x=>`<option>${esc(x)}</option>`).join("")}
 function runFaultAssistant(){const make=(document.getElementById("faultMake")?.value||"").trim(),raw=(document.getElementById("faultCodeInput")?.value||"").trim(),out=document.getElementById("faultResult");if(!out)return;if(!make||!raw){out.innerHTML='<div class="fault-result">Choose a manufacturer and enter the fault code.</div>';return}const norm=raw.toLowerCase().replace(/\s+/g,""),hit=FAULT_GUIDE.find(x=>x.make===make&&(x.keywords||[]).some(k=>norm===k.toLowerCase().replace(/\s+/g,"")));if(!hit){out.innerHTML=`<div class="fault-result"><h4>${esc(make)} · ${esc(raw)}</h4><div class="fault-meaning">No verified quick guide is loaded for this code yet.</div><div class="smallnote">Search the exact model in the manufacturer list or add its service manual to the TradePro Manual Vault. TradePro will not guess at an unknown fault code.</div></div>`;return}out.innerHTML=`<div class="fault-result"><h4>${esc(hit.make)} · ${esc(hit.code)}</h4><div class="fault-meaning">${esc(hit.meaning)}</div><strong>Check in this order:</strong><ol class="check-list">${hit.checks.map(x=>`<li>${esc(x)}</li>`).join("")}</ol><div class="fault-caution"><strong>Important:</strong> This is a quick aid, not a substitute for the exact model service manual. Stop and use the manufacturer's diagnostic procedure whenever the appliance/model differs or testing would involve gas, combustion, electrical or refrigerant work outside your competence.</div></div>`}
 const _renderTechLibraryLegacy=renderTechLibrary;
