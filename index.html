@@ -944,8 +944,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="7.8";
-const TRADEPRO_VERSION="20.5";
+const TRADEPRO_BUILD="7.9";
+const TRADEPRO_VERSION="20.6";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1961,6 +1961,7 @@ const DIRECT_MANUALS=[
  {type:"aircon",make:"Toshiba",model:"RAS HAORI R32 10/13/16",title:"Installation Manual",url:"https://www.toshiba-aircon.co.uk/content/dam/public-toshiba/gb/documents/products/r32-split-systems/residential/wall-mounted/ras-haori-high-wall/20250524_IM_1129850117_01_R32_HAORI_RAS-B_N4KRVG-E_RAS-J2AVSG-E_EN.pdf/_jcr_content/renditions/original./20250524_IM_1129850117_01_R32_HAORI_RAS-B_N4KRVG-E_RAS-J2AVSG-E_EN.pdf",note:"Official Toshiba PDF"},
  {type:"aircon",make:"Toshiba",model:"RAS HAORI R32 10/13/16",title:"Service Manual",url:"https://www.toshiba-aircon.co.uk/content/dam/public-toshiba/gb/documents/products/r32-split-systems/residential/wall-mounted/ras-haori-high-wall/20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf/_jcr_content/renditions/original./20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf",note:"Official Toshiba PDF"},
  {type:"aircon",make:"Fujitsu",model:"ASTH18/22/24KMTD R32",title:"Operation Manual",url:"https://www.fujitsu-general.com/datafiles/W9387602449-0101_OM_En_ASTH18KMTD.pdf",note:"Official Fujitsu General PDF"},
+ {type:"heatpump",categories:["heatpump"],make:"Kensa",model:"Evo 7/9/13/15/17kW",title:"Technical Information Sheet",url:"https://www.kensaheatpumps.com/wp-content/uploads/2023/03/TI-EVO.pdf",note:"Official Kensa Heat Pumps technical information sheet · exact Evo outputs: 7kW, 9kW, 13kW, 15kW and 17kW · technical data and installation-oriented product information · not labelled as a full installation manual"},
  {type:"heatpump",categories:["heatpump"],make:"Worcester Bosch",model:"Compress 5800i AW outdoor unit",title:"Installation Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6721866761",note:"Official Worcester Bosch PDF · R290 heat pump"},
 {type:"oil",make:"Grant UK",model:"Vortex Pro External",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/53ffrslr/grant-vortex-pro-external-installer-uk-doc0121-rev2-1-feb2026.pdf",note:"Official Grant UK PDF · DOC 0121 · Rev 2.1 · February 2026"},
  {type:"oil",make:"Grant UK",model:"Vortex Pro External Combi",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/5676/grant-vortex-pro-external-combi-installer-uk-doc-0123-rev-2-1-february-2024.pdf",note:"Official Grant UK PDF · DOC 0123 · Rev 2.1"},
@@ -2042,7 +2043,7 @@ const KNOWN_BOILER_MODELS={
    prevents LPG suitability being inferred from a natural-gas catalogue. */
 /* Build 7.4 catalogue audit: generic LG residential/VRF placeholders removed in favour of verified exact UK R32 models. */
 /* Build 7.6: Samsung current-range placeholder removed; exact UK support models and official user manuals added without claiming installation coverage. */
-/* Build 7.5 catalogue audit: Panasonic generic RAC/PACi labels replaced with exact current UK R32 kit models; Midea generic placeholder removed. */
+/* Build 7.9 catalogue audit: generic NIBE/Kensa/Fujitsu heat-pump placeholders and broad Mitsubishi Air-Con placeholders removed; exact verified NIBE/Kensa models added. */
 const CATEGORY_MODEL_CATALOGUES={
  naturalgas:KNOWN_BOILER_MODELS,
  lpg:{
@@ -2067,13 +2068,15 @@ const CATEGORY_MODEL_CATALOGUES={
   "Samsung":["EHS Mono HT Quiet AE080BXYDEG/EU","EHS Mono HT Quiet AE120BXYDEG/EU"],
   "Panasonic":["Aquarea L Generation WH-WDG05LE5","Aquarea L Generation WH-WDG07LE5","Aquarea L Generation WH-WDG09LE5","Aquarea legacy C/D/E series monobloc & split"],
   "LG":["THERMA V R32 Monobloc S HM051MR U44","THERMA V R32 Monobloc S HM071MR U44","THERMA V R32 Monobloc S HM091MR U44","THERMA V R32 Monobloc S HM121MR U34","THERMA V R32 Monobloc S HM123MR U34","THERMA V R32 Monobloc S HM141MR U34","THERMA V R32 Monobloc S HM143MR U34","THERMA V R32 Monobloc S HM161MR U34","THERMA V R32 Monobloc S HM163MR U34"],
-  "Fujitsu":["Waterstage air-to-water heat pump range"],
-  "NIBE":["Air source heat pump range"],
-  "Kensa":["Ground source heat pump range"]
+  // Build 7.9: remove generic heat-pump range placeholders. UK catalogue now uses exact verified model/output names only.
+  "Fujitsu":[],
+  "NIBE":["S2125-8 (1x230V)","S2125-12 (1x230V)","S2125-16 (1x230V)","S2125-16 (3x400V)","S2125-20 (1x230V)","S2125-20 (3x400V)","F2050-6","F2050-10","F2050-12","F2050-16"],
+  "Kensa":["Evo 7kW","Evo 9kW","Evo 13kW","Evo 15kW","Evo 17kW"]
  },
  aircon:{
   "Daikin":["CTXM-R / FTXM-R / ATXM-R","RZAG35A2V1B","RZAG50A2V1B","RZAG60A2V1B"],
-  "Mitsubishi Electric":["MSZ-AP15VG","MSZ-AP20VG","MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK","MSZ-AP60VG","MSZ-AP60VGK","MSZ-AP71VG","MSZ-AP71VGK","M Series split systems","Mr Slim split systems","City Multi VRF systems"],
+  // Build 7.9: broad Mitsubishi M-Series / Mr Slim / City Multi placeholders removed; only exact model entries remain selectable.
+  "Mitsubishi Electric":["MSZ-AP15VG","MSZ-AP20VG","MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK","MSZ-AP60VG","MSZ-AP60VGK","MSZ-AP71VG","MSZ-AP71VGK"],
   "Fujitsu":["ASTH18/22/24KMTD R32"],
   // Build 7.5: generic Panasonic RAC/PACi placeholders removed. Current UK Etherea R32 systems are listed by exact kit model.
   "Panasonic":["Etherea R32 KIT-Z20-CKE","Etherea R32 KIT-Z25-CKE","Etherea R32 KIT-Z35-CKE","Etherea R32 KIT-Z42-CKE","Etherea R32 KIT-Z50-CKE","Etherea R32 KIT-Z71-CKE","PACi NX Elite R32 KIT-71PK4ZH45","PACi NX Elite R32 KIT-71PF3ZH45","PACi NX Elite R32 KIT-71PU3ZH45"],
@@ -2109,6 +2112,7 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Grant UK|Aerona³ R32":["Aerona³ R32"],
   "Warmflow|Agentis B/I/E Series":["Agentis B21","Agentis B26","Agentis B33","Agentis I21","Agentis I26","Agentis I33","Agentis I44","Agentis I21PRO","Agentis I26PRO","Agentis I33PRO","Agentis I44PRO","Agentis I21P","Agentis I26P","Agentis I33P","Agentis I44P","Agentis I21S","Agentis I26S","Agentis I33S","Agentis I21C","Agentis I26C","Agentis I33C","Agentis E21","Agentis E26","Agentis E33","Agentis E44","Agentis E21PRO","Agentis E26PRO","Agentis E33PRO","Agentis E44PRO","Agentis E21P","Agentis E26P","Agentis E33P","Agentis E44P","Agentis E21S","Agentis E26S","Agentis E33S","Agentis E21C","Agentis E26C","Agentis E33C"],
   "Firebird|Combipac Xceed / Combi Xceed / Slimline Combi":["Combipac Xceed","Combi Xceed","Slimline Combi"],
+  "Kensa|Evo 7/9/13/15/17kW":["Evo 7kW","Evo 9kW","Evo 13kW","Evo 15kW","Evo 17kW"],
   "Daikin|Altherma 3 M EBLA09-16D / EDLA09-16D":["Altherma 3 M EBLA09-16D","Altherma 3 M EDLA09-16D"],
   "Daikin|RZAG35A2V1B / RZAG50A2V1B / RZAG60A2V1B":["RZAG35A2V1B","RZAG50A2V1B","RZAG60A2V1B"],
   "Intergas|Xclusive 24 / Xclusive 30 / Xclusive 36":["Xclusive 24","Xclusive 30","Xclusive 36"],
@@ -2232,7 +2236,9 @@ const MANUFACTURER_SOURCES={
  "Navien":"https://navien.co.uk/",
  "Samsung":"https://www.samsung.com/uk/business/climate/products/",
  "Panasonic":"https://www.aircon.panasonic.eu/GB_en/",
- "LG":"https://www.lg.com/uk/business/manual"
+ "LG":"https://www.lg.com/uk/business/manual",
+ "NIBE":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps",
+ "Kensa":"https://www.kensaheatpumps.com/"
 };
 function officialSourceButton(make){const u=MANUFACTURER_SOURCES[make];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official manufacturer library</button>`:''}
 
@@ -2257,7 +2263,18 @@ const OFFICIAL_MODEL_SOURCES={
  "LG|DUALCOOL Deluxe H12S1D":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/h12s1d/",
  "LG|DUALCOOL Premium H12S1P":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/h12s1p/",
  "LG|ARTCOOL Gallery Special A09GA1":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/a09ga1/",
- "LG|ARTCOOL Gallery Premium A09GA2":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/a09ga2/"
+ "LG|ARTCOOL Gallery Premium A09GA2":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/a09ga2/",
+ // Build 7.9: exact UK NIBE product pages. The UK pages explicitly list these output/electrical variants.
+ "NIBE|S2125-8 (1x230V)":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/s2125",
+ "NIBE|S2125-12 (1x230V)":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/s2125",
+ "NIBE|S2125-16 (1x230V)":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/s2125",
+ "NIBE|S2125-16 (3x400V)":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/s2125",
+ "NIBE|S2125-20 (1x230V)":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/s2125",
+ "NIBE|S2125-20 (3x400V)":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/s2125",
+ "NIBE|F2050-6":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050",
+ "NIBE|F2050-10":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050",
+ "NIBE|F2050-12":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050",
+ "NIBE|F2050-16":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050"
 };
 const MODEL_SEARCH_ALIASES={
  "Panasonic|Etherea R32 KIT-Z20-CKE":["CS-Z20CKEW","CU-Z20CKE"],
