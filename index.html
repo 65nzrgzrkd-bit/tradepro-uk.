@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#15324b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="TradePro UK">
-<title>TradePro UK · Plumber Edition</title>
+<meta name="apple-mobile-web-app-title" content="PlumbCore">
+<title>PlumbCore · Plumbing & Heating</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -234,50 +234,85 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .delivery-badge{display:inline-block;border-radius:999px;padding:7px 10px;background:#edf2f5;color:var(--navy);font-weight:800;font-size:13px}.delivery-badge.sent{background:#e5f3e7;color:#246c2b}.delivery-badge.revised{background:#fff0d5;color:#855800}
 .invoice-workflow-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.invoice-workflow-actions button{width:auto;padding:9px 12px;font-size:12px}
 @media(max-width:430px){.attention-card{padding:12px 14px}.invoice-workflow-actions button{flex:1}}
+
+/* PlumbCore V21.6 home / brand refresh */
+header{padding:calc(13px + env(safe-area-inset-top)) 18px 14px;background:linear-gradient(145deg,#0c2940,#0f3654)}
+.brand-lockup{display:flex;align-items:center;gap:12px;max-width:680px;margin:auto}
+.pc-mark{width:48px;height:48px;border-radius:14px;border:1px solid rgba(255,255,255,.45);display:grid;place-items:center;position:relative;font-weight:900;font-size:24px;letter-spacing:-4px;color:#fff;background:rgba(255,255,255,.04);overflow:hidden}
+.pc-mark .p{position:relative;z-index:2;margin-left:-3px}.pc-mark .c{color:#55ad45;margin-left:-3px}.pc-mark:after{content:"•";position:absolute;color:#55ad45;font-size:24px;right:7px;bottom:3px}
+.brand-copy{min-width:0;flex:1}.brand-name{font-weight:900;font-size:23px;letter-spacing:.4px;line-height:1}.brand-name .core{color:#55ad45}.brand-sub{font-size:13px;opacity:.82;margin-top:4px}.brand-tag{font-size:10px;color:#6bc257;margin-top:3px;letter-spacing:.2px}
+header small#appReleaseLabel{display:block;text-align:right;font-size:9px;letter-spacing:.5px;opacity:.6;margin-top:7px;max-width:680px;margin-left:auto;margin-right:auto}
+header h1{display:none}
+#home{margin-top:0}.home-business{display:flex;align-items:center;gap:8px;font-weight:750;margin:2px 2px 13px;color:var(--navy);font-size:14px}.home-business span:first-child{font-size:17px}
+.home-newjob{font-size:19px;padding:17px;border-radius:16px;box-shadow:0 8px 18px rgba(47,125,50,.18)}
+.home-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:12px 0 14px}.home-quick button{background:#fff;border:1px solid #e4eaee;border-radius:14px;padding:13px 5px 11px;color:var(--navy);box-shadow:0 4px 14px rgba(0,0,0,.045);font-weight:750;font-size:12px}.home-quick .ico{display:block;font-size:22px;color:var(--green);margin-bottom:5px}
+.home-section{background:#fff;border-radius:17px;padding:14px 15px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.055)}.home-section-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.home-section-title h3{margin:0;font-size:17px}.home-link{background:transparent;color:var(--green);font-weight:750;font-size:12px;padding:4px}
+.today-empty{color:var(--muted);font-size:13px;padding:9px 0}.today-job{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;border-top:1px solid var(--line);padding-top:11px}.today-time small{display:block;color:var(--green);font-weight:750}.today-time strong{font-size:24px}.today-info strong{display:block;font-size:15px}.today-info small{display:block;color:var(--muted);margin-top:3px;line-height:1.35}.today-actions{display:grid;gap:6px}.today-actions button{padding:8px 10px;border-radius:10px;background:#f4f7f9;color:var(--navy);font-weight:750;font-size:11px}
+.money-snapshot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.money-cell{background:#f7f9fa;border:1px solid #e2e9ed;border-radius:13px;padding:11px 9px;min-width:0}.money-cell small{display:block;color:var(--muted);font-size:10px}.money-cell strong{display:block;margin-top:5px;font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.money-cell.paid strong{color:var(--green)}.money-cell.owed strong{color:#c56516}.money-cell.won strong{color:#2463a9}
+.engineer-shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.engineer-shortcuts button{background:#f7f9fa;border:1px solid #e1e8ed;border-radius:12px;padding:10px 4px;color:var(--navy);font-size:10px;font-weight:750}.engineer-shortcuts span{display:block;font-size:21px;margin-bottom:4px}
+.home-legacy-metrics{display:none!important}
+nav{background:#0d2d47;border-top:0;box-shadow:0 -5px 20px rgba(8,35,55,.12)}nav button{background:transparent;color:#d3dde4;font-size:19px;padding-top:4px}nav button:first-child{color:#63bd4d}nav span{font-size:10px}
+@media(max-width:430px){main{padding-left:14px;padding-right:14px}.brand-name{font-size:22px}.pc-mark{width:45px;height:45px}.today-job{grid-template-columns:64px 1fr}.today-actions{grid-column:1/-1;grid-template-columns:1fr 1fr}.money-cell strong{font-size:18px}.home-quick{gap:7px}.engineer-shortcuts{gap:6px}}
 </style>
 </head>
 <body>
-<header><small id="appReleaseLabel">TradePro UK</small><h1>Plumber Edition</h1></header>
+<header>
+<div class="brand-lockup">
+  <div class="pc-mark" aria-label="PlumbCore"><span class="p">P</span><span class="c">C</span></div>
+  <div class="brand-copy"><div class="brand-name">PLUMB<span class="core">CORE</span></div><div class="brand-sub">Plumbing &amp; Heating</div><div class="brand-tag">Run the job. Run the business.</div></div>
+</div>
+<small id="appReleaseLabel">PlumbCore</small>
+</header>
 <main>
 
 <section id="home" class="screen active">
-<div class="hero"><small>This month</small><h2 id="sales">£0.00</h2><div>Payments received</div></div>
-<div class="stats">
-<div class="card"><small>Quotes</small><strong id="quoteCount">0</strong></div>
-<div class="card"><small>Invoices</small><strong id="invoiceCount">0</strong></div>
-<div class="card"><small>Outstanding</small><strong id="outstanding">£0</strong></div>
-<div class="card"><small>Customers</small><strong id="customerCount">0</strong></div>
-<div class="card"><small>Invoiced this month</small><strong id="monthInvoiced">£0</strong><div class="mini" id="monthInvoiceCount">0 invoices</div></div>
-<div class="card"><small>Deposits received</small><strong id="monthDeposits">£0</strong><div class="mini">This month</div></div>
-<div class="card"><small>Work won remaining</small><strong id="acceptedWork">£0</strong><div class="mini" id="acceptedQuoteCount">0 open accepted quotes</div></div>
-<div class="card"><small>Overdue invoices</small><strong id="overdueCount">0</strong><div class="mini" id="overdueValue">£0 overdue</div></div>
-<div class="card workload-card" onclick="openDiary()"><small>Upcoming jobs</small><strong id="upcomingCount">0</strong><div class="mini" id="nextJobText">Nothing booked</div></div>
-<div class="card workload-card" onclick="openDiary()"><small>Completed this month</small><strong id="completedMonthCount">0</strong><div class="mini" id="completedMonthText">No completed jobs</div></div>
-<div class="card workload-card" onclick="openDiary()"><small>Next 7 days</small><strong id="weekJobsCount">0</strong><div class="mini" id="weekJobsText">No booked visits</div></div>
+<div class="home-business"><span>▣</span><span id="homeBusinessName">Your business</span></div>
+<button class="primary home-newjob" onclick="newJob()">＋ &nbsp;New Job</button>
+<div class="home-quick">
+<button onclick="show('quotes')"><span class="ico">▤</span>Quote</button>
+<button onclick="show('invoices')"><span class="ico">£</span>Invoice</button>
+<button onclick="show('customers')"><span class="ico">♙</span>Customer</button>
+<button onclick="openDiary()"><span class="ico">▦</span>Diary</button>
 </div>
+
+<div class="home-section">
+  <div class="home-section-title"><h3>Today</h3><button class="home-link" onclick="openDiary()">View all ›</button></div>
+  <div id="todayHomeCard" class="today-empty">No jobs booked today.</div>
+</div>
+
 <div id="attentionCard" class="attention-card">
-<h3><span>Needs attention</span><span id="attentionSummary" class="count-pill">Checking…</span></h3>
+<h3><span>Needs Attention</span><span id="attentionSummary" class="count-pill">Checking…</span></h3>
 <div id="attentionList"><div class="attention-ok">Checking your jobs and accounts…</div></div>
 </div>
+
+<div class="home-section">
+  <div class="home-section-title"><h3>Financial Snapshot</h3><button class="home-link" onclick="openReports()">Reports ›</button></div>
+  <div class="money-snapshot">
+    <div class="money-cell paid"><small>Paid this month</small><strong id="sales">£0.00</strong></div>
+    <div class="money-cell owed"><small>Outstanding</small><strong id="outstanding">£0</strong></div>
+    <div class="money-cell won"><small>Work won</small><strong id="acceptedWork">£0</strong></div>
+  </div>
+</div>
+
+<div class="home-section">
+  <div class="home-section-title"><h3>Engineer Hub</h3><button class="home-link" onclick="show('techLibrary')">Open ›</button></div>
+  <div class="engineer-shortcuts">
+    <button onclick="show('techLibrary')"><span>▣</span>Manuals</button>
+    <button onclick="show('techLibrary');setTimeout(()=>document.getElementById('faultAssistantCard')?.scrollIntoView({behavior:'smooth'}),80)"><span>⚠</span>Fault Codes</button>
+    <button onclick="show('heatingTools')"><span>♨</span>Heating Tools</button>
+    <button onclick="show('engineerReports')"><span>▥</span>Reports</button>
+  </div>
+</div>
+
 <div id="setupHealthCard" class="setup-health">
 <div class="setup-health-top"><strong id="setupHealthTitle">Business setup</strong><span id="setupHealthPct" class="pct">0%</span></div>
 <div class="setup-progress"><i id="setupHealthBar" style="width:0%"></i></div>
 <small id="setupHealthText">Checking your business setup…</small>
 <button onclick="show('settings')">Review business setup</button>
 </div>
-<button class="primary" onclick="newJob()">＋ New Job</button>
-<h3>Quick actions</h3>
-<div class="actions">
-<button class="action" onclick="show('customers')">👤<span>Customers</span></button>
-<button class="action" onclick="show('quotes')">🧾<span>Quotes</span></button>
-<button class="action" onclick="show('invoices')">💷<span>Invoices</span></button>
-<button class="action" onclick="show('pricebook')">🔧<span>Price Book</span></button>
-<button class="action" onclick="show('heatingTools')">🔥<span>Heating Tools</span></button>
-<button class="action" onclick="openDiary()">📅<span>Diary</span></button>
-<button class="action" onclick="openReports()">📊<span>Business Reports</span></button>
-<button class="action" onclick="show('techLibrary')">📚<span>Technical Library</span></button>
-<button class="action" onclick="show('engineerReports')">📝<span>Engineer Reports</span></button>
-<button class="action" onclick="show('settings')">🛡️<span>Backup & Settings</span></button>
+
+<div class="home-legacy-metrics">
+<span id="quoteCount">0</span><span id="invoiceCount">0</span><span id="customerCount">0</span><span id="monthInvoiced">£0</span><span id="monthInvoiceCount">0 invoices</span><span id="monthDeposits">£0</span><span id="acceptedQuoteCount">0 open accepted quotes</span><span id="overdueCount">0</span><span id="overdueValue">£0 overdue</span><span id="upcomingCount">0</span><span id="nextJobText">Nothing booked</span><span id="completedMonthCount">0</span><span id="completedMonthText">No completed jobs</span><span id="weekJobsCount">0</span><span id="weekJobsText">No booked visits</span>
 </div>
 </section>
 
@@ -717,7 +752,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <section id="pricebook" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Price Book</h2></div>
 <div class="pricebook-tools"><button class="green" type="button" onclick="addPriceBookItem()">＋ Add Job</button><button class="secondary" type="button" onclick="resetPriceBook()">Reset Defaults</button></div>
-<div class="notice">TradePro includes a comprehensive UK plumbing starter catalogue. Tap any job to personalise category, labour/supply type, time, materials and price range. Your changes are saved on this device.</div>
+<div class="notice">PlumbCore includes a comprehensive UK plumbing starter catalogue. Tap any job to personalise category, labour/supply type, time, materials and price range. Your changes are saved on this device.</div>
 <div id="priceBookList"></div>
 </section>
 
@@ -788,7 +823,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <button type="button" onclick="document.getElementById('faultAssistantCard').scrollIntoView({behavior:'smooth',block:'start'})"><span>⚠️</span>Fault Code Assistant<small>Meaning + sensible first checks</small></button>
 <button type="button" onclick="show('heatingTools')"><span>🧮</span>Heating Tools<small>Radiators, gas load, unvented & heat pumps</small></button>
 <button type="button" onclick="show('engineerReports')"><span>📝</span>Engineer Reports<small>Service, fault, F-Gas & commissioning</small></button>
-<button type="button" onclick="beginVaultImport()"><span>📥</span>Add Manual<small>Save any PDF into TradePro Vault</small></button>
+<button type="button" onclick="beginVaultImport()"><span>📥</span>Add Manual<small>Save any PDF into PlumbCore Vault</small></button>
 </div>
 
 <div class="warning-card"><strong>Engineer use:</strong> Always use the exact current manufacturer instructions for the appliance, fuel/refrigerant and model revision. Gas, LPG, oil, heat-pump and refrigerant work must be carried out only within the engineer's competence and applicable registration/certification.</div>
@@ -805,7 +840,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <div class="sectioncard" id="faultAssistantCard">
 <div class="section-title-row"><h3>⚠️ Fault Code Assistant</h3><span class="count-pill">Quick diagnosis</span></div>
-<div class="smallnote" style="margin:7px 0 10px">Choose the make and enter the code exactly as shown. TradePro gives a common meaning and non-invasive first checks, then points you back to the exact model manual.</div>
+<div class="smallnote" style="margin:7px 0 10px">Choose the make and enter the code exactly as shown. PlumbCore gives a common meaning and non-invasive first checks, then points you back to the exact model manual.</div>
 <div class="two"><label>Manufacturer<select id="faultMake"></select></label><label>Fault code<input id="faultCodeInput" placeholder="e.g. F.75"></label></div>
 <button class="primary" type="button" onclick="runFaultAssistant()">Check fault code</button>
 <div id="faultResult"></div>
@@ -836,7 +871,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div id="techList" class="tech-list"></div>
 </div>
 
-<div class="sectioncard"><h3>📥 TradePro Manual Vault</h3><div class="smallnote" style="margin-bottom:10px">Add a PDF once and TradePro stores it on this device. Ideal for older or obscure boilers, air-con units, heat pumps or manufacturer PDFs that force a download.</div>
+<div class="sectioncard"><h3>📥 PlumbCore Manual Vault</h3><div class="smallnote" style="margin-bottom:10px">Add a PDF once and PlumbCore stores it on this device. Ideal for older or obscure boilers, air-con units, heat pumps or manufacturer PDFs that force a download.</div>
 <div class="detail-actions"><button class="primary" type="button" onclick="beginVaultImport()">Add PDF to Vault</button><button class="secondary" type="button" onclick="renderManualVault()">Refresh Vault</button></div>
 <input id="vaultFileInput" type="file" accept="application/pdf,.pdf" style="display:none" onchange="storeVaultPdf(event)">
 <div id="manualVaultList" class="tech-list" style="margin-top:12px"></div></div>
@@ -844,12 +879,12 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <section id="manualViewer" class="screen">
 <div class="screenhead"><button class="back" onclick="show('techLibrary')">‹</button><h2 id="manualViewerTitle">Manual</h2></div>
-<div class="sectioncard"><h3 id="manualViewerMake">Technical Manual</h3><div id="manualViewerNote" class="smallnote">PDF ready to open</div><button class="primary" type="button" style="margin-top:14px" onclick="openManualExternal()">Open PDF full screen</button><div class="smallnote" style="margin-top:10px">The iPhone full-screen PDF viewer is used because embedded remote PDFs can appear blank in Safari. Use Back to return to TradePro.</div></div>
+<div class="sectioncard"><h3 id="manualViewerMake">Technical Manual</h3><div id="manualViewerNote" class="smallnote">PDF ready to open</div><button class="primary" type="button" style="margin-top:14px" onclick="openManualExternal()">Open PDF full screen</button><div class="smallnote" style="margin-top:10px">The iPhone full-screen PDF viewer is used because embedded remote PDFs can appear blank in Safari. Use Back to return to PlumbCore.</div></div>
 </section>
 
 <section id="engineerReports" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Engineer Reports</h2></div>
-<div class="notice"><strong>Site paperwork in one place</strong><br>Create service, commissioning, F-Gas, fault-finding and completion reports. Reports are stored on this device and included in TradePro backups.</div>
+<div class="notice"><strong>Site paperwork in one place</strong><br>Create service, commissioning, F-Gas, fault-finding and completion reports. Reports are stored on this device and included in PlumbCore backups.</div>
 <div class="report-type-grid">
 <button class="report-type-btn" onclick="newEngineerReport('Boiler Service Report')"><b>🔥 Boiler Service</b><small>Gas or oil service record</small></button>
 <button class="report-type-btn" onclick="newEngineerReport('Fault Finding Report')"><b>🔎 Fault Finding</b><small>Diagnosis, tests and recommendations</small></button>
@@ -904,7 +939,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div id="readinessList" class="readiness-list"></div>
 
 <h3>Branding</h3>
-<label>Business name<input id="businessName" value="TradePro UK"></label>
+<label>Business name<input id="businessName" value="" placeholder="e.g. Total Plumbing"></label>
 <label>Owner / Contact name<input id="ownerName" placeholder="Your name"></label>
 <label>Business logo<input id="logoUpload" type="file" accept="image/*" onchange="saveLogo(event)"></label>
 <div id="logoPreviewWrap" style="display:none;margin:10px 0 18px">
@@ -943,7 +978,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <label>Payment note<textarea id="paymentNote" rows="2" placeholder="e.g. Please use invoice number as payment reference"></textarea></label>
 <label>Secure payment page link<input id="paymentLink" type="url" inputmode="url" placeholder="https://your-payment-provider-link"></label>
 <label><input id="showQROnInvoice" type="checkbox" style="width:auto;margin-right:8px">Show payment QR on printed/PDF invoices</label>
-<div class="smallnote">Use a payment link supplied by your bank or payment provider. TradePro does not collect or process card details.</div>
+<div class="smallnote">Use a payment link supplied by your bank or payment provider. PlumbCore does not collect or process card details.</div>
 
 <h3>Pricing</h3>
 <label>Hourly labour rate £<input id="rate" type="number" value="55" min="0" max="500" step="0.5"></label>
@@ -965,8 +1000,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="smallnote" style="margin-top:9px"><strong>Backup scope:</strong> customer records, quotes, invoices, diary, price book, engineer reports and business settings are included. PDFs stored in the on-device Manual Vault are not inside the JSON backup, so keep the original PDF files separately.</div>
-<div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div id="settingsReleaseLabel" class="versionline">TradePro UK · Plumber Edition</div>
+<div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch PlumbCore more like an app and keep it easy to reach on site.</div>
+<div id="settingsReleaseLabel" class="versionline">PlumbCore · Plumbing &amp; Heating</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -977,20 +1012,20 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <nav>
 <button onclick="show('home')">⌂<span>Home</span></button>
-<button onclick="newJob()">＋<span>New Job</span></button>
-<button onclick="show('quotes')">🧾<span>Quotes</span></button>
-<button onclick="show('invoices')">💷<span>Invoices</span></button>
-<button onclick="show('settings')">⚙️<span>Settings</span></button>
+<button onclick="openDiary()">▣<span>Jobs</span></button>
+<button onclick="show('customers')">♙<span>Customers</span></button>
+<button onclick="show('invoices')">£<span>Money</span></button>
+<button onclick="show('settings')">•••<span>More</span></button>
 </nav>
 
 <script>
-const TRADEPRO_BUILD="8.8";
-const TRADEPRO_VERSION="21.5";
-const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
+const TRADEPRO_BUILD="8.9";
+const TRADEPRO_VERSION="21.6";
+const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
- const settings=document.getElementById("settingsReleaseLabel");if(settings)settings.textContent=`TradePro UK · Plumber Edition · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
- document.title=`TradePro UK · Plumber Edition · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
+ const settings=document.getElementById("settingsReleaseLabel");if(settings)settings.textContent=`PlumbCore · Plumbing & Heating · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
+ document.title=`PlumbCore · Plumbing & Heating · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 }
 syncReleaseLabels();
 /* Build 8.3 release hardening: recover cleanly if Safari/localStorage contains damaged JSON. */
@@ -998,9 +1033,9 @@ let data;
 try{
  const stored=localStorage.getItem("tradepro");
  data=stored?JSON.parse(stored):{customers:[],quotes:[],invoices:[]};
- if(!data||typeof data!=="object"||Array.isArray(data))throw new Error("Invalid TradePro data root");
+ if(!data||typeof data!=="object"||Array.isArray(data))throw new Error("Invalid PlumbCore data root");
 }catch(e){
- console.error("TradePro data could not be read; starting a safe empty session.",e);
+ console.error("PlumbCore data could not be read; starting a safe empty session.",e);
  data={customers:[],quotes:[],invoices:[],appointments:[],engineerReports:[]};
  localStorage.setItem("tradepro_recovery_notice","1");
 }
@@ -1096,7 +1131,7 @@ function syncDataFromStorage(){
    if(!Array.isArray(fresh.priceBook)||!fresh.priceBook.length)fresh.priceBook=(data.priceBook&&data.priceBook.length?data.priceBook:DEFAULT_PRICE_BOOK.map(x=>({...x})));
    data=fresh;
   }
- }catch(e){console.warn("TradePro data refresh failed",e)}
+ }catch(e){console.warn("PlumbCore data refresh failed",e)}
 }
 function toast(msg){
  const el=document.getElementById("appToast");if(!el)return;el.textContent=msg;el.classList.add("show");clearTimeout(window.__tradeproToastTimer);window.__tradeproToastTimer=setTimeout(()=>el.classList.remove("show"),2200);
@@ -1104,7 +1139,7 @@ function toast(msg){
 function show(id){
 syncDataFromStorage();
 const target=document.getElementById(id);
-if(!target){console.error("TradePro screen not found:",id);toast("That screen is unavailable");return false;}
+if(!target){console.error("PlumbCore screen not found:",id);toast("That screen is unavailable");return false;}
 document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
 target.classList.add("active");
 render();
@@ -1242,7 +1277,7 @@ function deleteSelectedQuote(){if(selectedQuoteIndex===null)return;if(confirm("D
 
 function quoteText(q){
 let c=normalizeCustomer(q.customer),depInfo=quoteDepositInfo(q);
-return `${setting("businessName","TradePro UK")}
+return `${setting("businessName","Your Business")}
 ${businessDetailsText()}
 
 QUOTATION ${q.number||""}
@@ -1268,7 +1303,7 @@ let subject=encodeURIComponent(`Quotation ${q.number||""} - ${c.name}`),body=enc
 }
 function populateQuotePaper(){
 if(selectedQuoteIndex===null)return false;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),depInfo=quoteDepositInfo(q);
-qBusinessName.innerText=setting("businessName","TradePro UK");qBusinessDetails.innerText=businessDetailsText();qBusinessDetails.style.whiteSpace="pre-line";let logo=localStorage.getItem("businessLogo");if(logo){qLogo.src=logo;qLogo.style.display="block"}else{qLogo.removeAttribute("src");qLogo.style.display="none"}
+qBusinessName.innerText=setting("businessName","Your Business");qBusinessDetails.innerText=businessDetailsText();qBusinessDetails.style.whiteSpace="pre-line";let logo=localStorage.getItem("businessLogo");if(logo){qLogo.src=logo;qLogo.style.display="block"}else{qLogo.removeAttribute("src");qLogo.style.display="none"}
 qNumber.innerText=q.number||"";qDate.innerText=q.date||"";qValid.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));qCustomer.innerText=c.name;qAddress.innerText=addressLines(c);qAddress.style.whiteSpace="pre-line";qContact.innerText=contactText(c);qJob.innerText=q.job||"";qJobAddress.innerText="Job address: "+(q.jobAddress||fullAddress(c));let qn=Number(q.net??q.price??0),qv=Number(q.vat||0);qNet.innerText="£"+qn.toFixed(2);qVat.innerText="£"+qv.toFixed(2);qVatBreak.style.display=qv>0?"block":"none";qTotal.innerText="£"+Number(q.price||0).toFixed(2);qDeposit.innerText=depInfo.label;qDepositBlock.style.display=depInfo.amount>0?"block":"none";let footer=[setting("companyNumber","")?"Company No: "+setting("companyNumber",""):"",setting("vatNumber","")?"VAT No: "+setting("vatNumber",""):""].filter(Boolean);qCompanyFooter.innerText=footer.join(" · ");return true;
 }
 function previewQuote(){if(!populateQuotePaper())return;show("quotePrint")}
@@ -1306,7 +1341,7 @@ function editSelectedInvoice(){
 if(selectedInvoiceIndex===null)return;
 let inv=data.invoices[selectedInvoiceIndex],c=normalizeCustomer(inv.customer);
 if(inv.status==="Paid"&&!confirm("This invoice is paid. Edit the invoice details anyway? Payment history will be preserved."))return;
-if((inv.deliveryStatus||"Draft")==="Sent"&&!confirm("This invoice has already been marked as sent. If you save changes, TradePro will mark it as a revised Draft so you know to send the updated copy. Continue?"))return;
+if((inv.deliveryStatus||"Draft")==="Sent"&&!confirm("This invoice has already been marked as sent. If you save changes, PlumbCore will mark it as a revised Draft so you know to send the updated copy. Continue?"))return;
 
 editCustomerName.value=c.name||"";
 editPhone.value=c.phone||"";
@@ -1408,7 +1443,7 @@ setting("accountName","") ? "Account: "+setting("accountName","") : "",
 setting("sortCode","") ? "Sort code: "+setting("sortCode","") : "",
 setting("accountNumber","") ? "Account no: "+setting("accountNumber","") : ""
 ].filter(Boolean).join("\n");
-return `${setting("businessName","TradePro UK")}
+return `${setting("businessName","Your Business")}
 ${businessDetailsText()}
 ${companyBits}
 
@@ -1450,14 +1485,14 @@ let body=encodeURIComponent(text);
 window.location.href=`mailto:${encodeURIComponent(normalizeCustomer(inv.customer).email||"")}?subject=${subject}&body=${body}`;
 toast("Email prepared — mark the invoice Sent after sending");
 }
-function paymentReminderText(inv){let c=normalizeCustomer(inv.customer),balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0)),link=paymentLinkForInvoice(inv);return `Hi ${c.name||"there"}, just a reminder that invoice ${inv.number||""} has a balance of £${balance.toFixed(2)} due${inv.dueDate?" on "+inv.dueDate:""}. ${link&&/^https?:\/\//i.test(link)?"Payment link: "+link+" ":""}Please let me know if you need another copy of the invoice. Thanks, ${setting("businessName","TradePro UK")}.`; }
+function paymentReminderText(inv){let c=normalizeCustomer(inv.customer),balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0)),link=paymentLinkForInvoice(inv);return `Hi ${c.name||"there"}, just a reminder that invoice ${inv.number||""} has a balance of £${balance.toFixed(2)} due${inv.dueDate?" on "+inv.dueDate:""}. ${link&&/^https?:\/\//i.test(link)?"Payment link: "+link+" ":""}Please let me know if you need another copy of the invoice. Thanks, ${setting("businessName","Your Business")}.`; }
 async function sendPaymentReminder(){if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));if((inv.deliveryStatus||"Draft")!=="Sent"){toast("Send the invoice before sending a payment reminder");return;}if(balance<=0){toast("Invoice is already paid");return;}let c=normalizeCustomer(inv.customer),text=paymentReminderText(inv);if(navigator.share){try{await navigator.share({title:`Payment reminder ${inv.number||""}`,text});inv.lastReminderAt=new Date().toISOString();save();openInvoice(selectedInvoiceIndex);return}catch(e){if(e&&e.name==="AbortError")return;}}let subject=encodeURIComponent(`Payment reminder · ${inv.number||"Invoice"}`),body=encodeURIComponent(text);window.location.href=`mailto:${encodeURIComponent(c.email||"")}?subject=${subject}&body=${body}`;toast("Reminder email prepared — history updates after a successful share");}
 
 function populateInvoicePaper(){
 if(selectedInvoiceIndex===null)return false;
 let inv=data.invoices[selectedInvoiceIndex],c=normalizeCustomer(inv.customer);
 
-pBusinessName.innerText=setting("businessName","TradePro UK");
+pBusinessName.innerText=setting("businessName","Your Business");
 pBusinessDetails.innerText=businessDetailsText();pBusinessDetails.style.whiteSpace="pre-line";
 
 let logo=localStorage.getItem("businessLogo");
@@ -1530,7 +1565,7 @@ function editPriceBookItem(i){selectedPriceBookIndex=i;let p=data.priceBook[i];i
 function addPriceBookItem(){selectedPriceBookIndex=-1;priceBookEditTitle.textContent="Add Price Book Job";pbCategory.value="General";pbName.value="";pbPricingType.value="Labour only";pbHours.value=1;pbMaterials.value=0;pbMin.value=0;pbMax.value=0;pbNotes.value="";pbDeleteBtn.style.display="none";show("pricebookEdit");}
 function savePriceBookItem(){let item={category:pbCategory.value.trim()||"General",name:pbName.value.trim()||"New plumbing job",pricingType:pbPricingType.value||"Labour only",hours:Math.max(0,Number(pbHours.value)||0),materials:Math.max(0,Number(pbMaterials.value)||0),min:Math.max(0,Number(pbMin.value)||0),max:Math.max(0,Number(pbMax.value)||0),notes:pbNotes.value.trim()};if(item.max<item.min){let t=item.max;item.max=item.min;item.min=t;}if(selectedPriceBookIndex===-1)data.priceBook.push(item);else if(data.priceBook[selectedPriceBookIndex])data.priceBook[selectedPriceBookIndex]=item;save();show("pricebook");}
 function deletePriceBookItem(){if(selectedPriceBookIndex<0)return;if(confirm("Delete this price-book job?")){data.priceBook.splice(selectedPriceBookIndex,1);selectedPriceBookIndex=null;save();show("pricebook");}}
-function resetPriceBook(){if(confirm("Reset the Price Book to the original TradePro defaults? Your edits will be replaced.")){data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));save();show("pricebook");}}
+function resetPriceBook(){if(confirm("Reset the Price Book to the original PlumbCore defaults? Your edits will be replaced.")){data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));save();show("pricebook");}}
 
 function paymentLinkForInvoice(inv){return setting("paymentLink","").trim();}
 function qrImageURL(text,size=320){return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=8&data=${encodeURIComponent(text)}`;}
@@ -1543,8 +1578,8 @@ function openPaymentLink(){let link=document.getElementById("paymentQRImage")?.d
 
 function save(){
  try{localStorage.setItem("tradepro",JSON.stringify(data))}
- catch(e){console.error(e);alert("TradePro could not save this change. Please check Safari storage and try again.");return false}
- try{render()}catch(e){console.error("TradePro saved the data but could not refresh the screen.",e)}
+ catch(e){console.error(e);alert("PlumbCore could not save this change. Please check Safari storage and try again.");return false}
+ try{render()}catch(e){console.error("PlumbCore saved the data but could not refresh the screen.",e)}
  return true
 }
 
@@ -1628,10 +1663,10 @@ function formatSavedTime(v){
 }
 function renderReadiness(){
  let r=setupReadiness(),home=document.getElementById('setupHealthCard');
- if(localStorage.getItem('tradepro_recovery_notice')==='1'){console.warn('TradePro recovered from unreadable stored data. Restore a known-good backup if records appear missing.');localStorage.removeItem('tradepro_recovery_notice');}
+ if(localStorage.getItem('tradepro_recovery_notice')==='1'){console.warn('PlumbCore recovered from unreadable stored data. Restore a known-good backup if records appear missing.');localStorage.removeItem('tradepro_recovery_notice');}
  if(document.getElementById('setupHealthPct'))setupHealthPct.textContent=r.pct+'%';
  if(document.getElementById('setupHealthBar'))setupHealthBar.style.width=r.pct+'%';
- if(document.getElementById('setupHealthTitle'))setupHealthTitle.textContent=r.pct===100?'TradePro ready':'Finish business setup';
+ if(document.getElementById('setupHealthTitle'))setupHealthTitle.textContent=r.pct===100?'PlumbCore ready':'Finish business setup';
  if(document.getElementById('setupHealthText')){
    let missing=r.checks.filter(x=>!x.ok).map(x=>x.name);
    setupHealthText.textContent=r.pct===100?'Business details, pricing and backup are all set.':(missing.length?'Still to check: '+missing.join(', ')+'.':'Setup looks good.');
@@ -1639,7 +1674,7 @@ function renderReadiness(){
  if(home)home.style.display=r.pct===100?'none':'block';
  if(document.getElementById('settingsReadyPct'))settingsReadyPct.textContent=r.pct+'%';
  if(document.getElementById('settingsReadyBar'))settingsReadyBar.style.width=r.pct+'%';
- if(document.getElementById('settingsReadyText'))settingsReadyText.textContent=r.pct===100?'TradePro is ready for day-to-day customer work.':'Complete the remaining items before relying on TradePro as your main job record.';
+ if(document.getElementById('settingsReadyText'))settingsReadyText.textContent=r.pct===100?'PlumbCore is ready for day-to-day customer work.':'Complete the remaining items before relying on PlumbCore as your main job record.';
  let list=document.getElementById('readinessList');
  if(list)list.innerHTML=r.checks.map(x=>`<div class="readiness-item"><div><b>${esc(x.name)}</b><br><span class="small">${esc(x.note)}</span></div><strong class="${x.ok?'ready-ok':'ready-warn'}">${x.ok?'✓ Ready':'Needs setup'}</strong></div>`).join('');
  let last=localStorage.getItem('lastBackupAt'),restore=localStorage.getItem('lastRestoreAt'),bst=document.getElementById('backupStatusText');
@@ -1722,7 +1757,7 @@ function syncAppointmentFromInvoice(inv){if(!inv)return;let a=(data.appointments
 function appointmentContact(a){let c=findCustomerForAppointment(a);return {phone:String(c.phone||'').trim(),email:String(c.email||'').trim(),address:String(a?.address||'').trim()||fullAddress(c)};}
 function callAppointmentCustomer(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex],x=appointmentContact(a);if(!x.phone){alert('No phone number saved for this customer.');return}window.location.href='tel:'+x.phone.replace(/[^+\d]/g,'');}
 function messageAppointmentCustomer(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex],x=appointmentContact(a);if(!x.phone){alert('No phone number saved for this customer.');return}let text=`Hi ${a.customer||''}, just confirming your ${a.job||'booking'}${a.date?' on '+isoToUK(a.date):''}${a.time?' at '+a.time:''}.`;window.location.href='sms:'+x.phone.replace(/[^+\d]/g,'')+'?body='+encodeURIComponent(text);}
-function sendOnMyWayMessage(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex],x=appointmentContact(a);if(!x.phone){alert('No phone number saved for this customer.');return}let business=setting('businessName','TradePro UK'),text=`Hi ${a.customer||''}, ${business} is on the way for your ${a.job||'job'}. I’ll see you shortly.`;window.location.href='sms:'+x.phone.replace(/[^+\d]/g,'')+'?body='+encodeURIComponent(text);}
+function sendOnMyWayMessage(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex],x=appointmentContact(a);if(!x.phone){alert('No phone number saved for this customer.');return}let business=setting('businessName','Your Business'),text=`Hi ${a.customer||''}, ${business} is on the way for your ${a.job||'job'}. I’ll see you shortly.`;window.location.href='sms:'+x.phone.replace(/[^+\d]/g,'')+'?body='+encodeURIComponent(text);}
 function mapAppointmentAddress(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex],x=appointmentContact(a);if(!x.address||x.address==='Not entered'){alert('No job address saved for this booking.');return}window.open('https://maps.apple.com/?q='+encodeURIComponent(x.address),'_blank','noopener');}
 function populateAppointmentCustomers(){let dl=document.getElementById('apptCustomerList');if(!dl)return;dl.innerHTML=(data.customers||[]).map(normalizeCustomer).filter(c=>c.name).map(c=>`<option value="${esc(c.name)}"></option>`).join('');}
 function appointmentCustomerChanged(){let name=String(apptCustomer.value||'').trim().toLowerCase();if(!name)return;let c=(data.customers||[]).map(normalizeCustomer).find(x=>String(x.name||'').trim().toLowerCase()===name);if(!c)return;if(!String(apptAddress.value||'').trim()||apptAddress.dataset.autoCustomer==='1'){let a=fullAddress(c);apptAddress.value=a==='Not entered'?'':a;apptAddress.dataset.autoCustomer='1';}}
@@ -1872,10 +1907,22 @@ function renderReports(){
  report12Months.innerHTML=months.map(m=>{let pct=m.inv>0?Math.max(3,m.inv/max*100):0;return `<div class="month-row"><strong>${m.label}</strong><div class="month-bar ${m.inv>0?'':'zero'}"><i style="width:${pct}%"></i></div><div class="month-values">£${m.inv.toFixed(0)}<small>Paid £${m.paid.toFixed(0)}</small></div></div>`}).join('');
 
  let invTotal=(data.invoices||[]).reduce((n,i)=>n+Number(i.price||0),0),lifetimePaid=payments.reduce((n,p)=>n+p.amount,0),allCompleted=(data.appointments||[]).filter(a=>['Completed','Invoiced','Paid'].includes(a.status||'')).length;
- reportSnapshot.innerHTML=`<strong>Selected period:</strong> ${esc(r.label)}<br><strong>Period invoiced:</strong> £${periodInvValue.toFixed(2)} · <strong>Period received:</strong> £${paidPeriod.toFixed(2)}<br><br><strong>Lifetime invoiced:</strong> £${invTotal.toFixed(2)}<br><strong>Lifetime payments recorded:</strong> £${lifetimePaid.toFixed(2)}<br><strong>Invoices:</strong> ${(data.invoices||[]).length} · <strong>Quotes:</strong> ${(data.quotes||[]).length} · <strong>Customers:</strong> ${(data.customers||[]).length}<br><strong>Completed jobs recorded:</strong> ${allCompleted}<br><br>Figures are based on the records stored in TradePro on this device.`;
+ reportSnapshot.innerHTML=`<strong>Selected period:</strong> ${esc(r.label)}<br><strong>Period invoiced:</strong> £${periodInvValue.toFixed(2)} · <strong>Period received:</strong> £${paidPeriod.toFixed(2)}<br><br><strong>Lifetime invoiced:</strong> £${invTotal.toFixed(2)}<br><strong>Lifetime payments recorded:</strong> £${lifetimePaid.toFixed(2)}<br><strong>Invoices:</strong> ${(data.invoices||[]).length} · <strong>Quotes:</strong> ${(data.quotes||[]).length} · <strong>Customers:</strong> ${(data.customers||[]).length}<br><strong>Completed jobs recorded:</strong> ${allCompleted}<br><br>Figures are based on the records stored in PlumbCore on this device.`;
 }
 function daysBetweenDates(a,b){let ms=24*60*60*1000;return Math.floor((b.getTime()-a.getTime())/ms)}
 function parseUKStart(v){let m=String(v||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(+m[3],+m[2]-1,+m[1]):null}
+function renderPlumbCoreHome(){
+ let bn=document.getElementById('homeBusinessName');if(bn)bn.textContent=String(setting('businessName','')||'Your business').trim()||'Your business';
+ let box=document.getElementById('todayHomeCard');if(!box)return;
+ let jobs=(data.appointments||[]).filter(a=>a.status!=='Cancelled'&&a.date===todayISO()).sort((a,b)=>String(a.time||'99:99').localeCompare(String(b.time||'99:99')));
+ if(!jobs.length){box.className='today-empty';box.innerHTML='No jobs booked today. <button class="home-link" onclick="openDiary()">Open diary ›</button>';return;}
+ let a=jobs[0],contact=appointmentContact(a),addr=a.address||'';box.className='today-job';
+ let phoneBtn=contact.phone?`<button onclick="event.stopPropagation();window.location.href='tel:${String(contact.phone).replace(/[^+\d]/g,'')}'">☎ Call</button>`:'';
+ let routeBtn=addr?`<button onclick="event.stopPropagation();openMapsAddress(decodeURIComponent('${encodeURIComponent(addr)}'))">➤ Route</button>`:'';
+ box.innerHTML=`<div class="today-time"><small>${jobs.length>1?'Next job':'Today'}</small><strong>${esc(a.time||'—')}</strong></div><div class="today-info"><strong>${esc(a.job||'Job')}</strong><small>${esc(a.customer||'Customer')}${addr?'<br>'+esc(addr):''}${jobs.length>1?'<br>+'+(jobs.length-1)+' more today':''}</small></div><div class="today-actions">${phoneBtn}${routeBtn}</div>`;
+}
+function openMapsAddress(address){let q=encodeURIComponent(String(address||''));if(!q)return;window.open('https://maps.apple.com/?q='+q,'_blank','noopener,noreferrer');}
+
 function renderAttention(){let box=document.getElementById("attentionList"),summary=document.getElementById("attentionSummary");if(!box||!summary)return;let now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());let overdue=(data.invoices||[]).filter(i=>i.status==="Overdue");let drafts=(data.invoices||[]).filter(i=>(i.deliveryStatus||"Draft")==="Draft"&&i.status!=="Paid");let expiring=(data.quotes||[]).filter(q=>!["Accepted","Converted","Declined"].includes(q.status||"")).filter(q=>{let d=parseUKStart(q.validUntil);if(!d)return false;let n=daysBetweenDates(today,d);return n>=0&&n<=7;});let todayJobs=(data.appointments||[]).filter(a=>a.status!=="Cancelled"&&a.date===todayISO());let total=overdue.length+drafts.length+expiring.length+todayJobs.length;summary.textContent=total?total+" item"+(total===1?"":"s"):"Clear";let rows=[];if(overdue.length)rows.push(`<button class="attention-row" onclick="show('invoices')"><span><strong>Overdue invoices</strong><small>£${overdue.reduce((n,i)=>n+Math.max(0,Number(i.price||0)-Number(i.paid||0)),0).toFixed(0)} waiting for payment</small></span><span class="attention-count danger">${overdue.length}</span></button>`);if(drafts.length)rows.push(`<button class="attention-row" onclick="show('invoices')"><span><strong>Invoice drafts</strong><small>Review and send when ready</small></span><span class="attention-count warn">${drafts.length}</span></button>`);if(expiring.length)rows.push(`<button class="attention-row" onclick="show('quotes')"><span><strong>Quotes expiring soon</strong><small>Valid for 7 days or less</small></span><span class="attention-count warn">${expiring.length}</span></button>`);if(todayJobs.length)rows.push(`<button class="attention-row" onclick="openDiary()"><span><strong>Jobs today</strong><small>Open diary and update progress</small></span><span class="attention-count">${todayJobs.length}</span></button>`);box.innerHTML=rows.length?rows.join(""):'<div class="attention-ok">✓ Nothing urgent — accounts and diary look clear.</div>';}
 function render(){
 data.invoices.forEach(updateInvoiceStatus);
@@ -1908,10 +1955,10 @@ let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let i
 if(document.getElementById("showQROnInvoice"))showQROnInvoice.checked=localStorage.getItem("showQROnInvoice")==="1";
 if(document.getElementById("vatRegistered"))vatRegistered.checked=localStorage.getItem("vatRegistered")==="1";
 if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
-renderPriceBook();renderJobTypeOptions();renderDiary();if(document.getElementById('reports'))renderReports();renderAttention();renderReadiness();
+renderPriceBook();renderJobTypeOptions();renderDiary();if(document.getElementById('reports'))renderReports();renderPlumbCoreHome();renderAttention();renderReadiness();
 }
 render();
-window.addEventListener("storage",e=>{if(e.key==="tradepro"){syncDataFromStorage();render();toast("TradePro data refreshed")}});
+window.addEventListener("storage",e=>{if(e.key==="tradepro"){syncDataFromStorage();render();toast("PlumbCore data refreshed")}});
 window.addEventListener("focus",()=>{syncDataFromStorage();render()});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){syncDataFromStorage();render()}});
 
@@ -1964,16 +2011,16 @@ function calcHeatPump(){
 }
 function exportBackup(){
  const exportedAt=new Date().toISOString();localStorage.setItem('lastBackupAt',exportedAt);
- let payload={app:'TradePro UK Plumber Edition',schema:1,version:TRADEPRO_VERSION,build:TRADEPRO_BUILD,release:TRADEPRO_RELEASE,exportedAt,data,settings:{}};
+ let payload={app:'PlumbCore Plumbing & Heating',schema:1,version:TRADEPRO_VERSION,build:TRADEPRO_BUILD,release:TRADEPRO_RELEASE,exportedAt,data,settings:{}};
  ['businessName','ownerName','businessAddress1','businessAddress2','businessTown','businessPostcode','businessPhone','businessEmail','businessWebsite','companyNumber','vatNumber','vatRegistered','vatRate','accountName','sortCode','accountNumber','paymentNote','paymentLink','rate','travel','markup','overheadRate','contingency','profit','paymentDays','quoteValidDays','depositPercent','showQROnInvoice','businessLogo','lastBackupAt'].forEach(k=>payload.settings[k]=localStorage.getItem(k));
- let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='TradePro_Backup_V'+TRADEPRO_VERSION+'_Build_'+TRADEPRO_BUILD+'_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='PlumbCore_Backup_V'+TRADEPRO_VERSION+'_Build_'+TRADEPRO_BUILD+'_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
  renderReadiness();toast('Backup exported');
 }
 function importBackup(event){
  let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{
   let p=JSON.parse(reader.result);if(!p||typeof p!=="object"||!p.data||typeof p.data!=="object"||Array.isArray(p.data))throw new Error('Invalid backup');
-  if(p.app&&p.app!=='TradePro UK Plumber Edition'&&!confirm('This backup was not identified as a TradePro UK Plumber Edition backup. Import it anyway?'))return;
-  if(!confirm('Import this TradePro backup? Current data on this device will be replaced.'))return;
+  if(p.app&&!['PlumbCore Plumbing & Heating','TradePro UK Plumber Edition'].includes(p.app)&&!confirm('This backup was not identified as a PlumbCore/TradePro backup. Import it anyway?'))return;
+  if(!confirm('Import this PlumbCore backup? Current data on this device will be replaced.'))return;
   data=p.data;
   if(!Array.isArray(data.customers))data.customers=[];if(!Array.isArray(data.quotes))data.quotes=[];if(!Array.isArray(data.invoices))data.invoices=[];if(!Array.isArray(data.appointments))data.appointments=[];if(!Array.isArray(data.engineerReports))data.engineerReports=[];if(!Array.isArray(data.priceBook)||!data.priceBook.length)data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));
   Object.entries(p.settings||{}).forEach(([k,v])=>{if(v===null||v===undefined)localStorage.removeItem(k);else localStorage.setItem(k,String(v))});
@@ -2337,7 +2384,7 @@ function runTechDataIntegrityAudit(){
     });
   });
   window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues,warnings};
-  if(issues.length)console.warn("TradePro technical-library integrity audit",issues);else console.info(`TradePro technical-library audit passed: ${DIRECT_MANUALS.length} built-in documents checked`);
+  if(issues.length)console.warn("PlumbCore technical-library integrity audit",issues);else console.info(`PlumbCore technical-library audit passed: ${DIRECT_MANUALS.length} built-in documents checked`);
   return window.TRADEPRO_TECH_AUDIT;
 }
 
@@ -2515,7 +2562,7 @@ function renderManufacturerLibrary(){
  }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
 }
 function populateFaultMakes(){const s=document.getElementById("faultMake");if(!s||s.options.length>1)return;const makes=[...new Set(FAULT_GUIDE.map(x=>x.make))].sort();s.innerHTML='<option value="">Choose make</option>'+makes.map(x=>`<option>${esc(x)}</option>`).join("")}
-function runFaultAssistant(){const make=(document.getElementById("faultMake")?.value||"").trim(),raw=(document.getElementById("faultCodeInput")?.value||"").trim(),out=document.getElementById("faultResult");if(!out)return;if(!make||!raw){out.innerHTML='<div class="fault-result">Choose a manufacturer and enter the fault code.</div>';return}const norm=raw.toLowerCase().replace(/\s+/g,""),hit=FAULT_GUIDE.find(x=>x.make===make&&(x.keywords||[]).some(k=>norm===k.toLowerCase().replace(/\s+/g,"")));if(!hit){out.innerHTML=`<div class="fault-result"><h4>${esc(make)} · ${esc(raw)}</h4><div class="fault-meaning">No verified quick guide is loaded for this code yet.</div><div class="smallnote">Search the exact model in the manufacturer list or add its service manual to the TradePro Manual Vault. TradePro will not guess at an unknown fault code.</div></div>`;return}out.innerHTML=`<div class="fault-result"><h4>${esc(hit.make)} · ${esc(hit.code)}</h4><div class="fault-meaning">${esc(hit.meaning)}</div><strong>Check in this order:</strong><ol class="check-list">${hit.checks.map(x=>`<li>${esc(x)}</li>`).join("")}</ol><div class="fault-caution"><strong>Important:</strong> This is a quick aid, not a substitute for the exact model service manual. Stop and use the manufacturer's diagnostic procedure whenever the appliance/model differs or testing would involve gas, combustion, electrical or refrigerant work outside your competence.</div></div>`}
+function runFaultAssistant(){const make=(document.getElementById("faultMake")?.value||"").trim(),raw=(document.getElementById("faultCodeInput")?.value||"").trim(),out=document.getElementById("faultResult");if(!out)return;if(!make||!raw){out.innerHTML='<div class="fault-result">Choose a manufacturer and enter the fault code.</div>';return}const norm=raw.toLowerCase().replace(/\s+/g,""),hit=FAULT_GUIDE.find(x=>x.make===make&&(x.keywords||[]).some(k=>norm===k.toLowerCase().replace(/\s+/g,"")));if(!hit){out.innerHTML=`<div class="fault-result"><h4>${esc(make)} · ${esc(raw)}</h4><div class="fault-meaning">No verified quick guide is loaded for this code yet.</div><div class="smallnote">Search the exact model in the manufacturer list or add its service manual to the PlumbCore Manual Vault. PlumbCore will not guess at an unknown fault code.</div></div>`;return}out.innerHTML=`<div class="fault-result"><h4>${esc(hit.make)} · ${esc(hit.code)}</h4><div class="fault-meaning">${esc(hit.meaning)}</div><strong>Check in this order:</strong><ol class="check-list">${hit.checks.map(x=>`<li>${esc(x)}</li>`).join("")}</ol><div class="fault-caution"><strong>Important:</strong> This is a quick aid, not a substitute for the exact model service manual. Stop and use the manufacturer's diagnostic procedure whenever the appliance/model differs or testing would involve gas, combustion, electrical or refrigerant work outside your competence.</div></div>`}
 function renderTechLibrary(){renderManufacturerLibrary();renderRecentManuals();populateFaultMakes();updateTechHealth()}
 
 // Persistent PDF storage. IndexedDB is used because localStorage is too small for manuals.
@@ -2529,10 +2576,10 @@ function beginVaultImportFor(make,model){
  document.getElementById("vaultFileInput").click();
 }
 function beginVaultImport(){let labels={naturalgas:"Natural Gas",lpg:"LPG / Propane",oil:"Oil",heatpump:"Heat Pump",aircon:"Air-Con / F-Gas"};let make=prompt("Manufacturer / make:","");if(make===null)return;make=make.trim();if(!make){toast("Enter a manufacturer");return}let model=prompt("Model / range:","");if(model===null)return;model=model.trim();if(!model){toast("Enter a model or range");return}let title=prompt("Manual title:","Installation & Service Manual");if(title===null)return;pendingVaultMeta={category:techFilter,categoryLabel:labels[techFilter]||techFilter,make,model,title:title.trim()||"Technical Manual"};document.getElementById("vaultFileInput").click()}
-async function storeVaultPdf(event){let f=event.target.files&&event.target.files[0];event.target.value="";if(!f||!pendingVaultMeta)return;if(f.type&&f.type!=="application/pdf"&&!f.name.toLowerCase().endsWith(".pdf")){toast("Choose a PDF file");return}try{let buf=await f.arrayBuffer();let rec={id:"MV-"+Date.now(),...pendingVaultMeta,fileName:f.name,size:f.size,addedAt:new Date().toISOString(),blob:new Blob([buf],{type:"application/pdf"})};await vaultTx("readwrite",st=>st.put(rec));pendingVaultMeta=null;toast("Manual saved to TradePro Vault");renderManualVault()}catch(e){console.error(e);alert("Could not save that PDF to the Manual Vault on this device.")}}
-async function renderManualVault(){let box=document.getElementById("manualVaultList");if(!box)return;try{let arr=await getAllVault();let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();arr=arr.filter(x=>x.category===techFilter&&(!q||(x.make+" "+x.model+" "+x.title+" "+x.fileName).toLowerCase().includes(q))).sort((a,b)=>String(b.addedAt).localeCompare(String(a.addedAt)));box.innerHTML=arr.length?arr.map(x=>`<div class="direct-manual"><strong>📄 ${esc(x.make)} · ${esc(x.model)}</strong><small>${esc(x.title)}<br>Stored in TradePro Vault · ${Math.max(1,Math.round((x.size||0)/1024/1024))} MB</small><div class="detail-actions"><button class="green" type="button" onclick="openVaultManual('${x.id}')">Open saved PDF</button><button class="secondary" type="button" onclick="deleteVaultManual('${x.id}')">Delete</button></div></div>`).join(""):'<div class="smallnote">No saved PDFs in this section yet.</div>'}catch(e){box.innerHTML='<div class="smallnote">Manual Vault is unavailable in this browser session.</div>'}}
+async function storeVaultPdf(event){let f=event.target.files&&event.target.files[0];event.target.value="";if(!f||!pendingVaultMeta)return;if(f.type&&f.type!=="application/pdf"&&!f.name.toLowerCase().endsWith(".pdf")){toast("Choose a PDF file");return}try{let buf=await f.arrayBuffer();let rec={id:"MV-"+Date.now(),...pendingVaultMeta,fileName:f.name,size:f.size,addedAt:new Date().toISOString(),blob:new Blob([buf],{type:"application/pdf"})};await vaultTx("readwrite",st=>st.put(rec));pendingVaultMeta=null;toast("Manual saved to PlumbCore Vault");renderManualVault()}catch(e){console.error(e);alert("Could not save that PDF to the Manual Vault on this device.")}}
+async function renderManualVault(){let box=document.getElementById("manualVaultList");if(!box)return;try{let arr=await getAllVault();let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();arr=arr.filter(x=>x.category===techFilter&&(!q||(x.make+" "+x.model+" "+x.title+" "+x.fileName).toLowerCase().includes(q))).sort((a,b)=>String(b.addedAt).localeCompare(String(a.addedAt)));box.innerHTML=arr.length?arr.map(x=>`<div class="direct-manual"><strong>📄 ${esc(x.make)} · ${esc(x.model)}</strong><small>${esc(x.title)}<br>Stored in PlumbCore Vault · ${Math.max(1,Math.round((x.size||0)/1024/1024))} MB</small><div class="detail-actions"><button class="green" type="button" onclick="openVaultManual('${x.id}')">Open saved PDF</button><button class="secondary" type="button" onclick="deleteVaultManual('${x.id}')">Delete</button></div></div>`).join(""):'<div class="smallnote">No saved PDFs in this section yet.</div>'}catch(e){box.innerHTML='<div class="smallnote">Manual Vault is unavailable in this browser session.</div>'}}
 async function openVaultManual(id){try{let db=await vaultDb();let tx=db.transaction("manuals","readonly"),r=tx.objectStore("manuals").get(id);r.onsuccess=()=>{db.close();let x=r.result;if(!x)return;let u=URL.createObjectURL(x.blob);window.__tradeproVaultUrl&&URL.revokeObjectURL(window.__tradeproVaultUrl);window.__tradeproVaultUrl=u;window.location.href=u}}catch(e){alert("Could not open that saved PDF.")}}
-async function deleteVaultManual(id){if(!confirm("Delete this manual from the TradePro Manual Vault?"))return;try{await vaultTx("readwrite",st=>st.delete(id));toast("Manual deleted");renderManualVault()}catch(e){alert("Could not delete that manual.")}}
+async function deleteVaultManual(id){if(!confirm("Delete this manual from the PlumbCore Manual Vault?"))return;try{await vaultTx("readwrite",st=>st.delete(id));toast("Manual deleted");renderManualVault()}catch(e){alert("Could not delete that manual.")}}
 async function searchVault(q){try{let arr=await getAllVault();let hits=arr.filter(x=>(x.make+" "+x.model+" "+x.title+" "+x.fileName).toLowerCase().includes(q));if(!hits.length){toast("No loaded manual matches that search");return}techFilter=hits[0].category;setTechFilter(techFilter);document.getElementById("techSearch").value=q;renderTechLibrary();renderManualVault();document.getElementById("manualVaultList")?.scrollIntoView({behavior:"smooth",block:"start"});toast(hits.length+" saved manual"+(hits.length===1?"":"s")+" found")}catch(e){toast("Manual Vault search unavailable")}}
 function openManualExternal(){if(currentManualUrl)window.location.href=currentManualUrl}
 let currentEngineerReportId=null;
@@ -2544,7 +2591,7 @@ function renderEngineerReports(){let box=document.getElementById("engineerReport
 function editEngineerReport(id){let r=(data.engineerReports||[]).find(x=>x.id===id);if(!r)return;currentEngineerReportId=id;let map={erType:"type",erDate:"date",erStatus:"status",erCustomer:"customer",erAddress:"address",erPhone:"phone",erEmail:"email",erMake:"make",erModel:"model",erSerial:"serial",erEquipment:"equipment",erRefrigerant:"refrigerant",erCharge:"charge",erAdded:"added",erRecovered:"recovered",erLeak:"leak",erFgasRef:"fgasRef",erReadings:"readings",erWork:"work",erParts:"parts",erFault:"fault",erRecommendations:"recommendations",erNextService:"nextService",erSignature:"signature",erNotes:"notes"};Object.entries(map).forEach(([id,k])=>{let e=document.getElementById(id);if(e)e.value=r[k]||""});document.getElementById("erHeading").textContent=r.type||"Engineer Report";document.getElementById("erDelete").style.display="block";show("engineerReportEdit")}
 function deleteEngineerReport(){if(!currentEngineerReportId)return;if(!confirm("Delete this engineer report?"))return;data.engineerReports=(data.engineerReports||[]).filter(x=>x.id!==currentEngineerReportId);save();currentEngineerReportId=null;toast("Report deleted");show("engineerReports")}
 function reportSection(title,text){return text?`<div class="rp-section"><h3>${esc(title)}</h3><div class="rp-text">${esc(text)}</div></div>`:""}
-function renderReportPaper(r){let business=setting("businessName","TradePro UK"),owner=setting("ownerName","");let fgas=[r.refrigerant&&`Refrigerant: ${r.refrigerant}`,r.charge&&`System charge: ${r.charge} kg`,r.added&&`Added: ${r.added} kg`,r.recovered&&`Recovered: ${r.recovered} kg`,r.leak&&`Leak check: ${r.leak}`,r.fgasRef&&`Engineer/F-Gas ref: ${r.fgasRef}`].filter(Boolean).join("\n");return `<h1>${esc(business)}</h1><h2>${esc(r.type||"Engineer Report")}</h2><div class="rp-grid"><div class="rp-box"><small>Customer</small><strong>${esc(r.customer||"Not entered")}</strong><div>${esc(r.address||"")}</div></div><div class="rp-box"><small>Report</small><strong>${esc(r.date||"")}</strong><div>Status: ${esc(r.status||"")}</div></div><div class="rp-box"><small>Equipment</small><strong>${esc((r.make||"")+" "+(r.model||""))}</strong><div>${esc(r.equipment||"")} ${r.serial?"· S/N "+esc(r.serial):""}</div></div><div class="rp-box"><small>Engineer / Business</small><strong>${esc(owner||business)}</strong><div>${esc(business)}</div></div></div>${reportSection("F-Gas / Refrigerant",fgas)}${reportSection("Readings / Test Results",r.readings)}${reportSection("Fault / Diagnosis",r.fault)}${reportSection("Work Carried Out",r.work)}${reportSection("Parts / Materials",r.parts)}${reportSection("Recommendations / Further Work",r.recommendations)}${r.nextService?reportSection("Next Service Due",r.nextService):""}${reportSection("Engineer Notes",r.notes)}${r.signature?`<div class="rp-section"><h3>Customer / Site Acknowledgement</h3><div>Signed/acknowledged by: <strong>${esc(r.signature)}</strong></div></div>`:""}<div style="margin-top:28px;font-size:11px;color:#6f7a84">Generated with TradePro UK · V${esc(TRADEPRO_VERSION)} · Build ${esc(TRADEPRO_BUILD)}</div>`}
+function renderReportPaper(r){let business=setting("businessName","Your Business"),owner=setting("ownerName","");let fgas=[r.refrigerant&&`Refrigerant: ${r.refrigerant}`,r.charge&&`System charge: ${r.charge} kg`,r.added&&`Added: ${r.added} kg`,r.recovered&&`Recovered: ${r.recovered} kg`,r.leak&&`Leak check: ${r.leak}`,r.fgasRef&&`Engineer/F-Gas ref: ${r.fgasRef}`].filter(Boolean).join("\n");return `<h1>${esc(business)}</h1><h2>${esc(r.type||"Engineer Report")}</h2><div class="rp-grid"><div class="rp-box"><small>Customer</small><strong>${esc(r.customer||"Not entered")}</strong><div>${esc(r.address||"")}</div></div><div class="rp-box"><small>Report</small><strong>${esc(r.date||"")}</strong><div>Status: ${esc(r.status||"")}</div></div><div class="rp-box"><small>Equipment</small><strong>${esc((r.make||"")+" "+(r.model||""))}</strong><div>${esc(r.equipment||"")} ${r.serial?"· S/N "+esc(r.serial):""}</div></div><div class="rp-box"><small>Engineer / Business</small><strong>${esc(owner||business)}</strong><div>${esc(business)}</div></div></div>${reportSection("F-Gas / Refrigerant",fgas)}${reportSection("Readings / Test Results",r.readings)}${reportSection("Fault / Diagnosis",r.fault)}${reportSection("Work Carried Out",r.work)}${reportSection("Parts / Materials",r.parts)}${reportSection("Recommendations / Further Work",r.recommendations)}${r.nextService?reportSection("Next Service Due",r.nextService):""}${reportSection("Engineer Notes",r.notes)}${r.signature?`<div class="rp-section"><h3>Customer / Site Acknowledgement</h3><div>Signed/acknowledged by: <strong>${esc(r.signature)}</strong></div></div>`:""}<div style="margin-top:28px;font-size:11px;color:#6f7a84">Generated with PlumbCore · V${esc(TRADEPRO_VERSION)} · Build ${esc(TRADEPRO_BUILD)}</div>`}
 function previewEngineerReport(){let r=collectEngineerReport();document.getElementById("reportPaper").innerHTML=renderReportPaper(r);show("reportPrint")}
 function quickPrintEngineerReport(id){let r=(data.engineerReports||[]).find(x=>x.id===id);if(!r)return;currentEngineerReportId=id;document.getElementById("reportPaper").innerHTML=renderReportPaper(r);show("reportPrint")}
 
