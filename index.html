@@ -984,8 +984,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="8.6";
-const TRADEPRO_VERSION="21.3";
+const TRADEPRO_BUILD="8.7";
+const TRADEPRO_VERSION="21.4";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1263,9 +1263,8 @@ Any additional work or unforeseen issues may require a revised price and custome
 }
 async function sendQuote(){
 if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),text=quoteText(q);
-if(navigator.share){try{await navigator.share({title:`Quotation ${q.number||""} - ${c.name}`,text});if(q.status==="Draft"){q.status="Sent";q.sentAt=new Date().toISOString();save();}return}catch(e){}}
-if(q.status==="Draft"){q.status="Sent";q.sentAt=new Date().toISOString();save();}
-let subject=encodeURIComponent(`Quotation ${q.number||""} - ${c.name}`),body=encodeURIComponent(text);window.location.href=`mailto:${encodeURIComponent(c.email||"")}?subject=${subject}&body=${body}`;
+if(navigator.share){try{await navigator.share({title:`Quotation ${q.number||""} - ${c.name}`,text});if(q.status==="Draft"){q.status="Sent";q.sentAt=new Date().toISOString();save();}return}catch(e){if(e&&e.name==="AbortError")return;}}
+let subject=encodeURIComponent(`Quotation ${q.number||""} - ${c.name}`),body=encodeURIComponent(text);window.location.href=`mailto:${encodeURIComponent(c.email||"")}?subject=${subject}&body=${body}`;toast("Email prepared — mark the quote Sent after sending");
 }
 function populateQuotePaper(){
 if(selectedQuoteIndex===null)return false;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),depInfo=quoteDepositInfo(q);
@@ -1446,13 +1445,13 @@ let text=invoiceText(inv);
 if(navigator.share){
 try{await navigator.share({title:`Invoice ${inv.number||""} - ${normalizeCustomer(inv.customer).name}`,text});markInvoiceSent(inv);openInvoice(selectedInvoiceIndex);return}catch(e){if(e&&e.name==="AbortError")return;}
 }
-markInvoiceSent(inv);
 let subject=encodeURIComponent(`Invoice ${inv.number||""} - ${normalizeCustomer(inv.customer).name}`);
 let body=encodeURIComponent(text);
 window.location.href=`mailto:${encodeURIComponent(normalizeCustomer(inv.customer).email||"")}?subject=${subject}&body=${body}`;
+toast("Email prepared — mark the invoice Sent after sending");
 }
 function paymentReminderText(inv){let c=normalizeCustomer(inv.customer),balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0)),link=paymentLinkForInvoice(inv);return `Hi ${c.name||"there"}, just a reminder that invoice ${inv.number||""} has a balance of £${balance.toFixed(2)} due${inv.dueDate?" on "+inv.dueDate:""}. ${link&&/^https?:\/\//i.test(link)?"Payment link: "+link+" ":""}Please let me know if you need another copy of the invoice. Thanks, ${setting("businessName","TradePro UK")}.`; }
-async function sendPaymentReminder(){if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));if(balance<=0){toast("Invoice is already paid");return;}let c=normalizeCustomer(inv.customer),text=paymentReminderText(inv);if(navigator.share){try{await navigator.share({title:`Payment reminder ${inv.number||""}`,text});inv.lastReminderAt=new Date().toISOString();save();openInvoice(selectedInvoiceIndex);return}catch(e){if(e&&e.name==="AbortError")return;}}inv.lastReminderAt=new Date().toISOString();save();let subject=encodeURIComponent(`Payment reminder · ${inv.number||"Invoice"}`),body=encodeURIComponent(text);window.location.href=`mailto:${encodeURIComponent(c.email||"")}?subject=${subject}&body=${body}`;}
+async function sendPaymentReminder(){if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));if(balance<=0){toast("Invoice is already paid");return;}let c=normalizeCustomer(inv.customer),text=paymentReminderText(inv);if(navigator.share){try{await navigator.share({title:`Payment reminder ${inv.number||""}`,text});inv.lastReminderAt=new Date().toISOString();save();openInvoice(selectedInvoiceIndex);return}catch(e){if(e&&e.name==="AbortError")return;}}let subject=encodeURIComponent(`Payment reminder · ${inv.number||"Invoice"}`),body=encodeURIComponent(text);window.location.href=`mailto:${encodeURIComponent(c.email||"")}?subject=${subject}&body=${body}`;toast("Reminder email prepared — history updates after a successful share");}
 
 function populateInvoicePaper(){
 if(selectedInvoiceIndex===null)return false;
