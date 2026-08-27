@@ -944,8 +944,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="7.2";
-const TRADEPRO_VERSION="19.9";
+const TRADEPRO_BUILD="7.3";
+const TRADEPRO_VERSION="20.0";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2007,12 +2007,13 @@ function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&q
 
 /* Build 5.7 Engineer Hub helpers */
 
+/* Build 7.3 Baxi catalogue audit: current Baxi 600 System 2 corrected to 15/18/24kW; current Baxi 400 Combi 2.1 added as 24/30/36kW; superseded 400 Combi 2 retained as legacy-only catalogue entries. Current Baxi product pages still expose no Installation & Service PDF, so no unverified manual mapping is added. */
 /* Build 5.7 known boiler model catalogue */
 const KNOWN_BOILER_MODELS={
 "Worcester Bosch":["Greenstar 1000","Greenstar 2000","Greenstar 25i ErP","Greenstar 30i ErP","Greenstar 4000 Combi","Greenstar 4000 System","Greenstar 8000 Life Combi","Greenstar 8000 Life System","Greenstar 8000 Style Combi","Greenstar 8000 Style System","Greenstar CDi Compact","Greenstar i System","Greenstar Ri","Greenstar Highflow 440CDi","Greenstar Highflow 550CDi","Greenstar Si Compact","Greenstar 24i Junior","Greenstar 28i Junior","Greenstar 30Si Compact"],
 "Vaillant":["ecoTEC plus 610 (current generation)","ecoTEC plus 615 (current generation)","ecoTEC plus 620 (current generation)","ecoTEC plus 625 (current generation)","ecoTEC plus 630 (current generation)","ecoTEC plus 635 (current generation)","ecoTEC plus 825 (legacy /5-5)","ecoTEC plus 832 (legacy /5-5)","ecoTEC plus 835 (legacy /5-5)","ecoTEC plus 838 (legacy /5-5)","ecoTEC plus 612 (legacy /5-5)","ecoTEC plus 615 (legacy /5-5)","ecoTEC plus 618 (legacy /5-5)","ecoTEC plus 624 (legacy /5-5)","ecoTEC plus 630 (legacy /5-5)","ecoTEC plus 637 (legacy /5-5)","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
 "Ideal Heating":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35","Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30","Logic Max Heat2 H12","Logic Max Heat2 H15","Logic Max Heat2 H18","Vogue Max Combi2 C26","Vogue Max Combi2 C32","Vogue Max Combi2 C40","Vogue Gen2","Independent C24","Independent C30"],
-"Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 600 System 2 30","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30","Baxi 400 Combi 2 24","Baxi 400 Combi 2 30","Duo-tec 24","Duo-tec 28","Duo-tec 33","Duo-tec 40","Platinum 24","Platinum 28","Platinum 33","Platinum 40","Megaflo System 15","Megaflo System 18","Megaflo System 24","Megaflo System 28","Solo HE 12","Solo HE 15","Solo HE 18","Solo HE 24"],
+"Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 15","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30","Baxi 400 Combi 2.1 24","Baxi 400 Combi 2.1 30","Baxi 400 Combi 2.1 36","Baxi 400 Combi 2 24 (legacy)","Baxi 400 Combi 2 30 (legacy)","Duo-tec 24","Duo-tec 28","Duo-tec 33","Duo-tec 40","Platinum 24","Platinum 28","Platinum 33","Platinum 40","Megaflo System 15","Megaflo System 18","Megaflo System 24","Megaflo System 28","Solo HE 12","Solo HE 15","Solo HE 18","Solo HE 24"],
 "Glow-worm":["Energy7 25C","Energy7 30C","Energy7 35C","Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Energy7 30S","Ultimate3 25C","Ultimate3 30C","Ultimate3 35C","Betacom4 24C","Betacom4 30C","Essential 24C","Essential 28C","Flexicom cx","Flexicom hx","Ultracom2 cx","Ultracom2 hxi"],
 "Viessmann":["Vitodens 050-W 25kW","Vitodens 050-W 30kW","Vitodens 050-W 35kW","Vitodens 100-W 19kW","Vitodens 100-W 25kW","Vitodens 100-W 32kW","Vitodens 100-W 35kW","Vitodens 111-W","Vitodens 200-W","Vitodens 222-F","Vitodens 050-W B0KA","Vitodens 100-W B1KF","Vitodens 100-W B1HF"],
 "Alpha":["E-Tec 20S","E-Tec 25R","E-Tec 28","E-Tec 33","E-Tec 35","E-Tec Plus 28","E-Tec Plus 33","E-Tec Plus 38","Evoke 28","Evoke 33","InTec 26C","InTec 30C","InTec 34C","InTec 24X","InTec 28X"],
@@ -2042,7 +2043,7 @@ const CATEGORY_MODEL_CATALOGUES={
   "Vaillant":["ecoTEC plus 618 LPG (legacy /5-5)","ecoTEC plus 630 LPG (legacy /5-5)","ecoTEC plus 832 LPG (legacy /5-5)"],
   "Alpha":["E-Tec 28","E-Tec 33","Evoke 28","Evoke 33"],
   "Ideal Heating":["Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30"],
-  "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 600 System 2 30","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30"]
+  "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 15","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30","Baxi 400 Combi 2.1 24","Baxi 400 Combi 2.1 30","Baxi 400 Combi 2.1 36"]
  },
  oil:{
   "Grant UK":["Vortex Pro 15-26","Vortex Pro 26-46","Vortex Pro 46-70","Vortex Pro System 15-26","Vortex Pro System 26-46","Vortex Pro External 15-26","Vortex Pro External 26-46","Vortex Pro External 46-70","Vortex Pro External Combi 21","Vortex Pro External Combi 26","Vortex Pro External Combi 36","Vortex Pro Combi 21","Vortex Pro Combi 26","Vortex Pro Combi 36","Vortex Pro Combi XS 26","Vortex Eco External / External System","Vortex Eco Utility / Utility System","Vortex Boiler House"],
