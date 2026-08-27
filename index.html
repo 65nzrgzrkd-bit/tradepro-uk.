@@ -944,8 +944,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="7.4";
-const TRADEPRO_VERSION="20.1";
+const TRADEPRO_BUILD="7.5";
+const TRADEPRO_VERSION="20.2";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2038,6 +2038,7 @@ const KNOWN_BOILER_MODELS={
    This prevents a gas-boiler range from appearing under Heat Pumps/Air-Con and
    prevents LPG suitability being inferred from a natural-gas catalogue. */
 /* Build 7.4 catalogue audit: generic LG residential/VRF placeholders removed in favour of verified exact UK R32 models. */
+/* Build 7.5 catalogue audit: Panasonic generic RAC/PACi labels replaced with exact current UK R32 kit models; Midea generic placeholder removed. */
 const CATEGORY_MODEL_CATALOGUES={
  naturalgas:KNOWN_BOILER_MODELS,
  lpg:{
@@ -2070,14 +2071,16 @@ const CATEGORY_MODEL_CATALOGUES={
   "Daikin":["CTXM-R / FTXM-R / ATXM-R","RZAG35A2V1B","RZAG50A2V1B","RZAG60A2V1B"],
   "Mitsubishi Electric":["MSZ-AP15VG","MSZ-AP20VG","MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK","MSZ-AP60VG","MSZ-AP60VGK","MSZ-AP71VG","MSZ-AP71VGK","M Series split systems","Mr Slim split systems","City Multi VRF systems"],
   "Fujitsu":["ASTH18/22/24KMTD R32"],
-  "Panasonic":["RAC single-split range","PACi commercial range"],
+  // Build 7.5: generic Panasonic RAC/PACi placeholders removed. Current UK Etherea R32 systems are listed by exact kit model.
+  "Panasonic":["Etherea R32 KIT-Z20-CKE","Etherea R32 KIT-Z25-CKE","Etherea R32 KIT-Z35-CKE","Etherea R32 KIT-Z42-CKE","Etherea R32 KIT-Z50-CKE","Etherea R32 KIT-Z71-CKE","PACi NX Elite R32 KIT-71PK4ZH45","PACi NX Elite R32 KIT-71PF3ZH45","PACi NX Elite R32 KIT-71PU3ZH45"],
   "Toshiba":["RAS HAORI R32 10/13/16"],
   // Build 7.2: Samsung WindFree R32 legacy exact model mapping; current range remains pending until exact manuals are verified.
   "Samsung":["WindFree R32 AR09NXPXBWKX (legacy)","WindFree R32 AR09NXWXBWKX (legacy)","WindFree R32 AR12NXWXCWKN (legacy)","WindFree current range (exact manual pending)"],
   // Build 7.4: remove vague LG Air-Con family placeholders. Only exact UK product models are selectable.
   // Product pages confirm R32 and the named indoor/outdoor combinations; direct installation/service PDFs remain pending until exact manual matching is verified.
   "LG":["DUALCOOL Standard Plus PC09SQ","DUALCOOL Standard Plus PC12SQ","DUALCOOL Standard Plus PC18SQ","DUALCOOL Standard Plus PC24SQ","DUALCOOL Deluxe H09S1D","DUALCOOL Deluxe H12S1D","DUALCOOL Premium H12S1P","ARTCOOL Gallery Special A09GA1","ARTCOOL Gallery Premium A09GA2"],
-  "Midea":["Residential split range"]
+  // Build 7.5: broad Midea placeholder removed until exact UK model/manual matching is verified.
+  "Midea":[]
  }
 };
 
@@ -2177,6 +2180,11 @@ function runTechDataIntegrityAudit(){
     const exactInCatalogue=(m.categories||[]).some(cat=>(CATEGORY_MODEL_CATALOGUES[cat]?.[m.make]||[]).some(x=>normaliseModelName(x)===normaliseModelName(m.model)));
     if(!exactInCatalogue&&/[\/]|\brange\b|\bcombi\b|\bsystem\b/i.test(m.model))warnings.push(`${m.make} · ${m.model}: broad document label has no explicit verified model map`);
   });
+  // Build 7.5: catalogue hygiene — broad placeholders must not masquerade as exact selectable models.
+  const broadCataloguePattern=/(?:\brange\b|\bsplit systems?\b|\bvrf systems?\b|\bresidential split\b|\bcommercial range\b|exact manual pending)/i;
+  Object.entries(CATEGORY_MODEL_CATALOGUES).forEach(([cat,makes])=>Object.entries(makes||{}).forEach(([make,models])=>(models||[]).forEach(model=>{
+    if(broadCataloguePattern.test(String(model||"")))warnings.push(`${cat} · ${make}: broad catalogue placeholder should be replaced with exact models: ${model}`);
+  })));
   window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues,warnings};
   if(issues.length)console.warn("TradePro technical-library integrity audit",issues);else console.info(`TradePro technical-library audit passed: ${DIRECT_MANUALS.length} built-in documents checked`);
   return window.TRADEPRO_TECH_AUDIT;
@@ -2198,7 +2206,7 @@ const MANUFACTURER_SOURCES={
  "Firebird":"https://firebird.uk.com/support/manuals/",
  "Navien":"https://navien.co.uk/",
  "Samsung":"https://www.samsung.com/uk/support/",
- "Panasonic":"https://www.aircon.panasonic.eu/GB_en/ranges/aquarea/high-performance/",
+ "Panasonic":"https://www.aircon.panasonic.eu/GB_en/",
  "LG":"https://www.lg.com/uk/business/manual"
 };
 function officialSourceButton(make){const u=MANUFACTURER_SOURCES[make];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official manufacturer library</button>`:''}
