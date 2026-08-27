@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#15324b">
+<title>TradePro UK · Plumber Edition · Build 4.4 · V17.2</title>
+<style>
+*{box-sizing:border-box}
+:root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--navy);color:#fff;padding:22px 18px 18px}
+header small{text-transform:uppercase;letter-spacing:1px;opacity:.75}
+header h1{margin:4px 0 0;font-size:26px}
+main{max-width:680px;margin:auto;padding:16px 16px 105px}
+.screen{display:none}.screen.active{display:block}
+.hero{background:linear-gradient(135deg,#205d89,#27808c);color:#fff;border-radius:22px;padding:20px;margin-bottom:14px}
+.hero small{opacity:.8}.hero h2{font-size:34px;margin:8px 0 2px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.card,.item,.detail{background:#fff;border-radius:17px;padding:16px;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.card small,.item small,.detail small{color:var(--muted)}.card strong{display:block;font-size:23px;margin-top:5px}
+button{border:0;font:inherit;cursor:pointer}
+.primary{width:100%;background:var(--green);color:#fff;font-weight:700;padding:16px;border-radius:15px;font-size:17px}
+.secondary{background:#e4ebf0;color:var(--navy)}.green{background:var(--green);color:#fff}.danger{background:var(--danger);color:#fff}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.action{background:#fff;padding:20px 10px;border-radius:17px;font-size:25px;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.action span{display:block;font-size:14px;margin-top:6px}
+h3{margin-top:24px}
+.screenhead{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.back{width:42px;height:42px;border-radius:12px;background:#e2e9ee;font-size:25px;color:var(--navy)}
+.screenhead h2{margin:0}
+label{display:block;font-weight:650;margin:14px 0;font-size:14px}
+input,textarea,select{width:100%;margin-top:7px;padding:14px;border:1px solid #d6e0e6;background:#fff;border-radius:13px;font-size:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.result{background:#fff;margin-top:18px;border-left:5px solid var(--green);padding:18px;border-radius:17px;display:none}
+.result small{color:var(--muted)}.result strong{display:block;font-size:38px;margin:7px 0}
+.resultbuttons,.detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.resultbuttons button,.detail-actions button{padding:13px;border-radius:12px;font-weight:700}
+.item{margin-bottom:10px}.clickable{cursor:pointer}.item strong{display:block}.price{float:right;color:var(--green);font-weight:800}
+.empty{background:#fff;border-radius:15px;padding:25px;text-align:center;color:#77828d}
+.bigprice{font-size:40px;font-weight:800;color:var(--green);margin:6px 0 18px}
+.detailrow{padding:12px 0;border-bottom:1px solid #e7edf1}
+.detailrow:last-of-type{border-bottom:0}.detailrow span{display:block;color:var(--muted);font-size:13px;margin-bottom:3px}
+.status{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef4ef;font-size:13px;font-weight:700}
+.notice{background:#fff8e6;border:1px solid #f0d58a;border-radius:12px;padding:12px;margin:12px 0;color:#6a5200}
+.pricebook-tools{display:flex;gap:10px;margin:0 0 14px}.pricebook-tools button{flex:1;padding:13px;border-radius:12px;font-weight:700}
+.qrbox{text-align:center;background:#fff;border-radius:20px;padding:20px;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.qrbox img{width:min(78vw,320px);height:min(78vw,320px);max-width:320px;max-height:320px;background:#fff;border:12px solid #fff;border-radius:14px}
+.qr-amount{font-size:38px;font-weight:800;color:var(--green);margin:8px 0}.qr-ref{color:var(--muted);margin-bottom:14px}.smallnote{font-size:12px;color:var(--muted);line-height:1.45}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:680px;margin:auto;background:#fff;border-top:1px solid #d8e0e6;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 4px calc(8px + env(safe-area-inset-bottom))}
+nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:block;font-size:10px;margin-top:3px}
+@media print{
+  @page{size:A4 portrait;margin:10mm}
+  header,nav,.screenhead,.detail-actions,.no-print{display:none!important}
+  body,main{background:#fff;padding:0}
+  .screen{display:none!important}
+  #invoicePrint,#quotePrint,#reportPrint{display:block!important}
+  #invoicePrint .detail,#quotePrint .detail,#reportPrint .report-paper{box-shadow:none;border-radius:0;padding:5mm!important;width:auto!important;max-width:none!important;font-size:12pt;line-height:1.35}
+  #invoicePaper h1,#quotePaper h1{font-size:24pt!important} #invoicePaper h2,#quotePaper h2{font-size:18pt!important} #invoicePaper h3,#quotePaper h3{font-size:13pt!important}
+}
+
+
+.toolgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.toolcard{background:#fff;border-radius:17px;padding:17px;text-align:left;box-shadow:0 5px 18px rgba(0,0,0,.06);color:var(--text)}
+.toolcard b{display:block;font-size:16px;margin:7px 0 3px}.toolcard small{color:var(--muted);line-height:1.35}
+.toolicon{font-size:27px}.sectioncard{background:#fff;border-radius:17px;padding:16px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05)}
+.sectioncard h3{margin:0 0 8px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toolresult{background:#fff;border-left:5px solid var(--green);padding:18px;border-radius:17px;margin-top:16px;display:none}
+.toolresult .big{font-size:34px;font-weight:800;color:var(--green);margin:5px 0}.toolresult .small{font-size:12px;color:var(--muted);line-height:1.45}
+.toolbuttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.toolbuttons button{padding:13px;border-radius:12px;font-weight:700}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eaf2f7;color:var(--navy);font-size:12px;font-weight:700;margin:2px 4px 2px 0}
+.safety{background:#fff4e5;border:1px solid #f2c66d;border-radius:12px;padding:12px;margin:12px 0;color:#664800;font-size:12px;line-height:1.45}
+.versionline{font-size:12px;color:var(--muted);text-align:center;margin:16px 0 2px}
+@media(max-width:430px){.grid2,.toolgrid{grid-template-columns:1fr}.toolbuttons{grid-template-columns:1fr}}
+
+
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(18px);background:#15324b;color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;box-shadow:0 8px 28px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:.22s;z-index:9999;max-width:88%;text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.searchbox{margin:0 0 14px}.searchbox input{margin-top:0;background:#fff}.moneybreak{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-top:8px}.moneybreak strong{color:var(--text)}.status-accepted{background:#e8f5e9;color:#226b28}.status-converted{background:#eaf2f7;color:#15324b}.status-overdue{background:#fdecec;color:#9b1c1c}.status-part{background:#fff4df;color:#7a5200}.status-sent{background:#eef4ff;color:#2457a7}.status-declined{background:#fdecec;color:#9b1c1c}.payment-history{margin-top:14px}.payment-entry{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #e7edf1;font-size:13px}.payment-entry:last-child{border-bottom:0}.mini{font-size:12px;color:var(--muted)}.balance-card{background:#f6f8fa;border-radius:12px;padding:14px;margin-top:12px}.balance-card strong{font-size:20px}.quote-status-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.quote-status-grid button{padding:11px;border-radius:11px;font-weight:700}
+@media(max-width:520px){#invoicePaper,#quotePaper{padding:14px!important}#invoicePaper>div:first-child,#quotePaper>div:first-child{gap:10px!important;margin-bottom:16px!important}#invoicePaper img,#quotePaper img{max-width:135px!important;max-height:72px!important}#invoicePaper h1,#quotePaper h1{font-size:27px!important}#invoicePaper h2,#quotePaper h2{font-size:23px!important}#invoicePaper>div[style*="grid-template-columns:1fr 1fr"],#quotePaper>div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important;gap:14px!important;margin:16px 0!important}.detail-actions{grid-template-columns:1fr}.bigprice{font-size:38px}}
+
+.vat-line{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.vat-line strong{font-size:16px}.finance-summary{background:#f6f8fa;border-radius:14px;padding:14px;margin-top:14px}.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.finance-cell{background:#fff;border:1px solid #e1e8ed;border-radius:12px;padding:12px}.finance-cell span{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}.finance-cell strong{font-size:18px}.progress-track{height:10px;background:#dfe7ec;border-radius:999px;overflow:hidden;margin:12px 0 4px}.progress-fill{height:100%;background:var(--green);width:0%;transition:.25s}.deposit-paid-badge{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#e8f5e9;color:#226b28;font-size:12px;font-weight:800}.deposit-due-badge{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#fff4df;color:#7a5200;font-size:12px;font-weight:800}.converted-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4}
+@media(max-width:430px){.finance-grid{grid-template-columns:1fr 1fr}.vat-line{align-items:flex-start}}
+
+/* Build 3.0 diary workflow, booking actions and dashboard workload */
+.doc-summary{margin-top:22px;border:1px solid #dce5eb;border-radius:14px;overflow:hidden;background:#fff}
+.doc-summary-row{display:flex;justify-content:space-between;gap:18px;padding:10px 14px;border-bottom:1px solid #edf1f4}
+.doc-summary-row:last-child{border-bottom:0}.doc-summary-row strong{font-weight:800}.doc-summary-row.total{font-size:19px;background:#f8fafb}
+.doc-due{margin-top:16px;padding:16px;border-radius:14px;background:#eef5ea;border:1px solid #cfe2c9;display:flex;justify-content:space-between;gap:16px;align-items:center}
+.doc-due strong{font-size:23px;color:#2f7d32}.doc-due.paid{background:#e8f5e9}.doc-due.owing{background:#fff7e7;border-color:#efd699}.doc-due.owing strong{color:#7a5200}
+.doc-badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;background:#eef4ef}.doc-badge.paid{background:#e8f5e9;color:#226b28}.doc-badge.part{background:#fff4df;color:#7a5200}.doc-badge.unpaid{background:#fdecec;color:#9b1c1c}
+.doc-note{font-size:12px;line-height:1.5;color:#596672;margin-top:18px}.doc-ref{font-weight:700;margin-top:8px}
+@media print{.doc-due,.doc-summary{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* Build 2.8 responsive document header and spacing */
+.doc-header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}
+.doc-business{min-width:0;flex:1}.doc-business-details{line-height:1.45;white-space:pre-line;color:#263544}
+.doc-meta{text-align:right;min-width:180px}.doc-meta h1{margin:0;color:#15324b}.doc-number{margin:8px 0 5px;font-size:17px}
+.doc-meta>div:not(.doc-number){display:flex;justify-content:flex-end;gap:8px;line-height:1.45}.doc-meta>div:not(.doc-number)>span{color:#6f7a84}.doc-meta>div:not(.doc-number)>strong{font-weight:700}
+.doc-summary-row span{padding-right:14px}.doc-summary-row strong{margin-left:auto;white-space:nowrap;text-align:right}.doc-summary-row.total strong{font-size:20px}
+#pDepositRow span,#qDepositBlock strong{white-space:normal}.doc-ref{line-height:1.35}
+@media(max-width:520px){.doc-header{gap:14px;margin-bottom:18px}.doc-meta{min-width:145px}.doc-meta h1{font-size:28px!important}.doc-number{font-size:16px}.doc-meta>div:not(.doc-number){font-size:14px;gap:6px}.doc-business-details{font-size:14px}.doc-summary-row{padding:11px 12px}.doc-summary-row.total{font-size:18px}.doc-due{padding:14px}.doc-due strong{font-size:22px}}
+@media(max-width:390px){.doc-header{display:grid;grid-template-columns:1fr auto}.doc-business img{max-width:120px!important}.doc-business h2{font-size:20px!important}.doc-meta{min-width:130px}.doc-meta h1{font-size:25px!important}}
+
+/* Build 3.0 CRM, diary actions and workload insights */
+.insight-danger{color:#9b1c1c}.insight-good{color:#226b28}.mini{font-size:12px;color:var(--muted)}
+.customer-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.customer-actions button{padding:13px;border-radius:12px;font-weight:700}
+.history-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 10px}.history-title h3{margin:0}
+.history-badge{padding:4px 8px;border-radius:999px;background:#eaf2f7;font-size:12px;font-weight:700;color:var(--navy)}
+.diary-day{margin:18px 0 8px;font-weight:800;color:var(--navy)}.appointment{position:relative}.appointment .appt-time{font-weight:800;color:var(--navy);margin-right:8px}.appointment .appt-status{float:right}.appointment-note{display:block;margin-top:5px;color:var(--muted);font-style:italic}.booking-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.booking-actions button{padding:13px;border-radius:12px;font-weight:700}.status-completed{background:#e8f5e9;color:#226b28}.status-cancelled{background:#fdecec;color:#9b1c1c}.status-booked{background:#eaf2f7;color:#15324b}.workload-card{cursor:pointer}.workload-card .mini{line-height:1.35}
+.status-booked{background:#eaf2f7;color:#15324b}.status-completed{background:#e8f5e9;color:#226b28}.status-cancelled{background:#fdecec;color:#9b1c1c}
+.dashboard-note{background:#fff;border-radius:15px;padding:14px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.45}
+@media(max-width:430px){.customer-actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+/* Build 3.4 field actions and connected job status */
+/* Build 4.1 commercial readiness, setup health, backup status and onboarding polish */
+.booking-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.booking-quick button{padding:13px;border-radius:12px;font-weight:700}.status-progress{background:#fff4df;color:#7a5200}.status-invoiced{background:#eef4ff;color:#2457a7}.status-paid{background:#e8f5e9;color:#226b28}.appt-meta{margin-top:7px;font-size:12px;color:var(--muted);line-height:1.45}.appointment .appt-value{display:inline-block;margin-top:5px;font-weight:800;color:var(--green)}.diary-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.diary-filter{padding:11px 8px;border-radius:12px;background:#e6edf2;color:var(--navy);font-weight:800;font-size:13px}.diary-filter.active{background:var(--navy);color:#fff}.diary-summary{background:#fff;border-radius:15px;padding:14px 16px;margin:10px 0 4px;box-shadow:0 4px 14px rgba(0,0,0,.05);font-size:13px;color:var(--muted);line-height:1.4}.diary-summary strong{color:var(--text);font-size:16px}.appt-meta:empty{display:none}
+@media(max-width:430px){.booking-quick{grid-template-columns:1fr 1fr}}
+.appt-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.appt-actions button{padding:9px 6px;border-radius:10px;font-size:12px;font-weight:800;background:#eef3f6;color:var(--navy)}
+.appt-actions button:disabled{opacity:.45}
+.booking-value-note{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.35}
+.customer-picker{margin-bottom:0}
+@media(max-width:430px){.appt-actions{grid-template-columns:repeat(3,1fr)}}
+.customer-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.customer-summary-card{background:#f7f9fa;border:1px solid #e2e8ec;border-radius:14px;padding:13px}
+.customer-summary-card span{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}
+.customer-summary-card strong{font-size:20px;color:var(--text)}
+.customer-summary-card.owing strong{color:#9b1c1c}.customer-summary-card.paid strong{color:#226b28}
+.customer-history-filters{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0 14px}
+.customer-history-filter{padding:9px 4px;border-radius:10px;background:#e6edf2;color:var(--navy);font-size:11px;font-weight:800}
+.customer-history-filter.active{background:var(--navy);color:#fff}
+.history-type{display:inline-block;font-size:11px;font-weight:800;padding:3px 7px;border-radius:999px;background:#eef3f6;margin-right:5px}
+.history-payment{border-left:4px solid #3d8737}
+@media(max-width:430px){.customer-summary{grid-template-columns:1fr 1fr}.customer-history-filters{grid-template-columns:repeat(4,1fr)}}
+.account-status{border-radius:14px;padding:13px 15px;margin:12px 0;font-weight:800}
+.account-status.clear{background:#e8f4e6;color:#24662a}.account-status.owing{background:#fff0eb;color:#8f261c}
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.report-card{background:#fff;border-radius:16px;padding:15px;box-shadow:0 5px 18px rgba(0,0,0,.05)}
+.report-card span{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}.report-card strong{font-size:24px;color:var(--text)}
+.report-card.hero-report{grid-column:1/-1;background:linear-gradient(135deg,#315e88,#3e8790);color:#fff}
+.report-card.hero-report span,.report-card.hero-report strong{color:#fff}.report-card.hero-report strong{font-size:36px}
+.report-section{background:#fff;border-radius:17px;padding:16px;margin:14px 0;box-shadow:0 5px 18px rgba(0,0,0,.05)}
+.report-section h3{margin-top:0}
+.month-row{display:grid;grid-template-columns:52px 1fr 80px;gap:9px;align-items:center;padding:8px 0;border-bottom:1px solid #edf1f3;font-size:12px}
+.month-row:last-child{border-bottom:0}.month-bar{height:10px;background:#e5ebef;border-radius:999px;overflow:hidden}.month-bar i{display:block;height:100%;background:#3d8737;border-radius:999px}
+.month-values{text-align:right;font-weight:800}.month-values small{display:block;font-weight:500;color:var(--muted);font-size:10px}
+.report-note{font-size:12px;color:var(--muted);line-height:1.45}
+.report-periods{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:0 0 14px}
+.report-period{padding:10px 5px;border-radius:11px;background:#e6edf2;color:var(--navy);font-size:11px;font-weight:800}
+.report-period.active{background:var(--navy);color:#fff}
+.report-period-title{font-size:12px;color:var(--muted);margin:-4px 0 10px;text-align:center}
+.month-bar.zero i{display:none}
+@media(max-width:430px){.report-periods{grid-template-columns:1fr 1fr}}
+.setup-health{background:#fff;border-radius:18px;padding:16px;margin:14px 0;box-shadow:0 5px 18px rgba(0,0,0,.05)}
+.setup-health-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.setup-health strong{font-size:17px}.setup-health .pct{font-size:20px;font-weight:900;color:var(--green)}
+.setup-progress{height:9px;background:#e5ebef;border-radius:999px;overflow:hidden;margin:11px 0 8px}.setup-progress i{display:block;height:100%;background:var(--green);border-radius:999px}
+.setup-health small{display:block;color:var(--muted);line-height:1.4}
+.setup-health button{margin-top:10px;padding:10px 13px;border-radius:11px;font-weight:800;background:#e6edf2;color:var(--navy)}
+.readiness-list{display:grid;gap:8px;margin:12px 0 18px}
+.readiness-item{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f7f9fa;border:1px solid #e2e8ec;border-radius:12px;padding:11px 12px;font-size:13px}
+.readiness-item b{font-size:13px}.ready-ok{color:#2d762e}.ready-warn{color:#996515}
+.backup-status{background:#f7f9fa;border:1px solid #e2e8ec;border-radius:14px;padding:13px;margin:10px 0}
+.backup-status strong{display:block;margin-bottom:4px}.backup-status span{font-size:12px;color:var(--muted);line-height:1.45}
+.install-tip{background:#eef5f8;border-radius:14px;padding:13px;margin:12px 0;font-size:12px;line-height:1.5;color:#425466}
+
+
+@media(max-width:430px){.report-grid{grid-template-columns:1fr 1fr}}
+
+
+
+/* Build 4.4 technical library, F-Gas and engineer reports */
+.tech-search{position:sticky;top:0;z-index:3;background:var(--bg);padding:4px 0 10px}.tech-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.tech-tab{padding:11px 7px;border-radius:12px;background:#e6edf2;color:var(--navy);font-weight:800;font-size:12px}.tech-tab.active{background:var(--navy);color:#fff}.tech-list{display:grid;gap:10px}.tech-item{background:#fff;border-radius:15px;padding:14px 15px;box-shadow:0 4px 14px rgba(0,0,0,.05)}.tech-item h4{margin:0 0 5px;color:var(--navy)}.tech-item p{margin:0 0 10px;color:var(--muted);font-size:12px;line-height:1.45}.tech-buttons{display:flex;gap:8px;flex-wrap:wrap}.tech-buttons a,.tech-buttons button{display:inline-block;background:#e9f1f5;color:var(--navy);padding:9px 11px;border-radius:10px;font-size:12px;font-weight:800;text-decoration:none}.tech-buttons a.primary-link{background:var(--green);color:#fff}.warning-card{background:#fff7e7;border:1px solid #efd699;border-radius:14px;padding:13px;font-size:12px;line-height:1.5;color:#6f5311;margin:12px 0}.report-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.report-type-btn{background:#fff;border-radius:14px;padding:14px;text-align:left;box-shadow:0 4px 14px rgba(0,0,0,.05)}.report-type-btn b{display:block;margin-bottom:4px}.saved-report{background:#fff;border-radius:15px;padding:14px;margin:10px 0;box-shadow:0 4px 14px rgba(0,0,0,.05)}.saved-report .meta{font-size:12px;color:var(--muted);margin:4px 0 10px}.report-paper{background:#fff;padding:24px;border-radius:16px;box-shadow:0 5px 20px rgba(0,0,0,.06)}.report-paper h1{margin:0;color:var(--navy)}.report-paper h2{font-size:18px;margin:4px 0 20px}.report-paper .rp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.report-paper .rp-box{border:1px solid #dce5eb;border-radius:10px;padding:10px}.report-paper .rp-box small{display:block;color:var(--muted);margin-bottom:3px}.report-paper .rp-section{margin-top:18px}.report-paper .rp-section h3{font-size:14px;border-bottom:1px solid #dce5eb;padding-bottom:6px}.report-paper .rp-text{white-space:pre-wrap;line-height:1.5}.fgas-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:430px){.tech-tabs{grid-template-columns:1fr 1fr 1fr}.report-type-grid,.fgas-grid{grid-template-columns:1fr}.report-paper .rp-grid{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<header><small>TradePro UK · Build 4.4 · V17.2</small><h1>Plumber Edition</h1></header>
+<main>
+
+<section id="home" class="screen active">
+<div class="hero"><small>This month</small><h2 id="sales">£0.00</h2><div>Payments received</div></div>
+<div class="stats">
+<div class="card"><small>Quotes</small><strong id="quoteCount">0</strong></div>
+<div class="card"><small>Invoices</small><strong id="invoiceCount">0</strong></div>
+<div class="card"><small>Outstanding</small><strong id="outstanding">£0</strong></div>
+<div class="card"><small>Customers</small><strong id="customerCount">0</strong></div>
+<div class="card"><small>Invoiced this month</small><strong id="monthInvoiced">£0</strong><div class="mini" id="monthInvoiceCount">0 invoices</div></div>
+<div class="card"><small>Deposits received</small><strong id="monthDeposits">£0</strong><div class="mini">This month</div></div>
+<div class="card"><small>Work won remaining</small><strong id="acceptedWork">£0</strong><div class="mini" id="acceptedQuoteCount">0 open accepted quotes</div></div>
+<div class="card"><small>Overdue invoices</small><strong id="overdueCount">0</strong><div class="mini" id="overdueValue">£0 overdue</div></div>
+<div class="card workload-card" onclick="openDiary()"><small>Upcoming jobs</small><strong id="upcomingCount">0</strong><div class="mini" id="nextJobText">Nothing booked</div></div>
+<div class="card workload-card" onclick="openDiary()"><small>Completed this month</small><strong id="completedMonthCount">0</strong><div class="mini" id="completedMonthText">No completed jobs</div></div>
+<div class="card workload-card" onclick="openDiary()"><small>Next 7 days</small><strong id="weekJobsCount">0</strong><div class="mini" id="weekJobsText">No booked visits</div></div>
+</div>
+<div id="setupHealthCard" class="setup-health">
+<div class="setup-health-top"><strong id="setupHealthTitle">Business setup</strong><span id="setupHealthPct" class="pct">0%</span></div>
+<div class="setup-progress"><i id="setupHealthBar" style="width:0%"></i></div>
+<small id="setupHealthText">Checking your business setup…</small>
+<button onclick="show('settings')">Review business setup</button>
+</div>
+<button class="primary" onclick="newJob()">＋ New Job</button>
+<h3>Quick actions</h3>
+<div class="actions">
+<button class="action" onclick="show('customers')">👤<span>Customers</span></button>
+<button class="action" onclick="show('quotes')">🧾<span>Quotes</span></button>
+<button class="action" onclick="show('invoices')">💷<span>Invoices</span></button>
+<button class="action" onclick="show('pricebook')">🔧<span>Price Book</span></button>
+<button class="action" onclick="show('heatingTools')">🔥<span>Heating Tools</span></button>
+<button class="action" onclick="openDiary()">📅<span>Diary</span></button>
+<button class="action" onclick="openReports()">📊<span>Business Reports</span></button>
+<button class="action" onclick="show('techLibrary')">📚<span>Boiler PDFs & Tech</span></button>
+<button class="action" onclick="show('engineerReports')">📝<span>Engineer Reports</span></button>
+<button class="action" onclick="show('settings')">🛡️<span>Backup & Settings</span></button>
+</div>
+</section>
+
+<section id="job" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>New Job</h2></div>
+
+<h3>Customer</h3>
+<label>Customer name<input id="customer" placeholder="Customer name"></label>
+<div class="two">
+<label>Phone<input id="phone" type="tel" placeholder="07..."></label>
+<label>Email<input id="email" type="email" placeholder="name@email.com"></label>
+</div>
+<label>Address line 1<input id="address1" placeholder="House number and street"></label>
+<label>Address line 2<input id="address2" placeholder="Area / village (optional)"></label>
+<div class="two">
+<label>Town / City<input id="town" placeholder="Town"></label>
+<label>Postcode<input id="postcode" placeholder="Postcode"></label>
+</div>
+<label><input id="differentJobAddress" type="checkbox" onchange="toggleJobAddress()" style="width:auto;margin-right:8px">Job address is different</label>
+<div id="jobAddressBlock" style="display:none">
+<label>Job address<input id="jobAddress" placeholder="Full job address"></label>
+</div>
+
+<h3>Work</h3>
+<label>Job description<textarea id="description" rows="3" placeholder="Describe the plumbing work"></textarea></label>
+<label>Common job
+<select id="jobtype" onchange="preset()"><option value="">Choose a job</option></select></label>
+
+<div class="two">
+<label>Hours<input id="hours" type="number" step=".25" value="1"></label>
+<label>Materials £<input id="materials" type="number" value="0"></label>
+</div>
+
+<label>Difficulty
+<select id="difficulty"><option>Easy</option><option selected>Standard</option><option>Complex</option><option>Very Complex</option></select>
+</label>
+<button class="primary" onclick="calculate()">Calculate Price</button>
+
+<div id="result" class="result">
+<small>Recommended customer price</small><strong id="recommended">£0.00</strong><small id="breakdown"></small>
+<div class="resultbuttons"><button class="secondary" onclick="saveQuote()">Save Quote</button><button class="green" onclick="createInvoiceFromJob()">Create Invoice</button></div>
+</div>
+</section>
+
+<section id="customers" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Customers</h2></div>
+<div class="searchbox"><input id="customerSearch" placeholder="Search customers" oninput="render()"></div>
+<div id="customerList"></div>
+</section>
+
+<section id="customerDetail" class="screen">
+<div class="screenhead"><button class="back" onclick="show('customers')">‹</button><h2>Customer Account</h2></div>
+<div class="detail">
+<div class="detailrow"><span>Name</span><strong id="cdName"></strong></div>
+<div class="detailrow"><span>Address</span><strong id="cdAddress"></strong></div>
+<div class="detailrow"><span>Phone / Email</span><strong id="cdContact"></strong></div>
+
+<div class="customer-summary">
+<div class="customer-summary-card"><span>Quoted</span><strong id="cdQuoted">£0.00</strong></div>
+<div class="customer-summary-card"><span>Invoiced</span><strong id="cdInvoiced">£0.00</strong></div>
+<div class="customer-summary-card paid"><span>Paid</span><strong id="cdPaid">£0.00</strong></div>
+<div class="customer-summary-card owing"><span>Outstanding</span><strong id="cdOutstanding">£0.00</strong></div>
+<div class="customer-summary-card"><span>Active jobs</span><strong id="cdActiveJobs">0</strong></div>
+<div class="customer-summary-card"><span>Completed jobs</span><strong id="cdCompletedJobs">0</strong></div>
+</div>
+<div id="cdAccountStatus" class="account-status clear">Account clear</div>
+
+<div class="customer-actions">
+<button class="green" onclick="newJobForSelectedCustomer()">＋ New Job</button>
+<button class="secondary" onclick="bookSelectedCustomer()">📅 Book Job</button>
+<button class="secondary" onclick="contactSelectedCustomer('phone')">📞 Call</button>
+<button class="secondary" onclick="contactSelectedCustomer('message')">💬 Message</button>
+<button class="secondary" onclick="contactSelectedCustomer('map')">📍 Navigate</button>
+<button class="secondary" onclick="contactSelectedCustomer('email')">✉️ Email</button>
+</div>
+
+<div class="history-title"><h3>Account history</h3><span class="history-badge" id="cdHistoryCount">0 records</span></div>
+<div class="customer-history-filters">
+<button class="customer-history-filter active" id="chAll" onclick="setCustomerHistoryFilter('all')">All</button>
+<button class="customer-history-filter" id="chJobs" onclick="setCustomerHistoryFilter('jobs')">Jobs</button>
+<button class="customer-history-filter" id="chDocs" onclick="setCustomerHistoryFilter('docs')">Quotes / Invoices</button>
+<button class="customer-history-filter" id="chPayments" onclick="setCustomerHistoryFilter('payments')">Payments</button>
+</div>
+<div id="customerHistory"></div>
+</div>
+</section>
+
+<section id="diary" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Job Diary</h2></div>
+<button class="primary" onclick="newAppointment()">＋ Book Job</button>
+<div class="diary-filters">
+<button class="diary-filter" id="diaryTodayBtn" onclick="setDiaryFilter('today')">Today</button>
+<button class="diary-filter active" id="diaryWeekBtn" onclick="setDiaryFilter('week')">Next 7 days</button>
+<button class="diary-filter" id="diaryAllBtn" onclick="setDiaryFilter('all')">All jobs</button>
+</div>
+<div class="diary-summary" id="diarySummary"><strong>0 jobs</strong><br>No bookings in this view.</div>
+<div class="dashboard-note">Tap a job to update its status, call or message the customer, navigate to the address, or create the invoice.</div>
+<div id="diaryList"></div>
+</section>
+
+<section id="appointmentEdit" class="screen">
+<div class="screenhead"><button class="back" onclick="openDiary()">‹</button><h2 id="appointmentTitle">Book Job</h2></div>
+<div class="detail">
+<label>Date<input id="apptDate" type="date"></label>
+<div class="two"><label>Time<input id="apptTime" type="time"></label><label>Status<select id="apptStatus"><option>Booked</option><option>In Progress</option><option>Completed</option><option>Invoiced</option><option>Paid</option><option>Cancelled</option></select></label></div>
+<label class="customer-picker">Customer
+<input id="apptCustomer" list="apptCustomerList" placeholder="Choose or type customer" oninput="appointmentCustomerChanged()">
+<datalist id="apptCustomerList"></datalist>
+</label>
+<div class="two">
+<label>Job value £
+<input id="apptValue" type="number" min="0" step="0.01" placeholder="0.00">
+<div class="booking-value-note">Useful for jobs booked without a quote.</div>
+</label>
+<label>Job / visit<textarea id="apptJob" rows="3" placeholder="e.g. Fit kitchen tap"></textarea></label>
+</div>
+<label>Address<textarea id="apptAddress" rows="2" placeholder="Job address"></textarea></label>
+<label>Notes<textarea id="apptNotes" rows="3" placeholder="Access details, parts to bring, etc."></textarea></label>
+<div class="booking-quick">
+<button class="secondary" id="apptCallBtn" onclick="callAppointmentCustomer()">📞 Call Customer</button>
+<button class="secondary" id="apptMessageBtn" onclick="messageAppointmentCustomer()">💬 Message</button>
+<button class="secondary" id="apptMapBtn" onclick="mapAppointmentAddress()">📍 Navigate</button>
+</div>
+<div class="booking-actions">
+<button class="green" onclick="saveAppointment()">Save Booking</button>
+<button class="secondary" id="apptStartBtn" onclick="setAppointmentStatus('In Progress')">▶ Start Job</button>
+<button class="secondary" id="apptCompleteBtn" onclick="setAppointmentStatus('Completed')">✓ Mark Completed</button>
+<button class="secondary" id="apptQuoteBtn" onclick="openAppointmentQuoteOrPrice()">🧾 Price & Quote</button>
+<button class="green" id="apptInvoiceBtn" onclick="invoiceAppointmentFromQuote()">💷 Create Invoice</button>
+<button class="secondary" id="apptCancelBtn" onclick="setAppointmentStatus('Cancelled')">Cancel Booking</button>
+<button id="apptDeleteBtn" class="danger" onclick="deleteAppointment()">Delete Booking</button>
+</div>
+</div>
+</section>
+
+<section id="quotes" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Quotes</h2></div>
+<div class="searchbox"><input id="quoteSearch" placeholder="Search quotes, customers or jobs" oninput="render()"></div>
+<div id="quoteList"></div>
+</section>
+
+<section id="quoteDetail" class="screen">
+<div class="screenhead"><button class="back" onclick="show('quotes')">‹</button><h2>Quote Details</h2></div>
+<div class="detail">
+<div class="bigprice" id="qdPrice">£0.00</div>
+<div class="detailrow"><span>Customer</span><strong id="qdCustomer"></strong></div>
+<div class="detailrow"><span>Address</span><strong id="qdAddress"></strong></div>
+<div class="detailrow"><span>Contact</span><strong id="qdContact"></strong></div>
+<div class="detailrow"><span>Job</span><strong id="qdJob"></strong></div>
+<div class="detailrow"><span>Quote number</span><strong id="qdNumber"></strong></div>
+<div class="detailrow"><span>Date</span><strong id="qdDate"></strong></div>
+<div class="detailrow"><span>Valid until</span><strong id="qdValidUntil"></strong></div>
+<div class="detailrow" id="qdVatRow" style="display:none"><span>VAT breakdown</span><div class="vat-line"><strong>Net <span id="qdNet"></span></strong><strong>VAT <span id="qdVat"></span></strong></div></div>
+<div class="detailrow"><span>Deposit required</span><strong id="qdDeposit"></strong></div>
+<div class="detailrow" style="display:block"><span style="display:block;margin-bottom:8px">Edit deposit for this quote</span><div class="two"><label>Type<select id="qdDepositType"><option value="percent">Percentage %</option><option value="fixed">Fixed amount £</option></select></label><label>Value<input id="qdDepositValue" type="number" min="0" step="0.01"></label></div><button class="secondary" style="width:100%;margin-top:8px" onclick="saveQuoteDeposit()">Save Deposit</button></div>
+<div class="detailrow"><span>Status</span><strong id="qdStatus" class="status">Draft</strong><div class="quote-status-grid"><button class="secondary" onclick="setQuoteStatus('Draft')">Draft</button><button class="secondary" onclick="setQuoteStatus('Sent')">Sent</button><button class="green" onclick="setQuoteStatus('Accepted')">Accepted</button><button class="danger" onclick="setQuoteStatus('Declined')">Declined</button></div></div>
+<div class="detailrow"><span>Job booking</span><strong id="qdBooking">Not booked</strong></div>
+<div class="detail-actions">
+<button id="quoteCreateInvoiceBtn" class="green" onclick="convertSelectedQuoteToInvoice()">Create Invoice</button>
+<button class="secondary" onclick="bookSelectedQuoteJob()">📅 Book Job</button>
+<button class="secondary" onclick="previewQuote()">Preview Quote</button>
+<button class="secondary" onclick="sendQuote()">Send / Share Quote</button>
+<button class="secondary" onclick="printQuote()">Print / Save PDF</button>
+<button class="danger" onclick="deleteSelectedQuote()">Delete Quote</button>
+</div>
+</div>
+</section>
+
+<section id="quotePrint" class="screen">
+<div class="screenhead no-print"><button class="back" onclick="show('quoteDetail')">‹</button><h2>Quote Preview</h2></div>
+<div class="detail" id="quotePaper">
+<div class="doc-header">
+<div class="doc-business"><img id="qLogo" alt="" style="display:none;max-width:180px;max-height:90px;object-fit:contain;margin-bottom:10px"><h2 id="qBusinessName" style="margin:0 0 6px"></h2><div id="qBusinessDetails" class="doc-business-details"></div></div>
+<div class="doc-meta"><h1>QUOTATION</h1><div class="doc-number"><strong id="qNumber"></strong></div><div><span>Date</span><strong id="qDate"></strong></div><div><span>Valid until</span><strong id="qValid"></strong></div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0">
+<div><h3 style="margin-top:0">Quote for</h3><div id="qCustomer"></div><div id="qAddress"></div><div id="qContact"></div></div>
+<div><h3 style="margin-top:0">Work</h3><div id="qJob"></div><div id="qJobAddress"></div></div>
+</div>
+<div style="border-top:2px solid #15324b;border-bottom:1px solid #dce5eb;padding:16px 0;margin-top:24px"><div id="qVatBreak" style="display:none"><div style="display:flex;justify-content:space-between"><span>Net</span><span id="qNet"></span></div><div style="display:flex;justify-content:space-between"><span>VAT</span><span id="qVat"></span></div></div><div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800;margin-top:6px"><span>Quoted total</span><span id="qTotal"></span></div></div>
+<div id="qDepositBlock" style="margin-top:18px;padding:16px;background:#f6f8fa;border-radius:12px"><strong>Deposit required: <span id="qDeposit"></span></strong><div class="smallnote" style="margin-top:5px">This deposit is required to secure the booking and can be changed for each quote.</div></div>
+<div class="doc-note"><strong>Quotation terms</strong><br>This quotation covers the work described above and is valid until the date shown. Any additional work, specification changes or unforeseen issues will be discussed and agreed before extra charges are incurred. The stated deposit secures the booking and will be deducted from the final invoice.</div>
+<div id="qCompanyFooter" style="margin-top:26px;font-size:12px;color:#6f7a84;text-align:center"></div>
+</div>
+<div class="detail-actions no-print" style="margin:14px 0 90px"><button class="green" onclick="printQuoteFromPreview()">Print / Save PDF</button><button class="secondary" onclick="sendQuote()">Send / Share</button><button class="secondary" onclick="show('quoteDetail')">Back to Quote</button></div>
+</section>
+
+<section id="invoices" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Invoices</h2></div>
+<div class="searchbox"><input id="invoiceSearch" placeholder="Search invoices, customers or jobs" oninput="render()"></div>
+<div id="invoiceList"></div>
+</section>
+
+<section id="invoiceDetail" class="screen">
+<div class="screenhead"><button class="back" onclick="show('invoices')">‹</button><h2>Invoice Details</h2></div>
+
+<div id="invoiceView" class="detail">
+<div class="detailrow"><span>Invoice number</span><strong id="idNumber"></strong></div>
+<div class="bigprice" id="idPrice">£0.00</div>
+<div class="detailrow"><span>Customer</span><strong id="idCustomer"></strong></div>
+<div class="detailrow"><span>Address</span><strong id="idAddress"></strong></div>
+<div class="detailrow"><span>Phone / Email</span><strong id="idContact"></strong></div>
+<div class="detailrow"><span>Job</span><strong id="idJob"></strong></div>
+<div class="detailrow"><span>Job address</span><strong id="idJobAddress"></strong></div>
+<div class="detailrow"><span>Invoice date</span><strong id="idDate"></strong></div>
+<div class="detailrow"><span>Due date</span><strong id="idDueDate"></strong></div>
+<div class="detailrow" id="idVatRow" style="display:none"><span>VAT breakdown</span><div class="vat-line"><strong>Net <span id="idNet"></span></strong><strong>VAT <span id="idVat"></span></strong></div></div>
+<div class="detailrow"><span>Status</span><strong id="idStatus" class="status"></strong></div>
+<div class="detailrow" id="idSourceQuoteRow" style="display:none"><span>Source quote</span><strong id="idSourceQuote"></strong></div>
+<div class="detailrow" id="idDepositRow" style="display:none"><span>Deposit required</span><strong id="idDepositRequired"></strong><div id="idDepositState"></div></div>
+<div class="finance-summary">
+  <div class="finance-grid">
+    <div class="finance-cell"><span>Invoice total</span><strong id="idFinanceTotal">£0.00</strong></div>
+    <div class="finance-cell"><span>Paid so far</span><strong id="idPaid">£0.00</strong></div>
+    <div class="finance-cell"><span>Deposit</span><strong id="idFinanceDeposit">£0.00</strong></div>
+    <div class="finance-cell"><span>Balance due</span><strong id="idBalance">£0.00</strong></div>
+  </div>
+  <div class="progress-track"><div id="idProgressFill" class="progress-fill"></div></div>
+  <div class="balance-card" style="margin-top:10px"><div class="mini">Payment progress</div><strong id="idPaymentProgress">£0.00 of £0.00 paid</strong><div id="idPaymentHistory" class="payment-history"></div></div>
+</div>
+
+<div class="detail-actions">
+<button class="secondary" onclick="editSelectedInvoice()">Edit Invoice</button>
+<button id="paidToggleBtn" type="button" class="green" onclick="togglePaid(event)">Mark as Paid</button>
+<button id="depositPaidBtn" type="button" class="secondary" onclick="recordDepositPayment()" style="display:none">Record Deposit Paid</button>
+<button type="button" class="secondary" onclick="recordPayment()">Record Payment</button>
+<button type="button" class="secondary" onclick="showPaymentQR()">Show Payment QR</button>
+<button class="secondary" onclick="previewInvoice()">Preview Invoice</button>
+<button class="secondary" onclick="sendInvoice()">Send / Share Invoice</button>
+<button class="secondary" onclick="printInvoice()">Print / Save PDF</button>
+<button class="danger" onclick="deleteSelectedInvoice()">Delete Invoice</button>
+</div>
+</div>
+
+<div id="invoiceEdit" class="detail" style="display:none">
+<h3>Edit Invoice</h3>
+
+<label>Customer name<input id="editCustomerName"></label>
+
+<div class="two">
+<label>Phone<input id="editPhone" type="tel"></label>
+<label>Email<input id="editEmail" type="email"></label>
+</div>
+
+<label>Address line 1<input id="editAddress1"></label>
+<label>Address line 2<input id="editAddress2"></label>
+
+<div class="two">
+<label>Town / City<input id="editTown"></label>
+<label>Postcode<input id="editPostcode"></label>
+</div>
+
+<label>Job description<textarea id="editJob" rows="3"></textarea></label>
+<label>Job address<textarea id="editJobAddress" rows="2"></textarea></label>
+
+<div class="two">
+<label>Invoice date<input id="editInvoiceDate"></label>
+<label>Due date<input id="editDueDate"></label>
+</div>
+
+<div class="two">
+<label>Total £<input id="editPrice" type="number" step="0.01"></label>
+<label>Amount paid £<input id="editPaid" type="number" step="0.01"></label>
+</div>
+
+<label>Status
+<select id="editStatus">
+<option>Unpaid</option>
+<option>Paid</option>
+<option>Part Paid</option>
+<option>Overdue</option>
+</select>
+</label>
+
+<div class="detail-actions">
+<button class="green" onclick="saveInvoiceEdits()">Save Changes</button>
+<button class="secondary" onclick="cancelInvoiceEdit()">Cancel</button>
+</div>
+</div>
+</section>
+
+<section id="invoicePrint" class="screen">
+<div class="screenhead no-print"><button class="back" onclick="show('invoiceDetail')">‹</button><h2>Invoice Preview</h2></div>
+<div class="detail" id="invoicePaper">
+<div class="doc-header">
+<div class="doc-business">
+<img id="pLogo" alt="" style="display:none;max-width:180px;max-height:90px;object-fit:contain;margin-bottom:10px">
+<h2 id="pBusinessName" style="margin:0 0 6px"></h2>
+<div id="pBusinessDetails" class="doc-business-details"></div>
+</div>
+<div class="doc-meta">
+<h1>INVOICE</h1>
+<div class="doc-number"><strong id="pNumber"></strong></div>
+<div><span>Date</span><strong id="pDate"></strong></div>
+<div><span>Due</span><strong id="pDue"></strong></div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0">
+<div>
+<h3 style="margin-top:0">Bill to</h3>
+<div id="pCustomer"></div>
+<div id="pAddress"></div>
+<div id="pContact"></div>
+</div>
+<div>
+<h3 style="margin-top:0">Job</h3>
+<div id="pJob"></div>
+<div id="pJobAddress"></div>
+</div>
+</div>
+
+<div class="doc-summary">
+<div id="pVatBreak" style="display:none"><div class="doc-summary-row"><span>Net</span><strong id="pNet"></strong></div><div class="doc-summary-row"><span>VAT</span><strong id="pVat"></strong></div></div>
+<div class="doc-summary-row total"><span>Invoice total</span><strong id="pTotal"></strong></div>
+<div id="pDepositRow" class="doc-summary-row" style="display:none"><span>Deposit required</span><strong id="pDeposit"></strong></div>
+<div class="doc-summary-row"><span>Payments received</span><strong id="pPaid"></strong></div>
+</div>
+<div id="pDueBox" class="doc-due owing"><div><div style="font-size:12px;color:#6f7a84">AMOUNT DUE</div><span id="pStatus" class="doc-badge unpaid"></span></div><strong id="pBalance"></strong></div>
+<div id="pSourceQuoteRow" class="doc-ref" style="display:none">Source quote: <strong id="pSourceQuote"></strong></div>
+
+<div id="pPaymentBlock" style="margin-top:28px;padding:16px;background:#f6f8fa;border-radius:12px">
+<h3 style="margin-top:0">Payment details</h3>
+<div id="pBankDetails"></div><div id="pPaymentRef" class="doc-ref"></div>
+<div id="pPaymentNote" style="margin-top:6px"></div>
+<div id="pQRWrap" style="display:none;margin-top:16px;text-align:center">
+<div style="font-weight:700;margin-bottom:8px">Scan to pay</div>
+<img id="pQR" alt="Payment QR code" style="width:145px;height:145px;background:white;border:8px solid white">
+<div id="pQRRef" style="font-size:11px;color:#6f7a84;margin-top:5px"></div>
+</div>
+</div>
+
+<div class="doc-note">Thank you for your business. Please use the invoice number as the payment reference unless otherwise agreed.</div>
+<div id="pCompanyFooter" style="margin-top:20px;font-size:12px;color:#6f7a84;text-align:center"></div>
+</div>
+<div class="detail-actions no-print" style="margin:14px 0 90px">
+<button class="green" onclick="printInvoiceFromPreview()">Print / Save PDF</button>
+<button class="secondary" onclick="sendInvoice()">Send / Share</button>
+<button class="secondary" onclick="show('invoiceDetail')">Back to Invoice</button>
+</div>
+</section>
+
+
+<section id="heatingTools" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Heating & System Tools</h2></div>
+<div class="notice"><strong>Build 2.5 heating suite</strong><br>Fast estimating tools for radiator sizing, full heating-system pricing, gas-load planning, unvented cylinders and heat-pump jobs. Figures are starting points and remain editable.</div>
+<div class="toolgrid">
+<button class="toolcard" onclick="showToolPanel('radPanel')"><span class="toolicon">🌡️</span><b>Radiator Sizing</b><small>Room heat requirement in W and BTU/hr.</small></button>
+<button class="toolcard" onclick="showToolPanel('systemPanel')"><span class="toolicon">🏠</span><b>Full Heating System</b><small>Estimate labour, pipework, emitters and plant.</small></button>
+<button class="toolcard" onclick="showToolPanel('gasPanel')"><span class="toolicon">🔥</span><b>Gas Load Worksheet</b><small>Total connected kW and indicative gas rate.</small></button>
+<button class="toolcard" onclick="showToolPanel('unventedPanel')"><span class="toolicon">🚿</span><b>Unvented Cylinder</b><small>Replacement/new-install pricing estimator.</small></button>
+<button class="toolcard" onclick="showToolPanel('heatPumpPanel')"><span class="toolicon">♻️</span><b>Heat Pump</b><small>Labour and installation-cost estimator.</small></button>
+<button class="toolcard" onclick="show('pricebook')"><span class="toolicon">📘</span><b>Heating Price Book</b><small>Use/edit your full job library.</small></button>
+</div>
+
+<div id="radPanel" class="sectioncard heatingPanel">
+<h3>Radiator Room Sizing</h3>
+<div class="grid2">
+<label>Room length (m)<input id="radLength" type="number" step="0.1" value="4"></label>
+<label>Room width (m)<input id="radWidth" type="number" step="0.1" value="3"></label>
+<label>Room height (m)<input id="radHeight" type="number" step="0.1" value="2.4"></label>
+<label>Room type<select id="radRoom"><option value="21">Living / dining</option><option value="18">Bedroom</option><option value="22">Bathroom</option><option value="20">Kitchen</option><option value="18">Hall / landing</option></select></label>
+<label>Insulation<select id="radIns"><option value="0.75">Modern / very good</option><option value="1" selected>Average</option><option value="1.25">Older / limited</option><option value="1.45">Poor / exposed</option></select></label>
+<label>External walls<select id="radWalls"><option value="1">1 external wall</option><option value="1.10">2 external walls</option><option value="1.20">3+ external walls</option><option value="0.9">No external walls</option></select></label>
+<label>Windows<select id="radWindows"><option value="0.95">Small / triple glazed</option><option value="1" selected>Typical double glazed</option><option value="1.12">Large glazing</option><option value="1.22">Older single glazing</option></select></label>
+<label>Heat source<select id="radSource"><option value="1" selected>Boiler / conventional temperatures</option><option value="1.35">Low-temperature / heat pump allowance</option></select></label>
+</div>
+<button class="primary" onclick="calcRadiator()">Calculate radiator requirement</button>
+<div id="radResult" class="toolresult"></div>
+</div>
+
+<div id="systemPanel" class="sectioncard heatingPanel" style="display:none">
+<h3>Full Heating System Estimator</h3>
+<div class="grid2">
+<label>Number of radiators<input id="hsRads" type="number" min="0" step="1" value="8"></label>
+<label>Approx. new pipework (m)<input id="hsPipe" type="number" min="0" step="1" value="45"></label>
+<label>Plant / heat source<select id="hsPlant"><option value="none">No new heat source</option><option value="combi">Combi boiler installation allowance</option><option value="system">System boiler installation allowance</option><option value="heatpump">Heat-pump plant allowance</option></select></label>
+<label>Heating zones<input id="hsZones" type="number" min="1" step="1" value="1"></label>
+<label>System work<select id="hsFlush"><option value="0">No flush included</option><option value="5">Flush / clean / inhibitor allowance</option></select></label>
+<label>Materials / equipment allowance £<input id="hsMaterials" type="number" min="0" step="50" value="2200"></label>
+<label>Difficulty<select id="hsDifficulty"><option>Easy</option><option selected>Standard</option><option>Complex</option><option>Very Complex</option></select></label>
+<label>Notes<input id="hsNotes" placeholder="e.g. occupied house, floors up"></label>
+</div>
+<button class="primary" onclick="calcHeatingSystem()">Price full heating system</button>
+<div id="hsResult" class="toolresult"></div>
+</div>
+
+<div id="gasPanel" class="sectioncard heatingPanel" style="display:none">
+<h3>Gas Load & Pipe-Sizing Worksheet</h3>
+<div class="safety"><strong>Safety / compliance:</strong> this worksheet totals appliance demand only. It does not replace a pressure-loss calculation or select a pipe diameter. Final gas pipe sizing and installation must be verified by an appropriately Gas Safe registered engineer using the applicable standards, appliance data and measured supply conditions.</div>
+<div class="grid2">
+<label>Boiler input (kW)<input id="gasBoiler" type="number" min="0" step="0.1" value="30"></label>
+<label>Cooker / hob (kW)<input id="gasCooker" type="number" min="0" step="0.1" value="10"></label>
+<label>Fire / other 1 (kW)<input id="gasOther1" type="number" min="0" step="0.1" value="0"></label>
+<label>Other appliance 2 (kW)<input id="gasOther2" type="number" min="0" step="0.1" value="0"></label>
+<label>Approx. developed pipe run (m)<input id="gasRun" type="number" min="0" step="0.5" value="12"></label>
+<label>Number of significant fittings<input id="gasFittings" type="number" min="0" step="1" value="6"></label>
+</div>
+<button class="primary" onclick="calcGasLoad()">Calculate connected gas load</button>
+<div id="gasResult" class="toolresult"></div>
+</div>
+
+<div id="unventedPanel" class="sectioncard heatingPanel" style="display:none">
+<h3>Unvented Cylinder Estimator</h3>
+<div class="grid2">
+<label>Cylinder size<select id="uvSize"><option value="150">150 L</option><option value="180" selected>180 L</option><option value="210">210 L</option><option value="250">250 L</option><option value="300">300 L</option></select></label>
+<label>Job type<select id="uvType"><option value="replace">Replace existing cylinder</option><option value="new">New installation / conversion</option></select></label>
+<label>Pipework alterations<select id="uvPipe"><option value="2">Minor</option><option value="5" selected>Standard</option><option value="9">Major / relocation</option></select></label>
+<label>Discharge route<select id="uvDischarge"><option value="2">Straightforward</option><option value="5" selected>Standard</option><option value="9">Complex route</option></select></label>
+<label>Controls / wiring allowance<select id="uvControls"><option value="2">Minimal</option><option value="4" selected>Standard</option><option value="7">Significant changes</option></select></label>
+<label>Materials / cylinder allowance £<input id="uvMaterials" type="number" min="0" step="50" value="950"></label>
+</div>
+<button class="primary" onclick="calcUnvented()">Price unvented job</button>
+<div id="uvResult" class="toolresult"></div>
+<div class="safety">Unvented hot-water work is competence and Building Regulations sensitive. Final design, safety devices, discharge arrangements and commissioning must follow manufacturer instructions and applicable requirements.</div>
+</div>
+
+<div id="heatPumpPanel" class="sectioncard heatingPanel" style="display:none">
+<h3>Heat-Pump Installation Estimator</h3>
+<div class="grid2">
+<label>Property / system size<select id="hpSize"><option value="28">Small / straightforward</option><option value="40" selected>Typical whole-house</option><option value="56">Large / complex</option></select></label>
+<label>Emitters to change / upgrade<input id="hpEmitters" type="number" min="0" step="1" value="5"></label>
+<label>New cylinder?<select id="hpCylinder"><option value="0">No</option><option value="8" selected>Yes</option></select></label>
+<label>Pipework alteration<select id="hpPipe"><option value="4">Minor</option><option value="10" selected>Standard</option><option value="18">Major</option></select></label>
+<label>Controls / commissioning allowance<select id="hpControls"><option value="5">Simple</option><option value="9" selected>Standard</option><option value="14">Complex</option></select></label>
+<label>Equipment / materials allowance £<input id="hpMaterials" type="number" min="0" step="100" value="6500"></label>
+</div>
+<button class="primary" onclick="calcHeatPump()">Price heat-pump job</button>
+<div id="hpResult" class="toolresult"></div>
+<div class="safety">Use a full room-by-room heat-loss calculation, emitter performance at design temperatures, manufacturer requirements and competent design/commissioning before specifying equipment. Electrical, refrigerant and other regulated work must be completed by appropriately competent persons where required.</div>
+</div>
+</section>
+
+<section id="pricebook" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Price Book</h2></div>
+<div class="pricebook-tools"><button class="green" type="button" onclick="addPriceBookItem()">＋ Add Job</button><button class="secondary" type="button" onclick="resetPriceBook()">Reset Defaults</button></div>
+<div class="notice">TradePro includes a comprehensive UK plumbing starter catalogue. Tap any job to personalise category, labour/supply type, time, materials and price range. Your changes are saved on this device.</div>
+<div id="priceBookList"></div>
+</section>
+
+<section id="pricebookEdit" class="screen">
+<div class="screenhead"><button class="back" onclick="show('pricebook')">‹</button><h2 id="priceBookEditTitle">Edit Price</h2></div>
+<div class="detail">
+<label>Category<input id="pbCategory" placeholder="e.g. Taps, Toilets, Bathrooms"></label>
+<label>Job name<input id="pbName"></label>
+<div class="two"><label>Pricing type<select id="pbPricingType"><option>Labour only</option><option>Supply & fit</option></select></label><label>Hours<input id="pbHours" type="number" min="0" step="0.25"></label></div>
+<label>Materials allowance £<input id="pbMaterials" type="number" min="0" step="0.01"></label>
+<div class="two"><label>Minimum price £<input id="pbMin" type="number" min="0" step="1"></label><label>Maximum price £<input id="pbMax" type="number" min="0" step="1"></label></div>
+<label>Notes<textarea id="pbNotes" rows="3"></textarea></label>
+<div class="detail-actions"><button class="green" type="button" onclick="savePriceBookItem()">Save Price</button><button id="pbDeleteBtn" class="danger" type="button" onclick="deletePriceBookItem()">Delete Job</button></div>
+</div>
+</section>
+
+<section id="paymentQR" class="screen">
+<div class="screenhead"><button class="back" onclick="show('invoiceDetail')">‹</button><h2>Customer Payment</h2></div>
+<div class="qrbox">
+<div class="smallnote">Ask the customer to scan this code with their smartphone camera.</div>
+<div id="qrAmount" class="qr-amount">£0.00</div>
+<div id="qrReference" class="qr-ref"></div>
+<img id="paymentQRImage" alt="Payment QR code">
+<div style="margin-top:14px;font-weight:700">Scan to open secure payment page</div>
+<div class="smallnote" style="margin-top:7px">The payment methods available are controlled by your chosen payment provider.</div>
+<div class="detail-actions" style="margin-top:18px"><button class="green" type="button" onclick="openPaymentLink()">Open Payment Page</button><button class="secondary" type="button" onclick="show('invoiceDetail')">Back to Invoice</button></div>
+</div>
+</section>
+
+<section id="reports" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Business Reports</h2></div>
+<div class="report-periods">
+<button id="rpFilterMonth" class="report-period active" onclick="setReportPeriod('month')">This month</button>
+<button id="rpFilter3" class="report-period" onclick="setReportPeriod('3m')">Last 3 months</button>
+<button id="rpFilter12" class="report-period" onclick="setReportPeriod('12m')">Last 12 months</button>
+<button id="rpFilterTax" class="report-period" onclick="setReportPeriod('tax')">This tax year</button>
+</div>
+<div id="reportPeriodTitle" class="report-period-title">This month</div>
+<div class="report-grid">
+<div class="report-card hero-report"><span id="rpPaidLabel">Payments received this month</span><strong id="rpMonthPaid">£0.00</strong><div id="rpMonthPaidNote">0 payments</div></div>
+<div class="report-card"><span id="rpInvLabel">Invoiced this month</span><strong id="rpMonthInvoiced">£0</strong></div>
+<div class="report-card"><span>Outstanding</span><strong id="rpOutstanding">£0</strong></div>
+<div class="report-card"><span id="rpCompletedLabel">Jobs completed this month</span><strong id="rpCompleted">0</strong></div>
+<div class="report-card"><span>Average invoice value</span><strong id="rpAverageJob">£0</strong></div>
+<div class="report-card"><span>Quote acceptance</span><strong id="rpWinRate">0%</strong></div>
+<div class="report-card"><span>Work won remaining</span><strong id="rpWonRemaining">£0</strong></div>
+<div class="report-card"><span>Overdue</span><strong id="rpOverdue">£0</strong></div>
+</div>
+<div class="report-section">
+<h3>Last 12 months</h3>
+<div class="report-note">Green bars show invoiced value. The figures on the right show invoiced value, then payments received underneath.</div>
+<div id="report12Months"></div>
+</div>
+<div class="report-section">
+<h3>Business snapshot</h3>
+<div id="reportSnapshot" class="report-note"></div>
+</div>
+</section>
+
+
+<section id="techLibrary" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Technical Library</h2></div>
+<div class="notice"><strong>Boiler PDFs, Air-Con & F-Gas</strong><br>Search official manufacturer literature, installation/service manuals, fault information and field references without leaving TradePro.</div>
+<div class="warning-card"><strong>Engineer use:</strong> Always follow the current manufacturer instructions, Gas Safe/OFTEC requirements and F-Gas rules applicable to the work. TradePro links to official sources rather than copying restricted manuals into the app.</div>
+<div class="tech-search"><input id="techSearch" placeholder="Search make or model — e.g. Vaillant ecoTEC, Worcester 4000, Grant Vortex" oninput="renderTechLibrary()"></div>
+<div class="tech-tabs">
+<button id="techTabBoiler" class="tech-tab active" onclick="setTechFilter('boiler')">🔥 Gas Boilers</button>
+<button id="techTabOil" class="tech-tab" onclick="setTechFilter('oil')">🛢️ Oil Boilers</button>
+<button id="techTabAircon" class="tech-tab" onclick="setTechFilter('aircon')">❄️ Air-Con / F-Gas</button>
+</div>
+<div id="techList" class="tech-list"></div>
+<div class="sectioncard">
+<h3>Quick Fault / Manual Search</h3>
+<label>Manufacturer / model / fault code<input id="faultSearch" placeholder="e.g. Vaillant ecoTEC F.75"></label>
+<button class="primary" type="button" onclick="searchTechnicalWeb()">Search manuals & fault information</button>
+<div class="smallnote" style="margin-top:8px">Opens a web search targeted at the manufacturer/model you enter. Confirm findings against the official service manual before repair.</div>
+</div>
+</section>
+
+<section id="engineerReports" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Engineer Reports</h2></div>
+<div class="notice"><strong>Site paperwork in one place</strong><br>Create service, commissioning, F-Gas, fault-finding and completion reports. Reports are stored on this device and included in TradePro backups.</div>
+<div class="report-type-grid">
+<button class="report-type-btn" onclick="newEngineerReport('Boiler Service Report')"><b>🔥 Boiler Service</b><small>Gas or oil service record</small></button>
+<button class="report-type-btn" onclick="newEngineerReport('Fault Finding Report')"><b>🔎 Fault Finding</b><small>Diagnosis, tests and recommendations</small></button>
+<button class="report-type-btn" onclick="newEngineerReport('F-Gas Service / Leak Check')"><b>❄️ F-Gas Service</b><small>Refrigerant and leak-check record</small></button>
+<button class="report-type-btn" onclick="newEngineerReport('Air-Con Commissioning Report')"><b>🧊 Air-Con Commissioning</b><small>Commissioning readings and handover</small></button>
+<button class="report-type-btn" onclick="newEngineerReport('Heat Pump Report')"><b>♻️ Heat Pump</b><small>Service / commissioning record</small></button>
+<button class="report-type-btn" onclick="newEngineerReport('General Job Completion Report')"><b>✅ Job Completion</b><small>General works and customer handover</small></button>
+</div>
+<h3>Saved Reports</h3><div id="engineerReportList"></div>
+</section>
+
+<section id="engineerReportEdit" class="screen">
+<div class="screenhead"><button class="back" onclick="show('engineerReports')">‹</button><h2 id="erHeading">Engineer Report</h2></div>
+<div class="detail">
+<label>Report type<select id="erType"><option>Boiler Service Report</option><option>Fault Finding Report</option><option>F-Gas Service / Leak Check</option><option>Air-Con Commissioning Report</option><option>Heat Pump Report</option><option>Unvented Service Report</option><option>General Job Completion Report</option></select></label>
+<div class="two"><label>Date<input id="erDate" type="date"></label><label>Status<select id="erStatus"><option>Draft</option><option selected>Completed</option><option>Sent</option></select></label></div>
+<h3>Customer / Site</h3>
+<label>Customer name<input id="erCustomer"></label><label>Site address<textarea id="erAddress" rows="2"></textarea></label>
+<div class="two"><label>Phone<input id="erPhone" type="tel"></label><label>Email<input id="erEmail" type="email"></label></div>
+<h3>Equipment</h3>
+<div class="two"><label>Manufacturer<input id="erMake"></label><label>Model<input id="erModel"></label></div>
+<div class="two"><label>Serial number<input id="erSerial"></label><label>Equipment type<input id="erEquipment" placeholder="Boiler / split AC / heat pump"></label></div>
+<h3>F-Gas / Refrigerant</h3>
+<div class="fgas-grid"><label>Refrigerant<input id="erRefrigerant" placeholder="e.g. R32 / R410A"></label><label>System charge kg<input id="erCharge" type="number" step="0.001"></label><label>Added kg<input id="erAdded" type="number" step="0.001"></label><label>Recovered kg<input id="erRecovered" type="number" step="0.001"></label></div>
+<div class="two"><label>Leak check<select id="erLeak"><option value="">Not applicable / not recorded</option><option>No leak detected</option><option>Leak detected and repaired</option><option>Leak detected - further work required</option></select></label><label>F-Gas certificate / engineer ref<input id="erFgasRef"></label></div>
+<h3>Readings & Work</h3>
+<label>Readings / test results<textarea id="erReadings" rows="4" placeholder="Pressures, temperatures, combustion readings, electrical checks, vacuum/decay test etc."></textarea></label>
+<label>Work carried out<textarea id="erWork" rows="5"></textarea></label>
+<label>Parts / materials used<textarea id="erParts" rows="3"></textarea></label>
+<label>Fault / diagnosis<textarea id="erFault" rows="3"></textarea></label>
+<label>Recommendations / further work<textarea id="erRecommendations" rows="3"></textarea></label>
+<div class="two"><label>Next service due<input id="erNextService" type="date"></label><label>Customer / site contact signature name<input id="erSignature" placeholder="Typed name"></label></div>
+<label>Engineer notes<textarea id="erNotes" rows="3"></textarea></label>
+<div class="detail-actions"><button class="green" onclick="saveEngineerReport()">Save Report</button><button class="secondary" onclick="previewEngineerReport()">Preview / PDF</button><button class="danger" id="erDelete" onclick="deleteEngineerReport()">Delete</button></div>
+</div>
+</section>
+
+<section id="reportPrint" class="screen">
+<div class="screenhead no-print"><button class="back" onclick="show('engineerReportEdit')">‹</button><h2>Report Preview</h2></div>
+<div id="reportPaper" class="report-paper"></div>
+<div class="detail-actions no-print" style="margin:14px 0 90px"><button class="green" onclick="window.print()">Print / Save PDF</button><button class="secondary" onclick="show('engineerReportEdit')">Back to Report</button></div>
+</section>
+
+<section id="settings" class="screen">
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Business Settings</h2></div>
+
+<div class="setup-health">
+<div class="setup-health-top"><strong>App readiness</strong><span id="settingsReadyPct" class="pct">0%</span></div>
+<div class="setup-progress"><i id="settingsReadyBar" style="width:0%"></i></div>
+<small id="settingsReadyText">Complete the essentials below so quotes and invoices are ready for customers.</small>
+</div>
+<div id="readinessList" class="readiness-list"></div>
+
+<h3>Branding</h3>
+<label>Business name<input id="businessName" value="TradePro UK"></label>
+<label>Owner / Contact name<input id="ownerName" placeholder="Your name"></label>
+<label>Business logo<input id="logoUpload" type="file" accept="image/*" onchange="saveLogo(event)"></label>
+<div id="logoPreviewWrap" style="display:none;margin:10px 0 18px">
+<img id="logoPreview" alt="Business logo preview" style="max-width:180px;max-height:100px;object-fit:contain;background:white;border-radius:12px;padding:8px;border:1px solid #dce5eb">
+<br><button class="secondary" style="margin-top:8px;padding:10px 14px;border-radius:10px" onclick="removeLogo()">Remove Logo</button>
+</div>
+
+<h3>Business Contact</h3>
+<label>Business address line 1<input id="businessAddress1" placeholder="Street"></label>
+<label>Business address line 2<input id="businessAddress2" placeholder="Area (optional)"></label>
+<div class="two">
+<label>Town / City<input id="businessTown" placeholder="Town"></label>
+<label>Postcode<input id="businessPostcode" placeholder="Postcode"></label>
+</div>
+<div class="two">
+<label>Phone<input id="businessPhone" type="tel" placeholder="Phone"></label>
+<label>Email<input id="businessEmail" type="email" placeholder="Email"></label>
+</div>
+<label>Website<input id="businessWebsite" placeholder="www.example.co.uk"></label>
+
+<h3>Company / VAT</h3>
+<div class="two">
+<label>Company number<input id="companyNumber" placeholder="Optional"></label>
+<label>VAT number<input id="vatNumber" placeholder="Optional"></label>
+</div>
+<label><input id="vatRegistered" type="checkbox" style="width:auto;margin-right:8px">VAT registered — add VAT to new quotes/invoices</label>
+<label>VAT rate %<input id="vatRate" type="number" value="20" step="0.1"></label>
+<div class="smallnote">VAT is only added to new prices when VAT registered is switched on. Existing saved documents keep their original totals.</div>
+
+<h3>Payment Details</h3>
+<label>Account name<input id="accountName" placeholder="Account name"></label>
+<div class="two">
+<label>Sort code<input id="sortCode" placeholder="00-00-00"></label>
+<label>Account number<input id="accountNumber" placeholder="12345678"></label>
+</div>
+<label>Payment note<textarea id="paymentNote" rows="2" placeholder="e.g. Please use invoice number as payment reference"></textarea></label>
+<label>Secure payment page link<input id="paymentLink" type="url" inputmode="url" placeholder="https://your-payment-provider-link"></label>
+<label><input id="showQROnInvoice" type="checkbox" style="width:auto;margin-right:8px">Show payment QR on printed/PDF invoices</label>
+<div class="smallnote">Use a payment link supplied by your bank or payment provider. TradePro does not collect or process card details.</div>
+
+<h3>Pricing</h3>
+<label>Hourly labour rate £<input id="rate" type="number" value="55"></label>
+<label>Call-out / travel £<input id="travel" type="number" value="15"></label>
+<label>Material markup %<input id="markup" type="number" value="20"></label>
+<label>Overhead %<input id="overheadRate" type="number" value="10"></label>
+<label>Contingency %<input id="contingency" type="number" value="5"></label>
+<label>Profit margin %<input id="profit" type="number" value="20"></label>
+<label>Invoice payment terms (days)<input id="paymentDays" type="number" value="14"></label>
+<div class="two"><label>Quote valid for (days)<input id="quoteValidDays" type="number" value="30"></label><label>Default deposit %<input id="depositPercent" type="number" value="20"></label></div>
+
+
+<h3>Data Backup</h3>
+<div class="notice">Your customers, quotes, invoices and personalised price book are stored on this device. Export a backup before changing phones, clearing browser data or making a major app update.</div>
+<div id="backupStatus" class="backup-status"><strong>Backup status</strong><span id="backupStatusText">No backup recorded yet.</span></div>
+<div class="detail-actions">
+<button class="secondary" type="button" onclick="exportBackup()">Export Backup</button>
+<button class="secondary" type="button" onclick="document.getElementById('backupImport').click()">Import Backup</button>
+</div>
+<input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
+<div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 4.4 · V17.2</div>
+
+<button class="primary" onclick="saveSettings()">Save Settings</button>
+</section>
+
+</main>
+
+<div id="appToast" class="toast" role="status" aria-live="polite"></div>
+
+<nav>
+<button onclick="show('home')">⌂<span>Home</span></button>
+<button onclick="newJob()">＋<span>New Job</span></button>
+<button onclick="show('quotes')">🧾<span>Quotes</span></button>
+<button onclick="show('invoices')">💷<span>Invoices</span></button>
+<button onclick="show('settings')">⚙️<span>Settings</span></button>
+</nav>
+
+<script>
+const TRADEPRO_VERSION="17.2";
+let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
+if(!Array.isArray(data.customers)) data.customers=[];
+if(!Array.isArray(data.quotes)) data.quotes=[];
+if(!Array.isArray(data.invoices)) data.invoices=[];
+if(!Array.isArray(data.appointments)) data.appointments=[];
+if(!Array.isArray(data.engineerReports)) data.engineerReports=[];
+const DEFAULT_PRICE_BOOK=[
+{category:"Taps",name:"Repair dripping tap / replace washer",pricingType:"Labour only",hours:0.75,materials:5,min:55,max:90,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Replace tap cartridge / valve",pricingType:"Supply & fit",hours:1,materials:15,min:65,max:110,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Replace kitchen tap",pricingType:"Labour only",hours:1,materials:8,min:70,max:110,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Replace kitchen tap",pricingType:"Supply & fit",hours:1,materials:70,min:120,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Replace basin taps / pair",pricingType:"Labour only",hours:1,materials:8,min:70,max:120,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Taps",name:"Fit outside tap",pricingType:"Supply & fit",hours:2,materials:35,min:120,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Replace WC fill valve",pricingType:"Supply & fit",hours:0.75,materials:25,min:80,max:120,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Replace WC flush valve",pricingType:"Supply & fit",hours:1,materials:30,min:95,max:150,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Replace toilet seat",pricingType:"Labour only",hours:0.5,materials:5,min:45,max:80,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Remove and replace WC",pricingType:"Labour only",hours:2.5,materials:20,min:150,max:250,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Supply and fit standard WC",pricingType:"Supply & fit",hours:3,materials:180,min:300,max:500,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Toilets",name:"Repair leaking WC / pan connector",pricingType:"Supply & fit",hours:1.5,materials:20,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Basins & Sinks",name:"Replace basin",pricingType:"Labour only",hours:2.5,materials:20,min:150,max:260,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Basins & Sinks",name:"Replace basin waste / trap",pricingType:"Supply & fit",hours:1,materials:20,min:75,max:130,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Basins & Sinks",name:"Replace kitchen sink",pricingType:"Labour only",hours:3,materials:25,min:180,max:320,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Basins & Sinks",name:"Supply and fit kitchen sink",pricingType:"Supply & fit",hours:3.5,materials:160,min:320,max:550,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Repair accessible burst pipe",pricingType:"Supply & fit",hours:2,materials:20,min:130,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Trace and repair water leak",pricingType:"Supply & fit",hours:2.5,materials:25,min:160,max:320,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Alter small pipe run up to 3m",pricingType:"Supply & fit",hours:2,materials:25,min:140,max:250,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Replace stop tap",pricingType:"Supply & fit",hours:1.5,materials:30,min:110,max:190,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Install appliance water connection",pricingType:"Supply & fit",hours:1.5,materials:25,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Leaks & Pipework",name:"Emergency call-out first hour",pricingType:"Labour only",hours:1,materials:10,min:90,max:160,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Replace standard radiator",pricingType:"Labour only",hours:1.5,materials:15,min:120,max:210,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Supply and fit standard radiator",pricingType:"Supply & fit",hours:2,materials:140,min:260,max:450,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Designer radiator / alter pipes",pricingType:"Labour only",hours:2.5,materials:25,min:180,max:330,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Replace radiator valves pair",pricingType:"Supply & fit",hours:1.5,materials:35,min:120,max:200,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Fit TRV and lockshield",pricingType:"Supply & fit",hours:1.5,materials:40,min:125,max:210,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Radiators & Heating",name:"Powerflush / system clean",pricingType:"Supply & fit",hours:6,materials:80,min:450,max:750,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Replace mixer bar shower",pricingType:"Labour only",hours:1.25,materials:15,min:110,max:190,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Supply and fit mixer bar shower",pricingType:"Supply & fit",hours:1.5,materials:120,min:230,max:400,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Replace shower valve concealed",pricingType:"Labour only",hours:3,materials:30,min:220,max:400,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Install shower over bath pipework",pricingType:"Labour only",hours:3,materials:35,min:220,max:380,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Showers",name:"Fit shower screen",pricingType:"Labour only",hours:1.5,materials:10,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Remove and replace bath",pricingType:"Labour only",hours:5,materials:35,min:350,max:650,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Supply and fit standard bath",pricingType:"Supply & fit",hours:6,materials:260,min:650,max:1050,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Replace bath waste / trap",pricingType:"Supply & fit",hours:1.5,materials:25,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Replace bath taps",pricingType:"Labour only",hours:1.5,materials:10,min:100,max:180,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Baths",name:"Reseal bath / shower",pricingType:"Supply & fit",hours:1.5,materials:15,min:90,max:160,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Cylinders & Hot Water",name:"Replace immersion heater element",pricingType:"Supply & fit",hours:1.5,materials:45,min:140,max:240,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Cylinders & Hot Water",name:"Replace cylinder thermostat",pricingType:"Supply & fit",hours:1,materials:35,min:100,max:170,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Cylinders & Hot Water",name:"Replace vented hot water cylinder",pricingType:"Supply & fit",hours:7,materials:450,min:850,max:1500,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Cylinders & Hot Water",name:"Replace shower / booster pump",pricingType:"Supply & fit",hours:3,materials:180,min:350,max:650,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Bathroom rip-out",pricingType:"Labour only",hours:8,materials:50,min:450,max:750,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Fit bath, WC and basin suite",pricingType:"Labour only",hours:16,materials:80,min:900,max:1500,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Fit bathroom wall panels / boards",pricingType:"Labour only",hours:12,materials:100,min:700,max:1300,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Full bathroom labour installation",pricingType:"Labour only",hours:40,materials:180,min:2200,max:3600,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Bathrooms",name:"Full bathroom supply & fit",pricingType:"Supply & fit",hours:50,materials:2500,min:5000,max:9500,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Kitchens & Appliances",name:"Connect washing machine / dishwasher",pricingType:"Supply & fit",hours:1,materials:15,min:70,max:120,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Kitchens & Appliances",name:"Install dishwasher plumbing",pricingType:"Supply & fit",hours:2,materials:30,min:120,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Kitchens & Appliances",name:"Install fridge water supply",pricingType:"Supply & fit",hours:2,materials:30,min:120,max:220,notes:"Indicative UK starting range \u2013 personalise to your business."},
+{category:"Boilers & Heating",name:"Boiler installation - labour allowance",pricingType:"Labour only",hours:16,materials:100,min:900,max:1600,notes:"Gas work must be carried out by an appropriately Gas Safe registered engineer. Personalise this allowance."},
+{category:"Boilers & Heating",name:"Boiler installation - supply & fit allowance",pricingType:"Supply & fit",hours:20,materials:1800,min:2600,max:4500,notes:"Gas work must be carried out by an appropriately Gas Safe registered engineer. Personalise this allowance."},
+{category:"Boilers & Heating",name:"Heating system alteration / upgrade",pricingType:"Labour only",hours:8,materials:150,min:550,max:1200,notes:"Indicative UK starting range \u2013 personalise to your business."},
+
+{category:"Full Heating Systems",name:"Full heating system - 6 radiators + new pipework",pricingType:"Supply & fit",hours:34,materials:1800,min:3500,max:6000,notes:"Starting allowance only. Size and personalise to property, heat source and specification."},
+{category:"Full Heating Systems",name:"Full heating system - 10 radiators + new pipework",pricingType:"Supply & fit",hours:50,materials:2600,min:5000,max:8500,notes:"Starting allowance only. Size and personalise to property, heat source and specification."},
+{category:"Unvented Hot Water",name:"Replace unvented cylinder",pricingType:"Supply & fit",hours:16,materials:950,min:1700,max:3000,notes:"Competence/regulatory-sensitive work. Verify cylinder, controls, discharge route and commissioning requirements."},
+{category:"Unvented Hot Water",name:"New unvented cylinder installation / conversion",pricingType:"Supply & fit",hours:24,materials:1250,min:2400,max:4200,notes:"Starting allowance only. Final design and discharge arrangement must be verified."},
+{category:"Heat Pumps",name:"Heat-pump installation labour / plumbing package",pricingType:"Labour only",hours:48,materials:350,min:2800,max:5200,notes:"Exclude or separately price equipment, electrical and specialist works as applicable."},
+{category:"Heat Pumps",name:"Heat-pump radiator / emitter upgrade",pricingType:"Supply & fit",hours:2.5,materials:180,min:300,max:550,notes:"Emitter output must be checked at the actual design temperatures."},
+{category:"Gas Work",name:"Gas pipework alteration / upgrade - estimate only",pricingType:"Supply & fit",hours:6,materials:120,min:450,max:950,notes:"Gas Safe registered work. Verify gas rate, pressure loss, pipe sizing and applicable standards before installation."},
+];
+if(!Array.isArray(data.priceBook)||!data.priceBook.length||data.priceBook.length<=8) data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));
+let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null,selectedCustomerIndex=null,selectedAppointmentIndex=null,customerHistoryFilter='all',reportPeriod='month';
+
+// V10 migration marker: preserve user records/settings; add new default jobs once.
+if(localStorage.getItem('tradepro_migrated_v10')!=='1'){
+ const existing=new Set((data.priceBook||[]).map(x=>(x.category+'|'+x.name).toLowerCase()));
+ DEFAULT_PRICE_BOOK.forEach(x=>{let k=(x.category+'|'+x.name).toLowerCase();if(!existing.has(k))data.priceBook.push({...x});});
+ localStorage.setItem('tradepro_migrated_v10','1');
+ localStorage.setItem('tradepro',JSON.stringify(data));
+}
+
+
+function syncDataFromStorage(){
+ try{
+  const fresh=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
+  if(fresh&&typeof fresh==="object"){
+   if(!Array.isArray(fresh.customers))fresh.customers=[];
+   if(!Array.isArray(fresh.quotes))fresh.quotes=[];
+   if(!Array.isArray(fresh.invoices))fresh.invoices=[];
+   if(!Array.isArray(fresh.appointments))fresh.appointments=[];
+   if(!Array.isArray(fresh.engineerReports))fresh.engineerReports=[];
+   if(!Array.isArray(fresh.priceBook)||!fresh.priceBook.length)fresh.priceBook=(data.priceBook&&data.priceBook.length?data.priceBook:DEFAULT_PRICE_BOOK.map(x=>({...x})));
+   data=fresh;
+  }
+ }catch(e){console.warn("TradePro data refresh failed",e)}
+}
+function toast(msg){
+ const el=document.getElementById("appToast");if(!el)return;el.textContent=msg;el.classList.add("show");clearTimeout(window.__tradeproToastTimer);window.__tradeproToastTimer=setTimeout(()=>el.classList.remove("show"),2200);
+}
+function show(id){
+syncDataFromStorage();
+document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+render();
+if(id==="techLibrary")renderTechLibrary();
+if(id==="engineerReports")renderEngineerReports();
+window.scrollTo(0,0)
+}
+function newJob(){currentPrice=0;currentNet=0;currentVat=0;result.style.display="none";["customer","phone","email","address1","address2","town","postcode","description","jobAddress"].forEach(id=>{let el=document.getElementById(id);if(el)el.value=""});if(document.getElementById("jobtype"))jobtype.value="";if(document.getElementById("hours"))hours.value=1;if(document.getElementById("materials"))materials.value=0;if(document.getElementById("difficulty"))difficulty.value="Standard";if(document.getElementById("differentJobAddress"))differentJobAddress.checked=false;toggleJobAddress();show("job")}
+function toggleJobAddress(){jobAddressBlock.style.display=differentJobAddress.checked?"block":"none"}
+function preset(){let idx=parseInt(jobtype.value,10);if(isNaN(idx)||!data.priceBook[idx])return;let p=data.priceBook[idx];hours.value=p.hours||0;materials.value=p.materials||0;if(!description.value.trim())description.value=(p.name||"")+(p.pricingType?" – "+p.pricingType:"")}
+function setting(id,def){let v=localStorage.getItem(id);return v===null?def:v}
+function settingNum(id,def){let v=parseFloat(localStorage.getItem(id));return isNaN(v)?def:v}
+function settingBool(id,def=false){let v=localStorage.getItem(id);return v===null?def:v==="1"}
+let currentNet=0,currentVat=0;
+
+function calculate(){
+let h=parseFloat(hours.value)||0,m=parseFloat(materials.value)||0;
+let rate=settingNum("rate",55),travel=settingNum("travel",15),markup=settingNum("markup",20)/100,overhead=settingNum("overheadRate",10)/100,contingency=settingNum("contingency",5)/100,profit=settingNum("profit",20)/100;
+let diff=difficulty.value,mult={"Easy":0.9,"Standard":1,"Complex":1.15,"Very Complex":1.3}[diff];
+let labour=h*rate,subtotal=labour+m*(1+markup)+travel+(labour+m)*overhead,cost=subtotal*mult*(1+contingency),price=cost/(1-profit);
+currentNet=Math.round(price/5)*5;
+let vatOn=settingBool("vatRegistered",false),vatRateVal=settingNum("vatRate",20);
+currentVat=vatOn?currentNet*(vatRateVal/100):0;
+currentPrice=Math.round((currentNet+currentVat)*100)/100;
+recommended.innerText="£"+currentPrice.toFixed(2);
+breakdown.innerText="Labour £"+labour.toFixed(2)+" · Materials £"+m.toFixed(2)+" · "+diff+(vatOn?" · Net £"+currentNet.toFixed(2)+" + VAT £"+currentVat.toFixed(2):"");
+result.style.display="block"
+}
+
+function collectCustomer(){
+return {
+name:customer.value.trim()||"Unnamed customer",
+phone:phone.value.trim(),email:email.value.trim(),
+address1:address1.value.trim(),address2:address2.value.trim(),
+town:town.value.trim(),postcode:postcode.value.trim()
+}}
+function fullAddress(c){return [c.address1,c.address2,c.town,c.postcode].map(x=>String(x||"").trim()).filter(Boolean).join(", ")||"Not entered"}
+function addressLines(c){return [c.address1,c.address2,c.town,c.postcode].map(x=>String(x||"").trim()).filter(Boolean).join("\n")||"Not entered"}
+function contactText(c){return [c.phone,c.email].map(x=>String(x||"").trim()).filter(Boolean).join(" · ")||"Not entered"}
+function getJobAddress(c){return differentJobAddress.checked&&jobAddress.value.trim()?jobAddress.value.trim():fullAddress(c)}
+function jobName(){return description.value.trim()||jobtype.options[jobtype.selectedIndex].text||"Plumbing job"}
+
+function upsertCustomer(c){
+let idx=data.customers.findIndex(x=>(typeof x==="string"?x:x.name).toLowerCase()===c.name.toLowerCase());
+if(idx>=0) data.customers[idx]=c; else data.customers.push(c);
+}
+function todayUK(){return new Date().toLocaleDateString("en-GB")}
+function addDaysUK(days){
+let d=new Date();d.setDate(d.getDate()+days);return d.toLocaleDateString("en-GB")
+}
+function nextInvoiceNumber(){
+let max=0;
+data.invoices.forEach(x=>{let m=String(x.number||"").match(/(\d+)$/);if(m)max=Math.max(max,parseInt(m[1]))});
+return "TP-"+String(max+1).padStart(4,"0")
+}
+function nextQuoteNumber(){
+let max=0;
+data.quotes.forEach(x=>{let m=String(x.number||"").match(/(\d+)$/);if(m)max=Math.max(max,parseInt(m[1]))});
+return "Q-"+String(max+1).padStart(4,"0")
+}
+function addDaysFromUK(dateText,days){
+let m=String(dateText||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);let d=m?new Date(+m[3],+m[2]-1,+m[1]):new Date();d.setDate(d.getDate()+Number(days||0));return d.toLocaleDateString("en-GB")
+}
+function buildRecord(){
+let c=collectCustomer();upsertCustomer(c);
+return {customer:c,job:jobName(),jobAddress:getJobAddress(c),price:currentPrice,net:currentNet||currentPrice,vat:currentVat||0,vatRate:settingNum("vatRate",20),vatRegistered:settingBool("vatRegistered",false),date:todayUK()}
+}
+
+function quoteDepositInfo(q){
+let type=q.depositType||"percent";
+let value=Number(q.depositValue);
+if(!Number.isFinite(value)){value=Number(q.depositPercent??settingNum("depositPercent",20));type="percent";}
+if(type==="fixed"){let amount=Math.max(0,Math.min(Number(q.price||0),value));return {type,value:amount,amount,label:"£"+amount.toFixed(2)};}
+let pct=Math.max(0,value);let amount=Number(q.price||0)*pct/100;return {type:"percent",value:pct,amount,label:"£"+amount.toFixed(2)+" ("+pct+"%)"};
+}
+function saveQuoteDeposit(){
+if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex];let type=qdDepositType.value;let value=parseFloat(qdDepositValue.value);if(!Number.isFinite(value)||value<0){alert("Enter a valid deposit amount or percentage.");return}if(type==="fixed"&&value>Number(q.price||0)){alert("The deposit cannot be more than the quote total.");return}q.depositType=type;q.depositValue=value;if(type==="percent")q.depositPercent=value;q.depositUpdatedAt=new Date().toISOString();save();openQuote(selectedQuoteIndex);toast((q.number||"Quote")+" deposit updated");
+}
+function saveQuote(){
+if(!currentPrice)calculate();
+syncDataFromStorage();
+let r=buildRecord();
+let validDays=settingNum("quoteValidDays",30),depositPct=settingNum("depositPercent",20);
+let quote={...r,number:nextQuoteNumber(),validUntil:addDaysFromUK(r.date,validDays),depositPercent:depositPct,depositType:"percent",depositValue:depositPct,status:"Draft",savedAt:new Date().toISOString()};
+data.quotes.unshift(quote);
+if(save()){show("quotes");toast(quote.number+" saved · £"+Number(quote.price||0).toFixed(2));}
+}
+
+function createInvoiceFromJob(){
+if(!currentPrice)calculate();
+let r=buildRecord();
+let duplicate=data.invoices.find(x=>x.customer?.name===r.customer.name&&x.job===r.job&&x.price===r.price&&x.status!=="Deleted");
+if(duplicate){alert("An invoice for this job already exists.");show("invoices");return}
+let terms=settingNum("paymentDays",14);
+data.invoices.unshift({...r,number:nextInvoiceNumber(),dueDate:addDaysUK(terms),status:"Unpaid",paid:0});
+save();show("invoices")
+}
+
+function openQuote(i){
+selectedQuoteIndex=i;let q=data.quotes[i],c=normalizeCustomer(q.customer);
+if(!q.number){q.number=nextQuoteNumber();q.validUntil=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));q.depositPercent=Number.isFinite(Number(q.depositPercent))?Number(q.depositPercent):settingNum("depositPercent",20);save();}
+qdPrice.innerText="£"+Number(q.price||0).toFixed(2);qdCustomer.innerText=c.name;qdAddress.innerText=fullAddress(c);qdContact.innerText=contactText(c);qdJob.innerText=q.job;qdNumber.innerText=q.number||"";qdDate.innerText=q.date;qdValidUntil.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));let qNetVal=Number(q.net??q.price??0),qVatVal=Number(q.vat||0);qdNet.innerText="£"+qNetVal.toFixed(2);qdVat.innerText="£"+qVatVal.toFixed(2);qdVatRow.style.display=qVatVal>0?"block":"none";let depInfo=quoteDepositInfo(q);qdDeposit.innerText=depInfo.label;qdDepositType.value=depInfo.type;qdDepositValue.value=depInfo.value;qdStatus.innerText=q.status||"Draft";let qsc={Accepted:"status-accepted",Converted:"status-converted",Sent:"status-sent",Declined:"status-declined"}[q.status]||"";qdStatus.className="status "+qsc;let qci=document.getElementById("quoteCreateInvoiceBtn");if(qci){let converted=q.status==="Converted";qci.disabled=converted;qci.style.opacity=converted?".55":"1";qci.textContent=converted?"Invoice Already Created":"Create Invoice";}let linked=(data.appointments||[]).find(a=>a.quoteKey===quoteKey(q));let qb=document.getElementById("qdBooking");if(qb)qb.textContent=linked?((linked.status||"Booked")+" · "+isoToUK(linked.date)+(linked.time?" · "+linked.time:"")):"Not booked";show("quoteDetail")
+}
+function setQuoteStatus(status){
+if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex];if(q.status==="Converted"&&status!=="Converted"&&!confirm("This quote has already been converted to an invoice. Change its status anyway?"))return;q.status=status;q.statusChangedAt=new Date().toISOString();save();openQuote(selectedQuoteIndex);toast((q.number||"Quote")+" · "+q.status);
+}
+function toggleQuoteAccepted(){if(selectedQuoteIndex===null)return;setQuoteStatus(data.quotes[selectedQuoteIndex].status==="Accepted"?"Draft":"Accepted")}
+function bookSelectedQuoteJob(){
+if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),qk=quoteKey(q);
+if(q.status==="Declined"&&!confirm("This quote is marked Declined. Reopen it and book the job?"))return;
+let existing=(data.appointments||[]).findIndex(a=>a.quoteKey===qk&&a.status!=="Cancelled");
+if(existing>=0){editAppointment(existing);toast("This quote already has a booking");return;}
+if(q.status!=="Converted"){q.status="Accepted";q.acceptedAt=q.acceptedAt||new Date().toISOString();q.statusChangedAt=new Date().toISOString();save();}
+newAppointment(c);appointmentSourceMeta={quoteKey:qk,sourceQuoteNumber:q.number||"",quotedValue:Number(q.price||0)};apptValue.value=Number(q.price||0)||'';apptCustomer.value=c.name||"Customer";apptJob.value=q.job||"Quoted work";apptAddress.value=q.jobAddress||fullAddress(c);apptNotes.value=(q.number?"From "+q.number+". ":"")+"Quoted value £"+Number(q.price||0).toFixed(2);toast("Quote accepted — choose the job date and save booking");
+}
+function convertSelectedQuoteToInvoice(){
+if(selectedQuoteIndex===null)return;
+let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer);
+if(q.status==="Declined"){alert("This quote is marked Declined. Reopen or accept it before creating an invoice.");return;}
+let duplicate=data.invoices.find(x=>
+x.quoteKey===quoteKey(q) ||
+(normalizeCustomer(x.customer).name===c.name && x.job===q.job && Number(x.price)===Number(q.price))
+);
+if(duplicate){alert("This quote has already been converted to invoice "+duplicate.number+".");openInvoice(data.invoices.indexOf(duplicate));return}
+let terms=settingNum("paymentDays",14);
+let depInfo=quoteDepositInfo(q);let inv={customer:c,job:q.job,jobAddress:q.jobAddress||fullAddress(c),price:q.price,net:q.net??q.price,vat:q.vat||0,vatRate:q.vatRate||0,vatRegistered:!!q.vatRegistered,date:todayUK(),dueDate:addDaysUK(terms),number:nextInvoiceNumber(),status:"Unpaid",paid:0,depositRequired:depInfo.amount,sourceQuoteNumber:q.number||"",quoteKey:quoteKey(q),payments:[],createdAt:new Date().toISOString()};
+data.invoices.unshift(inv);q.status="Converted";q.convertedInvoiceNumber=inv.number;q.convertedAt=new Date().toISOString();let linked=(data.appointments||[]).find(a=>a.quoteKey===quoteKey(q));if(linked){linked.invoiceNumber=inv.number;linked.status='Invoiced';linked.statusChangedAt=new Date().toISOString();if(linked.address)inv.jobAddress=linked.address;}save();openInvoice(0);toast(inv.number+" created from "+(q.number||"quote"))
+}
+function quoteKey(q){let c=normalizeCustomer(q.customer);return [c.name,q.job,q.price,q.date].join("|")}
+function deleteSelectedQuote(){if(selectedQuoteIndex===null)return;if(confirm("Delete this quote?")){data.quotes.splice(selectedQuoteIndex,1);selectedQuoteIndex=null;save();show("quotes")}}
+
+function quoteText(q){
+let c=normalizeCustomer(q.customer),depInfo=quoteDepositInfo(q);
+return `${setting("businessName","TradePro UK")}
+${businessDetailsText()}
+
+QUOTATION ${q.number||""}
+Date: ${q.date||""}
+Valid until: ${q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30))}
+
+Customer: ${c.name}
+Address: ${fullAddress(c)}
+Phone/Email: ${contactText(c)}
+
+Work: ${q.job||""}
+Job address: ${q.jobAddress||fullAddress(c)}
+
+${Number(q.vat||0)>0?`Net: £${Number(q.net??q.price??0).toFixed(2)}\nVAT: £${Number(q.vat||0).toFixed(2)}\n`:``}Quoted total: £${Number(q.price||0).toFixed(2)}
+Deposit required: ${depInfo.label}
+
+Any additional work or unforeseen issues may require a revised price and customer approval.`;
+}
+async function sendQuote(){
+if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),text=quoteText(q);
+if(navigator.share){try{await navigator.share({title:`Quotation ${q.number||""} - ${c.name}`,text});if(q.status==="Draft"){q.status="Sent";q.sentAt=new Date().toISOString();save();}return}catch(e){}}
+if(q.status==="Draft"){q.status="Sent";q.sentAt=new Date().toISOString();save();}
+let subject=encodeURIComponent(`Quotation ${q.number||""} - ${c.name}`),body=encodeURIComponent(text);window.location.href=`mailto:${encodeURIComponent(c.email||"")}?subject=${subject}&body=${body}`;
+}
+function populateQuotePaper(){
+if(selectedQuoteIndex===null)return false;let q=data.quotes[selectedQuoteIndex],c=normalizeCustomer(q.customer),depInfo=quoteDepositInfo(q);
+qBusinessName.innerText=setting("businessName","TradePro UK");qBusinessDetails.innerText=businessDetailsText();qBusinessDetails.style.whiteSpace="pre-line";let logo=localStorage.getItem("businessLogo");if(logo){qLogo.src=logo;qLogo.style.display="block"}else{qLogo.removeAttribute("src");qLogo.style.display="none"}
+qNumber.innerText=q.number||"";qDate.innerText=q.date||"";qValid.innerText=q.validUntil||addDaysFromUK(q.date,settingNum("quoteValidDays",30));qCustomer.innerText=c.name;qAddress.innerText=addressLines(c);qAddress.style.whiteSpace="pre-line";qContact.innerText=contactText(c);qJob.innerText=q.job||"";qJobAddress.innerText="Job address: "+(q.jobAddress||fullAddress(c));let qn=Number(q.net??q.price??0),qv=Number(q.vat||0);qNet.innerText="£"+qn.toFixed(2);qVat.innerText="£"+qv.toFixed(2);qVatBreak.style.display=qv>0?"block":"none";qTotal.innerText="£"+Number(q.price||0).toFixed(2);qDeposit.innerText=depInfo.label;qDepositBlock.style.display=depInfo.amount>0?"block":"none";let footer=[setting("companyNumber","")?"Company No: "+setting("companyNumber",""):"",setting("vatNumber","")?"VAT No: "+setting("vatNumber",""):""].filter(Boolean);qCompanyFooter.innerText=footer.join(" · ");return true;
+}
+function previewQuote(){if(!populateQuotePaper())return;show("quotePrint")}
+function printQuote(){if(!populateQuotePaper())return;show("quotePrint");setTimeout(()=>window.print(),180)}
+function printQuoteFromPreview(){if(!populateQuotePaper())return;window.print()}
+
+function normalizeCustomer(c){return typeof c==="string"?{name:c,phone:"",email:"",address1:"",address2:"",town:"",postcode:""}:c}
+
+function openInvoice(i){
+selectedInvoiceIndex=i;let inv=data.invoices[i],c=normalizeCustomer(inv.customer);
+if(document.getElementById("invoiceView")) invoiceView.style.display="block";
+if(document.getElementById("invoiceEdit")) invoiceEdit.style.display="none";
+idNumber.innerText=inv.number||("TP-"+String(i+1).padStart(4,"0"));
+idPrice.innerText="£"+Number(inv.price||0).toFixed(2);
+idCustomer.innerText=c.name;let customerAddr=fullAddress(c),displayAddr=customerAddr!=="Not entered"?customerAddr:(inv.jobAddress||"Not entered");idAddress.innerText=displayAddr;idContact.innerText=contactText(c);
+idJob.innerText=inv.job;idJobAddress.innerText=inv.jobAddress||displayAddr;idDate.innerText=inv.date;idDueDate.innerText=inv.dueDate||"Not set";
+updateInvoiceStatus(inv);syncAppointmentFromInvoice(inv);let inNet=Number(inv.net??inv.price??0),inVat=Number(inv.vat||0);idNet.innerText="£"+inNet.toFixed(2);idVat.innerText="£"+inVat.toFixed(2);idVatRow.style.display=inVat>0?"block":"none";idStatus.innerText=inv.status||"Unpaid";idStatus.className="status "+((inv.status||"")==="Overdue"?"status-overdue":(inv.status||"")==="Part Paid"?"status-part":(inv.status||"")==="Paid"?"status-accepted":"");let paidAmt=Number(inv.paid||0),totalAmt=Number(inv.price||0),bal=Math.max(0,totalAmt-paidAmt);idPaid.innerText="£"+paidAmt.toFixed(2);idBalance.innerText="£"+bal.toFixed(2);if(document.getElementById("idFinanceTotal"))idFinanceTotal.innerText="£"+totalAmt.toFixed(2);
+let dep=Math.max(0,Number(inv.depositRequired||0));if(document.getElementById("idFinanceDeposit"))idFinanceDeposit.innerText="£"+dep.toFixed(2);idDepositRequired.innerText="£"+dep.toFixed(2);idDepositRow.style.display=dep>0?"block":"none";if(document.getElementById("idDepositState")){idDepositState.innerHTML=dep>0?(paidAmt>=dep?'<span class="deposit-paid-badge">✓ Deposit paid</span>':'<span class="deposit-due-badge">Deposit still due</span>'):'';}let pct=totalAmt>0?Math.min(100,Math.max(0,paidAmt/totalAmt*100)):0;if(document.getElementById("idProgressFill"))idProgressFill.style.width=pct.toFixed(1)+"%";idSourceQuote.innerText=inv.sourceQuoteNumber||"";idSourceQuoteRow.style.display=inv.sourceQuoteNumber?"block":"none";idPaymentProgress.innerText="£"+paidAmt.toFixed(2)+" of £"+totalAmt.toFixed(2)+" paid";renderPaymentHistory(inv);
+let btn=document.getElementById("paidToggleBtn");if(btn)btn.textContent=(inv.status==="Paid"?"Mark as Unpaid":"Mark as Paid");let db=document.getElementById("depositPaidBtn");if(db){db.style.display=dep>0&&Number(inv.paid||0)<dep?"block":"none";db.textContent="Record Deposit Paid · £"+Math.max(0,dep-Number(inv.paid||0)).toFixed(2)};
+show("invoiceDetail")
+}
+
+
+function ukDateToDate(text){let m=String(text||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(+m[3],+m[2]-1,+m[1],23,59,59):null}
+function updateInvoiceStatus(inv){let total=Math.max(0,Number(inv.price||0)),paid=Math.max(0,Number(inv.paid||0));if(total>0&&paid>=total){inv.paid=total;inv.status="Paid";return}if(paid>0){inv.status="Part Paid";return}let due=ukDateToDate(inv.dueDate);if(due&&due<new Date())inv.status="Overdue";else if(inv.status==="Overdue"||!inv.status)inv.status="Unpaid"}
+function addPayment(inv,amount,type="Payment"){amount=Math.max(0,Number(amount)||0);if(!amount)return 0;if(!Array.isArray(inv.payments))inv.payments=[];let room=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));let applied=Math.min(room,amount);if(!applied)return 0;inv.paid=Number(inv.paid||0)+applied;inv.payments.unshift({amount:applied,type,date:todayUK(),at:new Date().toISOString()});inv.lastPaymentAt=new Date().toISOString();updateInvoiceStatus(inv);return applied}
+function renderPaymentHistory(inv){let box=document.getElementById("idPaymentHistory");if(!box)return;let rows=Array.isArray(inv.payments)?inv.payments:[];box.innerHTML=rows.length?'<div class="mini" style="margin-top:8px">Recent payments</div>'+rows.slice(0,5).map(p=>`<div class="payment-entry"><span>${esc(p.type||"Payment")}<br><span class="mini">${esc(p.date||"")}</span></span><strong>£${Number(p.amount||0).toFixed(2)}</strong></div>`).join(""):'<div class="mini" style="margin-top:8px">No payments recorded yet.</div>'}
+function recordDepositPayment(){if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],dep=Math.max(0,Number(inv.depositRequired||0)),remaining=Math.max(0,dep-Number(inv.paid||0));if(!remaining){toast("Deposit already covered");return}let applied=addPayment(inv,remaining,"Deposit");syncAppointmentFromInvoice(inv);save();openInvoice(selectedInvoiceIndex);toast("Deposit recorded · £"+applied.toFixed(2))}
+
+function recordPayment(){
+if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));if(balance<=0){toast("Invoice already paid");return}let raw=prompt("Payment received (£)",balance.toFixed(2));if(raw===null)return;let amt=parseFloat(raw);if(!isFinite(amt)||amt<=0){alert("Enter a valid payment amount.");return}let applied=addPayment(inv,amt,"Payment");syncAppointmentFromInvoice(inv);save();openInvoice(selectedInvoiceIndex);toast("Payment recorded · £"+applied.toFixed(2));
+}
+function editSelectedInvoice(){
+if(selectedInvoiceIndex===null)return;
+let inv=data.invoices[selectedInvoiceIndex],c=normalizeCustomer(inv.customer);
+
+editCustomerName.value=c.name||"";
+editPhone.value=c.phone||"";
+editEmail.value=c.email||"";
+editAddress1.value=c.address1||"";
+editAddress2.value=c.address2||"";
+editTown.value=c.town||"";
+editPostcode.value=c.postcode||"";
+
+editJob.value=inv.job||"";
+editJobAddress.value=inv.jobAddress||"";
+editInvoiceDate.value=inv.date||"";
+editDueDate.value=inv.dueDate||"";
+editPrice.value=Number(inv.price||0).toFixed(2);
+editPaid.value=Number(inv.paid||0).toFixed(2);
+editStatus.value=inv.status||"Unpaid";
+
+invoiceView.style.display="none";
+invoiceEdit.style.display="block";
+window.scrollTo(0,0);
+}
+
+function cancelInvoiceEdit(){
+invoiceEdit.style.display="none";
+invoiceView.style.display="block";
+window.scrollTo(0,0);
+}
+
+function saveInvoiceEdits(){
+if(selectedInvoiceIndex===null)return;
+
+let inv=data.invoices[selectedInvoiceIndex];
+let c={
+name:editCustomerName.value.trim()||"Unnamed customer",
+phone:editPhone.value.trim(),
+email:editEmail.value.trim(),
+address1:editAddress1.value.trim(),
+address2:editAddress2.value.trim(),
+town:editTown.value.trim(),
+postcode:editPostcode.value.trim()
+};
+
+inv.customer=c;
+inv.job=editJob.value.trim()||"Plumbing job";
+inv.jobAddress=editJobAddress.value.trim()||fullAddress(c);
+inv.date=editInvoiceDate.value.trim()||todayUK();
+inv.dueDate=editDueDate.value.trim();
+inv.price=Math.max(0,parseFloat(editPrice.value)||0);
+inv.paid=Math.max(0,parseFloat(editPaid.value)||0);
+
+let chosenStatus=editStatus.value;
+if(inv.paid>=inv.price && inv.price>0){
+inv.paid=inv.price;
+inv.status="Paid";
+}else if(inv.paid>0){
+inv.status="Part Paid";
+}else{
+inv.status=chosenStatus==="Paid"?"Unpaid":chosenStatus;
+}
+
+upsertCustomer(c);
+save();
+
+invoiceEdit.style.display="none";
+invoiceView.style.display="block";
+openInvoice(selectedInvoiceIndex);
+}
+function togglePaid(evt){
+if(evt){evt.preventDefault();evt.stopPropagation();}
+if(selectedInvoiceIndex===null || !data.invoices[selectedInvoiceIndex]){alert("Please open an invoice first.");return false;}
+let inv=data.invoices[selectedInvoiceIndex];
+let total=Math.max(0,Number(inv.price||0));
+if((inv.status||"")==="Paid" || Number(inv.paid||0)>=total && total>0){inv.status="Unpaid";inv.paid=0;inv.payments=[];}
+else{let remaining=Math.max(0,total-Number(inv.paid||0));addPayment(inv,remaining,"Paid in full");}
+syncAppointmentFromInvoice(inv);save();
+openInvoice(selectedInvoiceIndex);
+return false;
+}
+function deleteSelectedInvoice(){
+if(selectedInvoiceIndex===null)return;
+if(confirm("Delete this invoice?")){data.invoices.splice(selectedInvoiceIndex,1);selectedInvoiceIndex=null;save();show("invoices")}
+}
+
+function invoiceText(inv){
+let c=normalizeCustomer(inv.customer);
+let companyBits=[
+setting("companyNumber","") ? "Company No: "+setting("companyNumber","") : "",
+setting("vatNumber","") ? "VAT No: "+setting("vatNumber","") : ""
+].filter(Boolean).join(" · ");
+let bankBits=[
+setting("accountName","") ? "Account: "+setting("accountName","") : "",
+setting("sortCode","") ? "Sort code: "+setting("sortCode","") : "",
+setting("accountNumber","") ? "Account no: "+setting("accountNumber","") : ""
+].filter(Boolean).join("\n");
+return `${setting("businessName","TradePro UK")}
+${businessDetailsText()}
+${companyBits}
+
+INVOICE ${inv.number||""}
+Date: ${inv.date}
+Due: ${inv.dueDate||""}
+
+Customer: ${c.name}
+Address: ${fullAddress(c)}
+Phone/Email: ${contactText(c)}
+
+Work: ${inv.job}
+Job address: ${inv.jobAddress||fullAddress(c)}
+
+Total: £${inv.price.toFixed(2)}
+${inv.sourceQuoteNumber?`Source quote: ${inv.sourceQuoteNumber}\n`:``}${Number(inv.depositRequired||0)>0?`Deposit required: £${Number(inv.depositRequired||0).toFixed(2)}\n`:``}Paid: £${Number(inv.paid||0).toFixed(2)}
+Balance due: £${Math.max(0,inv.price-Number(inv.paid||0)).toFixed(2)}
+Status: ${inv.status||"Unpaid"}
+
+${bankBits}
+${setting("paymentNote","")}
+
+Thank you for your business.`;
+}
+
+async function sendInvoice(){
+if(selectedInvoiceIndex===null)return;
+let inv=data.invoices[selectedInvoiceIndex];
+let text=invoiceText(inv);
+if(navigator.share){
+try{await navigator.share({title:`Invoice ${inv.number||""} - ${normalizeCustomer(inv.customer).name}`,text});return}catch(e){}
+}
+let subject=encodeURIComponent(`Invoice ${inv.number||""} - ${normalizeCustomer(inv.customer).name}`);
+let body=encodeURIComponent(text);
+window.location.href=`mailto:${encodeURIComponent(normalizeCustomer(inv.customer).email||"")}?subject=${subject}&body=${body}`;
+}
+
+function populateInvoicePaper(){
+if(selectedInvoiceIndex===null)return false;
+let inv=data.invoices[selectedInvoiceIndex],c=normalizeCustomer(inv.customer);
+
+pBusinessName.innerText=setting("businessName","TradePro UK");
+pBusinessDetails.innerText=businessDetailsText();pBusinessDetails.style.whiteSpace="pre-line";
+
+let logo=localStorage.getItem("businessLogo");
+if(logo){
+pLogo.src=logo;
+pLogo.style.display="block";
+}else{
+pLogo.removeAttribute("src");
+pLogo.style.display="none";
+}
+
+pNumber.innerText=inv.number||"";
+pDate.innerText=inv.date||"";
+pDue.innerText=inv.dueDate||"";
+pCustomer.innerText=c.name;
+pAddress.innerText=addressLines(c);pAddress.style.whiteSpace="pre-line";
+pContact.innerText=contactText(c);
+pJob.innerText=inv.job||"";
+pJobAddress.innerText="Job address: "+(inv.jobAddress||fullAddress(c));
+let pn=Number(inv.net??inv.price??0),pv=Number(inv.vat||0);pNet.innerText="£"+pn.toFixed(2);pVat.innerText="£"+pv.toFixed(2);pVatBreak.style.display=pv>0?"block":"none";pTotal.innerText="£"+Number(inv.price||0).toFixed(2);
+updateInvoiceStatus(inv);let balanceDue=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));pStatus.innerText=inv.status||"Unpaid";pStatus.className="doc-badge "+(balanceDue<=0?"paid":Number(inv.paid||0)>0?"part":"unpaid");
+pPaid.innerText="£"+Number(inv.paid||0).toFixed(2);
+pBalance.innerText=balanceDue<=0?"PAID IN FULL":"£"+balanceDue.toFixed(2);if(document.getElementById("pDueBox"))pDueBox.className="doc-due "+(balanceDue<=0?"paid":"owing");
+pDeposit.innerText="£"+Number(inv.depositRequired||0).toFixed(2);pDepositRow.style.display=Number(inv.depositRequired||0)>0?"block":"none";pSourceQuote.innerText=inv.sourceQuoteNumber||"";pSourceQuoteRow.style.display=inv.sourceQuoteNumber?"block":"none";
+
+let bank=[
+setting("accountName","") ? "Account name: "+setting("accountName","") : "",
+setting("sortCode","") ? "Sort code: "+setting("sortCode","") : "",
+setting("accountNumber","") ? "Account number: "+setting("accountNumber","") : ""
+].filter(Boolean);
+pBankDetails.innerText=bank.join("\n") || "Payment details not entered";
+pPaymentNote.innerText=setting("paymentNote","");if(document.getElementById("pPaymentRef"))pPaymentRef.innerText="Payment reference: "+(inv.number||"");
+let payLink=paymentLinkForInvoice(inv),showQR=localStorage.getItem("showQROnInvoice")==="1";
+if(showQR && /^https?:\/\//i.test(payLink)){pQR.src=qrImageURL(payLink,180);pQRRef.innerText="Invoice "+(inv.number||"")+" · Balance £"+Math.max(0,Number(inv.price||0)-Number(inv.paid||0)).toFixed(2);pQRWrap.style.display="block";}else{pQRWrap.style.display="none";pQR.removeAttribute("src");}
+
+let footer=[
+setting("companyNumber","") ? "Company No: "+setting("companyNumber","") : "",
+setting("vatNumber","") ? "VAT No: "+setting("vatNumber","") : ""
+].filter(Boolean);
+pCompanyFooter.innerText=footer.join(" · ");
+return true;
+}
+
+function previewInvoice(){
+if(!populateInvoicePaper())return;
+show("invoicePrint");
+}
+
+function printInvoice(){
+if(!populateInvoicePaper())return;
+show("invoicePrint");
+setTimeout(()=>window.print(),180);
+}
+
+function printInvoiceFromPreview(){
+if(!populateInvoicePaper())return;
+window.print();
+}
+function renderJobTypeOptions(){
+if(!document.getElementById("jobtype"))return;
+let selected=jobtype.value;
+jobtype.innerHTML='<option value="">Choose a job</option>'+data.priceBook.map((p,i)=>`<option value="${i}">${esc(p.category||"General")} — ${esc(p.name)}${p.pricingType?" ("+esc(p.pricingType)+")":""}</option>`).join("");
+if([...jobtype.options].some(o=>o.value===selected))jobtype.value=selected;
+}
+function renderPriceBook(){
+let box=document.getElementById("priceBookList");if(!box)return;
+box.innerHTML=data.priceBook.length?data.priceBook.map((p,i)=>`<div class="item clickable" onclick="editPriceBookItem(${i})"><span class="price">£${Number(p.min||0).toLocaleString('en-GB')}–£${Number(p.max||0).toLocaleString('en-GB')}</span><strong>${esc(p.name)}</strong><small>${esc(p.category||"General")} · ${esc(p.pricingType||"Labour only")} · ${Number(p.hours||0)} hr · Materials £${Number(p.materials||0).toFixed(2)}${p.notes?'<br>'+esc(p.notes):''}</small></div>`).join(""):'<div class="empty">No price-book jobs yet.</div>';
+}
+function editPriceBookItem(i){selectedPriceBookIndex=i;let p=data.priceBook[i];if(!p)return;priceBookEditTitle.textContent="Edit Price";pbCategory.value=p.category||"General";pbName.value=p.name||"";pbPricingType.value=p.pricingType||"Labour only";pbHours.value=p.hours??0;pbMaterials.value=p.materials??0;pbMin.value=p.min??0;pbMax.value=p.max??0;pbNotes.value=p.notes||"";pbDeleteBtn.style.display="block";show("pricebookEdit");}
+function addPriceBookItem(){selectedPriceBookIndex=-1;priceBookEditTitle.textContent="Add Price Book Job";pbCategory.value="General";pbName.value="";pbPricingType.value="Labour only";pbHours.value=1;pbMaterials.value=0;pbMin.value=0;pbMax.value=0;pbNotes.value="";pbDeleteBtn.style.display="none";show("pricebookEdit");}
+function savePriceBookItem(){let item={category:pbCategory.value.trim()||"General",name:pbName.value.trim()||"New plumbing job",pricingType:pbPricingType.value||"Labour only",hours:Math.max(0,Number(pbHours.value)||0),materials:Math.max(0,Number(pbMaterials.value)||0),min:Math.max(0,Number(pbMin.value)||0),max:Math.max(0,Number(pbMax.value)||0),notes:pbNotes.value.trim()};if(item.max<item.min){let t=item.max;item.max=item.min;item.min=t;}if(selectedPriceBookIndex===-1)data.priceBook.push(item);else if(data.priceBook[selectedPriceBookIndex])data.priceBook[selectedPriceBookIndex]=item;save();show("pricebook");}
+function deletePriceBookItem(){if(selectedPriceBookIndex<0)return;if(confirm("Delete this price-book job?")){data.priceBook.splice(selectedPriceBookIndex,1);selectedPriceBookIndex=null;save();show("pricebook");}}
+function resetPriceBook(){if(confirm("Reset the Price Book to the original TradePro defaults? Your edits will be replaced.")){data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));save();show("pricebook");}}
+
+function paymentLinkForInvoice(inv){return setting("paymentLink","").trim();}
+function qrImageURL(text,size=320){return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=8&data=${encodeURIComponent(text)}`;}
+function showPaymentQR(){
+if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex];let link=paymentLinkForInvoice(inv);
+if(!/^https?:\/\//i.test(link)){alert("Add your secure payment page link in Settings first.");show("settings");return;}
+qrAmount.textContent="£"+Math.max(0,Number(inv.price||0)-Number(inv.paid||0)).toFixed(2);qrReference.textContent="Invoice "+(inv.number||"");paymentQRImage.src=qrImageURL(link,320);paymentQRImage.dataset.link=link;show("paymentQR");
+}
+function openPaymentLink(){let link=document.getElementById("paymentQRImage")?.dataset.link||"";if(link)window.open(link,"_blank","noopener");}
+
+function save(){
+ try{localStorage.setItem("tradepro",JSON.stringify(data));render();return true}
+ catch(e){console.error(e);alert("TradePro could not save this change. Please check Safari storage and try again.");return false}
+}
+
+function saveLogo(event){
+let file=event.target.files && event.target.files[0];
+if(!file)return;
+if(!file.type.startsWith("image/")){alert("Please choose an image file.");return;}
+let reader=new FileReader();
+reader.onload=function(e){
+let img=new Image();
+img.onload=function(){
+try{
+let maxW=700,maxH=350,scale=Math.min(1,maxW/img.width,maxH/img.height);
+let w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
+let canvas=document.createElement("canvas");canvas.width=w;canvas.height=h;
+let ctx=canvas.getContext("2d");
+ctx.fillStyle="#ffffff";ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);
+let compressed=canvas.toDataURL("image/jpeg",0.86);
+localStorage.setItem("businessLogo",compressed);
+updateLogoPreview();
+alert("Logo saved");
+}catch(err){
+console.error(err);alert("That image is too large to save. Please choose a smaller logo image.");
+}
+};
+img.onerror=function(){alert("Could not read that image. Please try another one.");};
+img.src=e.target.result;
+};
+reader.onerror=function(){alert("Could not read that image.");};
+reader.readAsDataURL(file);
+}
+function removeLogo(){
+localStorage.removeItem("businessLogo");
+updateLogoPreview();
+}
+
+function updateLogoPreview(){
+let logo=localStorage.getItem("businessLogo");
+if(logo){
+logoPreview.src=logo;
+logoPreviewWrap.style.display="block";
+}else{
+logoPreview.removeAttribute("src");
+logoPreviewWrap.style.display="none";
+}
+}
+
+function businessAddressText(){
+return [setting("businessAddress1",""),setting("businessAddress2",""),setting("businessTown",""),setting("businessPostcode","")].map(x=>String(x||"").trim()).filter(Boolean).join(", ");
+}
+function businessAddressLines(){
+let town=setting("businessTown","").trim(),postcode=setting("businessPostcode","").trim();
+return [setting("businessAddress1","").trim(),setting("businessAddress2","").trim(),[town,postcode].filter(Boolean).join(" ")].filter(Boolean).join("\n");
+}
+
+function businessDetailsText(){
+return [
+setting("ownerName","").trim(),
+businessAddressLines(),
+setting("businessPhone","").trim(),
+setting("businessEmail","").trim(),
+setting("businessWebsite","").trim()
+].filter(Boolean).join("\n");
+}
+function setupReadiness(){
+ let checks=[
+  {name:'Business name',ok:!!String(setting('businessName','')).trim(),note:'Shown on quotes and invoices'},
+  {name:'Contact details',ok:!!String(setting('businessPhone','')).trim()||!!String(setting('businessEmail','')).trim(),note:'Phone or email saved'},
+  {name:'Business address',ok:!!businessAddressText(),note:'Used on customer documents'},
+  {name:'Payment details',ok:!!String(setting('accountName','')).trim()&&!!String(setting('sortCode','')).trim()&&!!String(setting('accountNumber','')).trim(),note:'For getting paid by bank transfer'},
+  {name:'Pricing defaults',ok:Number(setting('rate','0'))>0&&Number(setting('profit','0'))>=0,note:'Labour rate and profit settings'},
+  {name:'Backup',ok:!!localStorage.getItem('lastBackupAt'),note:'Protect your customer and invoice data'}
+ ];
+ let done=checks.filter(x=>x.ok).length,pct=Math.round(done/checks.length*100);
+ return {checks,done,total:checks.length,pct};
+}
+function formatSavedTime(v){
+ if(!v)return 'Never';
+ let d=new Date(v);if(isNaN(d))return 'Unknown';
+ return d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function renderReadiness(){
+ let r=setupReadiness(),home=document.getElementById('setupHealthCard');
+ if(document.getElementById('setupHealthPct'))setupHealthPct.textContent=r.pct+'%';
+ if(document.getElementById('setupHealthBar'))setupHealthBar.style.width=r.pct+'%';
+ if(document.getElementById('setupHealthTitle'))setupHealthTitle.textContent=r.pct===100?'TradePro ready':'Finish business setup';
+ if(document.getElementById('setupHealthText')){
+   let missing=r.checks.filter(x=>!x.ok).map(x=>x.name);
+   setupHealthText.textContent=r.pct===100?'Business details, pricing and backup are all set.':(missing.length?'Still to check: '+missing.join(', ')+'.':'Setup looks good.');
+ }
+ if(home)home.style.display=r.pct===100?'none':'block';
+ if(document.getElementById('settingsReadyPct'))settingsReadyPct.textContent=r.pct+'%';
+ if(document.getElementById('settingsReadyBar'))settingsReadyBar.style.width=r.pct+'%';
+ if(document.getElementById('settingsReadyText'))settingsReadyText.textContent=r.pct===100?'TradePro is ready for day-to-day customer work.':'Complete the remaining items before relying on TradePro as your main job record.';
+ let list=document.getElementById('readinessList');
+ if(list)list.innerHTML=r.checks.map(x=>`<div class="readiness-item"><div><b>${esc(x.name)}</b><br><span class="small">${esc(x.note)}</span></div><strong class="${x.ok?'ready-ok':'ready-warn'}">${x.ok?'✓ Ready':'Needs setup'}</strong></div>`).join('');
+ let last=localStorage.getItem('lastBackupAt'),restore=localStorage.getItem('lastRestoreAt'),bst=document.getElementById('backupStatusText');
+ if(bst){
+   let msg=last?'Last backup exported: '+formatSavedTime(last)+'.':'No backup has been exported from this device yet.';
+   if(restore)msg+=' Last restore: '+formatSavedTime(restore)+'.';
+   bst.textContent=msg;
+ }
+}
+function saveSettings(){
+[
+"businessName","ownerName",
+"businessAddress1","businessAddress2","businessTown","businessPostcode",
+"businessPhone","businessEmail","businessWebsite",
+"companyNumber","vatNumber","vatRate",
+"accountName","sortCode","accountNumber","paymentNote","paymentLink",
+"rate","travel","markup","overheadRate","contingency","profit","paymentDays","quoteValidDays","depositPercent"
+].forEach(id=>{
+let el=document.getElementById(id);
+if(el)localStorage.setItem(id,el.value);
+});
+localStorage.setItem("showQROnInvoice",document.getElementById("showQROnInvoice").checked?"1":"0");
+localStorage.setItem("vatRegistered",document.getElementById("vatRegistered").checked?"1":"0");
+updateLogoPreview();
+renderReadiness();
+toast("Business settings saved");
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
+
+function customerKey(c){c=normalizeCustomer(c);return String(c.name||'').trim().toLowerCase();}
+function customerAccountStats(c){
+ let key=customerKey(c),quoted=0,invoiced=0,paid=0,outstanding=0,activeJobs=0,completedJobs=0;
+ (data.quotes||[]).forEach(q=>{if(customerKey(q.customer)===key)quoted+=Number(q.price||0)});
+ (data.invoices||[]).forEach(inv=>{if(customerKey(inv.customer)!==key)return;let total=Number(inv.price||0),p=Math.min(total,Number(inv.paid||0));invoiced+=total;paid+=p;outstanding+=Math.max(0,total-p)});
+ (data.appointments||[]).forEach(a=>{if(String(a.customer||'').trim().toLowerCase()!==String(c.name||'').trim().toLowerCase())return;let s=a.status||'Booked';if(['Completed','Invoiced','Paid'].includes(s))completedJobs++;else if(s!=='Cancelled')activeJobs++});
+ return {quoted,invoiced,paid,outstanding,activeJobs,completedJobs};
+}
+function setCustomerHistoryFilter(f){customerHistoryFilter=f;['all','jobs','docs','payments'].forEach(x=>{let id=x==='all'?'chAll':x==='jobs'?'chJobs':x==='docs'?'chDocs':'chPayments',el=document.getElementById(id);if(el)el.classList.toggle('active',x===f)});if(selectedCustomerIndex!==null){let c=normalizeCustomer(data.customers[selectedCustomerIndex]);renderCustomerHistory(c)}}
+function openCustomer(i){
+ selectedCustomerIndex=i;customerHistoryFilter='all';let c=normalizeCustomer(data.customers[i]);if(!c)return;
+ cdName.textContent=c.name||'Unnamed customer';cdAddress.textContent=fullAddress(c);cdContact.textContent=contactText(c);
+ let s=customerAccountStats(c);cdQuoted.textContent='£'+s.quoted.toFixed(2);cdInvoiced.textContent='£'+s.invoiced.toFixed(2);cdPaid.textContent='£'+s.paid.toFixed(2);cdOutstanding.textContent='£'+s.outstanding.toFixed(2);cdActiveJobs.textContent=s.activeJobs;cdCompletedJobs.textContent=s.completedJobs;
+ let stat=document.getElementById('cdAccountStatus');if(stat){stat.className='account-status '+(s.outstanding>0?'owing':'clear');stat.textContent=s.outstanding>0?'£'+s.outstanding.toFixed(2)+' outstanding on this account':'Account clear · no money outstanding';}
+ ['All','Jobs','Docs','Payments'].forEach(x=>{let el=document.getElementById('ch'+x);if(el)el.classList.toggle('active',x==='All')});
+ renderCustomerHistory(c);show('customerDetail');
+}
+function renderCustomerHistory(c){
+ let key=customerKey(c),rows=[];
+ (data.quotes||[]).forEach((q,i)=>{if(customerKey(q.customer)===key)rows.push({group:'docs',type:'Quote',date:q.date||'',number:q.number||'Quote',job:q.job||'',price:Number(q.price||0),status:q.status||'Draft',open:`openQuote(${i})`})});
+ (data.invoices||[]).forEach((inv,i)=>{
+   if(customerKey(inv.customer)!==key)return;
+   rows.push({group:'docs',type:'Invoice',date:inv.date||'',number:inv.number||'Invoice',job:inv.job||'',price:Number(inv.price||0),status:inv.status||'Unpaid',open:`openInvoice(${i})`});
+   (Array.isArray(inv.payments)?inv.payments:[]).forEach(p=>rows.push({group:'payments',type:p.type||'Payment',date:p.date||'',number:inv.number||'Invoice',job:inv.job||'',price:Number(p.amount||0),status:'Received',open:`openInvoice(${i})`,at:p.at||''}));
+ });
+ (data.appointments||[]).forEach((a,i)=>{if(String(a.customer||'').trim().toLowerCase()===String(c.name||'').trim().toLowerCase())rows.push({group:'jobs',type:'Job',date:isoToUK(a.date),number:a.sourceQuoteNumber||a.invoiceNumber||'Booking',job:a.job||'',price:Number(a.quotedValue||0),status:a.status||'Booked',open:`editAppointment(${i})`})});
+ let visible=rows.filter(r=>customerHistoryFilter==='all'||r.group===customerHistoryFilter).sort((a,b)=>{let av=a.at?new Date(a.at).getTime():ukDateValue(a.date),bv=b.at?new Date(b.at).getTime():ukDateValue(b.date);return bv-av;});
+ cdHistoryCount.textContent=visible.length+' record'+(visible.length===1?'':'s');
+ customerHistory.innerHTML=visible.length?visible.map(r=>{let pay=r.group==='payments',zeroJob=r.group==='jobs'&&Number(r.price||0)<=0,priceLabel=pay?'+ £'+r.price.toFixed(2):(zeroJob?'Value not set':'£'+r.price.toFixed(2));let typeLabel=r.type;if(pay){let t=String(r.type||'Payment').toLowerCase();typeLabel=t.includes('deposit')?'Deposit received':t.includes('full')?'Final payment received':'Payment received';}return `<div class="item clickable ${pay?'history-payment':''}" onclick="${r.open}"><span class="price">${priceLabel}</span><strong><span class="history-type">${esc(typeLabel)}</span>${esc(r.number)}</strong><small>${esc(r.date)} · ${esc(r.status)}${r.job?'<br>'+esc(r.job):''}</small></div>`;}).join(''):'<div class="empty">No records in this view.</div>';
+}
+function newJobForSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newJob();customer.value=c.name||'';phone.value=c.phone||'';email.value=c.email||'';address1.value=c.address1||'';address2.value=c.address2||'';town.value=c.town||'';postcode.value=c.postcode||'';}
+function bookSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newAppointment(c);}
+function contactSelectedCustomer(kind){
+ if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);
+ if(kind==='phone'){if(c.phone)location.href='tel:'+c.phone.replace(/[^+\d]/g,'');else toast('No phone number saved');return}
+ if(kind==='message'){if(c.phone)location.href='sms:'+c.phone.replace(/[^+\d]/g,'')+'?&body='+encodeURIComponent('Hi '+(c.name||'')+', ');else toast('No phone number saved');return}
+ if(kind==='email'){if(c.email)location.href='mailto:'+c.email;else toast('No email saved');return}
+ if(kind==='map'){let a=fullAddress(c);if(a&&a!=='Not entered')window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a),'_blank');else toast('No address saved');}
+}
+function ukDateValue(t){let m=String(t||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(+m[3],+m[2]-1,+m[1]).getTime():0;}
+function isoToday(){let d=new Date(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${d.getFullYear()}-${m}-${day}`;}
+function isoToUK(v){if(!v)return'';let p=v.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:v;}
+function appointmentTimeValue(a){if(!a?.date)return Infinity;let t=new Date(a.date+'T'+(a.time||'00:00'));return isNaN(t)?Infinity:t.getTime();}
+let diaryFilter='week';
+function setDiaryFilter(v){diaryFilter=v;let map={today:'diaryTodayBtn',week:'diaryWeekBtn',all:'diaryAllBtn'};Object.entries(map).forEach(([k,id])=>{let b=document.getElementById(id);if(b)b.classList.toggle('active',v===k)});renderDiary();}
+function openDiary(){show('diary');renderDiary();}
+function linkedInvoiceForAppointment(a){if(!a)return null;return (data.invoices||[]).find(inv=>(a.quoteKey&&inv.quoteKey===a.quoteKey)||(a.invoiceNumber&&inv.number===a.invoiceNumber))||null;}
+function syncAppointmentFromInvoice(inv){if(!inv)return;let a=(data.appointments||[]).find(x=>(inv.quoteKey&&x.quoteKey===inv.quoteKey)||(x.invoiceNumber&&x.invoiceNumber===inv.number));if(!a)return;let paid=Number(inv.paid||0),total=Number(inv.price||0);a.invoiceNumber=inv.number||a.invoiceNumber||'';a.status=(total>0&&paid>=total)?'Paid':'Invoiced';a.statusChangedAt=new Date().toISOString();}
+function appointmentContact(a){let c=findCustomerForAppointment(a);return {phone:String(c.phone||'').trim(),email:String(c.email||'').trim(),address:String(a?.address||'').trim()||fullAddress(c)};}
+function callAppointmentCustomer(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex],x=appointmentContact(a);if(!x.phone){alert('No phone number saved for this customer.');return}window.location.href='tel:'+x.phone.replace(/[^+\d]/g,'');}
+function messageAppointmentCustomer(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex],x=appointmentContact(a);if(!x.phone){alert('No phone number saved for this customer.');return}let text=`Hi ${a.customer||''}, just confirming your ${a.job||'booking'}${a.date?' on '+isoToUK(a.date):''}${a.time?' at '+a.time:''}.`;window.location.href='sms:'+x.phone.replace(/[^+\d]/g,'')+'?&body='+encodeURIComponent(text);}
+function mapAppointmentAddress(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex],x=appointmentContact(a);if(!x.address||x.address==='Not entered'){alert('No job address saved for this booking.');return}window.open('https://maps.apple.com/?q='+encodeURIComponent(x.address),'_blank');}
+function populateAppointmentCustomers(){let dl=document.getElementById('apptCustomerList');if(!dl)return;dl.innerHTML=(data.customers||[]).map(normalizeCustomer).filter(c=>c.name).map(c=>`<option value="${esc(c.name)}"></option>`).join('');}
+function appointmentCustomerChanged(){let name=String(apptCustomer.value||'').trim().toLowerCase();if(!name)return;let c=(data.customers||[]).map(normalizeCustomer).find(x=>String(x.name||'').trim().toLowerCase()===name);if(!c)return;if(!String(apptAddress.value||'').trim()||apptAddress.dataset.autoCustomer==='1'){let a=fullAddress(c);apptAddress.value=a==='Not entered'?'':a;apptAddress.dataset.autoCustomer='1';}}
+function diaryQuickCall(i,e){if(e)e.stopPropagation();selectedAppointmentIndex=i;callAppointmentCustomer();}
+function diaryQuickMessage(i,e){if(e)e.stopPropagation();selectedAppointmentIndex=i;messageAppointmentCustomer();}
+function diaryQuickMap(i,e){if(e)e.stopPropagation();selectedAppointmentIndex=i;mapAppointmentAddress();}
+function renderDiary(){
+let box=document.getElementById('diaryList');if(!box)return;
+let today=startOfToday(),weekEnd=today+7*86400000;
+let rows=(data.appointments||[]).map((a,i)=>({a,i,t:appointmentTimeValue(a)})).filter(r=>{
+ if(diaryFilter==='all')return true;
+ if(diaryFilter==='today')return r.t>=today&&r.t<today+86400000;
+ return r.t>=today&&r.t<weekEnd&&r.a.status!=='Cancelled';
+}).sort((x,y)=>x.t-y.t);
+let summary=document.getElementById('diarySummary');
+if(summary){
+ let active=rows.filter(r=>!['Cancelled','Completed','Invoiced','Paid'].includes(r.a.status||'Booked'));
+ let done=rows.filter(r=>['Completed','Invoiced','Paid'].includes(r.a.status||''));
+ let value=active.reduce((n,r)=>n+Number(r.a.quotedValue||0),0);
+ let label=diaryFilter==='today'?'today':diaryFilter==='week'?'in the next 7 days':'in total';
+ let second=active.length?`${active.length} active booking${active.length===1?'':'s'} ${label}`:`No active bookings ${label}`;
+ if(done.length)second+=` · ${done.length} completed/invoiced`;
+ summary.innerHTML=`<strong>${active.length} active job${active.length===1?'':'s'} · £${value.toFixed(0)} work</strong><br>${second}.`;
+}
+if(!rows.length){box.innerHTML='<div class="empty" style="margin-top:14px">No jobs in this view.</div>';return}
+let last='';
+box.innerHTML=rows.map(({a,i})=>{
+ let day=isoToUK(a.date),label=dayLabelForAppointment(a);
+ let heading=(label===day||!label)?day:`${label} · ${day}`;
+ let head=day!==last?`<div class="diary-day">${esc(heading)}</div>`:'';
+ last=day;
+ let cls={Completed:'status-completed',Cancelled:'status-cancelled','In Progress':'status-progress',Invoiced:'status-invoiced',Paid:'status-paid'}[a.status]||'status-booked';
+ let note=a.notes?`<span class="appointment-note">${esc(a.notes)}</span>`:'';
+ let val=Number(a.quotedValue||0)>0?`<span class="appt-value">£${Number(a.quotedValue).toFixed(2)}</span>`:'';
+ let meta=[a.sourceQuoteNumber||'',a.invoiceNumber||''].filter(Boolean).join(' · ');
+ let contact=appointmentContact(a),canCall=!!contact.phone,canMap=!!contact.address&&contact.address!=='Not entered';
+ let actions=`<div class="appt-actions">
+   <button ${canCall?'':'disabled'} onclick="diaryQuickCall(${i},event)">📞 Call</button>
+   <button ${canCall?'':'disabled'} onclick="diaryQuickMessage(${i},event)">💬 Message</button>
+   <button ${canMap?'':'disabled'} onclick="diaryQuickMap(${i},event)">📍 Navigate</button>
+ </div>`;
+ return head+`<div class="item clickable appointment" onclick="editAppointment(${i})"><span class="status appt-status ${cls}">${esc(a.status||'Booked')}</span><strong><span class="appt-time">${esc(a.time||'Time TBC')}</span>${esc(a.customer||'Customer')}</strong><small>${esc(a.job||'Job visit')}${a.address?'<br>'+esc(a.address):''}${note}<span class="appt-meta">${esc(meta)}</span>${val}</small>${actions}</div>`;
+}).join('');
+}
+function newAppointment(c=null){
+ selectedAppointmentIndex=-1;appointmentSourceMeta=null;appointmentTitle.textContent='Book Job';
+ populateAppointmentCustomers();
+ apptDate.value=isoToday();apptTime.value='09:00';apptStatus.value='Booked';apptCustomer.value=c?.name||'';
+ apptJob.value='';apptAddress.value=c?fullAddress(c):'';apptAddress.dataset.autoCustomer=c?'1':'0';apptNotes.value='';apptValue.value='';
+ apptDeleteBtn.style.display='none';apptCompleteBtn.style.display='none';apptStartBtn.style.display='none';apptCancelBtn.style.display='none';apptQuoteBtn.style.display='none';apptInvoiceBtn.style.display='none';apptCallBtn.style.display='none';apptMessageBtn.style.display='none';apptMapBtn.style.display='none';show('appointmentEdit');
+}
+function linkedQuoteForAppointment(a){
+ if(!a)return null;
+ let q=null;
+ if(a.quoteKey)q=(data.quotes||[]).find(x=>quoteKey(x)===a.quoteKey)||null;
+ if(!q&&a.sourceQuoteNumber)q=(data.quotes||[]).find(x=>String(x.number||'')===String(a.sourceQuoteNumber||''))||null;
+ return q;
+}
+function linkedQuoteIndexForAppointment(a){
+ let q=linkedQuoteForAppointment(a);return q?(data.quotes||[]).indexOf(q):-1;
+}
+function openAppointmentQuoteOrPrice(){
+ if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;
+ let a=data.appointments[selectedAppointmentIndex],qi=linkedQuoteIndexForAppointment(a);
+ if(qi>=0){openQuote(qi);return}
+ loadAppointmentIntoJob('quote');
+}
+function editAppointment(i){
+ selectedAppointmentIndex=i;let a=data.appointments[i];if(!a)return;
+ let linkedQ=linkedQuoteForAppointment(a);
+ if(linkedQ){
+   if(!a.quoteKey)a.quoteKey=quoteKey(linkedQ);
+   if(!a.sourceQuoteNumber)a.sourceQuoteNumber=linkedQ.number||'';
+   if(Number(a.quotedValue||0)<=0&&Number(linkedQ.price||0)>0)a.quotedValue=Number(linkedQ.price||0);
+   if(!a.job||a.job==='Job visit')a.job=linkedQ.job||a.job;
+   if(!a.address)a.address=linkedQ.jobAddress||fullAddress(normalizeCustomer(linkedQ.customer));
+ }
+ appointmentSourceMeta={quoteKey:a.quoteKey||'',sourceQuoteNumber:a.sourceQuoteNumber||'',quotedValue:Number(a.quotedValue||0)};
+ let inv=linkedInvoiceForAppointment(a);if(inv){a.invoiceNumber=inv.number||a.invoiceNumber||'';let total=Number(inv.price||0),paid=Number(inv.paid||0);if(total>0&&paid>=total)a.status='Paid';else if(a.status!=='Cancelled')a.status='Invoiced';}
+ populateAppointmentCustomers();
+ appointmentTitle.textContent='Edit Booking';apptDate.value=a.date||isoToday();apptTime.value=a.time||'';apptStatus.value=a.status||'Booked';apptCustomer.value=a.customer||'';apptJob.value=a.job||'';apptAddress.value=a.address||'';apptAddress.dataset.autoCustomer='0';apptNotes.value=a.notes||'';apptValue.value=Number(a.quotedValue||0)||'';
+ apptDeleteBtn.style.display='block';apptCompleteBtn.style.display='block';apptStartBtn.style.display='block';apptCancelBtn.style.display='block';apptQuoteBtn.style.display='block';apptInvoiceBtn.style.display='block';
+ apptStartBtn.textContent=a.status==='In Progress'?'↩ Back to Booked':'▶ Start Job';apptCompleteBtn.textContent=a.status==='Completed'?'↩ Reopen Booking':'✓ Mark Completed';apptInvoiceBtn.textContent=inv?'💷 Open '+(inv.number||'Invoice'):'💷 Create Invoice';apptCancelBtn.textContent=a.status==='Cancelled'?'↩ Reopen Booking':'Cancel Booking';
+ apptQuoteBtn.textContent=linkedQ?'🧾 Open '+(linkedQ.number||'Quote'):'🧾 Price & Quote';
+ let contact=appointmentContact(a);apptCallBtn.style.display=contact.phone?'block':'none';apptMessageBtn.style.display=contact.phone?'block':'none';apptMapBtn.style.display=contact.address&&contact.address!=='Not entered'?'block':'none';save();show('appointmentEdit');
+}
+function appointmentFormData(){return {date:apptDate.value||isoToday(),time:apptTime.value||'',status:apptStatus.value||'Booked',customer:apptCustomer.value.trim()||'Customer',job:apptJob.value.trim()||'Job visit',address:apptAddress.value.trim(),notes:apptNotes.value.trim(),quotedValue:Math.max(0,Number(apptValue.value||0)),updatedAt:new Date().toISOString()};}
+function saveAppointment(){let a=appointmentFormData();if(selectedAppointmentIndex===-1){a.createdAt=a.updatedAt;if(appointmentSourceMeta)a={...a,...appointmentSourceMeta,quotedValue:Number(apptValue.value||appointmentSourceMeta.quotedValue||0)};data.appointments.push(a);selectedAppointmentIndex=data.appointments.length-1;}else if(data.appointments[selectedAppointmentIndex]){let old=data.appointments[selectedAppointmentIndex],q=linkedQuoteForAppointment(old);if(Number(a.quotedValue||0)<=0&&q&&Number(q.price||0)>0)a.quotedValue=Number(q.price||0);data.appointments[selectedAppointmentIndex]={...old,...a};}save();toast('Booking saved');openDiary();}
+function setAppointmentStatus(status){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a=data.appointments[selectedAppointmentIndex];if(!a)return;if(['Invoiced','Paid'].includes(a.status)&&['Booked','In Progress','Completed'].includes(status)&&!confirm('This job is linked to an invoice. Change the job status anyway?'))return;let next=(a.status===status)?'Booked':status;let nowIso=new Date().toISOString();a={...a,...appointmentFormData(),status:next,statusChangedAt:nowIso};if(next==='Completed'&&!a.completedAt)a.completedAt=nowIso;if(next==='Booked'&&status==='Completed')delete a.completedAt;data.appointments[selectedAppointmentIndex]=a;save();toast(next==='In Progress'?'Job started':next==='Completed'?'Job marked completed':next==='Cancelled'?'Booking cancelled':'Booking updated');editAppointment(selectedAppointmentIndex);}
+function deleteAppointment(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;if(confirm('Delete this booking?')){data.appointments.splice(selectedAppointmentIndex,1);selectedAppointmentIndex=null;save();openDiary();}}
+function findCustomerForAppointment(a){let key=String(a?.customer||'').trim().toLowerCase();let found=(data.customers||[]).map(normalizeCustomer).find(c=>String(c.name||'').trim().toLowerCase()===key);if(found)return found;return {name:a?.customer||'Customer',phone:'',email:'',address1:a?.address||'',address2:'',town:'',postcode:''};}
+function invoiceAppointmentFromQuote(){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a={...data.appointments[selectedAppointmentIndex],...appointmentFormData()};data.appointments[selectedAppointmentIndex]=a;let existing=linkedInvoiceForAppointment(a);if(existing){save();openInvoice(data.invoices.indexOf(existing));return;}if(a.quoteKey){let qi=data.quotes.findIndex(q=>quoteKey(q)===a.quoteKey);if(qi>=0){let q=data.quotes[qi];if(a.address)q.jobAddress=a.address;selectedQuoteIndex=qi;save();convertSelectedQuoteToInvoice();return;}}loadAppointmentIntoJob('invoice');}
+function loadAppointmentIntoJob(target){if(selectedAppointmentIndex===null||selectedAppointmentIndex<0)return;let a={...data.appointments[selectedAppointmentIndex],...appointmentFormData()};data.appointments[selectedAppointmentIndex]=a;save();let c=findCustomerForAppointment(a);newJob();customer.value=c.name||a.customer||'';phone.value=c.phone||'';email.value=c.email||'';address1.value=c.address1||'';address2.value=c.address2||'';town.value=c.town||'';postcode.value=c.postcode||'';description.value=a.job||'Job visit';let home=fullAddress(c),addr=a.address||home;if(addr&&addr!==home){differentJobAddress.checked=true;jobAddress.value=addr;toggleJobAddress();}if(a.notes)description.value+=(description.value?'\n':'')+'Notes: '+a.notes;toast(target==='invoice'?'Booking loaded — calculate price then Create Invoice':'Booking loaded — calculate price then Save Quote');}
+function upcomingAppointments(){let now=Date.now()-3600000;return (data.appointments||[]).filter(a=>(a.status||'Booked')==='Booked'&&appointmentTimeValue(a)>=now).sort((a,b)=>appointmentTimeValue(a)-appointmentTimeValue(b));}
+function startOfToday(){let d=new Date();d.setHours(0,0,0,0);return d.getTime();}
+function dayLabelForAppointment(a){let t=appointmentTimeValue(a),base=startOfToday(),day=86400000;if(t>=base&&t<base+day)return'Today';if(t>=base+day&&t<base+2*day)return'Tomorrow';return isoToUK(a.date);}
+function appointmentsNext7Days(){let now=Date.now(),end=now+7*86400000;return (data.appointments||[]).filter(a=>(a.status||'Booked')==='Booked'&&appointmentTimeValue(a)>=now&&appointmentTimeValue(a)<end).sort((a,b)=>appointmentTimeValue(a)-appointmentTimeValue(b));}
+function completedAppointmentsThisMonth(){let d=new Date(),y=d.getFullYear(),m=d.getMonth();return (data.appointments||[]).filter(a=>{if(!['Completed','Invoiced','Paid'].includes(a.status||''))return false;let x=a.completedAt?new Date(a.completedAt):new Date((a.date||'')+'T12:00:00');return !isNaN(x)&&x.getFullYear()===y&&x.getMonth()===m;});}
+
+function reportMonthKeyFromUK(v){let m=String(v||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?m[3]+'-'+String(m[2]).padStart(2,'0'):''}
+function reportMonthKeyFromISO(v){if(!v)return '';let d=new Date(v);return isNaN(d)?'':d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function reportDateFromUK(v){let m=String(v||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(Number(m[3]),Number(m[2])-1,Number(m[1]),12):null}
+function reportDateFromAny(uk,iso){return reportDateFromUK(uk)||(iso?new Date(iso):null)}
+function reportPaymentRows(){
+ let rows=[];
+ (data.invoices||[]).forEach(inv=>{
+   let ps=Array.isArray(inv.payments)?inv.payments:[];
+   if(ps.length)ps.forEach(p=>rows.push({amount:Number(p.amount||0),date:reportDateFromAny(p.date,p.at),month:reportMonthKeyFromUK(p.date)||reportMonthKeyFromISO(p.at),type:p.type||'Payment'}));
+   else if(Number(inv.paid||0)>0)rows.push({amount:Number(inv.paid||0),date:reportDateFromAny(inv.date,inv.lastPaymentAt),month:reportMonthKeyFromISO(inv.lastPaymentAt)||reportMonthKeyFromUK(inv.date),type:'Payment'});
+ });
+ return rows;
+}
+function reportRange(period){
+ let now=new Date(),start,end=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+ if(period==='month'){start=new Date(now.getFullYear(),now.getMonth(),1);return {start,end,label:now.toLocaleDateString('en-GB',{month:'long',year:'numeric'}),short:'this month'}}
+ if(period==='3m'){start=new Date(now.getFullYear(),now.getMonth()-2,1);return {start,end,label:'Last 3 months',short:'in the last 3 months'}}
+ if(period==='12m'){start=new Date(now.getFullYear(),now.getMonth()-11,1);return {start,end,label:'Last 12 months',short:'in the last 12 months'}}
+ let y=now.getFullYear(),taxStart=new Date(y,3,6);if(now<taxStart)taxStart=new Date(y-1,3,6);let taxEnd=new Date(taxStart.getFullYear()+1,3,6);
+ return {start:taxStart,end:now<taxEnd?end:taxEnd,label:'UK tax year '+taxStart.getFullYear()+'/'+String(taxStart.getFullYear()+1).slice(-2),short:'this tax year'};
+}
+function reportInRange(d,r){return d instanceof Date&&!isNaN(d)&&d>=r.start&&d<r.end}
+function setReportPeriod(p){reportPeriod=p;renderReports()}
+function openReports(){show('reports');renderReports();}
+function renderReports(){
+ if(!document.getElementById('reports'))return;
+ let r=reportRange(reportPeriod);
+ [['Month','month'],['3','3m'],['12','12m'],['Tax','tax']].forEach(([id,p])=>{let el=document.getElementById('rpFilter'+id);if(el)el.classList.toggle('active',reportPeriod===p)});
+ reportPeriodTitle.textContent=r.label;
+ rpPaidLabel.textContent='Payments received '+r.short;rpInvLabel.textContent='Invoiced '+r.short;rpCompletedLabel.textContent='Jobs completed '+r.short;
+ let payments=reportPaymentRows(),periodPayments=payments.filter(p=>reportInRange(p.date,r)),paidPeriod=periodPayments.reduce((n,p)=>n+p.amount,0);
+ let periodInv=(data.invoices||[]).filter(inv=>reportInRange(reportDateFromAny(inv.date,inv.createdAt),r)),periodInvValue=periodInv.reduce((n,i)=>n+Number(i.price||0),0);
+ let owed=(data.invoices||[]).reduce((n,i)=>n+Math.max(0,Number(i.price||0)-Number(i.paid||0)),0);
+ let complete=(data.appointments||[]).filter(a=>['Completed','Invoiced','Paid'].includes(a.status||'')&&reportInRange(reportDateFromAny(a.completedDate||a.date,a.completedAt),r)).length;
+ let avg=periodInv.length?periodInvValue/periodInv.length:0;
+ let periodQuotes=(data.quotes||[]).filter(q=>reportInRange(reportDateFromAny(q.date,q.createdAt),r));
+ let eligible=periodQuotes.filter(q=>['Accepted','Declined'].includes(q.status||'')),accepted=eligible.filter(q=>q.status==='Accepted').length,win=eligible.length?Math.round(accepted/eligible.length*100):0;
+ let openWon=(data.quotes||[]).filter(q=>q.status==='Accepted').reduce((n,q)=>n+Number(q.price||0),0);
+ let overdue=(data.invoices||[]).filter(i=>i.status==='Overdue').reduce((n,i)=>n+Math.max(0,Number(i.price||0)-Number(i.paid||0)),0);
+ rpMonthPaid.textContent='£'+paidPeriod.toFixed(2);rpMonthPaidNote.textContent=periodPayments.length+' payment'+(periodPayments.length===1?'':'s')+' recorded';
+ rpMonthInvoiced.textContent='£'+periodInvValue.toFixed(0);rpOutstanding.textContent='£'+owed.toFixed(0);rpCompleted.textContent=complete;rpAverageJob.textContent=periodInv.length?'£'+avg.toFixed(0):'—';rpWinRate.textContent=eligible.length?win+'%':'—';rpWonRemaining.textContent='£'+openWon.toFixed(0);rpOverdue.textContent='£'+overdue.toFixed(0);
+
+ let now=new Date(),months=[];for(let i=11;i>=0;i--){let d=new Date(now.getFullYear(),now.getMonth()-i,1),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');months.push({key,label:d.toLocaleDateString('en-GB',{month:'short'}),inv:0,paid:0})}
+ let map=Object.fromEntries(months.map(m=>[m.key,m]));
+ (data.invoices||[]).forEach(inv=>{let key=reportMonthKeyFromUK(inv.date)||reportMonthKeyFromISO(inv.createdAt);if(map[key])map[key].inv+=Number(inv.price||0)});
+ payments.forEach(p=>{if(map[p.month])map[p.month].paid+=Number(p.amount||0)});
+ let max=Math.max(1,...months.map(m=>m.inv));
+ report12Months.innerHTML=months.map(m=>{let pct=m.inv>0?Math.max(3,m.inv/max*100):0;return `<div class="month-row"><strong>${m.label}</strong><div class="month-bar ${m.inv>0?'':'zero'}"><i style="width:${pct}%"></i></div><div class="month-values">£${m.inv.toFixed(0)}<small>Paid £${m.paid.toFixed(0)}</small></div></div>`}).join('');
+
+ let invTotal=(data.invoices||[]).reduce((n,i)=>n+Number(i.price||0),0),lifetimePaid=payments.reduce((n,p)=>n+p.amount,0),allCompleted=(data.appointments||[]).filter(a=>['Completed','Invoiced','Paid'].includes(a.status||'')).length;
+ reportSnapshot.innerHTML=`<strong>Selected period:</strong> ${esc(r.label)}<br><strong>Period invoiced:</strong> £${periodInvValue.toFixed(2)} · <strong>Period received:</strong> £${paidPeriod.toFixed(2)}<br><br><strong>Lifetime invoiced:</strong> £${invTotal.toFixed(2)}<br><strong>Lifetime payments recorded:</strong> £${lifetimePaid.toFixed(2)}<br><strong>Invoices:</strong> ${(data.invoices||[]).length} · <strong>Quotes:</strong> ${(data.quotes||[]).length} · <strong>Customers:</strong> ${(data.customers||[]).length}<br><strong>Completed jobs recorded:</strong> ${allCompleted}<br><br>Figures are based on the records stored in TradePro on this device.`;
+}
+function render(){
+data.invoices.forEach(updateInvoiceStatus);
+quoteCount.innerText=data.quotes.length;invoiceCount.innerText=data.invoices.length;customerCount.innerText=data.customers.length;
+let owed=data.invoices.filter(x=>(x.status||"Unpaid")!=="Paid").reduce((a,b)=>a+Math.max(0,Number(b.price||0)-Number(b.paid||0)),0);
+let nowMonth=new Date(),monthKey=nowMonth.getFullYear()+"-"+String(nowMonth.getMonth()+1).padStart(2,"0");
+function sameMonthUKDate(v){let m=String(v||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return !!m&&(m[3]+"-"+String(m[2]).padStart(2,"0"))===monthKey}
+function sameMonthISO(v){if(!v)return false;let d=new Date(v);return !isNaN(d)&&d.getFullYear()===nowMonth.getFullYear()&&d.getMonth()===nowMonth.getMonth()}
+let totalPaidThisMonth=0,depositPaidThisMonth=0;data.invoices.forEach(inv=>{let payments=Array.isArray(inv.payments)?inv.payments:[];if(payments.length){payments.forEach(p=>{if(sameMonthUKDate(p.date)||sameMonthISO(p.at)){let a=Number(p.amount||0);totalPaidThisMonth+=a;if(String(p.type||"").toLowerCase().includes("deposit"))depositPaidThisMonth+=a;}})}else if(Number(inv.paid||0)>0&&(sameMonthISO(inv.lastPaymentAt)||sameMonthUKDate(inv.date))){totalPaidThisMonth+=Number(inv.paid||0);}});
+outstanding.innerText="£"+owed.toFixed(0);sales.innerText="£"+totalPaidThisMonth.toFixed(2);
+let monthInv=data.invoices.filter(inv=>sameMonthUKDate(inv.date)||sameMonthISO(inv.createdAt)),monthInvValue=monthInv.reduce((a,b)=>a+Number(b.price||0),0);if(document.getElementById("monthInvoiced"))monthInvoiced.innerText="£"+monthInvValue.toFixed(0);if(document.getElementById("monthInvoiceCount"))monthInvoiceCount.innerText=monthInv.length+" invoice"+(monthInv.length===1?"":"s");if(document.getElementById("monthDeposits"))monthDeposits.innerText="£"+depositPaidThisMonth.toFixed(0);
+let accepted=data.quotes.filter(q=>(q.status||"")==="Accepted"),acceptedValue=accepted.reduce((a,b)=>a+Number(b.price||0),0);if(document.getElementById("acceptedWork"))acceptedWork.innerText="£"+acceptedValue.toFixed(0);if(document.getElementById("acceptedQuoteCount"))acceptedQuoteCount.innerText=accepted.length+" open accepted quote"+(accepted.length===1?"":"s");
+let overdue=data.invoices.filter(x=>(x.status||'')==='Overdue'),overdueAmt=overdue.reduce((a,b)=>a+Math.max(0,Number(b.price||0)-Number(b.paid||0)),0);overdueCount.innerText=overdue.length;overdueValue.innerText='£'+overdueAmt.toFixed(0)+' overdue';
+let upcoming=upcomingAppointments();upcomingCount.innerText=upcoming.length;nextJobText.innerText=upcoming[0]?(dayLabelForAppointment(upcoming[0])+(upcoming[0].time?' · '+upcoming[0].time:'')+' · '+(upcoming[0].customer||'Customer')):'Nothing booked';let weekJobs=appointmentsNext7Days();if(document.getElementById('weekJobsCount'))weekJobsCount.innerText=weekJobs.length;if(document.getElementById('weekJobsText'))weekJobsText.innerText=weekJobs.length?(weekJobs.length+' booked visit'+(weekJobs.length===1?'':'s')+' in next 7 days'):'No booked visits';let completedMonth=completedAppointmentsThisMonth();if(document.getElementById('completedMonthCount'))completedMonthCount.innerText=completedMonth.length;if(document.getElementById('completedMonthText'))completedMonthText.innerText=completedMonth.length?(completedMonth.length+' job'+(completedMonth.length===1?'':'s')+' completed'):'No completed jobs';
+
+let cs=(document.getElementById('customerSearch')?.value||'').toLowerCase();let crows=data.customers.map((x,i)=>({c:normalizeCustomer(x),i})).filter(r=>!cs||[r.c.name,fullAddress(r.c),contactText(r.c)].join(' ').toLowerCase().includes(cs));customerList.innerHTML=crows.length?crows.map(({c,i})=>`<div class="item clickable" onclick="openCustomer(${i})"><strong>${esc(c.name)}</strong><small>${esc(fullAddress(c))}<br>${esc(contactText(c))}</small></div>`).join(''):(data.customers.length?'<div class="empty">No matching customers.</div>':'<div class="empty">No customers saved yet.</div>');
+
+let qs=(document.getElementById("quoteSearch")?.value||"").toLowerCase();let qrows=data.quotes.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!qs||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(qs));quoteList.innerHTML=qrows.length?qrows.map(({x,i,c})=>`<div class="item clickable" onclick="openQuote(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Quote")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Draft")}</small></div>`).join(""):(data.quotes.length?'<div class="empty">No matching quotes.</div>':'<div class="empty">No quotes saved yet.</div>');
+
+let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let irows=data.invoices.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!is||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(is));invoiceList.innerHTML=irows.length?irows.map(({x,i,c})=>`<div class="item clickable" onclick="openInvoice(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Invoice")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Unpaid")}</small></div>`).join(""):(data.invoices.length?'<div class="empty">No matching invoices.</div>':'<div class="empty">No invoices saved yet.</div>');
+
+[
+"businessName","ownerName",
+"businessAddress1","businessAddress2","businessTown","businessPostcode",
+"businessPhone","businessEmail","businessWebsite",
+"companyNumber","vatNumber","vatRate",
+"accountName","sortCode","accountNumber","paymentNote","paymentLink",
+"rate","travel","markup","overheadRate","contingency","profit","paymentDays","quoteValidDays","depositPercent"
+].forEach(id=>{let v=localStorage.getItem(id);if(v!==null&&document.getElementById(id))document.getElementById(id).value=v});
+if(document.getElementById("showQROnInvoice"))showQROnInvoice.checked=localStorage.getItem("showQROnInvoice")==="1";
+if(document.getElementById("vatRegistered"))vatRegistered.checked=localStorage.getItem("vatRegistered")==="1";
+if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
+renderPriceBook();renderJobTypeOptions();renderDiary();if(document.getElementById('reports'))renderReports();renderReadiness();
+}
+render();
+window.addEventListener("storage",e=>{if(e.key==="tradepro"){syncDataFromStorage();render();toast("TradePro data refreshed")}});
+window.addEventListener("focus",()=>{syncDataFromStorage();render()});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){syncDataFromStorage();render()}});
+
+let lastToolResult={description:"",price:0,hours:0,materials:0};
+function showToolPanel(id){
+ document.querySelectorAll('.heatingPanel').forEach(p=>p.style.display='none');
+ let el=document.getElementById(id);if(el)el.style.display='block';
+ setTimeout(()=>el?.scrollIntoView({behavior:'smooth',block:'start'}),40);
+}
+function pricingFromInputs(h,m,diff='Standard'){
+ h=Math.max(0,Number(h)||0);m=Math.max(0,Number(m)||0);
+ let rate=settingNum('rate',55),travel=settingNum('travel',15),markup=settingNum('markup',20)/100,overhead=settingNum('overheadRate',10)/100,cont=settingNum('contingency',5)/100,profit=settingNum('profit',20)/100;
+ let mult={Easy:.9,Standard:1,Complex:1.15,'Very Complex':1.3}[diff]||1;
+ let labour=h*rate,subtotal=labour+m*(1+markup)+travel+(labour+m)*overhead,cost=subtotal*mult*(1+cont),price=cost/Math.max(.05,1-profit);
+ return {hours:h,materials:m,labour,price:Math.round(price/5)*5};
+}
+function setToolResult(boxId,title,desc,p){
+ lastToolResult={description:desc,price:p.price,hours:p.hours,materials:p.materials};
+ let b=document.getElementById(boxId);if(!b)return;b.style.display='block';
+ b.innerHTML=`<div class="small">${esc(title)}</div><div class="big">£${Number(p.price).toFixed(2)}</div><div>${Number(p.hours).toFixed(1)} labour hours · Materials allowance £${Number(p.materials).toFixed(2)}</div><div class="toolbuttons"><button class="green" onclick="useLastToolInJob()">Use in New Job</button><button class="secondary" onclick="show('pricebook')">Open Price Book</button></div><div class="small" style="margin-top:10px">Calculated from your saved labour rate, markup, overhead, contingency and profit settings. Review before quoting.</div>`;
+}
+function useLastToolInJob(){
+ show('job');description.value=lastToolResult.description||'Heating job';hours.value=lastToolResult.hours||0;materials.value=lastToolResult.materials||0;difficulty.value='Standard';
+ currentPrice=Number(lastToolResult.price)||0;recommended.innerText='£'+currentPrice.toFixed(2);breakdown.innerText='Imported from Heating Tools — review before saving';result.style.display='block';
+}
+function calcHeatingSystem(){
+ let r=Math.max(0,Number(hsRads.value)||0),pipe=Math.max(0,Number(hsPipe.value)||0),zones=Math.max(1,Number(hsZones.value)||1),m=Math.max(0,Number(hsMaterials.value)||0);
+ let plantHours={none:0,combi:16,system:20,heatpump:40}[hsPlant.value]||0;
+ let h=r*1.75+pipe*.18+plantHours+Math.max(0,zones-1)*2+(Number(hsFlush.value)||0)+4;
+ let p=pricingFromInputs(h,m,hsDifficulty.value);
+ let plantName=hsPlant.options[hsPlant.selectedIndex].text;
+ let desc=`Full heating system: ${r} radiators, approx. ${pipe}m pipework, ${plantName}, ${zones} zone(s)${hsNotes.value.trim()?'. '+hsNotes.value.trim():''}`;
+ setToolResult('hsResult','Recommended customer price',desc,p);
+}
+function calcGasLoad(){
+ let total=['gasBoiler','gasCooker','gasOther1','gasOther2'].reduce((a,id)=>a+(Number(document.getElementById(id).value)||0),0);
+ let m3h=total/10.76,run=Number(gasRun.value)||0,fittings=Number(gasFittings.value)||0;
+ gasResult.style.display='block';
+ gasResult.innerHTML=`<div class="small">Total connected appliance input</div><div class="big">${total.toFixed(1)} kW</div><div>Indicative gas volume ≈ <strong>${m3h.toFixed(2)} m³/h</strong></div><div style="margin-top:8px"><span class="badge">Run ${run.toFixed(1)} m</span><span class="badge">${fittings} fittings</span></div><div class="safety" style="margin-top:12px">Do not select pipe diameter from this figure alone. Complete the required gas pipe pressure-loss/sizing calculation using the applicable standard, actual pipe material/fittings, meter/regulator conditions, appliance requirements and permitted pressure drop.</div>`;
+}
+function calcUnvented(){
+ let base=uvType.value==='new'?14:9;let h=base+(Number(uvPipe.value)||0)+(Number(uvDischarge.value)||0)+(Number(uvControls.value)||0);let m=Math.max(0,Number(uvMaterials.value)||0);let p=pricingFromInputs(h,m,'Standard');
+ let desc=`${uvType.value==='new'?'New unvented cylinder installation':'Replace unvented cylinder'} — ${uvSize.value}L, pipework ${uvPipe.options[uvPipe.selectedIndex].text.toLowerCase()}, discharge ${uvDischarge.options[uvDischarge.selectedIndex].text.toLowerCase()}`;
+ setToolResult('uvResult','Recommended customer price',desc,p);
+}
+function calcHeatPump(){
+ let emit=Math.max(0,Number(hpEmitters.value)||0);let h=(Number(hpSize.value)||0)+emit*2.25+(Number(hpCylinder.value)||0)+(Number(hpPipe.value)||0)+(Number(hpControls.value)||0);let m=Math.max(0,Number(hpMaterials.value)||0);let p=pricingFromInputs(h,m,'Standard');
+ let desc=`Heat-pump installation estimate: ${hpSize.options[hpSize.selectedIndex].text}, ${emit} emitter upgrade(s)${Number(hpCylinder.value)?', new cylinder':''}`;
+ setToolResult('hpResult','Recommended customer price',desc,p);
+}
+function exportBackup(){
+ let payload={app:'TradePro UK Plumber Edition',version:TRADEPRO_VERSION,exportedAt:new Date().toISOString(),data,settings:{}};
+ ['businessName','ownerName','businessAddress1','businessAddress2','businessTown','businessPostcode','businessPhone','businessEmail','businessWebsite','companyNumber','vatNumber','vatRegistered','vatRate','accountName','sortCode','accountNumber','paymentNote','paymentLink','rate','travel','markup','overheadRate','contingency','profit','paymentDays','quoteValidDays','depositPercent','showQROnInvoice','businessLogo','lastBackupAt'].forEach(k=>payload.settings[k]=localStorage.getItem(k));
+ let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='TradePro_Backup_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ localStorage.setItem('lastBackupAt',new Date().toISOString());renderReadiness();toast('Backup exported');
+}
+function importBackup(event){
+ let file=event.target.files?.[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let p=JSON.parse(reader.result);if(!p||!p.data)throw new Error('Invalid backup');if(!confirm('Import this TradePro backup? Current data on this device will be replaced.'))return;data=p.data;if(!Array.isArray(data.customers))data.customers=[];if(!Array.isArray(data.quotes))data.quotes=[];if(!Array.isArray(data.invoices))data.invoices=[];if(!Array.isArray(data.appointments))data.appointments=[];if(!Array.isArray(data.priceBook)||!data.priceBook.length)data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));Object.entries(p.settings||{}).forEach(([k,v])=>{if(v===null||v===undefined)localStorage.removeItem(k);else localStorage.setItem(k,String(v))});localStorage.setItem('lastRestoreAt',new Date().toISOString());save();renderReadiness();alert('Backup imported successfully');show('home')}catch(e){alert('Could not import that backup file.')}};reader.readAsText(file);event.target.value='';
+}
+
+function calcRadiator(){
+ let L=parseFloat(radLength.value)||0,W=parseFloat(radWidth.value)||0,H=parseFloat(radHeight.value)||0;if(!L||!W||!H){alert('Enter the room length, width and height.');return}
+ let target=parseFloat(radRoom.value)||21,ins=parseFloat(radIns.value)||1,walls=parseFloat(radWalls.value)||1,windows=parseFloat(radWindows.value)||1,source=parseFloat(radSource.value)||1;
+ let volume=L*W*H,tempFactor=Math.max(.85,Math.min(1.15,target/21)),watts=Math.round(volume*50*ins*walls*windows*tempFactor),selected=Math.ceil((watts*source)/100)*100,btu=Math.round(watts*3.412),selectedBtu=Math.round(selected*3.412);
+ let low=source>1;radResult.style.display='block';
+ radResult.innerHTML=`<div class="small">Estimated room heat requirement</div><div class="big">${watts.toLocaleString()} W</div><div>≈ ${btu.toLocaleString()} BTU/hr</div><hr style="border:0;border-top:1px solid #dce5eb;margin:14px 0"><strong>Emitter selection starting point:</strong> ${selected.toLocaleString()} W / ${selectedBtu.toLocaleString()} BTU/hr${low?'<div class="safety" style="margin-top:12px">Low-temperature systems require emitter output to be checked at the actual design flow/return/room temperatures using manufacturer data/correction factors.</div>':''}<div class="toolbuttons"><button class="green" onclick="useRadiatorInJob(${selected},${selectedBtu})">Use in New Job</button><button class="secondary" onclick="showToolPanel('systemPanel')">Full System</button></div><div class="small" style="margin-top:10px">Screening estimate only — verify design-critical selections with a recognised room-by-room heat-loss method.</div>`;
+}
+function useRadiatorInJob(watts,btu){
+ lastToolResult={description:`Radiator / emitter for room — target approx. ${watts} W (${btu} BTU/hr)`,price:0,hours:1.5,materials:15};show('job');description.value=lastToolResult.description;hours.value=1.5;materials.value=15;difficulty.value='Standard';calculate();
+}
+
+
+/* Build 4.4 Technical Library + Engineer Reports */
+let techFilter="boiler";
+const TECH_LIBRARY=[
+ {type:"boiler",make:"Worcester Bosch",title:"Gas boiler manuals",desc:"Official Worcester Bosch gas boiler manual library including Greenstar ranges.",url:"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/gas-boiler-manuals"},
+ {type:"oil",make:"Worcester Bosch",title:"Oil boiler manuals",desc:"Official Worcester Bosch oil boiler manuals including Heatslave and Danesmoor ranges.",url:"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/oil-boiler-manuals"},
+ {type:"boiler",make:"Vaillant",title:"Literature & manuals",desc:"Installer literature finder for installation, service, user, technical and spare-parts manuals.",url:"https://professional.vaillant.co.uk/for-installers/literature-finder/"},
+ {type:"boiler",make:"Baxi",title:"Literature library",desc:"Official Baxi guides and product manuals for boilers, controls, cylinders and heat pumps.",url:"https://www.baxi.co.uk/support/literature-library"},
+ {type:"oil",make:"Grant UK",title:"Oil boiler manuals & technical literature",desc:"Official Grant professional manuals, Vortex installation instructions and burner settings.",url:"https://www.grantuk.com/professional/support/manuals-brochures/"},
+ {type:"boiler",make:"Ideal Heating",title:"Official manual search",desc:"Search Ideal Heating's official site for installation, servicing and user literature.",searchDomain:"idealheating.com"},
+ {type:"boiler",make:"Viessmann",title:"Official manual search",desc:"Search Viessmann UK literature for boiler and heating product manuals.",searchDomain:"viessmann.co.uk"},
+ {type:"boiler",make:"Glow-worm",title:"Official manual search",desc:"Search Glow-worm's official site for boiler installation and servicing manuals.",searchDomain:"glow-worm.co.uk"},
+ {type:"boiler",make:"Alpha",title:"Official manual search",desc:"Search Alpha Heating Innovation for boiler manuals and technical literature.",searchDomain:"alpha-innovation.co.uk"},
+ {type:"oil",make:"Warmflow",title:"Official manual search",desc:"Search Warmflow for oil boiler installation and service information.",searchDomain:"warmflow.co.uk"},
+ {type:"aircon",make:"Daikin",title:"Air-conditioning manuals",desc:"Search official Daikin UK technical literature for split, multi-split and heat-pump systems.",searchDomain:"daikin.co.uk"},
+ {type:"aircon",make:"Mitsubishi Electric",title:"Air-conditioning manuals",desc:"Search official Mitsubishi Electric UK technical literature and fault information.",searchDomain:"les.mitsubishielectric.co.uk"},
+ {type:"aircon",make:"Fujitsu",title:"Air-conditioning manuals",desc:"Search official Fujitsu General UK literature for air-conditioning systems.",searchDomain:"fujitsu-general.com"},
+ {type:"aircon",make:"Panasonic",title:"Air-conditioning manuals",desc:"Search official Panasonic heating and cooling technical documentation.",searchDomain:"aircon.panasonic.eu"},
+ {type:"aircon",make:"Toshiba",title:"Air-conditioning manuals",desc:"Search official Toshiba Air Conditioning UK technical documents and service information.",searchDomain:"toshiba-aircon.co.uk"}
+];
+function setTechFilter(type){techFilter=type;["boiler","oil","aircon"].forEach(x=>{let b=document.getElementById("techTab"+(x==="boiler"?"Boiler":x==="oil"?"Oil":"Aircon"));if(b)b.classList.toggle("active",x===type)});renderTechLibrary()}
+function techSearchUrl(item,q){if(item.url)return item.url;return "https://www.google.com/search?q="+encodeURIComponent("site:"+item.searchDomain+" "+item.make+" "+(q||"")+" installation service manual PDF")}
+function renderTechLibrary(){let box=document.getElementById("techList");if(!box)return;let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();let items=TECH_LIBRARY.filter(x=>x.type===techFilter&&(!q||(x.make+" "+x.title+" "+x.desc).toLowerCase().includes(q)));box.innerHTML=items.length?items.map(x=>`<div class="tech-item"><h4>${esc(x.make)} · ${esc(x.title)}</h4><p>${esc(x.desc)}</p><div class="tech-buttons"><a class="primary-link" target="_blank" rel="noopener" href="${techSearchUrl(x,q)}">Open official manuals</a><button type="button" onclick="searchMakeManual('${escAttr(x.make)}')">Search model / PDF</button></div></div>`).join(""):'<div class="notice">No matching manufacturer in the starter library. Use the quick search below to look up the exact make/model.</div>'}
+function searchMakeManual(make){let model=(document.getElementById("techSearch")?.value||"").trim();let item=TECH_LIBRARY.find(x=>x.make===make&&x.type===techFilter)||TECH_LIBRARY.find(x=>x.make===make);let domain=item&&item.searchDomain?"site:"+item.searchDomain+" ":"";window.open("https://www.google.com/search?q="+encodeURIComponent(domain+make+" "+model+" installation servicing manual PDF"),"_blank")}
+function searchTechnicalWeb(){let q=(document.getElementById("faultSearch")?.value||"").trim();if(!q){toast("Enter a manufacturer, model or fault code");return}window.open("https://www.google.com/search?q="+encodeURIComponent(q+" official service manual fault code PDF UK"),"_blank")}
+function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&quot;")}
+
+let currentEngineerReportId=null;
+function reportVal(id){return document.getElementById(id)?.value||""}
+function newEngineerReport(type){currentEngineerReportId=null;document.getElementById("erHeading").textContent=type;document.getElementById("erType").value=type;document.getElementById("erDate").value=new Date().toISOString().slice(0,10);document.getElementById("erStatus").value="Completed";["erCustomer","erAddress","erPhone","erEmail","erMake","erModel","erSerial","erEquipment","erRefrigerant","erCharge","erAdded","erRecovered","erFgasRef","erReadings","erWork","erParts","erFault","erRecommendations","erNextService","erSignature","erNotes"].forEach(id=>{let e=document.getElementById(id);if(e)e.value=""});document.getElementById("erLeak").value="";document.getElementById("erDelete").style.display="none";show("engineerReportEdit")}
+function collectEngineerReport(){return {id:currentEngineerReportId||("ER-"+Date.now()),type:reportVal("erType"),date:reportVal("erDate"),status:reportVal("erStatus"),customer:reportVal("erCustomer"),address:reportVal("erAddress"),phone:reportVal("erPhone"),email:reportVal("erEmail"),make:reportVal("erMake"),model:reportVal("erModel"),serial:reportVal("erSerial"),equipment:reportVal("erEquipment"),refrigerant:reportVal("erRefrigerant"),charge:reportVal("erCharge"),added:reportVal("erAdded"),recovered:reportVal("erRecovered"),leak:reportVal("erLeak"),fgasRef:reportVal("erFgasRef"),readings:reportVal("erReadings"),work:reportVal("erWork"),parts:reportVal("erParts"),fault:reportVal("erFault"),recommendations:reportVal("erRecommendations"),nextService:reportVal("erNextService"),signature:reportVal("erSignature"),notes:reportVal("erNotes"),updatedAt:new Date().toISOString()}}
+function saveEngineerReport(){let r=collectEngineerReport();let i=data.engineerReports.findIndex(x=>x.id===r.id);if(i>=0)data.engineerReports[i]=r;else data.engineerReports.unshift(r);currentEngineerReportId=r.id;save();document.getElementById("erDelete").style.display="block";toast("Engineer report saved");renderEngineerReports()}
+function renderEngineerReports(){let box=document.getElementById("engineerReportList");if(!box)return;let arr=(data.engineerReports||[]).slice().sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));box.innerHTML=arr.length?arr.map(r=>`<div class="saved-report"><strong>${esc(r.type||"Engineer Report")}</strong><div class="meta">${esc(r.date||"")} · ${esc(r.customer||"No customer")} · ${esc(r.make||"")} ${esc(r.model||"")} · ${esc(r.status||"Draft")}</div><div class="detail-actions"><button class="secondary" onclick="editEngineerReport('${r.id}')">Open</button><button class="secondary" onclick="quickPrintEngineerReport('${r.id}')">PDF</button></div></div>`).join(""):'<div class="notice">No engineer reports saved yet.</div>'}
+function editEngineerReport(id){let r=(data.engineerReports||[]).find(x=>x.id===id);if(!r)return;currentEngineerReportId=id;let map={erType:"type",erDate:"date",erStatus:"status",erCustomer:"customer",erAddress:"address",erPhone:"phone",erEmail:"email",erMake:"make",erModel:"model",erSerial:"serial",erEquipment:"equipment",erRefrigerant:"refrigerant",erCharge:"charge",erAdded:"added",erRecovered:"recovered",erLeak:"leak",erFgasRef:"fgasRef",erReadings:"readings",erWork:"work",erParts:"parts",erFault:"fault",erRecommendations:"recommendations",erNextService:"nextService",erSignature:"signature",erNotes:"notes"};Object.entries(map).forEach(([id,k])=>{let e=document.getElementById(id);if(e)e.value=r[k]||""});document.getElementById("erHeading").textContent=r.type||"Engineer Report";document.getElementById("erDelete").style.display="block";show("engineerReportEdit")}
+function deleteEngineerReport(){if(!currentEngineerReportId)return;if(!confirm("Delete this engineer report?"))return;data.engineerReports=(data.engineerReports||[]).filter(x=>x.id!==currentEngineerReportId);save();currentEngineerReportId=null;toast("Report deleted");show("engineerReports")}
+function reportSection(title,text){return text?`<div class="rp-section"><h3>${esc(title)}</h3><div class="rp-text">${esc(text)}</div></div>`:""}
+function renderReportPaper(r){let business=setting("businessName","TradePro UK"),owner=setting("ownerName","");let fgas=[r.refrigerant&&`Refrigerant: ${r.refrigerant}`,r.charge&&`System charge: ${r.charge} kg`,r.added&&`Added: ${r.added} kg`,r.recovered&&`Recovered: ${r.recovered} kg`,r.leak&&`Leak check: ${r.leak}`,r.fgasRef&&`Engineer/F-Gas ref: ${r.fgasRef}`].filter(Boolean).join("\n");return `<h1>${esc(business)}</h1><h2>${esc(r.type||"Engineer Report")}</h2><div class="rp-grid"><div class="rp-box"><small>Customer</small><strong>${esc(r.customer||"Not entered")}</strong><div>${esc(r.address||"")}</div></div><div class="rp-box"><small>Report</small><strong>${esc(r.date||"")}</strong><div>Status: ${esc(r.status||"")}</div></div><div class="rp-box"><small>Equipment</small><strong>${esc((r.make||"")+" "+(r.model||""))}</strong><div>${esc(r.equipment||"")} ${r.serial?"· S/N "+esc(r.serial):""}</div></div><div class="rp-box"><small>Engineer / Business</small><strong>${esc(owner||business)}</strong><div>${esc(business)}</div></div></div>${reportSection("F-Gas / Refrigerant",fgas)}${reportSection("Readings / Test Results",r.readings)}${reportSection("Fault / Diagnosis",r.fault)}${reportSection("Work Carried Out",r.work)}${reportSection("Parts / Materials",r.parts)}${reportSection("Recommendations / Further Work",r.recommendations)}${r.nextService?reportSection("Next Service Due",r.nextService):""}${reportSection("Engineer Notes",r.notes)}${r.signature?`<div class="rp-section"><h3>Customer / Site Acknowledgement</h3><div>Signed/acknowledged by: <strong>${esc(r.signature)}</strong></div></div>`:""}<div style="margin-top:28px;font-size:11px;color:#6f7a84">Generated with TradePro UK · ${esc(TRADEPRO_VERSION)}</div>`}
+function previewEngineerReport(){let r=collectEngineerReport();document.getElementById("reportPaper").innerHTML=renderReportPaper(r);show("reportPrint")}
+function quickPrintEngineerReport(id){let r=(data.engineerReports||[]).find(x=>x.id===id);if(!r)return;currentEngineerReportId=id;document.getElementById("reportPaper").innerHTML=renderReportPaper(r);show("reportPrint")}
+
+</script>
+</body>
+</html>
