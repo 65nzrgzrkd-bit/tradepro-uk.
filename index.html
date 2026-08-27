@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 6.4 · V19.1</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 6.5 · V19.2</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -1883,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 6.4 verified Ideal Heating expansion + LPG catalogue audit */
+/* Build 6.5 verified Alpha E-Tec/Evoke expansion + LPG catalogue audit */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1909,6 +1909,8 @@ const DIRECT_MANUALS=[
  {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar i System",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720806945",note:"Official Worcester Bosch Greenstar 12-24 i System ErP manual"},
 
  {type:"boiler",categories:["naturalgas"],make:"Vaillant",model:"ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant new-generation ecoTEC plus installation manual · exact system boiler outputs: 610, 615, 620, 625, 630 and 635 · do not use for legacy 612/618/624/637 models"},
+ {type:"boiler",categories:["naturalgas","lpg"],make:"Alpha",model:"E-Tec 28 / E-Tec 33",title:"Installation & Servicing Instructions",url:"https://alpha-heating.ams3.digitaloceanspaces.com/wp-content/uploads/2023/09/27121515/E-Tec-Instructions-Jan22.pdf",note:"Alpha Heating Innovation hosted PDF · March 2022 · exact appliances: E-Tec 28 and E-Tec 33 · manual lists NG and LPG GC numbers and approves Natural Gas G20/G20Y20 and LPG G31"},
+ {type:"boiler",categories:["naturalgas","lpg"],make:"Alpha",model:"Evoke 28 / Evoke 33",title:"Installation & Servicing Instructions",url:"https://alpha-heating.ams3.digitaloceanspaces.com/wp-content/uploads/2023/09/27121411/Evoke-Instructions-Jan-22.pdf",note:"Alpha Heating Innovation hosted PDF · January 2022 revision · exact appliances: Evoke 28 and Evoke 33 · dedicated installation, commissioning, servicing, wiring and fault-finding information"},
  {type:"boiler",make:"Ideal Heating",model:"Logic MAX Combi² C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/31e4e31bdd6fdb3572d7bb2d539ce903/Logic%20MAX%20Combi%20Installation%20%26%20Servicing%20-%2010.2023%20%28UIN%20237660%20A01%29.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4hw7r7ut3zXch9PphO11t5%2Fb7b554ce47c40395d57623ed81025135%2FLogic_MAX_Combi_Installation___Servicing_-_10.2023__UIN_237660_A01_.pdf",note:"Official Ideal Heating PDF"},
  {type:"boiler",categories:["naturalgas","lpg"],make:"Ideal Heating",model:"Logic+ Combi C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/b3b22a7e1594c34276954b43b63ce838/LOGICPLUS-Combi-Installation%26Servicing-10.2023-UIN-237662-A01.pdf.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4X6bKmLPXojsPZKjAt1fpB%2F64b23cd5c9ac7752930e77f05db381fd%2FLOGICPLUS-Combi-Installation_Servicing-10.2023-UIN-237662-A01.pdf.pdf",note:"Official Ideal Heating Logic+ Combi installation & servicing manual · C24/C30/C35 · manual includes Natural Gas and Propane variants · UIN 237662 A01 · October 2023"},
  {type:"boiler",categories:["naturalgas","lpg"],make:"Ideal Heating",model:"Logic System² S15/S18/S24/S30",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/ffdf538a99df3e215fb6a6ecce13aa8e/Logic%20System2%20Installation%20%26%20Servicing%20-%2009.2024%20UIN%20237665%20A03.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F6J8qVq1M9nYWYCDncBAfJN%2F2b445950b9eebc727705cd642874c060%2FLogic_System2_Installation___Servicing_-_09.2024_UIN_237665_A03.pdf",note:"Official Ideal Heating Logic System² installation & servicing manual · S15/S18/S24/S30 · Natural Gas and Propane covered by the appliance instructions · UIN 237665 A03 · September 2024"},
@@ -2005,6 +2007,7 @@ const KNOWN_BOILER_MODELS={
 const CATEGORY_MODEL_CATALOGUES={
  naturalgas:KNOWN_BOILER_MODELS,
  lpg:{
+  "Alpha":["E-Tec 28","E-Tec 33","Evoke 28","Evoke 33"],
   "Ideal Heating":["Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30"],
   "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 600 System 2 30","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30"]
  },
@@ -2041,6 +2044,8 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Worcester Bosch|Greenstar 24i Junior / Greenstar 28i Junior":["Greenstar 24i Junior","Greenstar 28i Junior"],
   "Worcester Bosch|Greenstar 25i ErP / Greenstar 30i ErP":["Greenstar 25i ErP","Greenstar 30i ErP"],
   "Vaillant|ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635"],
+  "Alpha|E-Tec 28 / E-Tec 33":["E-Tec 28","E-Tec 33"],
+  "Alpha|Evoke 28 / Evoke 33":["Evoke 28","Evoke 33"],
   "Ideal Heating|Logic MAX Combi² C24/C30/C35":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35"],
   "Ideal Heating|Logic+ Combi C24/C30/C35":["Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35"],
   "Ideal Heating|Logic System² S15/S18/S24/S30":["Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30"],
