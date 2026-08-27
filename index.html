@@ -1019,8 +1019,8 @@ nav{background:#0d2d47;border-top:0;box-shadow:0 -5px 20px rgba(8,35,55,.12)}nav
 </nav>
 
 <script>
-const TRADEPRO_BUILD="9.0";
-const TRADEPRO_VERSION="21.7";
+const TRADEPRO_BUILD="9.1";
+const TRADEPRO_VERSION="21.8";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1923,6 +1923,7 @@ function renderReports(){
  reportSnapshot.innerHTML=`<strong>Selected period:</strong> ${esc(r.label)}<br><strong>Period invoiced:</strong> £${periodInvValue.toFixed(2)} · <strong>Period received:</strong> £${paidPeriod.toFixed(2)}<br><br><strong>Lifetime invoiced:</strong> £${invTotal.toFixed(2)}<br><strong>Lifetime payments recorded:</strong> £${lifetimePaid.toFixed(2)}<br><strong>Invoices:</strong> ${(data.invoices||[]).length} · <strong>Quotes:</strong> ${(data.quotes||[]).length} · <strong>Customers:</strong> ${(data.customers||[]).length}<br><strong>Completed jobs recorded:</strong> ${allCompleted}<br><br>Figures are based on the records stored in PlumbCore on this device.`;
 }
 function daysBetweenDates(a,b){let ms=24*60*60*1000;return Math.floor((b.getTime()-a.getTime())/ms)}
+function todayISO(){let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
 function parseUKStart(v){let m=String(v||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(+m[3],+m[2]-1,+m[1]):null}
 function renderPlumbCoreHome(){
  let bn=document.getElementById('homeBusinessName'),rawName=String(setting('businessName','')||'').trim();if(bn)bn.textContent=rawName||'Set business name';
@@ -1968,7 +1969,7 @@ let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let i
 if(document.getElementById("showQROnInvoice"))showQROnInvoice.checked=localStorage.getItem("showQROnInvoice")==="1";
 if(document.getElementById("vatRegistered"))vatRegistered.checked=localStorage.getItem("vatRegistered")==="1";
 if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
-const safeRender=(name,fn)=>{try{fn()}catch(e){console.error('PlumbCore '+name+' refresh failed',e)}};
+const safeRender=(name,fn)=>{try{fn()}catch(e){console.error('PlumbCore '+name+' refresh failed',e);if(name==='attention'){let a=document.getElementById('attentionSummary'),b=document.getElementById('attentionList');if(a)a.textContent='Check';if(b)b.innerHTML='<div class="attention-ok">Unable to refresh this panel. Open Home again or reload PlumbCore.</div>';}}};
 safeRender('price book',renderPriceBook);safeRender('job types',renderJobTypeOptions);safeRender('diary',renderDiary);if(document.getElementById('reports'))safeRender('reports',renderReports);safeRender('home',renderPlumbCoreHome);safeRender('attention',renderAttention);safeRender('readiness',renderReadiness);
 }
 render();updateNavActive(document.querySelector(".screen.active")?.id||"home");
