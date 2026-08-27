@@ -944,8 +944,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="7.7";
-const TRADEPRO_VERSION="20.4";
+const TRADEPRO_BUILD="7.8";
+const TRADEPRO_VERSION="20.5";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2198,6 +2198,19 @@ function runTechDataIntegrityAudit(){
     if(!exists)issues.push(`Official model source points to unknown catalogue model: ${make} · ${model}`);
     if(!/^https:\/\//i.test(url))issues.push(`Official model source is not HTTPS: ${make} · ${model}`);
   });
+  // Build 7.8: alias integrity — unit identifiers must belong to a real catalogue model.
+  const aliasOwners=new Map();
+  Object.entries(MODEL_SEARCH_ALIASES).forEach(([key,aliases])=>{
+    const split=key.indexOf("|");const make=key.slice(0,split),model=key.slice(split+1);
+    const exists=Object.values(CATEGORY_MODEL_CATALOGUES).some(cat=>(cat?.[make]||[]).some(x=>normaliseModelName(x)===normaliseModelName(model)));
+    if(!exists)issues.push(`Search aliases point to unknown catalogue model: ${make} · ${model}`);
+    if(!Array.isArray(aliases)||!aliases.length)warnings.push(`${make} · ${model}: empty search-alias list`);
+    (aliases||[]).forEach(alias=>{
+      const a=String(alias||"").trim();if(!a){issues.push(`${make} · ${model}: blank search alias`);return}
+      const k=make.toLowerCase()+"|"+normaliseModelName(a);
+      const owner=aliasOwners.get(k);if(owner&&owner!==model)warnings.push(`${make}: unit/search alias ${a} is shared by ${owner} and ${model}`);else aliasOwners.set(k,model);
+    });
+  });
   window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues,warnings};
   if(issues.length)console.warn("TradePro technical-library integrity audit",issues);else console.info(`TradePro technical-library audit passed: ${DIRECT_MANUALS.length} built-in documents checked`);
   return window.TRADEPRO_TECH_AUDIT;
@@ -2223,7 +2236,8 @@ const MANUFACTURER_SOURCES={
 };
 function officialSourceButton(make){const u=MANUFACTURER_SOURCES[make];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official manufacturer library</button>`:''}
 
-/* Build 7.7: exact model-source links and search aliases. Manufacturer webpages are
+/* Build 7.8: expanded exact LG model-source links and unit-code aliases.
+   Build 7.7: exact model-source links and search aliases. Manufacturer webpages are
    deliberately rendered as model-page buttons, never as PDF/manual buttons. */
 const OFFICIAL_MODEL_SOURCES={
  "Panasonic|Etherea R32 KIT-Z20-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z20-cke-cs-z20ckew-cu-z20cke/",
@@ -2236,7 +2250,14 @@ const OFFICIAL_MODEL_SOURCES={
  "Panasonic|PACi NX Elite R32 KIT-71PF3ZH45":"https://www.aircon.panasonic.eu/GB_en/model/kit-71pf3zh45-s-6071pf3e-u-71pzh4e5/",
  "Panasonic|PACi NX Elite R32 KIT-71PU3ZH45":"https://www.aircon.panasonic.eu/GB_en/model/kit-71pu3zh45-s-6071pu3e-u-71pzh4e5/",
  "LG|DUALCOOL Standard Plus PC09SQ":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/pc09sq/",
- "LG|DUALCOOL Deluxe H09S1D":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/h09s1d/"
+ "LG|DUALCOOL Standard Plus PC12SQ":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/pc12sq/",
+ "LG|DUALCOOL Standard Plus PC18SQ":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/pc18sq/",
+ "LG|DUALCOOL Standard Plus PC24SQ":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/pc24sq/",
+ "LG|DUALCOOL Deluxe H09S1D":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/h09s1d/",
+ "LG|DUALCOOL Deluxe H12S1D":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/h12s1d/",
+ "LG|DUALCOOL Premium H12S1P":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/h12s1p/",
+ "LG|ARTCOOL Gallery Special A09GA1":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/a09ga1/",
+ "LG|ARTCOOL Gallery Premium A09GA2":"https://www.lg.com/uk/business/hvac/residential-solutions/residential-air-conditioner/wall-mounted/a09ga2/"
 };
 const MODEL_SEARCH_ALIASES={
  "Panasonic|Etherea R32 KIT-Z20-CKE":["CS-Z20CKEW","CU-Z20CKE"],
@@ -2247,7 +2268,13 @@ const MODEL_SEARCH_ALIASES={
  "Panasonic|Etherea R32 KIT-Z71-CKE":["CS-Z71CKEW","CU-Z71CKE"],
  "Panasonic|PACi NX Elite R32 KIT-71PK4ZH45":["S-5010PK4E","U-71PZH4E5"],
  "Panasonic|PACi NX Elite R32 KIT-71PF3ZH45":["S-6071PF3E","U-71PZH4E5"],
- "Panasonic|PACi NX Elite R32 KIT-71PU3ZH45":["S-6071PU3E","U-71PZH4E5"]
+ "Panasonic|PACi NX Elite R32 KIT-71PU3ZH45":["S-6071PU3E","U-71PZH4E5"],
+ // Build 7.8: exact LG indoor/outdoor identifiers verified from LG UK product data.
+ "LG|DUALCOOL Deluxe H09S1D":["S3UM091A1D0"],
+ "LG|DUALCOOL Deluxe H12S1D":["S3-M121A1D0","S3UM121A1D0"],
+ "LG|DUALCOOL Premium H12S1P":["S3UM121L1C0"],
+ "LG|ARTCOOL Gallery Special A09GA1":["S3NM09EL16A.EK6GEEU","S3UM09EL16A.EC6GEEU"],
+ "LG|ARTCOOL Gallery Premium A09GA2":["S3NM09EL26A.EK6GEEU","S3UM09EL26A.EC6GEEU"]
 };
 function modelAliases(make,model){return MODEL_SEARCH_ALIASES[make+"|"+model]||[]}
 function modelSearchText(make,model){return [make,model,...modelAliases(make,model)].join(" " ).toLowerCase()}
