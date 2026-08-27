@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 4.8 · V17.6</title>
+<title>TradePro UK · Plumber Edition · Build 5.0 · V17.7</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -179,10 +179,36 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 .direct-manual{border:1px solid #dce5eb;border-radius:14px;padding:13px;background:#fff;margin:9px 0}.direct-manual strong{display:block;color:var(--navy);font-size:15px}.direct-manual small{display:block;color:var(--muted);margin:4px 0 10px;line-height:1.35}.direct-manual button{padding:10px 12px;border-radius:10px;font-weight:800}
 @media(max-width:430px){.manual-toolbar{align-items:flex-start}.manual-toolbar button{font-size:12px}.manual-frame-wrap{height:calc(100vh - 245px);min-height:460px}}
 
+
+/* Build 5.0 Engineer Hub */
+.engineer-hub-hero{background:linear-gradient(135deg,#15324b,#244d69);color:#fff;border-radius:18px;padding:17px;margin:0 0 14px}
+.engineer-hub-hero h3{margin:0 0 5px;font-size:20px}.engineer-hub-hero p{margin:0;opacity:.9;font-size:12px;line-height:1.45}
+.hub-quick{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:12px 0}
+.hub-quick button{background:#fff;border-radius:14px;padding:13px 10px;text-align:left;box-shadow:0 4px 14px rgba(0,0,0,.05);font-weight:800;color:var(--navy);min-height:64px}
+.hub-quick button span{display:block;font-size:20px;margin-bottom:5px}.hub-quick button small{display:block;color:var(--muted);font-size:11px;font-weight:500;line-height:1.35}
+.make-card{background:#fff;border:1px solid #dce5eb;border-radius:15px;margin:9px 0;overflow:hidden}
+.make-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 15px;background:#fff;color:var(--navy);text-align:left}
+.make-head b{font-size:15px}.make-head small{display:block;color:var(--muted);font-weight:500;margin-top:3px;font-size:11px}
+.make-chevron{font-size:20px;transition:.2s}.make-card.open .make-chevron{transform:rotate(90deg)}
+.make-body{display:none;padding:0 12px 12px}.make-card.open .make-body{display:block}
+.model-row{border-top:1px solid #edf1f4;padding:12px 2px}.model-row:first-child{border-top:0}
+.model-row strong{display:block;color:var(--navy);font-size:14px}.model-row .model-meta{color:var(--muted);font-size:11px;line-height:1.4;margin:3px 0 8px}
+.model-actions{display:flex;gap:7px;flex-wrap:wrap}.model-actions button{padding:9px 10px;border-radius:9px;font-size:11px;font-weight:800}
+.fav-btn{background:#fff4df!important;color:#7a5200!important}.fav-btn.on{background:#7a5200!important;color:#fff!important}
+.recent-strip{display:grid;grid-template-columns:1fr;gap:8px}.recent-item{background:#f7f9fa;border:1px solid #e2e8ec;border-radius:12px;padding:11px 12px}
+.recent-item b{display:block;font-size:13px;color:var(--navy)}.recent-item small{display:block;color:var(--muted);font-size:11px;margin:3px 0 7px}
+.fault-result{margin-top:12px;background:#fff;border:1px solid #dce5eb;border-radius:14px;padding:14px}
+.fault-result h4{margin:0 0 5px;color:var(--navy)}.fault-result .fault-meaning{font-weight:800;margin:5px 0 10px}
+.check-list{margin:8px 0 0;padding-left:18px}.check-list li{margin:7px 0;line-height:1.4;font-size:13px}
+.fault-caution{background:#fff7e7;border:1px solid #efd699;border-radius:11px;padding:10px;margin-top:11px;color:#6f5311;font-size:11px;line-height:1.45}
+.section-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px}.section-title-row h3{margin:0}
+.count-pill{background:#eaf2f7;color:var(--navy);border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800}
+@media(max-width:430px){.hub-quick{grid-template-columns:1fr 1fr}.make-head{padding:13px}.model-actions{display:grid;grid-template-columns:1fr 1fr}.model-actions button{width:100%}}
+
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 4.8 · V17.6</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 5.0 · V17.7</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -716,11 +742,22 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </section>
 
 
+
 <section id="techLibrary" class="screen">
-<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Technical Library</h2></div>
-<div class="notice"><strong>Engineer Technical Library</strong><br>Natural Gas, LPG/Propane, Oil, Heat Pumps and Air-Con/F-Gas in one place. Verified direct PDFs open full screen; your own manuals can be saved permanently in the TradePro Manual Vault for reliable future/offline access.</div>
-<div class="warning-card"><strong>Engineer use:</strong> Always follow the exact current manufacturer instructions for the appliance, fuel/refrigerant and model revision. Gas work requires appropriate Gas Safe competence; oil work appropriate OFTEC competence; refrigerant work must follow applicable F-Gas rules. LPG/propane suitability or conversion must never be assumed from a natural-gas manual.</div>
-<div class="tech-search"><input id="techSearch" placeholder="Search make, model or manual — e.g. Greenstar 4000, ecoTEC, Aerona, Ecodan" oninput="renderTechLibrary()"></div>
+<div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Engineer Hub</h2></div>
+<div class="engineer-hub-hero"><h3>Plumbing & HVAC at your fingertips</h3><p>Choose the system, manufacturer and exact model. Manuals, fault help, calculators, reports and saved PDFs stay together.</p></div>
+
+<div class="hub-quick">
+<button type="button" onclick="document.getElementById('faultAssistantCard').scrollIntoView({behavior:'smooth',block:'start'})"><span>⚠️</span>Fault Code Assistant<small>Meaning + sensible first checks</small></button>
+<button type="button" onclick="show('heatingTools')"><span>🧮</span>Heating Tools<small>Radiators, gas load, unvented & heat pumps</small></button>
+<button type="button" onclick="show('engineerReports')"><span>📝</span>Engineer Reports<small>Service, fault, F-Gas & commissioning</small></button>
+<button type="button" onclick="beginVaultImport()"><span>📥</span>Add Manual<small>Save any PDF into TradePro Vault</small></button>
+</div>
+
+<div class="warning-card"><strong>Engineer use:</strong> Always use the exact current manufacturer instructions for the appliance, fuel/refrigerant and model revision. Gas, LPG, oil, heat-pump and refrigerant work must be carried out only within the engineer's competence and applicable registration/certification.</div>
+
+<div class="tech-search"><input id="techSearch" placeholder="Search make or model — e.g. ecoTEC 832, Greenstar 4000, Aerona" oninput="renderTechLibrary()"></div>
+
 <div class="tech-tabs" style="grid-template-columns:repeat(2,1fr)">
 <button id="techTabNaturalgas" class="tech-tab active" onclick="setTechFilter('naturalgas')">🔥 Natural Gas</button>
 <button id="techTabLpg" class="tech-tab" onclick="setTechFilter('lpg')">🟠 LPG / Propane</button>
@@ -728,10 +765,30 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <button id="techTabHeatpump" class="tech-tab" onclick="setTechFilter('heatpump')">♻️ Heat Pumps</button>
 <button id="techTabAircon" class="tech-tab" onclick="setTechFilter('aircon')">❄️ Air-Con / F-Gas</button>
 </div>
-<div class="sectioncard" style="margin-top:14px"><h3>Verified direct PDFs</h3><div class="smallnote" style="margin-bottom:10px">These buttons point to actual manufacturer PDF files, not generic web pages. Some manufacturers may still force a download on iPhone; if that happens, save the file then add it to the Manual Vault below.</div><div id="directManualList" class="tech-list"></div></div>
-<div class="sectioncard"><h3>📥 TradePro Manual Vault</h3><div class="smallnote" style="margin-bottom:10px">Add a PDF once and TradePro stores a copy on this device using IndexedDB. It can then be reopened from TradePro without relying on the manufacturer's website. This is the reliable route for older, obscure or forced-download manuals.</div><div class="detail-actions"><button class="primary" type="button" onclick="beginVaultImport()">Add PDF to Vault</button><button class="secondary" type="button" onclick="renderManualVault()">Refresh Vault</button></div><input id="vaultFileInput" type="file" accept="application/pdf,.pdf" style="display:none" onchange="storeVaultPdf(event)"><div id="manualVaultList" class="tech-list" style="margin-top:12px"></div></div>
-<div class="sectioncard"><h3>Manufacturer coverage</h3><div class="smallnote" style="margin-bottom:10px">TradePro includes a broad UK manufacturer directory so every main fuel/refrigeration section has somewhere to organise manuals. A make showing 0 built-in PDFs can still have any number of PDFs stored in your Manual Vault.</div><div id="techList" class="tech-list"></div></div>
-<div class="sectioncard"><h3>Search loaded manuals / fault references</h3><label>Manufacturer / model / fault code<input id="faultSearch" placeholder="e.g. Vaillant ecoTEC F.75"></label><button class="primary" type="button" onclick="searchTechnicalWeb()">Search TradePro manuals</button><div class="smallnote" style="margin-top:8px">This searches only verified built-in PDFs and manuals stored in your TradePro Manual Vault. It does not send you to a generic web search.</div></div>
+
+<div class="sectioncard" id="faultAssistantCard">
+<div class="section-title-row"><h3>⚠️ Fault Code Assistant</h3><span class="count-pill">Quick diagnosis</span></div>
+<div class="smallnote" style="margin:7px 0 10px">Choose the make and enter the code exactly as shown. TradePro gives a common meaning and non-invasive first checks, then points you back to the exact model manual.</div>
+<div class="two"><label>Manufacturer<select id="faultMake"></select></label><label>Fault code<input id="faultCodeInput" placeholder="e.g. F.75"></label></div>
+<button class="primary" type="button" onclick="runFaultAssistant()">Check fault code</button>
+<div id="faultResult"></div>
+</div>
+
+<div class="sectioncard">
+<div class="section-title-row"><h3>⭐ Favourites & Recently Viewed</h3><span id="recentManualCount" class="count-pill">0</span></div>
+<div id="recentManuals" class="recent-strip" style="margin-top:10px"></div>
+</div>
+
+<div class="sectioncard">
+<div class="section-title-row"><h3>Manufacturers & Models</h3><span id="manufacturerCount" class="count-pill">0 makes</span></div>
+<div class="smallnote" style="margin:7px 0 10px">Tap a manufacturer to drop down the manuals loaded for that make. Search above to jump directly to a model.</div>
+<div id="techList" class="tech-list"></div>
+</div>
+
+<div class="sectioncard"><h3>📥 TradePro Manual Vault</h3><div class="smallnote" style="margin-bottom:10px">Add a PDF once and TradePro stores it on this device. Ideal for older or obscure boilers, air-con units, heat pumps or manufacturer PDFs that force a download.</div>
+<div class="detail-actions"><button class="primary" type="button" onclick="beginVaultImport()">Add PDF to Vault</button><button class="secondary" type="button" onclick="renderManualVault()">Refresh Vault</button></div>
+<input id="vaultFileInput" type="file" accept="application/pdf,.pdf" style="display:none" onchange="storeVaultPdf(event)">
+<div id="manualVaultList" class="tech-list" style="margin-top:12px"></div></div>
 </section>
 
 <section id="manualViewer" class="screen">
@@ -857,7 +914,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 4.8 · V17.6</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 5.0 · V17.7</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -875,7 +932,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="17.6";
+const TRADEPRO_VERSION="17.7";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1826,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 4.8 five-section technical library + persistent Manual Vault */
+/* Build 5.0 five-section technical library + persistent Manual Vault */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1871,7 +1928,7 @@ const LPG_GUIDANCE="Use only where the exact manufacturer document confirms LPG/
 let currentManualUrl="";
 let pendingVaultMeta=null;
 function manualsForFilter(){return DIRECT_MANUALS.filter(x=>x.categories.includes(techFilter))}
-function rememberManual(m){try{let r=JSON.parse(localStorage.getItem("tradepro_recent_manuals")||"[]");r=r.filter(x=>x.url!==m.url);r.unshift({make:m.make,model:m.model,title:m.title,url:m.url,when:Date.now()});localStorage.setItem("tradepro_recent_manuals",JSON.stringify(r.slice(0,10)))}catch(e){}}
+function rememberManual(m){try{let r=JSON.parse(localStorage.getItem("tradepro_recent_manuals")||"[]");r=r.filter(x=>x.url!==m.url);r.unshift({make:m.make,model:m.model,title:m.title,url:m.url,when:Date.now()});localStorage.setItem("tradepro_recent_manuals",JSON.stringify(r.slice(0,10)));if(typeof renderRecentManuals==="function")renderRecentManuals()}catch(e){}}
 function openPdfReliable(url,meta){if(!url)return;currentManualUrl=url;if(meta)rememberManual(meta);window.location.href=url}
 function viewDirectManual(index){let x=DIRECT_MANUALS[index];if(!x)return;openPdfReliable(x.url,x)}
 function renderDirectManuals(){let box=document.getElementById("directManualList");if(!box)return;let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();let arr=manualsForFilter().filter(x=>!q||(x.make+" "+x.model+" "+x.title).toLowerCase().includes(q));if(techFilter==="lpg"&&arr.length===0){box.innerHTML=`<div class="notice"><strong>LPG/propane manuals are model-specific.</strong><br>${LPG_GUIDANCE}<br><br>Add the exact LPG/propane PDF to the Manual Vault when you have it.</div>`;return}box.innerHTML=arr.length?arr.map(x=>`<div class="direct-manual"><strong>${esc(x.make)} · ${esc(x.model)}</strong><small>${esc(x.title)}<br>${esc(x.note||"")}</small><button class="green" type="button" onclick="viewDirectManual(${DIRECT_MANUALS.indexOf(x)})">Open PDF full screen</button></div>`).join(""):'<div class="smallnote"><strong>No verified built-in direct PDF matches this search yet.</strong><br>Use the Manual Vault for the exact manual. TradePro will not disguise a manufacturer webpage as a PDF button.</div>'}
@@ -1879,6 +1936,35 @@ function setTechFilter(type){techFilter=type;["naturalgas","lpg","oil","heatpump
 function renderTechLibrary(){renderDirectManuals();let box=document.getElementById("techList");if(!box)return;let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();let entry=TECH_LIBRARY.find(x=>x.type===techFilter);let grouped={};manualsForFilter().forEach(x=>grouped[x.make]=(grouped[x.make]||0)+1);let makes=(entry?.makes||[]).filter(make=>!q||make.toLowerCase().includes(q)||manualsForFilter().some(x=>x.make===make&&(x.model+" "+x.title).toLowerCase().includes(q)));box.innerHTML=makes.length?makes.map(make=>`<div class="tech-item"><h4>${esc(make)}</h4><p>${techFilter==="naturalgas"?"Natural-gas boiler / heating technical manuals":techFilter==="lpg"?"LPG / propane appliance technical manuals — exact model approval required":techFilter==="oil"?"Oil boiler / burner technical manuals":techFilter==="heatpump"?"Heat-pump installation, service and commissioning manuals":"Air-conditioning / refrigeration / F-Gas technical manuals"}</p><div class="smallnote"><strong>${grouped[make]||0} built-in direct PDF${(grouped[make]||0)===1?'':'s'}</strong> · Manual Vault can hold additional PDFs for this make.</div></div>`).join(""):'<div class="notice">No manufacturer matches this search in the selected section.</div>'}
 function searchTechnicalWeb(){let q=(document.getElementById("faultSearch")?.value||"").trim().toLowerCase();if(!q){toast("Enter a manufacturer, model or fault code");return}let hits=DIRECT_MANUALS.filter(x=>(x.make+" "+x.model+" "+x.title).toLowerCase().includes(q));if(hits.length){let cat=hits[0].categories[0]||"naturalgas";techFilter=cat;setTechFilter(cat);document.getElementById("techSearch").value=q;renderTechLibrary();document.getElementById("directManualList")?.scrollIntoView({behavior:"smooth",block:"start"});toast(hits.length+" built-in PDF"+(hits.length===1?"":"s")+" found");return}searchVault(q)}
 function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&quot;")}
+
+
+/* Build 5.0 Engineer Hub helpers */
+const FAULT_GUIDE=[
+{make:"Vaillant",code:"F.22",meaning:"Low water pressure / dry-fire protection on many ecoTEC models.",checks:["Check the system pressure shown on the appliance.","Look for obvious water loss or visible leaks around the heating system.","If the exact manufacturer instructions allow it, restore pressure to the stated cold-fill range.","If pressure repeatedly falls, investigate the cause rather than repeatedly topping up."],keywords:["f22","f.22"]},
+{make:"Vaillant",code:"F.28",meaning:"Ignition unsuccessful / flame not established on many ecoTEC models.",checks:["Confirm there is no obvious interruption to the property's gas supply using normal external checks only.","Check whether other gas appliances are operating normally, where appropriate.","Follow the appliance reset procedure only if permitted by the exact manual.","If the fault returns, use the exact model service manual for engineer diagnostics."],keywords:["f28","f.28"]},
+{make:"Vaillant",code:"F.75",meaning:"Expected pressure change was not detected when the pump started on many ecoTEC models.",checks:["Check system pressure first.","Check for obvious air in the system and whether circulation appears to be occurring.","Confirm the pump is operating as expected without dismantling gas-related components.","Use the exact service manual to test pressure-sensor response and pump diagnostics."],keywords:["f75","f.75"]},
+{make:"Ideal",code:"F1",meaning:"Low water pressure on many Ideal Logic-family boilers.",checks:["Read the system pressure.","Check for visible leaks or recent bleeding/draining.","Restore pressure only in accordance with the exact model instructions.","If pressure drops again, find the cause before returning the appliance to service."],keywords:["f1","f01"]},
+{make:"Ideal",code:"L2",meaning:"Ignition lockout / flame not established on many Ideal Logic-family boilers.",checks:["Check for an obvious gas-supply interruption using normal external checks.","Follow the permitted reset procedure in the exact model manual.","If lockout repeats, move to qualified engineer diagnostics using the manufacturer's sequence."],keywords:["l2","l02"]},
+{make:"Baxi",code:"E119",meaning:"Low primary-system water pressure on many Baxi models.",checks:["Check the pressure gauge/display.","Check for obvious leaks or recent system work.","Repressurise only to the manufacturer's specified cold pressure.","If pressure falls again, investigate the underlying cause."],keywords:["e119"]},
+{make:"Baxi",code:"E133",meaning:"Ignition/flame failure or gas-supply-related lockout on many Baxi models.",checks:["Check for an obvious interruption to the property's gas supply using external checks only.","Use the exact manual's reset procedure if permitted.","If the code returns, use the manufacturer diagnostic sequence; do not guess or adjust gas controls without the required competence and test equipment."],keywords:["e133"]},
+{make:"Glow-worm",code:"F.22",meaning:"Insufficient water / low-pressure protection on many Glow-worm models.",checks:["Check system pressure.","Check for visible water loss or obvious air in the heating circuit.","Restore pressure only as specified for the exact model.","If recurrent, diagnose the cause rather than repeatedly topping up."],keywords:["f22","f.22"]},
+{make:"Glow-worm",code:"F.28",meaning:"Ignition unsuccessful / flame not established on many Glow-worm models.",checks:["Confirm there is no obvious external gas-supply interruption.","Follow the exact model reset procedure if permitted.","If the fault repeats, use the exact service manual for qualified engineer checks."],keywords:["f28","f.28"]},
+{make:"Worcester Bosch",code:"EA / 227",meaning:"Flame not detected / ignition lockout on a number of Worcester Bosch ranges. Exact wording varies by model.",checks:["Confirm the exact model and code before diagnosing.","Check for an obvious gas-supply interruption using normal external checks only.","Follow the permitted reset procedure for that exact model.","If it returns, use the exact installation/service manual diagnostic sequence."],keywords:["ea","227","ea227"]}
+];
+
+function filteredManuals(){const q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();return manualsForFilter().filter(x=>!q||(x.make+" "+x.model+" "+x.title+" "+(x.note||"")).toLowerCase().includes(q))}
+function favList(){try{return JSON.parse(localStorage.getItem("tradepro_favourite_manuals")||"[]")}catch(e){return[]}}
+function isFav(m){return favList().some(x=>x.url===m.url)}
+function toggleFavourite(i){const m=DIRECT_MANUALS[i];if(!m)return;let was=isFav(m),f=favList().filter(x=>x.url!==m.url);if(!was)f.unshift({make:m.make,model:m.model,title:m.title,url:m.url,categories:m.categories});localStorage.setItem("tradepro_favourite_manuals",JSON.stringify(f.slice(0,40)));renderTechLibrary();toast(was?"Removed from favourites":"Added to favourites")}
+function recentList(){try{return JSON.parse(localStorage.getItem("tradepro_recent_manuals")||"[]")}catch(e){return[]}}
+function renderRecentManuals(){const box=document.getElementById("recentManuals"),count=document.getElementById("recentManualCount");if(!box)return;const favs=favList(),recent=recentList();let combined=[];favs.forEach(x=>combined.push({...x,_fav:true}));recent.forEach(x=>{if(!combined.some(y=>y.url===x.url))combined.push({...x,_fav:false})});combined=combined.slice(0,8);if(count)count.textContent=combined.length+" saved";box.innerHTML=combined.length?combined.map(x=>{const i=DIRECT_MANUALS.findIndex(m=>m.url===x.url);return `<div class="recent-item"><b>${x._fav?"⭐ ":"🕘 "}${esc(x.make)} · ${esc(x.model)}</b><small>${esc(x.title||"Technical Manual")}</small>${i>=0?`<button class="green" type="button" onclick="viewDirectManual(${i})">Open manual</button>`:""}</div>`}).join(""):'<div class="smallnote">Favourite a manual or open one and it will appear here.</div>'}
+function makeKey(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-")}
+function toggleMake(key){const el=document.getElementById("make-"+key);if(el)el.classList.toggle("open")}
+function renderManufacturerLibrary(){const box=document.getElementById("techList"),c=document.getElementById("manufacturerCount");if(!box)return;const arr=filteredManuals(),entry=TECH_LIBRARY.find(x=>x.type===techFilter);let makes=[...(entry?.makes||[])];arr.forEach(x=>{if(!makes.includes(x.make))makes.push(x.make)});const q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();if(q)makes=makes.filter(make=>make.toLowerCase().includes(q)||arr.some(x=>x.make===make));if(c)c.textContent=makes.length+" make"+(makes.length===1?"":"s");box.innerHTML=makes.length?makes.map(make=>{const ms=arr.filter(x=>x.make===make),key=makeKey(make),autoOpen=!!q&&ms.length>0;return `<div class="make-card ${autoOpen?"open":""}" id="make-${key}"><button class="make-head" type="button" onclick="toggleMake('${key}')"><span><b>${esc(make)}</b><small>${ms.length} loaded PDF${ms.length===1?"":"s"}${ms.length?" · tap to choose model":" · add exact PDF to Vault"}</small></span><span class="make-chevron">›</span></button><div class="make-body">${ms.length?ms.map(m=>{const i=DIRECT_MANUALS.indexOf(m),fav=isFav(m);return `<div class="model-row"><strong>${esc(m.model)}</strong><div class="model-meta">${esc(m.title)}${m.note?" · "+esc(m.note):""}</div><div class="model-actions"><button class="green" type="button" onclick="viewDirectManual(${i})">Open PDF</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${i})">${fav?"★ Favourite":"☆ Favourite"}</button></div></div>`}).join(""):`<div class="smallnote" style="padding:10px 2px">No built-in direct PDF yet for this make. Use <strong>Add PDF to Vault</strong> to keep the exact manual inside TradePro.</div>`}</div></div>`}).join(""):'<div class="notice">No manufacturer matches this search in the selected section.</div>'}
+function populateFaultMakes(){const s=document.getElementById("faultMake");if(!s||s.options.length>1)return;const makes=[...new Set(FAULT_GUIDE.map(x=>x.make))].sort();s.innerHTML='<option value="">Choose make</option>'+makes.map(x=>`<option>${esc(x)}</option>`).join("")}
+function runFaultAssistant(){const make=(document.getElementById("faultMake")?.value||"").trim(),raw=(document.getElementById("faultCodeInput")?.value||"").trim(),out=document.getElementById("faultResult");if(!out)return;if(!make||!raw){out.innerHTML='<div class="fault-result">Choose a manufacturer and enter the fault code.</div>';return}const norm=raw.toLowerCase().replace(/\s+/g,""),hit=FAULT_GUIDE.find(x=>x.make===make&&(x.keywords||[]).some(k=>norm===k.toLowerCase().replace(/\s+/g,"")));if(!hit){out.innerHTML=`<div class="fault-result"><h4>${esc(make)} · ${esc(raw)}</h4><div class="fault-meaning">No verified quick guide is loaded for this code yet.</div><div class="smallnote">Search the exact model in the manufacturer list or add its service manual to the TradePro Manual Vault. TradePro will not guess at an unknown fault code.</div></div>`;return}out.innerHTML=`<div class="fault-result"><h4>${esc(hit.make)} · ${esc(hit.code)}</h4><div class="fault-meaning">${esc(hit.meaning)}</div><strong>Check in this order:</strong><ol class="check-list">${hit.checks.map(x=>`<li>${esc(x)}</li>`).join("")}</ol><div class="fault-caution"><strong>Important:</strong> This is a quick aid, not a substitute for the exact model service manual. Stop and use the manufacturer's diagnostic procedure whenever the appliance/model differs or testing would involve gas, combustion, electrical or refrigerant work outside your competence.</div></div>`}
+const _renderTechLibraryLegacy=renderTechLibrary;
+renderTechLibrary=function(){renderManufacturerLibrary();renderRecentManuals();populateFaultMakes()}
 
 // Persistent PDF storage. IndexedDB is used because localStorage is too small for manuals.
 function vaultDb(){return new Promise((resolve,reject)=>{let r=indexedDB.open("tradepro_manual_vault",1);r.onupgradeneeded=()=>{let db=r.result;if(!db.objectStoreNames.contains("manuals")){let st=db.createObjectStore("manuals",{keyPath:"id"});st.createIndex("category","category");st.createIndex("make","make")}};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
