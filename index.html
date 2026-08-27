@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 6.1 · V18.8</title>
+<title>TradePro UK · Plumber Edition · Build 6.2 · V18.9</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 6.1 · V18.8</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 6.2 · V18.9</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -914,7 +914,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 6.1 · V18.8</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 6.2 · V18.9</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -1883,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 6.1 full technical-library integrity pass + persistent Manual Vault */
+/* Build 6.2 full technical-library integrity pass + persistent Manual Vault */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1908,7 +1908,7 @@ const DIRECT_MANUALS=[
  {type:"boiler",categories:["naturalgas"],make:"Worcester Bosch",model:"Greenstar Si Compact",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/release/6720643895/12683",note:"Official Worcester Bosch Greenstar 25-30 Si manual"},
  {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar i System",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720806945",note:"Official Worcester Bosch Greenstar 12-24 i System ErP manual"},
 
- {type:"boiler",make:"Vaillant",model:"ecoTEC plus 610–635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant PDF"},
+ {type:"boiler",categories:["naturalgas"],make:"Vaillant",model:"ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant new-generation ecoTEC plus installation manual · exact system boiler outputs: 610, 615, 620, 625, 630 and 635 · do not use for legacy 612/618/624/637 models"},
  {type:"boiler",make:"Ideal Heating",model:"Logic MAX Combi² C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/31e4e31bdd6fdb3572d7bb2d539ce903/Logic%20MAX%20Combi%20Installation%20%26%20Servicing%20-%2010.2023%20%28UIN%20237660%20A01%29.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4hw7r7ut3zXch9PphO11t5%2Fb7b554ce47c40395d57623ed81025135%2FLogic_MAX_Combi_Installation___Servicing_-_10.2023__UIN_237660_A01_.pdf",note:"Official Ideal Heating PDF"},
  {type:"boiler",make:"Glow-worm",model:"Energy7 25C/30C/35C",title:"Installation & Maintenance Instructions",url:"https://www.glow-worm.co.uk/glow-worm/product-manuals/energy-3/combi-8/energy7-combi-installation-and-maintenance-instructions-1948938.pdf",note:"Official Glow-worm PDF"},
  {type:"boiler",make:"Main Heating",model:"Eco Compact System 15/18",title:"Installation & Service Manual",url:"https://www.mainheating.co.uk/-/media/websites/mainheating/files/main-eco-compact-system/main-eco-compact-system-installation.pdf?hash=CF39FB1F1398E3789DEC86505852BF97E34EA66A&la=en",note:"Official Main Heating PDF"},
@@ -1972,7 +1972,7 @@ function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&q
 /* Build 5.7 known boiler model catalogue */
 const KNOWN_BOILER_MODELS={
 "Worcester Bosch":["Greenstar 1000","Greenstar 2000","Greenstar 25i ErP","Greenstar 30i ErP","Greenstar 4000 Combi","Greenstar 4000 System","Greenstar 8000 Life Combi","Greenstar 8000 Life System","Greenstar 8000 Style Combi","Greenstar 8000 Style System","Greenstar CDi Compact","Greenstar i System","Greenstar Ri","Greenstar Highflow 440CDi","Greenstar Highflow 550CDi","Greenstar Si Compact","Greenstar 24i Junior","Greenstar 28i Junior","Greenstar 30Si Compact"],
-"Vaillant":["ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 837","ecoTEC plus 612","ecoTEC plus 615","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 630","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
+"Vaillant":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635","ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 837","ecoTEC plus 612","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
 "Ideal Heating":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35","Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic Max Heat2 H12","Logic Max Heat2 H15","Logic Max Heat2 H18","Vogue Max Combi2 C26","Vogue Max Combi2 C32","Vogue Max Combi2 C40","Vogue Gen2","Independent C24","Independent C30"],
 "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 400 Combi 2 24","Baxi 400 Combi 2 30","Duo-tec 24","Duo-tec 28","Duo-tec 33","Duo-tec 40","Platinum 24","Platinum 28","Platinum 33","Platinum 40","Megaflo System 15","Megaflo System 18","Megaflo System 24","Megaflo System 28","Solo HE 12","Solo HE 15","Solo HE 18","Solo HE 24"],
 "Glow-worm":["Energy7 25C","Energy7 30C","Energy7 35C","Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Ultimate3 25C","Ultimate3 30C","Ultimate3 35C","Betacom4 24C","Betacom4 30C","Essential 24C","Essential 28C","Flexicom cx","Flexicom hx","Ultracom2 cx","Ultracom2 hxi"],
@@ -2033,7 +2033,7 @@ const CATEGORY_MODEL_CATALOGUES={
 const VERIFIED_MANUAL_MODEL_MAP={
   "Worcester Bosch|Greenstar 24i Junior / Greenstar 28i Junior":["Greenstar 24i Junior","Greenstar 28i Junior"],
   "Worcester Bosch|Greenstar 25i ErP / Greenstar 30i ErP":["Greenstar 25i ErP","Greenstar 30i ErP"],
-  "Vaillant|ecoTEC plus 610–635":["ecoTEC plus 612","ecoTEC plus 615","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 630","ecoTEC plus 637"],
+  "Vaillant|ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635"],
   "Ideal Heating|Logic MAX Combi² C24/C30/C35":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35"],
   "Glow-worm|Energy7 25C/30C/35C":["Energy7 25C","Energy7 30C","Energy7 35C"],
   "Main Heating|Eco Compact System 15/18":["Eco Compact System 15","Eco Compact System 18"],
@@ -2083,6 +2083,26 @@ function uniqueDirectDocsForMake(make){
  return manualsForFilter().filter(x=>x.make===make);
 }
 
+function runTechDataIntegrityAudit(){
+  const issues=[];
+  const seenUrls=new Map();
+  DIRECT_MANUALS.forEach((m,i)=>{
+    if(!m.make||!m.model||!m.title||!m.url)issues.push(`Manual ${i+1} is missing required metadata`);
+    if(!Array.isArray(m.categories)||!m.categories.length)issues.push(`${m.make} · ${m.model}: no category`);
+    const dup=seenUrls.get(m.url);if(dup!==undefined&&DIRECT_MANUALS[dup].make===m.make&&DIRECT_MANUALS[dup].model===m.model&&DIRECT_MANUALS[dup].title===m.title)issues.push(`${m.make} · ${m.model}: duplicate document`);else seenUrls.set(m.url,i);
+    const declared=VERIFIED_MANUAL_MODEL_MAP[m.make+"|"+m.model]||[];
+    declared.forEach(model=>{
+      const cats=m.categories||[];
+      const exists=cats.some(cat=>(CATEGORY_MODEL_CATALOGUES[cat]?.[m.make]||[]).some(x=>normaliseModelName(x)===normaliseModelName(model)));
+      if(!exists)issues.push(`${m.make} · ${m.model}: mapped model not present in its category catalogue: ${model}`);
+    });
+  });
+  window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues};
+  if(issues.length)console.warn("TradePro technical-library integrity audit",issues);else console.info(`TradePro technical-library audit passed: ${DIRECT_MANUALS.length} built-in documents checked`);
+  return window.TRADEPRO_TECH_AUDIT;
+}
+runTechDataIntegrityAudit();
+
 const MANUFACTURER_SOURCES={
  "Baxi":"https://www.baxi.co.uk/support/literature-library",
  "Vaillant":"https://professional.vaillant.co.uk/for-installers/literature-finder/",
@@ -2100,8 +2120,8 @@ const FAULT_GUIDE=[
 {make:"Vaillant",code:"F.22",meaning:"Low water pressure / dry-fire protection on many ecoTEC models.",checks:["Check the system pressure shown on the appliance.","Look for obvious water loss or visible leaks around the heating system.","If the exact manufacturer instructions allow it, restore pressure to the stated cold-fill range.","If pressure repeatedly falls, investigate the cause rather than repeatedly topping up."],keywords:["f22","f.22"]},
 {make:"Vaillant",code:"F.28",meaning:"Ignition unsuccessful / flame not established on many ecoTEC models.",checks:["Confirm there is no obvious interruption to the property's gas supply using normal external checks only.","Check whether other gas appliances are operating normally, where appropriate.","Follow the appliance reset procedure only if permitted by the exact manual.","If the fault returns, use the exact model service manual for engineer diagnostics."],keywords:["f28","f.28"]},
 {make:"Vaillant",code:"F.75",meaning:"Expected pressure change was not detected when the pump started on many ecoTEC models.",checks:["Check system pressure first.","Check for obvious air in the system and whether circulation appears to be occurring.","Confirm the pump is operating as expected without dismantling gas-related components.","Use the exact service manual to test pressure-sensor response and pump diagnostics."],keywords:["f75","f.75"]},
-{make:"Ideal",code:"F1",meaning:"Low water pressure on many Ideal Logic-family boilers.",checks:["Read the system pressure.","Check for visible leaks or recent bleeding/draining.","Restore pressure only in accordance with the exact model instructions.","If pressure drops again, find the cause before returning the appliance to service."],keywords:["f1","f01"]},
-{make:"Ideal",code:"L2",meaning:"Ignition lockout / flame not established on many Ideal Logic-family boilers.",checks:["Check for an obvious gas-supply interruption using normal external checks.","Follow the permitted reset procedure in the exact model manual.","If lockout repeats, move to qualified engineer diagnostics using the manufacturer's sequence."],keywords:["l2","l02"]},
+{make:"Ideal Heating",code:"F1",meaning:"Low water pressure on many Ideal Logic-family boilers.",checks:["Read the system pressure.","Check for visible leaks or recent bleeding/draining.","Restore pressure only in accordance with the exact model instructions.","If pressure drops again, find the cause before returning the appliance to service."],keywords:["f1","f01"]},
+{make:"Ideal Heating",code:"L2",meaning:"Ignition lockout / flame not established on many Ideal Logic-family boilers.",checks:["Check for an obvious gas-supply interruption using normal external checks.","Follow the permitted reset procedure in the exact model manual.","If lockout repeats, move to qualified engineer diagnostics using the manufacturer's sequence."],keywords:["l2","l02"]},
 {make:"Baxi",code:"E119",meaning:"Low primary-system water pressure on many Baxi models.",checks:["Check the pressure gauge/display.","Check for obvious leaks or recent system work.","Repressurise only to the manufacturer's specified cold pressure.","If pressure falls again, investigate the underlying cause."],keywords:["e119"]},
 {make:"Baxi",code:"E133",meaning:"Ignition/flame failure or gas-supply-related lockout on many Baxi models.",checks:["Check for an obvious interruption to the property's gas supply using external checks only.","Use the exact manual's reset procedure if permitted.","If the code returns, use the manufacturer diagnostic sequence; do not guess or adjust gas controls without the required competence and test equipment."],keywords:["e133"]},
 {make:"Glow-worm",code:"F.22",meaning:"Insufficient water / low-pressure protection on many Glow-worm models.",checks:["Check system pressure.","Check for visible water loss or obvious air in the heating circuit.","Restore pressure only as specified for the exact model.","If recurrent, diagnose the cause rather than repeatedly topping up."],keywords:["f22","f.22"]},
