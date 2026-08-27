@@ -944,8 +944,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="7.0";
-const TRADEPRO_VERSION="19.7";
+const TRADEPRO_BUILD="7.1";
+const TRADEPRO_VERSION="19.8";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1984,6 +1984,8 @@ const DIRECT_MANUALS=[
  {type:"aircon",categories:["aircon"],make:"Mitsubishi Electric",model:"MSZ-AP25/35/42/50VG + VGK",title:"Installation Manual JG79B896H02",url:"https://library.mitsubishielectric.co.uk/pdf/download_full/3754",note:"Official Mitsubishi Electric M-Series split-system installation manual · exact indoor models MSZ-AP25VG/VGK, MSZ-AP35VG/VGK, MSZ-AP42VG/VGK and MSZ-AP50VG/VGK · associated MUZ-AP25/35/42/50VG and VGH outdoor units are listed by Mitsubishi Electric"},
  {type:"aircon",categories:["aircon"],make:"Mitsubishi Electric",model:"MSZ-AP25/35/42/50/60/71VG + VGK",title:"Service Manual OBH788 Revised Edition B",url:"https://library.mitsubishielectric.co.uk/pdf/download_full/3963",note:"Official Mitsubishi Electric M-Series service manual · covers MSZ-AP25/35/42/50/60/71VG and VGK indoor units · includes wiring, refrigerant diagrams, service functions, troubleshooting and disassembly"},
  {type:"heatpump",categories:["heatpump"],make:"Samsung",model:"EHS Mono HT Quiet AE080BXYDEG/EU / AE120BXYDEG/EU",title:"Installation Guide DB68-11904A-05",url:"https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_UK&OriginYN=N&ModelType=N&ModelName=AE080BXYDEG%2FEU&CttFileID=11279967&CDCttType=UM&VPath=UM%2F202602%2F20260205144030530%2FEHS_R-32_MONO_OUTDOOR_IM_EU_DB68-11904A-05_EN.pdf",note:"Official Samsung UK installation guide · version 05 · 5 Feb 2026 · verified on AE080BXYDEG/EU and AE120BXYDEG/EU support pages"},
+ {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5",title:"R290 Installer Guidance",url:"https://cdn.aircon.panasonic.eu/uploads/GB/Catalogues/2023/EU%20A4%20R290%20INSTALLER%2023%20LR.pdf",note:"Official Panasonic UK technical guidance · Aquarea L Generation R290 · exact outdoor models WH-WDG05LE5, WH-WDG07LE5 and WH-WDG09LE5 · installer safety and installation considerations · this is guidance, not a substitute for the appliance installation manual"},
+ {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5",title:"R290 Service Engineer Guidance",url:"https://cdn.aircon.panasonic.eu/uploads/GB/Catalogues/2023/EU%203P%20R290%20ENGINEER%2023%20LR.pdf",note:"Official Panasonic UK service-engineer guidance · Aquarea L Generation R290 · exact outdoor models WH-WDG05LE5, WH-WDG07LE5 and WH-WDG09LE5 · refrigerant safety and service considerations"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea legacy C/D/E series monobloc & split",title:"Installation Manual (C/D/E series)",url:"https://www.panasonicproclub.com/uploads/IE/catalogues/A2W_IM_monobloc%2Bsplit_EN_final_2014-05-15.pdf",note:"Official Panasonic ProClub legacy installation manual · C, D and E series only · not for later Aquarea generations"},];
 // Build 6.7 / V19.4: expanded exact oil/heat-pump coverage (Warmflow Agentis, Firebird current combi families, Daikin Altherma 3 M) and retained strict explicit model mapping.
 // Category tags keep existing verified PDFs compatible with the expanded library.
@@ -2047,7 +2049,7 @@ const CATEGORY_MODEL_CATALOGUES={
   "Firebird":["Combipac Xceed","Combi Xceed","Slimline Combi","Enviromax Condensing Range (legacy archive)"]
  },
  heatpump:{
-  // Build 7.0: LG THERMA V R32 Monobloc S exact UK model catalogue from LG product data.
+  // Build 7.1: Panasonic Aquarea L Generation exact R290 outdoor models added alongside LG THERMA V catalogue.
   // Manuals remain pending until an exact installation/service PDF is positively matched.
   "Worcester Bosch":["Compress 5800i AW outdoor unit"],
   "Vaillant":["aroTHERM plus VWL 105/6 A","aroTHERM plus VWL 125/6 A"],
@@ -2055,7 +2057,7 @@ const CATEGORY_MODEL_CATALOGUES={
   "Mitsubishi Electric":["Ecodan PUZ-WM50VHA-BS","Ecodan PUZ-WM60VAA","Ecodan PUZ-WM60VAA-BS","Ecodan PUZ-WM85VAA","Ecodan PUZ-WM85VAA-BS","Ecodan PUZ-WM85YAA","Ecodan PUZ-WM85YAA-BS","Ecodan PUZ-WM112VAA","Ecodan PUZ-WM112VAA-BS","Ecodan PUZ-WM112YAA","Ecodan PUZ-WM112YAA-BS"],
   "Daikin":["Altherma 3 M EBLA09-16D","Altherma 3 M EDLA09-16D"],
   "Samsung":["EHS Mono HT Quiet AE080BXYDEG/EU","EHS Mono HT Quiet AE120BXYDEG/EU"],
-  "Panasonic":["Aquarea legacy C/D/E series monobloc & split"],
+  "Panasonic":["Aquarea L Generation WH-WDG05LE5","Aquarea L Generation WH-WDG07LE5","Aquarea L Generation WH-WDG09LE5","Aquarea legacy C/D/E series monobloc & split"],
   "LG":["THERMA V R32 Monobloc S HM051MR U44","THERMA V R32 Monobloc S HM071MR U44","THERMA V R32 Monobloc S HM091MR U44","THERMA V R32 Monobloc S HM121MR U34","THERMA V R32 Monobloc S HM123MR U34","THERMA V R32 Monobloc S HM141MR U34","THERMA V R32 Monobloc S HM143MR U34","THERMA V R32 Monobloc S HM161MR U34","THERMA V R32 Monobloc S HM163MR U34"],
   "Fujitsu":["Waterstage air-to-water heat pump range"],
   "NIBE":["Air source heat pump range"],
@@ -2104,6 +2106,7 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Mitsubishi Electric|MSZ-AP25/35/42/50VG + VGK":["MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK"],
   "Mitsubishi Electric|MSZ-AP25/35/42/50/60/71VG + VGK":["MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK","MSZ-AP60VG","MSZ-AP60VGK","MSZ-AP71VG","MSZ-AP71VGK"],
   "Samsung|EHS Mono HT Quiet AE080BXYDEG/EU / AE120BXYDEG/EU":["EHS Mono HT Quiet AE080BXYDEG/EU","EHS Mono HT Quiet AE120BXYDEG/EU"],
+  "Panasonic|Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5":["Aquarea L Generation WH-WDG05LE5","Aquarea L Generation WH-WDG07LE5","Aquarea L Generation WH-WDG09LE5"],
   "Viessmann|Vitodens 050-W":["Vitodens 050-W 25kW","Vitodens 050-W 30kW","Vitodens 050-W B0KA"],
   "Viessmann|Vitodens 100-W":["Vitodens 100-W 19kW","Vitodens 100-W 25kW","Vitodens 100-W 32kW","Vitodens 100-W B1KF","Vitodens 100-W B1HF"],
   "ATAG|iC / iS / iR Range":["iC Economiser 27","iC Economiser 35","iC Economiser 39","iC Economiser 47","iC 24","iC 28","iC 36","iC 40","iR 12","iR 15","iR 18","iR 24","iS 15","iS 18","iS 24","iS 30"]
@@ -2188,7 +2191,7 @@ const MANUFACTURER_SOURCES={
  "Firebird":"https://firebird.uk.com/support/manuals/",
  "Navien":"https://navien.co.uk/",
  "Samsung":"https://www.samsung.com/uk/support/",
- "Panasonic":"https://www.panasonicproclub.com/GB_en/login/",
+ "Panasonic":"https://www.aircon.panasonic.eu/GB_en/ranges/aquarea/high-performance/",
  "LG":"https://www.lg.com/uk/business/manual"
 };
 function officialSourceButton(make){const u=MANUFACTURER_SOURCES[make];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official manufacturer library</button>`:''}
