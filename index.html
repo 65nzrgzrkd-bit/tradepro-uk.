@@ -10,8 +10,8 @@
 <meta name="application-name" content="PlumbCore">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=22.0">
-<link rel="icon" type="image/png" sizes="512x512" href="plumbcore-icon-512.png?v=22.0">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=22.1">
+<link rel="icon" type="image/png" sizes="512x512" href="plumbcore-icon-512.png?v=22.1">
 <title>PlumbCore · Plumbing & Heating</title>
 <style>
 *{box-sizing:border-box}
@@ -283,6 +283,35 @@ nav{border-radius:18px 18px 0 0;padding-top:7px;background:rgba(10,43,68,.985);b
 .attention-card.compact{padding-top:12px;padding-bottom:11px}.attention-card.compact h3{margin-bottom:5px}.attention-card.compact .attention-row{padding:9px 0 7px}
 @media(max-width:430px){header{padding-bottom:12px}.brand-tag{margin-top:2px}.home-section,.attention-card{margin-top:9px;margin-bottom:9px}.attention-card.compact{padding-bottom:10px}}
 
+
+/* Build 9.4: iPhone release-polish, spacing, accessibility and dashboard legibility */
+*{-webkit-tap-highlight-color:transparent}
+button,a,input,select,textarea{touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(63,155,73,.28);outline-offset:2px}
+.home-business,.home-quick button,.home-newjob,.home-link,.attention-row,.engineer-shortcuts button,nav button{min-height:44px}
+.money-cell strong{font-variant-numeric:tabular-nums}
+#home{padding-bottom:34px}
+.engineer-home-card{scroll-margin-bottom:120px}
+@media(max-width:430px){
+  header{padding-top:calc(11px + env(safe-area-inset-top));padding-bottom:10px}
+  .brand-lockup{gap:9px}.pc-mark{width:45px;height:45px;border-radius:14px}
+  .brand-name{font-size:21px}.brand-sub{font-size:12.5px;margin-top:3px}.brand-tag{font-size:10px}
+  header small#appReleaseLabel{margin-top:5px;font-size:8.5px}
+  main{padding-top:11px;padding-left:13px;padding-right:13px;padding-bottom:calc(205px + env(safe-area-inset-bottom))}
+  .home-business{padding:7px 9px;margin-bottom:9px}.business-avatar{width:32px;height:32px;flex-basis:32px}.business-copy strong{font-size:13.5px}.business-copy small{font-size:9px}
+  .home-newjob{padding:14px;font-size:18px;border-radius:15px}
+  .home-quick{margin:9px 0 10px;gap:7px}.home-quick button{min-height:70px;padding:9px 3px 8px;border-radius:15px}.home-quick .ico{margin-bottom:4px}.home-quick .ui-icon{width:22px;height:22px}
+  .home-section,.attention-card{margin:8px 0;padding:12px 13px;border-radius:18px}
+  .home-section-title{margin-bottom:5px}.home-section-title h3,.attention-card h3{font-size:16px}.home-link{font-size:11.5px;padding:4px 5px}
+  .today-empty{padding:5px 0;font-size:12.5px}
+  .attention-row{padding:9px 0}.attention-row strong{font-size:13px}.attention-row small{font-size:11px}.attention-count{min-width:32px;padding:4px 7px}
+  .money-snapshot{gap:6px}.money-cell{padding:9px 7px;border-radius:13px}.money-cell small{font-size:9px}.money-cell strong{font-size:16px;margin-top:4px}
+  .engineer-home-card{margin-top:8px;margin-bottom:30px;padding-bottom:13px}.engineer-shortcuts{gap:6px}.engineer-shortcuts button{padding:8px 2px 7px}.engineer-shortcuts span{margin-bottom:3px}
+  nav{padding-top:5px;padding-bottom:calc(6px + env(safe-area-inset-bottom));border-radius:16px 16px 0 0}
+  nav button{min-height:48px}nav span{font-size:9.5px}
+}
+@media(max-width:365px){.money-snapshot{grid-template-columns:1fr 1fr}.money-cell.won{grid-column:1/-1}.home-quick{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body>
@@ -296,7 +325,7 @@ nav{border-radius:18px 18px 0 0;padding-top:7px;background:rgba(10,43,68,.985);b
 <main>
 
 <section id="home" class="screen active">
-<button type="button" class="home-business" onclick="show('settings')" aria-label="Open business settings"><span id="homeBusinessInitials" class="business-avatar">PC</span><span class="business-copy"><strong id="homeBusinessName">Your business</strong><small>Business workspace</small></span><span class="business-chevron">›</span></button>
+<button type="button" class="home-business" onclick="show('settings')" aria-label="Open business settings"><span id="homeBusinessInitials" class="business-avatar">PC</span><span class="business-copy"><strong id="homeBusinessName">Your business</strong><small>Business dashboard</small></span><span class="business-chevron">›</span></button>
 <button class="primary home-newjob" onclick="newJob()">New Job</button>
 <div class="home-quick" aria-label="Quick actions">
 <button onclick="show('quotes')"><span class="ico"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h9l3 3V20.5H6z"/><path d="M15 3.5v4h3M9 11h6M9 15h6"/></svg></span>Quote</button>
@@ -1050,8 +1079,8 @@ nav{border-radius:18px 18px 0 0;padding-top:7px;background:rgba(10,43,68,.985);b
 </nav>
 
 <script>
-const TRADEPRO_BUILD="9.3";
-const TRADEPRO_VERSION="22.0";
+const TRADEPRO_BUILD="9.4";
+const TRADEPRO_VERSION="22.1";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1968,7 +1997,11 @@ function renderPlumbCoreHome(){
 }
 function openMapsAddress(address){let q=encodeURIComponent(String(address||''));if(!q)return;window.open('https://maps.apple.com/?q='+q,'_blank','noopener,noreferrer');}
 
-function renderAttention(){let box=document.getElementById("attentionList"),summary=document.getElementById("attentionSummary");if(!box||!summary)return;let now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());let overdue=(data.invoices||[]).filter(i=>i.status==="Overdue");let drafts=(data.invoices||[]).filter(i=>(i.deliveryStatus||"Draft")==="Draft"&&i.status!=="Paid");let expiring=(data.quotes||[]).filter(q=>!["Accepted","Converted","Declined"].includes(q.status||"")).filter(q=>{let d=parseUKStart(q.validUntil);if(!d)return false;let n=daysBetweenDates(today,d);return n>=0&&n<=7;});let todayJobs=(data.appointments||[]).filter(a=>a.status!=="Cancelled"&&a.date===todayISO());let total=overdue.length+drafts.length+expiring.length+todayJobs.length;summary.textContent=total?total+" item"+(total===1?"":"s"):"Clear";let card=document.getElementById("attentionCard");if(card){card.classList.toggle("has-items",total>0);card.classList.toggle("clear",total===0);}let rows=[];if(overdue.length)rows.push(`<button class="attention-row" onclick="show('invoices')"><span><strong>Overdue invoices</strong><small>£${overdue.reduce((n,i)=>n+Math.max(0,Number(i.price||0)-Number(i.paid||0)),0).toFixed(0)} waiting for payment</small></span><span class="attention-count danger">${overdue.length}</span></button>`);if(drafts.length)rows.push(`<button class="attention-row" onclick="show('invoices')"><span><strong>Invoice drafts</strong><small>Review and send when ready</small></span><span class="attention-count warn">${drafts.length}</span></button>`);if(expiring.length)rows.push(`<button class="attention-row" onclick="show('quotes')"><span><strong>Quotes expiring soon</strong><small>Valid for 7 days or less</small></span><span class="attention-count warn">${expiring.length}</span></button>`);if(todayJobs.length)rows.push(`<button class="attention-row" onclick="openDiary()"><span><strong>Jobs today</strong><small>Open diary and update progress</small></span><span class="attention-count">${todayJobs.length}</span></button>`);box.innerHTML=rows.length?rows.join(""):'<div class="attention-ok">✓ Nothing urgent — accounts and diary look clear.</div>';if(card){card.classList.toggle("compact",rows.length<=1);}}
+function renderAttention(){let box=document.getElementById("attentionList"),summary=document.getElementById("attentionSummary");if(!box||!summary)return;let now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());let overdue=(data.invoices||[]).filter(i=>i.status==="Overdue");let drafts=(data.invoices||[]).filter(i=>(i.deliveryStatus||"Draft")==="Draft"&&i.status!=="Paid");let expiring=(data.quotes||[]).filter(q=>!["Accepted","Converted","Declined"].includes(q.status||"")).filter(q=>{let d=parseUKStart(q.validUntil);if(!d)return false;let n=daysBetweenDates(today,d);return n>=0&&n<=7;});let todayJobs=(data.appointments||[]).filter(a=>a.status!=="Cancelled"&&a.date===todayISO());let total=overdue.length+drafts.length+expiring.length+todayJobs.length;summary.textContent=total?total+" item"+(total===1?"":"s"):"Clear";let card=document.getElementById("attentionCard");if(card){card.classList.toggle("has-items",total>0);card.classList.toggle("clear",total===0);}let rows=[];if(overdue.length)rows.push(`<button class="attention-row" onclick="show('invoices')"><span><strong>Overdue invoices</strong><small>${formatDashboardGBP(overdue.reduce((n,i)=>n+Math.max(0,Number(i.price||0)-Number(i.paid||0)),0),0)} waiting for payment</small></span><span class="attention-count danger">${overdue.length}</span></button>`);if(drafts.length)rows.push(`<button class="attention-row" onclick="show('invoices')"><span><strong>Invoice drafts</strong><small>Review and send when ready</small></span><span class="attention-count warn">${drafts.length}</span></button>`);if(expiring.length)rows.push(`<button class="attention-row" onclick="show('quotes')"><span><strong>Quotes expiring soon</strong><small>Valid for 7 days or less</small></span><span class="attention-count warn">${expiring.length}</span></button>`);if(todayJobs.length)rows.push(`<button class="attention-row" onclick="openDiary()"><span><strong>Jobs today</strong><small>Open diary and update progress</small></span><span class="attention-count">${todayJobs.length}</span></button>`);box.innerHTML=rows.length?rows.join(""):'<div class="attention-ok">✓ Nothing urgent — accounts and diary look clear.</div>';if(card){card.classList.toggle("compact",rows.length<=1);}}
+function formatDashboardGBP(value,decimals=0){
+ let n=Number(value);if(!Number.isFinite(n))n=0;
+ return new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP",minimumFractionDigits:decimals,maximumFractionDigits:decimals}).format(n);
+}
 function render(){
 data.invoices.forEach(updateInvoiceStatus);
 quoteCount.innerText=data.quotes.length;invoiceCount.innerText=data.invoices.length;customerCount.innerText=data.customers.length;
@@ -1977,10 +2010,10 @@ let nowMonth=new Date(),monthKey=nowMonth.getFullYear()+"-"+String(nowMonth.getM
 function sameMonthUKDate(v){let m=String(v||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return !!m&&(m[3]+"-"+String(m[2]).padStart(2,"0"))===monthKey}
 function sameMonthISO(v){if(!v)return false;let d=new Date(v);return !isNaN(d)&&d.getFullYear()===nowMonth.getFullYear()&&d.getMonth()===nowMonth.getMonth()}
 let totalPaidThisMonth=0,depositPaidThisMonth=0;data.invoices.forEach(inv=>{let payments=Array.isArray(inv.payments)?inv.payments:[];if(payments.length){payments.forEach(p=>{if(sameMonthUKDate(p.date)||sameMonthISO(p.at)){let a=Number(p.amount||0);totalPaidThisMonth+=a;if(String(p.type||"").toLowerCase().includes("deposit"))depositPaidThisMonth+=a;}})}else if(Number(inv.paid||0)>0&&(sameMonthISO(inv.lastPaymentAt)||sameMonthUKDate(inv.date))){totalPaidThisMonth+=Number(inv.paid||0);}});
-outstanding.innerText="£"+owed.toFixed(0);sales.innerText="£"+totalPaidThisMonth.toFixed(2);
-let monthInv=data.invoices.filter(inv=>sameMonthUKDate(inv.date)||sameMonthISO(inv.createdAt)),monthInvValue=monthInv.reduce((a,b)=>a+Number(b.price||0),0);if(document.getElementById("monthInvoiced"))monthInvoiced.innerText="£"+monthInvValue.toFixed(0);if(document.getElementById("monthInvoiceCount"))monthInvoiceCount.innerText=monthInv.length+" invoice"+(monthInv.length===1?"":"s");if(document.getElementById("monthDeposits"))monthDeposits.innerText="£"+depositPaidThisMonth.toFixed(0);
-let accepted=data.quotes.filter(q=>(q.status||"")==="Accepted"),acceptedValue=accepted.reduce((a,b)=>a+Number(b.price||0),0);if(document.getElementById("acceptedWork"))acceptedWork.innerText="£"+acceptedValue.toFixed(0);if(document.getElementById("acceptedQuoteCount"))acceptedQuoteCount.innerText=accepted.length+" open accepted quote"+(accepted.length===1?"":"s");
-let overdue=data.invoices.filter(x=>(x.status||'')==='Overdue'),overdueAmt=overdue.reduce((a,b)=>a+Math.max(0,Number(b.price||0)-Number(b.paid||0)),0);overdueCount.innerText=overdue.length;overdueValue.innerText='£'+overdueAmt.toFixed(0)+' overdue';
+outstanding.innerText=formatDashboardGBP(owed,0);sales.innerText=formatDashboardGBP(totalPaidThisMonth,2);
+let monthInv=data.invoices.filter(inv=>sameMonthUKDate(inv.date)||sameMonthISO(inv.createdAt)),monthInvValue=monthInv.reduce((a,b)=>a+Number(b.price||0),0);if(document.getElementById("monthInvoiced"))monthInvoiced.innerText=formatDashboardGBP(monthInvValue,0);if(document.getElementById("monthInvoiceCount"))monthInvoiceCount.innerText=monthInv.length+" invoice"+(monthInv.length===1?"":"s");if(document.getElementById("monthDeposits"))monthDeposits.innerText=formatDashboardGBP(depositPaidThisMonth,0);
+let accepted=data.quotes.filter(q=>(q.status||"")==="Accepted"),acceptedValue=accepted.reduce((a,b)=>a+Number(b.price||0),0);if(document.getElementById("acceptedWork"))acceptedWork.innerText=formatDashboardGBP(acceptedValue,0);if(document.getElementById("acceptedQuoteCount"))acceptedQuoteCount.innerText=accepted.length+" open accepted quote"+(accepted.length===1?"":"s");
+let overdue=data.invoices.filter(x=>(x.status||'')==='Overdue'),overdueAmt=overdue.reduce((a,b)=>a+Math.max(0,Number(b.price||0)-Number(b.paid||0)),0);overdueCount.innerText=overdue.length;overdueValue.innerText=formatDashboardGBP(overdueAmt,0)+' overdue';
 let upcoming=upcomingAppointments();upcomingCount.innerText=upcoming.length;nextJobText.innerText=upcoming[0]?(dayLabelForAppointment(upcoming[0])+(upcoming[0].time?' · '+upcoming[0].time:'')+' · '+(upcoming[0].customer||'Customer')):'Nothing booked';let weekJobs=appointmentsNext7Days();if(document.getElementById('weekJobsCount'))weekJobsCount.innerText=weekJobs.length;if(document.getElementById('weekJobsText'))weekJobsText.innerText=weekJobs.length?(weekJobs.length+' booked visit'+(weekJobs.length===1?'':'s')+' in next 7 days'):'No booked visits';let completedMonth=completedAppointmentsThisMonth();if(document.getElementById('completedMonthCount'))completedMonthCount.innerText=completedMonth.length;if(document.getElementById('completedMonthText'))completedMonthText.innerText=completedMonth.length?(completedMonth.length+' job'+(completedMonth.length===1?'':'s')+' completed'):'No completed jobs';
 
 let cs=(document.getElementById('customerSearch')?.value||'').toLowerCase();let crows=data.customers.map((x,i)=>({c:normalizeCustomer(x),i})).filter(r=>!cs||[r.c.name,fullAddress(r.c),contactText(r.c)].join(' ').toLowerCase().includes(cs));customerList.innerHTML=crows.length?crows.map(({c,i})=>`<div class="item clickable" onclick="openCustomer(${i})"><strong>${esc(c.name)}</strong><small>${esc(fullAddress(c))}<br>${esc(contactText(c))}</small></div>`).join(''):(data.customers.length?'<div class="empty">No matching customers.</div>':'<div class="empty">No customers saved yet.</div>');
