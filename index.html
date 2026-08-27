@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 5.7 · V18.4</title>
+<title>TradePro UK · Plumber Edition · Build 5.8 · V18.5</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 5.7 · V18.4</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 5.8 · V18.5</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -914,7 +914,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 5.7 · V18.4</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 5.8 · V18.5</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -1883,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 5.7 five-section technical library + persistent Manual Vault */
+/* Build 5.8 five-section technical library + persistent Manual Vault */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1944,6 +1944,9 @@ const DIRECT_MANUALS=[
  {type:"oil",make:"Firebird",model:"Enviromax Condensing Range",title:"Installation & Servicing Manual",url:"https://firebird.ie/images/Downloads/Enviromax_Manual_8.pdf",note:"Official Firebird Enviromax condensing-range manual"},
  {type:"heatpump",make:"Grant UK",model:"Aerona³ R32",title:"Installation Instructions",url:"https://www.grantuk.com/media/5657/grant-aerona-r32-installer-uk-doc-0136-rev-2-4-february-2024.pdf",note:"Official Grant UK Aerona³ R32 installer manual · DOC 0136 · Rev 2.4"},
  {type:"aircon",make:"Daikin",model:"RZAG35A2V1B / RZAG50A2V1B / RZAG60A2V1B",title:"R32 Split Installation Manual",url:"https://www.daikin.co.uk/content/dam/document-library/installation-manuals/ac/sky-air/rzag-a/RZAG-A_3PEN548265-1B_2018_11_Installation%20manual_English.pdf",note:"Official Daikin Sky Air R32 installation manual"}
+,
+ {type:"boiler",categories:["naturalgas"],make:"Intergas",model:"Xclusive 24 / Xclusive 30 / Xclusive 36",title:"Installation Manual",url:"https://www.intergasheating.co.uk/app/uploads/2019/01/Installation-manual-Xclusive-IGH-84010401.pdf",note:"Official Intergas installation manual · explicitly covers Xclusive 24, 30 and 36"},
+ {type:"heatpump",categories:["heatpump"],make:"Vaillant",model:"aroTHERM plus VWL 105/6 A / VWL 125/6 A",title:"Operating, Installation & Maintenance Instructions",url:"https://professional.vaillant.co.uk/downloads/aproducts/renewables-1/arotherm-plus/arotherm-plus-vwl-105-125-a-s2-installation-operation-manual-0020330792-03-2806940.pdf",note:"Official Vaillant PDF · document 0020330792_03 · explicitly covers VWL 105/6 A and VWL 125/6 A variants"},
 ];
 // Category tags keep existing verified PDFs compatible with the expanded library.
 DIRECT_MANUALS.forEach(m=>{if(!Array.isArray(m.categories)){m.categories=m.type==="boiler"?["naturalgas"]:m.type==="oil"?["oil"]:m.type==="aircon"?["aircon"]:[m.type]}});
@@ -2000,11 +2003,27 @@ const CATEGORY_MODEL_CATALOGUES={
   "Firebird":["Enviromax Condensing Range"]
  },
  heatpump:{
-  "Grant UK":["Aerona³ R32"]
+  "Worcester Bosch":["Compress 5800i AW outdoor unit"],
+  "Vaillant":["aroTHERM plus VWL 105/6 A","aroTHERM plus VWL 125/6 A"],
+  "Grant UK":["Aerona³ R32"],
+  "Mitsubishi Electric":["Ecodan air source heat pump range"],
+  "Daikin":["Altherma air-to-water heat pump range"],
+  "Samsung":["EHS Mono heat pump range"],
+  "Panasonic":["Aquarea air-to-water heat pump range"],
+  "LG":["THERMA V air-to-water heat pump range"],
+  "Fujitsu":["Waterstage air-to-water heat pump range"],
+  "NIBE":["Air source heat pump range"],
+  "Kensa":["Ground source heat pump range"]
  },
  aircon:{
   "Daikin":["CTXM-R / FTXM-R / ATXM-R","RZAG35A2V1B","RZAG50A2V1B","RZAG60A2V1B"],
-  "Toshiba":["RAS HAORI R32 10/13/16"]
+  "Mitsubishi Electric":["M Series split systems","Mr Slim split systems","City Multi VRF systems"],
+  "Fujitsu":["ASTH18/22/24KMTD R32"],
+  "Panasonic":["RAC single-split range","PACi commercial range"],
+  "Toshiba":["RAS HAORI R32 10/13/16"],
+  "Samsung":["WindFree split range"],
+  "LG":["Residential split range","Multi V VRF range"],
+  "Midea":["Residential split range"]
  }
 };
 
@@ -2033,7 +2052,9 @@ function manualMatchesModel(m,model){
     ["Grant UK","Vortex Pro External Combi",["vortex pro external combi 21","vortex pro external combi 26","vortex pro external combi 36"]],
     ["Grant UK","Vortex Pro Combi",["vortex pro combi 21","vortex pro combi 26","vortex pro combi 36","vortex pro combi xs 26"]],
     ["Grant UK","Aerona3 R32",["aerona3 r32","aerona 3 r32"]],
-    ["Daikin","RZAG35A2V1B / RZAG50A2V1B / RZAG60A2V1B",["rzag35a2v1b","rzag50a2v1b","rzag60a2v1b"]]
+    ["Daikin","RZAG35A2V1B / RZAG50A2V1B / RZAG60A2V1B",["rzag35a2v1b","rzag50a2v1b","rzag60a2v1b"]],
+    ["Intergas","Xclusive 24 / Xclusive 30 / Xclusive 36",["xclusive 24","xclusive 30","xclusive 36"]],
+    ["Vaillant","aroTHERM plus VWL 105/6 A / VWL 125/6 A",["arotherm plus vwl 105 6 a","arotherm plus vwl 125 6 a"]]
   ];
   const rule=ranges.find(r=>r[0]===m.make && norm(r[1])===a);
   return !!rule && rule[2].map(norm).includes(b);
@@ -2055,6 +2076,17 @@ function allModelsForMake(make){
 function uniqueDirectDocsForMake(make){
  return manualsForFilter().filter(x=>x.make===make);
 }
+
+const MANUFACTURER_SOURCES={
+ "Baxi":"https://www.baxi.co.uk/support/literature-library",
+ "Vaillant":"https://professional.vaillant.co.uk/for-installers/literature-finder/",
+ "Intergas":"https://www.intergasheating.co.uk/trade/",
+ "Mitsubishi Electric":"https://library.mitsubishielectric.co.uk/home",
+ "Worcester Bosch":"https://www.worcester-bosch.co.uk/support/literature",
+ "Ideal Heating":"https://idealheating.com/support/manuals",
+ "Grant UK":"https://www.grantuk.com/professional/product-support/technical-data/"
+};
+function officialSourceButton(make){const u=MANUFACTURER_SOURCES[make];return u?`<button class="secondary" type="button" onclick="window.open('${'${u}'}','_blank','noopener')">Official manufacturer library</button>`:''}
 
 const FAULT_GUIDE=[
 {make:"Vaillant",code:"F.22",meaning:"Low water pressure / dry-fire protection on many ecoTEC models.",checks:["Check the system pressure shown on the appliance.","Look for obvious water loss or visible leaks around the heating system.","If the exact manufacturer instructions allow it, restore pressure to the stated cold-fill range.","If pressure repeatedly falls, investigate the cause rather than repeatedly topping up."],keywords:["f22","f.22"]},
@@ -2107,8 +2139,8 @@ function renderManufacturerLibrary(){
           return `<button class="green" type="button" onclick="viewDirectManual(${mi})">${esc(manual.title||"Open PDF")}</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★":"☆"}</button>`;
         }).join("")}</div></div>`;
       }
-      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">Model listed · exact verified direct PDF not loaded yet</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button></div></div>`;
-    }).join(""):`<div class="smallnote" style="padding:10px 2px">No verified model/range catalogue loaded for this make in this section yet.</div>`}</div>
+      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">Model listed · exact verified direct PDF not loaded yet</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button>${officialSourceButton(make)}</div></div>`;
+    }).join(""):`<div class="smallnote" style="padding:10px 2px">No verified model/range catalogue loaded for this make in this section yet.</div><div class="model-actions" style="padding:0 2px 10px">${officialSourceButton(make)}</div>`}</div>
    </div>`;
  }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
 }
