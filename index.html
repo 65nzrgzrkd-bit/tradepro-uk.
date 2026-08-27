@@ -984,8 +984,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="8.7";
-const TRADEPRO_VERSION="21.4";
+const TRADEPRO_BUILD="8.8";
+const TRADEPRO_VERSION="21.5";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1288,7 +1288,7 @@ idJob.innerText=inv.job;idJobAddress.innerText=inv.jobAddress||displayAddr;idDat
 updateInvoiceStatus(inv);syncAppointmentFromInvoice(inv);let inNet=Number(inv.net??inv.price??0),inVat=Number(inv.vat||0);idNet.innerText="£"+inNet.toFixed(2);idVat.innerText="£"+inVat.toFixed(2);idVatRow.style.display=inVat>0?"block":"none";idStatus.innerText=inv.status||"Unpaid";idStatus.className="status "+((inv.status||"")==="Overdue"?"status-overdue":(inv.status||"")==="Part Paid"?"status-part":(inv.status||"")==="Paid"?"status-accepted":"");let paidAmt=Number(inv.paid||0),totalAmt=Number(inv.price||0),bal=Math.max(0,totalAmt-paidAmt);idPaid.innerText="£"+paidAmt.toFixed(2);idBalance.innerText="£"+bal.toFixed(2);if(document.getElementById("idFinanceTotal"))idFinanceTotal.innerText="£"+totalAmt.toFixed(2);
 let dep=Math.max(0,Number(inv.depositRequired||0));if(document.getElementById("idFinanceDeposit"))idFinanceDeposit.innerText="£"+dep.toFixed(2);idDepositRequired.innerText="£"+dep.toFixed(2);idDepositRow.style.display=dep>0?"block":"none";if(document.getElementById("idDepositState")){idDepositState.innerHTML=dep>0?(paidAmt>=dep?'<span class="deposit-paid-badge">✓ Deposit paid</span>':'<span class="deposit-due-badge">Deposit still due</span>'):'';}let pct=totalAmt>0?Math.min(100,Math.max(0,paidAmt/totalAmt*100)):0;if(document.getElementById("idProgressFill"))idProgressFill.style.width=pct.toFixed(1)+"%";idSourceQuote.innerText=inv.sourceQuoteNumber||"";idSourceQuoteRow.style.display=inv.sourceQuoteNumber?"block":"none";idPaymentProgress.innerText="£"+paidAmt.toFixed(2)+" of £"+totalAmt.toFixed(2)+" paid";renderPaymentHistory(inv);
 let btn=document.getElementById("paidToggleBtn");if(btn){let isPaid=inv.status==="Paid";btn.textContent=isPaid?"Reopen as Unpaid":"Mark as Paid";btn.className=isPaid?"reversal-btn":"green";}let db=document.getElementById("depositPaidBtn");if(db){db.style.display=dep>0&&Number(inv.paid||0)<dep?"block":"none";db.textContent="Record Deposit Paid · £"+Math.max(0,dep-Number(inv.paid||0)).toFixed(2)};
-let delivery=inv.deliveryStatus||"Draft",dBadge=document.getElementById("idDeliveryStatus"),dMeta=document.getElementById("idDeliveryMeta");if(dBadge){dBadge.textContent=delivery+(inv.revisionCount?" · Rev "+inv.revisionCount:"");dBadge.className="delivery-badge "+(delivery==="Sent"?"sent":inv.revisionCount?"revised":"");}if(dMeta){dMeta.textContent=delivery==="Sent"?("Sent "+formatSavedTime(inv.sentAt)):(inv.revisedAt?"Revised — send the updated invoice":"Safe to edit before sending");}let ms=document.getElementById("invoiceMarkSentBtn"),md=document.getElementById("invoiceMarkDraftBtn");if(ms)ms.style.display=delivery==="Sent"?"none":"inline-block";if(md)md.style.display=delivery==="Draft"?"none":"inline-block";let reminder=document.getElementById("paymentReminderBtn");if(reminder)reminder.style.display=bal>0?"block":"none";
+let delivery=inv.deliveryStatus||"Draft",dBadge=document.getElementById("idDeliveryStatus"),dMeta=document.getElementById("idDeliveryMeta");if(dBadge){dBadge.textContent=delivery+(inv.revisionCount?" · Rev "+inv.revisionCount:"");dBadge.className="delivery-badge "+(delivery==="Sent"?"sent":inv.revisionCount?"revised":"");}if(dMeta){dMeta.textContent=delivery==="Sent"?("Sent "+formatSavedTime(inv.sentAt)):(inv.revisedAt?"Revised — send the updated invoice":"Safe to edit before sending");}let ms=document.getElementById("invoiceMarkSentBtn"),md=document.getElementById("invoiceMarkDraftBtn");if(ms)ms.style.display=delivery==="Sent"?"none":"inline-block";if(md)md.style.display=delivery==="Draft"?"none":"inline-block";let reminder=document.getElementById("paymentReminderBtn");if(reminder)reminder.style.display=(delivery==="Sent"&&bal>0)?"block":"none";
 show("invoiceDetail")
 }
 
@@ -1423,9 +1423,9 @@ Phone/Email: ${contactText(c)}
 Work: ${inv.job}
 Job address: ${inv.jobAddress||fullAddress(c)}
 
-Total: £${inv.price.toFixed(2)}
+Total: £${Number(inv.price||0).toFixed(2)}
 ${inv.sourceQuoteNumber?`Source quote: ${inv.sourceQuoteNumber}\n`:``}${Number(inv.depositRequired||0)>0?`Deposit required: £${Number(inv.depositRequired||0).toFixed(2)}\n`:``}Paid: £${Number(inv.paid||0).toFixed(2)}
-Balance due: £${Math.max(0,inv.price-Number(inv.paid||0)).toFixed(2)}
+Balance due: £${Math.max(0,Number(inv.price||0)-Number(inv.paid||0)).toFixed(2)}
 Status: ${inv.status||"Unpaid"}
 
 ${bankBits}
@@ -1435,7 +1435,7 @@ Thank you for your business.`;
 }
 
 function setInvoiceDeliveryStatus(status){
-if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex];if(!["Draft","Sent"].includes(status))return;inv.deliveryStatus=status;inv.deliveryChangedAt=new Date().toISOString();if(status==="Sent")inv.sentAt=inv.sentAt||new Date().toISOString();save();openInvoice(selectedInvoiceIndex);toast((inv.number||"Invoice")+" · "+status);
+if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex];if(!["Draft","Sent"].includes(status))return;let now=new Date().toISOString();inv.deliveryStatus=status;inv.deliveryChangedAt=now;if(status==="Sent")inv.sentAt=now;save();openInvoice(selectedInvoiceIndex);toast((inv.number||"Invoice")+" · "+status);
 }
 function markInvoiceSent(inv){inv.deliveryStatus="Sent";inv.sentAt=new Date().toISOString();inv.deliveryChangedAt=inv.sentAt;save();}
 async function sendInvoice(){
@@ -1451,7 +1451,7 @@ window.location.href=`mailto:${encodeURIComponent(normalizeCustomer(inv.customer
 toast("Email prepared — mark the invoice Sent after sending");
 }
 function paymentReminderText(inv){let c=normalizeCustomer(inv.customer),balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0)),link=paymentLinkForInvoice(inv);return `Hi ${c.name||"there"}, just a reminder that invoice ${inv.number||""} has a balance of £${balance.toFixed(2)} due${inv.dueDate?" on "+inv.dueDate:""}. ${link&&/^https?:\/\//i.test(link)?"Payment link: "+link+" ":""}Please let me know if you need another copy of the invoice. Thanks, ${setting("businessName","TradePro UK")}.`; }
-async function sendPaymentReminder(){if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));if(balance<=0){toast("Invoice is already paid");return;}let c=normalizeCustomer(inv.customer),text=paymentReminderText(inv);if(navigator.share){try{await navigator.share({title:`Payment reminder ${inv.number||""}`,text});inv.lastReminderAt=new Date().toISOString();save();openInvoice(selectedInvoiceIndex);return}catch(e){if(e&&e.name==="AbortError")return;}}let subject=encodeURIComponent(`Payment reminder · ${inv.number||"Invoice"}`),body=encodeURIComponent(text);window.location.href=`mailto:${encodeURIComponent(c.email||"")}?subject=${subject}&body=${body}`;toast("Reminder email prepared — history updates after a successful share");}
+async function sendPaymentReminder(){if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));if((inv.deliveryStatus||"Draft")!=="Sent"){toast("Send the invoice before sending a payment reminder");return;}if(balance<=0){toast("Invoice is already paid");return;}let c=normalizeCustomer(inv.customer),text=paymentReminderText(inv);if(navigator.share){try{await navigator.share({title:`Payment reminder ${inv.number||""}`,text});inv.lastReminderAt=new Date().toISOString();save();openInvoice(selectedInvoiceIndex);return}catch(e){if(e&&e.name==="AbortError")return;}}let subject=encodeURIComponent(`Payment reminder · ${inv.number||"Invoice"}`),body=encodeURIComponent(text);window.location.href=`mailto:${encodeURIComponent(c.email||"")}?subject=${subject}&body=${body}`;toast("Reminder email prepared — history updates after a successful share");}
 
 function populateInvoicePaper(){
 if(selectedInvoiceIndex===null)return false;
@@ -1694,12 +1694,12 @@ function renderCustomerHistory(c){
  (data.invoices||[]).forEach((inv,i)=>{
    if(customerKey(inv.customer)!==key)return;
    rows.push({group:'docs',type:'Invoice',date:inv.date||'',number:inv.number||'Invoice',job:inv.job||'',price:Number(inv.price||0),status:inv.status||'Unpaid',open:`openInvoice(${i})`});
-   (Array.isArray(inv.payments)?inv.payments:[]).forEach(p=>rows.push({group:'payments',type:p.type||'Payment',date:p.date||'',number:inv.number||'Invoice',job:inv.job||'',price:Number(p.amount||0),status:'Received',open:`openInvoice(${i})`,at:p.at||''}));
+   (Array.isArray(inv.payments)?inv.payments:[]).forEach(p=>{let amt=Number(p.amount||0);rows.push({group:'payments',type:p.type||'Payment',date:p.date||'',number:inv.number||'Invoice',job:inv.job||'',price:amt,status:amt<0?'Reversed':'Received',open:`openInvoice(${i})`,at:p.at||''})});
  });
  (data.appointments||[]).forEach((a,i)=>{if(String(a.customer||'').trim().toLowerCase()===String(c.name||'').trim().toLowerCase())rows.push({group:'jobs',type:'Job',date:isoToUK(a.date),number:a.sourceQuoteNumber||a.invoiceNumber||'Booking',job:a.job||'',price:Number(a.quotedValue||0),status:a.status||'Booked',open:`editAppointment(${i})`})});
  let visible=rows.filter(r=>customerHistoryFilter==='all'||r.group===customerHistoryFilter).sort((a,b)=>{let av=a.at?new Date(a.at).getTime():ukDateValue(a.date),bv=b.at?new Date(b.at).getTime():ukDateValue(b.date);return bv-av;});
  cdHistoryCount.textContent=visible.length+' record'+(visible.length===1?'':'s');
- customerHistory.innerHTML=visible.length?visible.map(r=>{let pay=r.group==='payments',zeroJob=r.group==='jobs'&&Number(r.price||0)<=0,priceLabel=pay?'+ £'+r.price.toFixed(2):(zeroJob?'Value not set':'£'+r.price.toFixed(2));let typeLabel=r.type;if(pay){let t=String(r.type||'Payment').toLowerCase();typeLabel=t.includes('deposit')?'Deposit received':t.includes('full')?'Final payment received':'Payment received';}return `<div class="item clickable ${pay?'history-payment':''}" onclick="${r.open}"><span class="price">${priceLabel}</span><strong><span class="history-type">${esc(typeLabel)}</span>${esc(r.number)}</strong><small>${esc(r.date)} · ${esc(r.status)}${r.job?'<br>'+esc(r.job):''}</small></div>`;}).join(''):'<div class="empty">No records in this view.</div>';
+ customerHistory.innerHTML=visible.length?visible.map(r=>{let pay=r.group==='payments',negative=pay&&Number(r.price||0)<0,zeroJob=r.group==='jobs'&&Number(r.price||0)<=0,priceLabel=pay?((negative?'- £':'+ £')+Math.abs(Number(r.price||0)).toFixed(2)):(zeroJob?'Value not set':'£'+Number(r.price||0).toFixed(2));let typeLabel=r.type;if(pay){let t=String(r.type||'Payment').toLowerCase();typeLabel=t.includes('reversal')?'Payment reversal':t.includes('correction')?'Payment correction':t.includes('adjustment')?'Payment adjustment':t.includes('deposit')?'Deposit received':t.includes('full')?'Final payment received':'Payment received';}return `<div class="item clickable ${pay?'history-payment':''}" onclick="${r.open}"><span class="price">${priceLabel}</span><strong><span class="history-type">${esc(typeLabel)}</span>${esc(r.number)}</strong><small>${esc(r.date)} · ${esc(r.status)}${r.job?'<br>'+esc(r.job):''}</small></div>`;}).join(''):'<div class="empty">No records in this view.</div>';
 }
 function newJobForSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newJob();customer.value=c.name||'';phone.value=c.phone||'';email.value=c.email||'';address1.value=c.address1||'';address2.value=c.address2||'';town.value=c.town||'';postcode.value=c.postcode||'';}
 function bookSelectedCustomer(){if(selectedCustomerIndex===null)return;let c=normalizeCustomer(data.customers[selectedCustomerIndex]);newAppointment(c);}
