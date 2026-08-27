@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 6.7 · V19.4</title>
+<title>TradePro UK · Plumber Edition</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 6.8 · V19.5</small><h1>Plumber Edition</h1></header>
+<header><small id="appReleaseLabel">TradePro UK</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -926,7 +926,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 6.7 · V19.4</div>
+<div id="settingsReleaseLabel" class="versionline">TradePro UK · Plumber Edition</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -944,7 +944,15 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="18.8";
+const TRADEPRO_BUILD="6.9";
+const TRADEPRO_VERSION="19.6";
+const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
+function syncReleaseLabels(){
+ const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
+ const settings=document.getElementById("settingsReleaseLabel");if(settings)settings.textContent=`TradePro UK · Plumber Edition · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
+ document.title=`TradePro UK · Plumber Edition · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
+}
+syncReleaseLabels();
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1874,9 +1882,9 @@ function calcHeatPump(){
  setToolResult('hpResult','Recommended customer price',desc,p);
 }
 function exportBackup(){
- let payload={app:'TradePro UK Plumber Edition',version:TRADEPRO_VERSION,exportedAt:new Date().toISOString(),data,settings:{}};
+ let payload={app:'TradePro UK Plumber Edition',version:TRADEPRO_VERSION,build:TRADEPRO_BUILD,release:TRADEPRO_RELEASE,exportedAt:new Date().toISOString(),data,settings:{}};
  ['businessName','ownerName','businessAddress1','businessAddress2','businessTown','businessPostcode','businessPhone','businessEmail','businessWebsite','companyNumber','vatNumber','vatRegistered','vatRate','accountName','sortCode','accountNumber','paymentNote','paymentLink','rate','travel','markup','overheadRate','contingency','profit','paymentDays','quoteValidDays','depositPercent','showQROnInvoice','businessLogo','lastBackupAt'].forEach(k=>payload.settings[k]=localStorage.getItem(k));
- let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='TradePro_Backup_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='TradePro_Backup_V'+TRADEPRO_VERSION+'_Build_'+TRADEPRO_BUILD+'_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
  localStorage.setItem('lastBackupAt',new Date().toISOString());renderReadiness();toast('Backup exported');
 }
 function importBackup(event){
@@ -1895,6 +1903,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
+/* Build 6.9 release-integrity hardening: one source of truth for build/version labels, backups and engineer-report metadata. */
 /* Build 6.8 exact-model integrity hardening + Mitsubishi Electric M-Series expansion */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
@@ -2133,6 +2142,8 @@ function uniqueDirectDocsForMake(make){
 
 function runTechDataIntegrityAudit(){
   const issues=[],warnings=[];
+  if(!/^\d+\.\d+$/.test(TRADEPRO_BUILD))issues.push(`Invalid build identifier: ${TRADEPRO_BUILD}`);
+  if(!/^\d+\.\d+$/.test(TRADEPRO_VERSION))issues.push(`Invalid app version identifier: ${TRADEPRO_VERSION}`);
   const seenUrls=new Map();
   DIRECT_MANUALS.forEach((m,i)=>{
     if(!m.make||!m.model||!m.title||!m.url)issues.push(`Manual ${i+1} is missing required metadata`);
@@ -2211,7 +2222,7 @@ function updateTechHealth(){
  const status=document.getElementById("techHealthStatus"),note=document.getElementById("techHealthNote");
  const audit=window.TRADEPRO_TECH_AUDIT||{issues:[]};
  if(status)status.textContent=audit.issues.length?audit.issues.length+" integrity issue"+(audit.issues.length===1?"":"s"):"Strict matching on";
- if(note)note.innerHTML=`${covered} of ${models.length} catalogue models have an exact verified built-in document in this section. <strong>Broad family titles never count as coverage unless their individual models are explicitly mapped.</strong>`;
+ if(note)note.innerHTML=`${covered} of ${models.length} catalogue models have an exact verified built-in document in this section. <strong>Broad family titles never count as coverage unless their individual models are explicitly mapped.</strong> Release metadata is also generated from a single build/version source to prevent stale labels in backups and reports.`;
 }
 function renderManufacturerLibrary(){
  const box=document.getElementById("techList"),c=document.getElementById("manufacturerCount");if(!box)return;
@@ -2279,7 +2290,7 @@ function renderEngineerReports(){let box=document.getElementById("engineerReport
 function editEngineerReport(id){let r=(data.engineerReports||[]).find(x=>x.id===id);if(!r)return;currentEngineerReportId=id;let map={erType:"type",erDate:"date",erStatus:"status",erCustomer:"customer",erAddress:"address",erPhone:"phone",erEmail:"email",erMake:"make",erModel:"model",erSerial:"serial",erEquipment:"equipment",erRefrigerant:"refrigerant",erCharge:"charge",erAdded:"added",erRecovered:"recovered",erLeak:"leak",erFgasRef:"fgasRef",erReadings:"readings",erWork:"work",erParts:"parts",erFault:"fault",erRecommendations:"recommendations",erNextService:"nextService",erSignature:"signature",erNotes:"notes"};Object.entries(map).forEach(([id,k])=>{let e=document.getElementById(id);if(e)e.value=r[k]||""});document.getElementById("erHeading").textContent=r.type||"Engineer Report";document.getElementById("erDelete").style.display="block";show("engineerReportEdit")}
 function deleteEngineerReport(){if(!currentEngineerReportId)return;if(!confirm("Delete this engineer report?"))return;data.engineerReports=(data.engineerReports||[]).filter(x=>x.id!==currentEngineerReportId);save();currentEngineerReportId=null;toast("Report deleted");show("engineerReports")}
 function reportSection(title,text){return text?`<div class="rp-section"><h3>${esc(title)}</h3><div class="rp-text">${esc(text)}</div></div>`:""}
-function renderReportPaper(r){let business=setting("businessName","TradePro UK"),owner=setting("ownerName","");let fgas=[r.refrigerant&&`Refrigerant: ${r.refrigerant}`,r.charge&&`System charge: ${r.charge} kg`,r.added&&`Added: ${r.added} kg`,r.recovered&&`Recovered: ${r.recovered} kg`,r.leak&&`Leak check: ${r.leak}`,r.fgasRef&&`Engineer/F-Gas ref: ${r.fgasRef}`].filter(Boolean).join("\n");return `<h1>${esc(business)}</h1><h2>${esc(r.type||"Engineer Report")}</h2><div class="rp-grid"><div class="rp-box"><small>Customer</small><strong>${esc(r.customer||"Not entered")}</strong><div>${esc(r.address||"")}</div></div><div class="rp-box"><small>Report</small><strong>${esc(r.date||"")}</strong><div>Status: ${esc(r.status||"")}</div></div><div class="rp-box"><small>Equipment</small><strong>${esc((r.make||"")+" "+(r.model||""))}</strong><div>${esc(r.equipment||"")} ${r.serial?"· S/N "+esc(r.serial):""}</div></div><div class="rp-box"><small>Engineer / Business</small><strong>${esc(owner||business)}</strong><div>${esc(business)}</div></div></div>${reportSection("F-Gas / Refrigerant",fgas)}${reportSection("Readings / Test Results",r.readings)}${reportSection("Fault / Diagnosis",r.fault)}${reportSection("Work Carried Out",r.work)}${reportSection("Parts / Materials",r.parts)}${reportSection("Recommendations / Further Work",r.recommendations)}${r.nextService?reportSection("Next Service Due",r.nextService):""}${reportSection("Engineer Notes",r.notes)}${r.signature?`<div class="rp-section"><h3>Customer / Site Acknowledgement</h3><div>Signed/acknowledged by: <strong>${esc(r.signature)}</strong></div></div>`:""}<div style="margin-top:28px;font-size:11px;color:#6f7a84">Generated with TradePro UK · ${esc(TRADEPRO_VERSION)}</div>`}
+function renderReportPaper(r){let business=setting("businessName","TradePro UK"),owner=setting("ownerName","");let fgas=[r.refrigerant&&`Refrigerant: ${r.refrigerant}`,r.charge&&`System charge: ${r.charge} kg`,r.added&&`Added: ${r.added} kg`,r.recovered&&`Recovered: ${r.recovered} kg`,r.leak&&`Leak check: ${r.leak}`,r.fgasRef&&`Engineer/F-Gas ref: ${r.fgasRef}`].filter(Boolean).join("\n");return `<h1>${esc(business)}</h1><h2>${esc(r.type||"Engineer Report")}</h2><div class="rp-grid"><div class="rp-box"><small>Customer</small><strong>${esc(r.customer||"Not entered")}</strong><div>${esc(r.address||"")}</div></div><div class="rp-box"><small>Report</small><strong>${esc(r.date||"")}</strong><div>Status: ${esc(r.status||"")}</div></div><div class="rp-box"><small>Equipment</small><strong>${esc((r.make||"")+" "+(r.model||""))}</strong><div>${esc(r.equipment||"")} ${r.serial?"· S/N "+esc(r.serial):""}</div></div><div class="rp-box"><small>Engineer / Business</small><strong>${esc(owner||business)}</strong><div>${esc(business)}</div></div></div>${reportSection("F-Gas / Refrigerant",fgas)}${reportSection("Readings / Test Results",r.readings)}${reportSection("Fault / Diagnosis",r.fault)}${reportSection("Work Carried Out",r.work)}${reportSection("Parts / Materials",r.parts)}${reportSection("Recommendations / Further Work",r.recommendations)}${r.nextService?reportSection("Next Service Due",r.nextService):""}${reportSection("Engineer Notes",r.notes)}${r.signature?`<div class="rp-section"><h3>Customer / Site Acknowledgement</h3><div>Signed/acknowledged by: <strong>${esc(r.signature)}</strong></div></div>`:""}<div style="margin-top:28px;font-size:11px;color:#6f7a84">Generated with TradePro UK · V${esc(TRADEPRO_VERSION)} · Build ${esc(TRADEPRO_BUILD)}</div>`}
 function previewEngineerReport(){let r=collectEngineerReport();document.getElementById("reportPaper").innerHTML=renderReportPaper(r);show("reportPrint")}
 function quickPrintEngineerReport(id){let r=(data.engineerReports||[]).find(x=>x.id===id);if(!r)return;currentEngineerReportId=id;document.getElementById("reportPaper").innerHTML=renderReportPaper(r);show("reportPrint")}
 
