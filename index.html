@@ -966,8 +966,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="8.3";
-const TRADEPRO_VERSION="21.0";
+const TRADEPRO_BUILD="8.4";
+const TRADEPRO_VERSION="21.1";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2355,6 +2355,14 @@ const OFFICIAL_MODEL_SOURCES={
  "NIBE|F2050-12":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050",
  "NIBE|F2050-16":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050"
 };
+const MODEL_MANUAL_IDENTIFIED={
+ "Baxi|Duo-tec 24":{family:"Baxi Duo-tec Combi ErP 24/28/33/40",note:"Exact family manual identified; official Baxi-hosted direct PDF still pending."},
+ "Baxi|Duo-tec 28":{family:"Baxi Duo-tec Combi ErP 24/28/33/40",productCode:"4707597",note:"Exact family manual identified; official Baxi-hosted direct PDF still pending."},
+ "Baxi|Duo-tec 33":{family:"Baxi Duo-tec Combi ErP 24/28/33/40",note:"Exact family manual identified; official Baxi-hosted direct PDF still pending."},
+ "Baxi|Duo-tec 40":{family:"Baxi Duo-tec Combi ErP 24/28/33/40",note:"Exact family manual identified; official Baxi-hosted direct PDF still pending."}
+};
+function identifiedManualInfo(make,model){return MODEL_MANUAL_IDENTIFIED[make+"|"+model]||null}
+
 const MODEL_SEARCH_ALIASES={
  "Panasonic|Etherea R32 KIT-Z20-CKE":["CS-Z20CKEW","CU-Z20CKE"],
  "Panasonic|Etherea R32 KIT-Z25-CKE":["CS-Z25CKEW","CU-Z25CKE"],
@@ -2373,9 +2381,9 @@ const MODEL_SEARCH_ALIASES={
  "LG|ARTCOOL Gallery Premium A09GA2":["S3NM09EL26A.EK6GEEU","S3UM09EL26A.EC6GEEU"]
 };
 function modelAliases(make,model){return MODEL_SEARCH_ALIASES[make+"|"+model]||[]}
-function modelSearchText(make,model){return [make,model,...modelAliases(make,model)].join(" " ).toLowerCase()}
+function modelSearchText(make,model){const i=identifiedManualInfo(make,model);return [make,model,...modelAliases(make,model),i?.family||"",i?.productCode||""].join(" " ).toLowerCase()}
 function officialModelSourceButton(make,model){const u=OFFICIAL_MODEL_SOURCES[make+"|"+model];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official model page</button>`:''}
-function modelAliasMeta(make,model){const a=modelAliases(make,model);return a.length?` · Unit codes: ${a.map(esc).join(" / " )}`:''}
+function modelAliasMeta(make,model){const a=modelAliases(make,model),i=identifiedManualInfo(make,model);let out=a.length?` · Unit codes: ${a.map(esc).join(" / " )}`:'';if(i?.productCode)out+=` · Product code: ${esc(i.productCode)}`;return out}
 runTechDataIntegrityAudit();
 
 const FAULT_GUIDE=[
@@ -2406,9 +2414,10 @@ function modelLibraryState(make,model){
  return {docs,official,legacy,status:docs.length?"verified":official?"official-only":"pending"};
 }
 function modelStateLabel(make,model){
- const st=modelLibraryState(make,model);
+ const st=modelLibraryState(make,model),identified=identifiedManualInfo(make,model);
  if(st.status==="verified")return `${st.docs.length} verified document${st.docs.length===1?"":"s"}${st.legacy?" · legacy":""}`;
  if(st.status==="official-only")return `Official model page verified · exact direct PDF pending${st.legacy?" · legacy":""}`;
+ if(identified)return `Exact model listed · family manual identified · official direct PDF pending${st.legacy?" · legacy":""}`;
  return `Exact model listed · exact verified direct PDF pending${st.legacy?" · legacy":""}`;
 }
 function updateTechHealth(){
@@ -2458,7 +2467,7 @@ function renderManufacturerLibrary(){
           return `<button class="green" type="button" onclick="viewDirectManual(${mi})">${esc(manual.title||"Open PDF")}</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★":"☆"}</button>`;
         }).join("")}${officialModelSourceButton(make,model)}</div></div>`;
       }
-      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}</div></div>`;
+      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}${identifiedManualInfo(make,model)?`<br><span style="font-size:11px">${esc(identifiedManualInfo(make,model).family)}${identifiedManualInfo(make,model).productCode?` · ${esc(identifiedManualInfo(make,model).productCode)}`:''}</span>`:''}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}</div></div>`;
     }).join(""):`<div class="smallnote" style="padding:10px 2px">No verified model/range catalogue loaded for this make in this section yet.</div><div class="model-actions" style="padding:0 2px 10px">${officialSourceButton(make)}</div>`}</div>
    </div>`;
  }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
