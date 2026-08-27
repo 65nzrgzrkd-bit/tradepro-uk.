@@ -806,12 +806,12 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="card"><small>PDF pending</small><strong id="techHealthPending">0</strong></div>
 <div class="card"><small>Legacy models</small><strong id="techHealthLegacy">0</strong></div>
 </div>
-<div id="techHealthNote" class="smallnote" style="margin-top:10px">Only explicitly mapped exact models count as verified PDF coverage.</div>
+<div id="techHealthNote" class="smallnote" style="margin-top:10px">Only explicitly mapped exact models count as verified PDF coverage. Manufacturer/CDN source domains are audited too.</div>
 </div>
 
 <div class="sectioncard">
 <div class="section-title-row"><h3>Manufacturers & Models</h3><span id="manufacturerCount" class="count-pill">0 makes</span></div>
-<div class="smallnote" style="margin:7px 0 10px">Tap a manufacturer to drop down its models. <strong>Open PDF</strong> is only shown for an exact verified model/range match. TradePro can now show multiple verified documents under each model — installation, servicing, wiring, fault or user documents where available. Unverified documents still show <strong>PDF pending</strong>.</div>
+<div class="smallnote" style="margin:7px 0 10px">Tap a manufacturer to drop down its models. <strong>Open PDF</strong> is only shown for an exact explicitly mapped model match. Reference PDFs from approved manufacturer/CDN sources remain available separately but do not count as model coverage until mapped. Unverified models still show <strong>PDF pending</strong>.</div>
 <div id="techList" class="tech-list"></div>
 </div>
 
@@ -962,8 +962,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="8.1";
-const TRADEPRO_VERSION="20.8";
+const TRADEPRO_BUILD="8.2";
+const TRADEPRO_VERSION="20.9";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2020,7 +2020,17 @@ function manualsForFilter(){return DIRECT_MANUALS.filter(x=>x.categories.include
 function rememberManual(m){try{let r=JSON.parse(localStorage.getItem("tradepro_recent_manuals")||"[]");r=r.filter(x=>x.url!==m.url);r.unshift({make:m.make,model:m.model,title:m.title,url:m.url,when:Date.now()});localStorage.setItem("tradepro_recent_manuals",JSON.stringify(r.slice(0,10)));if(typeof renderRecentManuals==="function")renderRecentManuals()}catch(e){}}
 function openPdfReliable(url,meta){if(!url)return;currentManualUrl=url;if(meta)rememberManual(meta);window.location.href=url}
 function viewDirectManual(index){let x=DIRECT_MANUALS[index];if(!x)return;openPdfReliable(x.url,x)}
-function renderDirectManuals(){let box=document.getElementById("directManualList");if(!box)return;let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();let arr=manualsForFilter().filter(x=>!q||(x.make+" "+x.model+" "+x.title).toLowerCase().includes(q));if(techFilter==="lpg"&&arr.length===0){box.innerHTML=`<div class="notice"><strong>LPG/propane manuals are model-specific.</strong><br>${LPG_GUIDANCE}<br><br>Add the exact LPG/propane PDF to the Manual Vault when you have it.</div>`;return}box.innerHTML=arr.length?arr.map(x=>`<div class="direct-manual"><strong>${esc(x.make)} · ${esc(x.model)}</strong><small>${esc(x.title)}<br>${esc(x.note||"")}</small><button class="green" type="button" onclick="viewDirectManual(${DIRECT_MANUALS.indexOf(x)})">Open PDF full screen</button></div>`).join(""):'<div class="smallnote"><strong>No exact verified built-in PDF matches this model/search yet.</strong><br>Use the Manual Vault for the exact manual. TradePro will not disguise a manufacturer webpage as a PDF button.</div>'}
+function renderDirectManuals(){
+ let box=document.getElementById("directManualList");if(!box)return;
+ let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();
+ let arr=manualsForFilter().filter(x=>!q||(x.make+" "+x.model+" "+x.title).toLowerCase().includes(q));
+ if(techFilter==="lpg"&&arr.length===0){box.innerHTML=`<div class="notice"><strong>LPG/propane manuals are model-specific.</strong><br>${LPG_GUIDANCE}<br><br>Add the exact LPG/propane PDF to the Manual Vault when you have it.</div>`;return}
+ const mapped=arr.filter(manualHasVerifiedModelMap), refs=arr.filter(x=>!manualHasVerifiedModelMap(x));
+ let html="";
+ if(mapped.length)html+=mapped.map(x=>`<div class="direct-manual"><strong>${esc(x.make)} · ${esc(x.model)}</strong><small>${esc(x.title)}<br><strong>Verified model mapping</strong>${x.note?" · "+esc(x.note):""}</small><button class="green" type="button" onclick="viewDirectManual(${DIRECT_MANUALS.indexOf(x)})">Open verified PDF</button></div>`).join("");
+ if(refs.length)html+=`<div class="notice"><strong>${refs.length} reference PDF${refs.length===1?"":"s"} awaiting exact model mapping.</strong><br>These are retained from manufacturer/approved CDN sources but do not count as model coverage and are not shown as an exact-model PDF until their appliance/revision mapping is verified.</div>`+refs.map(x=>`<div class="direct-manual"><strong>Reference · ${esc(x.make)} · ${esc(x.model)}</strong><small>${esc(x.title)}<br>${esc(x.note||"Exact model/revision mapping still to be verified")}</small><button class="secondary" type="button" onclick="viewDirectManual(${DIRECT_MANUALS.indexOf(x)})">Open reference PDF</button></div>`).join("");
+ box.innerHTML=html||'<div class="smallnote"><strong>No verified built-in PDF matches this model/search yet.</strong><br>Use the Manual Vault for the exact manual. TradePro will not disguise a manufacturer webpage or unverified family PDF as an exact-model PDF.</div>';
+}
 function setTechFilter(type){techFilter=type;["naturalgas","lpg","oil","heatpump","aircon"].forEach(x=>{let id="techTab"+x.charAt(0).toUpperCase()+x.slice(1);let b=document.getElementById(id);if(b)b.classList.toggle("active",x===type)});renderTechLibrary();renderManualVault()}
 function renderTechLibrary(){renderDirectManuals();let box=document.getElementById("techList");if(!box)return;let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();let entry=TECH_LIBRARY.find(x=>x.type===techFilter);let grouped={};manualsForFilter().forEach(x=>grouped[x.make]=(grouped[x.make]||0)+1);let makes=(entry?.makes||[]).filter(make=>!q||make.toLowerCase().includes(q)||manualsForFilter().some(x=>x.make===make&&(x.model+" "+x.title).toLowerCase().includes(q)));box.innerHTML=makes.length?makes.map(make=>`<div class="tech-item"><h4>${esc(make)}</h4><p>${techFilter==="naturalgas"?"Natural-gas boiler / heating technical manuals":techFilter==="lpg"?"LPG / propane appliance technical manuals — exact model approval required":techFilter==="oil"?"Oil boiler / burner technical manuals":techFilter==="heatpump"?"Heat-pump installation, service and commissioning manuals":"Air-conditioning / refrigeration / F-Gas technical manuals"}</p><div class="smallnote"><strong>${grouped[make]||0} built-in direct PDF${(grouped[make]||0)===1?'':'s'}</strong> · Manual Vault can hold additional PDFs for this make.</div></div>`).join(""):'<div class="notice">No manufacturer matches this search in the selected section.</div>'}
 function searchTechnicalWeb(){let q=(document.getElementById("faultSearch")?.value||"").trim().toLowerCase();if(!q){toast("Enter a manufacturer, model or fault code");return}let hits=DIRECT_MANUALS.filter(x=>(x.make+" "+x.model+" "+x.title).toLowerCase().includes(q));if(hits.length){let cat=hits[0].categories[0]||"naturalgas";techFilter=cat;setTechFilter(cat);document.getElementById("techSearch").value=q;renderTechLibrary();document.getElementById("directManualList")?.scrollIntoView({behavior:"smooth",block:"start"});toast(hits.length+" built-in PDF"+(hits.length===1?"":"s")+" found");return}searchVault(q)}
@@ -2109,6 +2119,31 @@ const CATEGORY_MODEL_CATALOGUES={
  }
 };
 
+/* Build 8.2: strict PDF provenance audit. Only documents with an explicit model map can count as model-level coverage.
+   Manufacturer/CDN hosts below are the approved built-in source domains; future links outside this list are flagged by Library Health. */
+const APPROVED_MANUAL_HOSTS={
+  "Worcester Bosch":["www.worcester-bosch.co.uk"],
+  "Vaillant":["professional.vaillant.co.uk"],
+  "Alpha":["alpha-heating.ams3.digitaloceanspaces.com"],
+  "Ideal Heating":["idealheating.com"],
+  "Glow-worm":["www.glow-worm.co.uk"],
+  "Main Heating":["www.mainheating.co.uk"],
+  "Viessmann":["www.viessmann.co.uk"],
+  "Navien":["navien.co.uk"],
+  "ATAG":["www.atagheating.co.uk"],
+  "Grant UK":["www.grantuk.com"],
+  "Daikin":["www.daikin.co.uk"],
+  "Toshiba":["www.toshiba-aircon.co.uk"],
+  "Fujitsu":["www.fujitsu-general.com"],
+  "Kensa":["www.kensaheatpumps.com"],
+  "Warmflow":["warmflow.fra1.cdn.digitaloceanspaces.com"],
+  "Firebird":["firebird.uk.com","firebird.ie"],
+  "Intergas":["www.intergasheating.co.uk"],
+  "Mitsubishi Electric":["library.mitsubishielectric.co.uk"],
+  "Samsung":["org.downloadcenter.samsung.com"],
+  "Panasonic":["cdn.aircon.panasonic.eu","www.panasonicproclub.com"]
+};
+
 const VERIFIED_MANUAL_MODEL_MAP={
   "Worcester Bosch|Greenstar 24i Junior / Greenstar 28i Junior":["Greenstar 24i Junior","Greenstar 28i Junior"],
   "Worcester Bosch|Greenstar 25i ErP / Greenstar 30i ErP":["Greenstar 25i ErP","Greenstar 30i ErP"],
@@ -2151,12 +2186,14 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "ATAG|iC / iS / iR Range":["iC Economiser 27","iC Economiser 35","iC Economiser 39","iC Economiser 47","iC 24","iC 28","iC 36","iC 40","iR 12","iR 15","iR 18","iR 24","iS 15","iS 18","iS 24","iS 30"]
 };
 function normaliseModelName(s){return String(s||"").toLowerCase().replace(/[–—]/g,"-").replace(/²/g,"2").replace(/³/g,"3").replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim()}
+function manualHasVerifiedModelMap(m){
+  return Array.isArray(VERIFIED_MANUAL_MODEL_MAP[m.make+"|"+m.model]) && VERIFIED_MANUAL_MODEL_MAP[m.make+"|"+m.model].length>0;
+}
 function manualMatchesModel(m,model){
-  const a=normaliseModelName(m.model), b=normaliseModelName(model);
-  if(!a||!b)return false;
-  // Exact match is allowed only where the user deliberately selected the exact
-  // direct-document model/range label. Variant coverage must be declared below.
-  if(a===b)return true;
+  const b=normaliseModelName(model);
+  if(!b||!manualHasVerifiedModelMap(m))return false;
+  // Build 8.2: no PDF can become model-level coverage merely because its family label
+  // happens to equal a catalogue label. Every covered model must be explicitly mapped.
   const declared=VERIFIED_MANUAL_MODEL_MAP[m.make+"|"+m.model]||[];
   return declared.some(x=>normaliseModelName(x)===b);
 }
@@ -2199,6 +2236,13 @@ function runTechDataIntegrityAudit(){
       const exists=cats.some(cat=>(CATEGORY_MODEL_CATALOGUES[cat]?.[m.make]||[]).some(x=>normaliseModelName(x)===normaliseModelName(model)));
       if(!exists)issues.push(`${m.make} · ${m.model}: mapped model not present in its category catalogue: ${model}`);
     });
+  });
+  // Build 8.2: every built-in PDF must come from an approved manufacturer-owned host/CDN.
+  DIRECT_MANUALS.forEach(m=>{
+    let host="";try{host=new URL(m.url).hostname.toLowerCase()}catch(e){issues.push(`${m.make} · ${m.model}: invalid PDF URL`);return}
+    const approved=APPROVED_MANUAL_HOSTS[m.make]||[];
+    if(!approved.includes(host))issues.push(`${m.make} · ${m.model}: PDF host is not on the approved manufacturer/CDN list (${host})`);
+    if(!manualHasVerifiedModelMap(m))warnings.push(`${m.make} · ${m.model}: reference PDF retained, but exact model mapping is not yet verified`);
   });
   // Flag broad family/range documents that have no explicit model map and are not
   // themselves an exact catalogue model. They remain searchable, but cannot count
@@ -2365,7 +2409,7 @@ function updateTechHealth(){
  const status=document.getElementById("techHealthStatus"),note=document.getElementById("techHealthNote");
  const audit=window.TRADEPRO_TECH_AUDIT||{issues:[],warnings:[]};
  if(status)status.textContent=audit.issues.length?audit.issues.length+" integrity issue"+(audit.issues.length===1?"":"s"):audit.warnings.length?audit.warnings.length+" audit warning"+(audit.warnings.length===1?"":"s"):"Strict matching on";
- if(note)note.innerHTML=`${covered} of ${models.length} exact catalogue models have verified built-in documents. ${officialOnly} have a verified official model page but still need an exact direct PDF, and ${pending} are exact catalogue models still awaiting document verification. <strong>Legacy status is shown separately and broad family titles never count as exact coverage unless their individual models are explicitly mapped.</strong>`;
+ if(note){const mappedDocs=manualsForFilter().filter(manualHasVerifiedModelMap).length,referenceDocs=docs-mappedDocs;note.innerHTML=`${covered} of ${models.length} exact catalogue models have verified built-in documents. ${officialOnly} have a verified official model page but still need an exact direct PDF, and ${pending} are exact catalogue models still awaiting document verification. <strong>${mappedDocs} PDFs in this section have explicit model maps; ${referenceDocs} are retained as reference-only until exact appliance/revision mapping is verified. Approved manufacturer/CDN source checking is enforced.</strong>`;}
 }
 function renderManufacturerLibrary(){
  const box=document.getElementById("techList"),c=document.getElementById("manufacturerCount");if(!box)return;
@@ -2380,10 +2424,10 @@ function renderManufacturerLibrary(){
    if(q)models=models.filter(model=>modelSearchText(make,model).includes(q)||directManualsFor(make,model).some(d=>(d.title+" "+d.note).toLowerCase().includes(q)));
    const key=makeKey(make),autoOpen=!!q&&models.length>0;
    const coveredCount=models.filter(model=>directManualsFor(make,model).length>0).length;
-   const docCount=uniqueDirectDocsForMake(make).length;
+   const makeDocs=uniqueDirectDocsForMake(make),docCount=makeDocs.length,verifiedDocCount=makeDocs.filter(manualHasVerifiedModelMap).length;
    const modelLabel=models.length+" model"+(models.length===1?"":"s");
    const coverageLabel=coveredCount+" covered";
-   const docLabel=docCount+" doc"+(docCount===1?"":"s");
+   const docLabel=verifiedDocCount+" mapped / "+docCount+" PDF"+(docCount===1?"":"s");
    return `<div class="make-card ${autoOpen?"open":""}" id="make-${key}">
     <button class="make-head" type="button" onclick="toggleMake('${key}')">
       <span><b>${esc(make)}</b><small>${modelLabel} · ${coverageLabel} · ${docLabel}</small></span>
