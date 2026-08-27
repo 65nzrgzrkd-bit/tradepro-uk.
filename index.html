@@ -223,6 +223,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
   #techLibrary .smallnote{line-height:1.35}
 }
 
+
+.reversal-btn{background:#fff!important;color:#9b2c2c!important;border:1px solid #e4b8b8!important}.pending-status{background:#eef3f6!important;color:#667783!important;border:1px solid #d8e2e8!important;cursor:default!important}.pending-status:disabled{opacity:1!important}
 </style>
 </head>
 <body>
@@ -525,7 +527,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <div class="two">
 <label>Total £<input id="editPrice" type="number" step="0.01"></label>
-<label>Amount paid £<input id="editPaid" type="number" step="0.01"></label>
+<label>Amount paid £<input id="editPaid" type="number" step="0.01" min="0"><span class="smallnote">Changing this value records a payment adjustment in the invoice history.</span></label>
 </div>
 
 <label>Status
@@ -814,7 +816,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 
 <div class="sectioncard">
 <div class="section-title-row"><h3>Manufacturers & Models</h3><span id="manufacturerCount" class="count-pill">0 makes</span></div>
-<div class="smallnote" style="margin:7px 0 10px">Tap a manufacturer to drop down its models. <strong>Open PDF</strong> is only shown for an exact explicitly mapped model match. Reference PDFs from approved manufacturer/CDN sources remain available separately but do not count as model coverage until mapped. Unverified models still show <strong>PDF pending</strong>.</div>
+<div class="smallnote" style="margin:7px 0 10px">Tap a manufacturer to drop down its models. <strong>Open PDF</strong> is only shown for an exact explicitly mapped model match. Reference PDFs from approved manufacturer/CDN sources remain available separately but do not count as model coverage until mapped. Unverified models show <strong>Official PDF pending</strong>; engineers can still add their own exact PDF to the on-device Manual Vault.</div>
 <div id="techList" class="tech-list"></div>
 </div>
 
@@ -966,8 +968,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="8.4";
-const TRADEPRO_VERSION="21.1";
+const TRADEPRO_BUILD="8.5";
+const TRADEPRO_VERSION="21.2";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1163,12 +1165,14 @@ if(type==="fixed"){let amount=Math.max(0,Math.min(Number(q.price||0),value));ret
 let pct=Math.max(0,value);let amount=Number(q.price||0)*pct/100;return {type:"percent",value:pct,amount,label:"£"+amount.toFixed(2)+" ("+pct+"%)"};
 }
 function saveQuoteDeposit(){
-if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex];let type=qdDepositType.value;let value=parseFloat(qdDepositValue.value);if(!Number.isFinite(value)||value<0){alert("Enter a valid deposit amount or percentage.");return}if(type==="fixed"&&value>Number(q.price||0)){alert("The deposit cannot be more than the quote total.");return}q.depositType=type;q.depositValue=value;if(type==="percent")q.depositPercent=value;q.depositUpdatedAt=new Date().toISOString();save();openQuote(selectedQuoteIndex);toast((q.number||"Quote")+" deposit updated");
+if(selectedQuoteIndex===null)return;let q=data.quotes[selectedQuoteIndex];let type=qdDepositType.value;let value=parseFloat(qdDepositValue.value);if(!Number.isFinite(value)||value<0){alert("Enter a valid deposit amount or percentage.");return}if(type==="percent"&&value>100){alert("The deposit percentage cannot be more than 100%.");return}if(type==="fixed"&&value>Number(q.price||0)){alert("The deposit cannot be more than the quote total.");return}q.depositType=type;q.depositValue=value;if(type==="percent")q.depositPercent=value;q.depositUpdatedAt=new Date().toISOString();save();openQuote(selectedQuoteIndex);toast((q.number||"Quote")+" deposit updated");
 }
 function saveQuote(){
 if(!currentPrice)calculate();
+if(!Number.isFinite(currentPrice)||currentPrice<=0){alert("Calculate a valid quote total before saving.");return}
 syncDataFromStorage();
 let r=buildRecord();
+if(!r.customer.name||r.customer.name==="Unnamed customer"){alert("Enter the customer name before saving the quote.");return}
 let validDays=settingNum("quoteValidDays",30),depositPct=settingNum("depositPercent",20);
 let quote={...r,number:nextQuoteNumber(),validUntil:addDaysFromUK(r.date,validDays),depositPercent:depositPct,depositType:"percent",depositValue:depositPct,status:"Draft",savedAt:new Date().toISOString()};
 data.quotes.unshift(quote);
@@ -1177,7 +1181,9 @@ if(save()){show("quotes");toast(quote.number+" saved · £"+Number(quote.price||
 
 function createInvoiceFromJob(){
 if(!currentPrice)calculate();
+if(!Number.isFinite(currentPrice)||currentPrice<=0){alert("Calculate a valid invoice total before creating the invoice.");return}
 let r=buildRecord();
+if(!r.customer.name||r.customer.name==="Unnamed customer"){alert("Enter the customer name before creating the invoice.");return}
 let duplicate=data.invoices.find(x=>x.customer?.name===r.customer.name&&x.job===r.job&&x.price===r.price&&x.status!=="Deleted");
 if(duplicate){alert("An invoice for this job already exists.");show("invoices");return}
 let terms=settingNum("paymentDays",14);
@@ -1266,7 +1272,7 @@ idCustomer.innerText=c.name;let customerAddr=fullAddress(c),displayAddr=customer
 idJob.innerText=inv.job;idJobAddress.innerText=inv.jobAddress||displayAddr;idDate.innerText=inv.date;idDueDate.innerText=inv.dueDate||"Not set";
 updateInvoiceStatus(inv);syncAppointmentFromInvoice(inv);let inNet=Number(inv.net??inv.price??0),inVat=Number(inv.vat||0);idNet.innerText="£"+inNet.toFixed(2);idVat.innerText="£"+inVat.toFixed(2);idVatRow.style.display=inVat>0?"block":"none";idStatus.innerText=inv.status||"Unpaid";idStatus.className="status "+((inv.status||"")==="Overdue"?"status-overdue":(inv.status||"")==="Part Paid"?"status-part":(inv.status||"")==="Paid"?"status-accepted":"");let paidAmt=Number(inv.paid||0),totalAmt=Number(inv.price||0),bal=Math.max(0,totalAmt-paidAmt);idPaid.innerText="£"+paidAmt.toFixed(2);idBalance.innerText="£"+bal.toFixed(2);if(document.getElementById("idFinanceTotal"))idFinanceTotal.innerText="£"+totalAmt.toFixed(2);
 let dep=Math.max(0,Number(inv.depositRequired||0));if(document.getElementById("idFinanceDeposit"))idFinanceDeposit.innerText="£"+dep.toFixed(2);idDepositRequired.innerText="£"+dep.toFixed(2);idDepositRow.style.display=dep>0?"block":"none";if(document.getElementById("idDepositState")){idDepositState.innerHTML=dep>0?(paidAmt>=dep?'<span class="deposit-paid-badge">✓ Deposit paid</span>':'<span class="deposit-due-badge">Deposit still due</span>'):'';}let pct=totalAmt>0?Math.min(100,Math.max(0,paidAmt/totalAmt*100)):0;if(document.getElementById("idProgressFill"))idProgressFill.style.width=pct.toFixed(1)+"%";idSourceQuote.innerText=inv.sourceQuoteNumber||"";idSourceQuoteRow.style.display=inv.sourceQuoteNumber?"block":"none";idPaymentProgress.innerText="£"+paidAmt.toFixed(2)+" of £"+totalAmt.toFixed(2)+" paid";renderPaymentHistory(inv);
-let btn=document.getElementById("paidToggleBtn");if(btn)btn.textContent=(inv.status==="Paid"?"Mark as Unpaid":"Mark as Paid");let db=document.getElementById("depositPaidBtn");if(db){db.style.display=dep>0&&Number(inv.paid||0)<dep?"block":"none";db.textContent="Record Deposit Paid · £"+Math.max(0,dep-Number(inv.paid||0)).toFixed(2)};
+let btn=document.getElementById("paidToggleBtn");if(btn){let isPaid=inv.status==="Paid";btn.textContent=isPaid?"Reopen as Unpaid":"Mark as Paid";btn.className=isPaid?"reversal-btn":"green";}let db=document.getElementById("depositPaidBtn");if(db){db.style.display=dep>0&&Number(inv.paid||0)<dep?"block":"none";db.textContent="Record Deposit Paid · £"+Math.max(0,dep-Number(inv.paid||0)).toFixed(2)};
 show("invoiceDetail")
 }
 
@@ -1274,7 +1280,7 @@ show("invoiceDetail")
 function ukDateToDate(text){let m=String(text||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(+m[3],+m[2]-1,+m[1],23,59,59):null}
 function updateInvoiceStatus(inv){let total=Math.max(0,Number(inv.price||0)),paid=Math.max(0,Number(inv.paid||0));if(total>0&&paid>=total){inv.paid=total;inv.status="Paid";return}if(paid>0){inv.status="Part Paid";return}let due=ukDateToDate(inv.dueDate);if(due&&due<new Date())inv.status="Overdue";else if(inv.status==="Overdue"||!inv.status)inv.status="Unpaid"}
 function addPayment(inv,amount,type="Payment"){amount=Math.max(0,Number(amount)||0);if(!amount)return 0;if(!Array.isArray(inv.payments))inv.payments=[];let room=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));let applied=Math.min(room,amount);if(!applied)return 0;inv.paid=Number(inv.paid||0)+applied;inv.payments.unshift({amount:applied,type,date:todayUK(),at:new Date().toISOString()});inv.lastPaymentAt=new Date().toISOString();updateInvoiceStatus(inv);return applied}
-function renderPaymentHistory(inv){let box=document.getElementById("idPaymentHistory");if(!box)return;let rows=Array.isArray(inv.payments)?inv.payments:[];box.innerHTML=rows.length?'<div class="mini" style="margin-top:8px">Recent payments</div>'+rows.slice(0,5).map(p=>`<div class="payment-entry"><span>${esc(p.type||"Payment")}<br><span class="mini">${esc(p.date||"")}</span></span><strong>£${Number(p.amount||0).toFixed(2)}</strong></div>`).join(""):'<div class="mini" style="margin-top:8px">No payments recorded yet.</div>'}
+function renderPaymentHistory(inv){let box=document.getElementById("idPaymentHistory");if(!box)return;let rows=Array.isArray(inv.payments)?inv.payments:[];box.innerHTML=rows.length?'<div class="mini" style="margin-top:8px">Recent payments</div>'+rows.slice(0,8).map(p=>{let a=Number(p.amount||0);return `<div class="payment-entry"><span>${esc(p.type||"Payment")}<br><span class="mini">${esc(p.date||"")}</span></span><strong>${a<0?"−":""}£${Math.abs(a).toFixed(2)}</strong></div>`}).join(""):'<div class="mini" style="margin-top:8px">No payments recorded yet.</div>'}
 function recordDepositPayment(){if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],dep=Math.max(0,Number(inv.depositRequired||0)),remaining=Math.max(0,dep-Number(inv.paid||0));if(!remaining){toast("Deposit already covered");return}let applied=addPayment(inv,remaining,"Deposit");syncAppointmentFromInvoice(inv);save();openInvoice(selectedInvoiceIndex);toast("Deposit recorded · £"+applied.toFixed(2))}
 
 function recordPayment(){
@@ -1330,8 +1336,12 @@ inv.job=editJob.value.trim()||"Plumbing job";
 inv.jobAddress=editJobAddress.value.trim()||fullAddress(c);
 inv.date=editInvoiceDate.value.trim()||todayUK();
 inv.dueDate=editDueDate.value.trim();
+let previousPaid=Math.max(0,Number(inv.paid||0));
 inv.price=Math.max(0,parseFloat(editPrice.value)||0);
-inv.paid=Math.max(0,parseFloat(editPaid.value)||0);
+let editedPaid=Math.min(inv.price,Math.max(0,parseFloat(editPaid.value)||0));
+let paymentDelta=editedPaid-previousPaid;
+if(Math.abs(paymentDelta)>0.004){if(!Array.isArray(inv.payments))inv.payments=[];inv.payments.unshift({amount:paymentDelta,type:paymentDelta>0?"Manual payment adjustment":"Payment correction",date:todayUK(),at:new Date().toISOString()});inv.lastPaymentAt=new Date().toISOString();}
+inv.paid=editedPaid;
 
 let chosenStatus=editStatus.value;
 if(inv.paid>=inv.price && inv.price>0){
@@ -1355,7 +1365,7 @@ if(evt){evt.preventDefault();evt.stopPropagation();}
 if(selectedInvoiceIndex===null || !data.invoices[selectedInvoiceIndex]){alert("Please open an invoice first.");return false;}
 let inv=data.invoices[selectedInvoiceIndex];
 let total=Math.max(0,Number(inv.price||0));
-if((inv.status||"")==="Paid" || Number(inv.paid||0)>=total && total>0){inv.status="Unpaid";inv.paid=0;inv.payments=[];}
+if((inv.status||"")==="Paid" || Number(inv.paid||0)>=total && total>0){let wasPaid=Math.max(0,Number(inv.paid||0));if(!confirm("Reopen this paid invoice as unpaid? A payment reversal will be recorded in the audit history."))return false;if(!Array.isArray(inv.payments))inv.payments=[];if(wasPaid>0)inv.payments.unshift({amount:-wasPaid,type:"Payment reversal",date:todayUK(),at:new Date().toISOString()});inv.paid=0;inv.status="Unpaid";inv.lastPaymentAt=new Date().toISOString();}
 else{let remaining=Math.max(0,total-Number(inv.paid||0));addPayment(inv,remaining,"Paid in full");}
 syncAppointmentFromInvoice(inv);save();
 openInvoice(selectedInvoiceIndex);
@@ -2467,7 +2477,7 @@ function renderManufacturerLibrary(){
           return `<button class="green" type="button" onclick="viewDirectManual(${mi})">${esc(manual.title||"Open PDF")}</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★":"☆"}</button>`;
         }).join("")}${officialModelSourceButton(make,model)}</div></div>`;
       }
-      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}${identifiedManualInfo(make,model)?`<br><span style="font-size:11px">${esc(identifiedManualInfo(make,model).family)}${identifiedManualInfo(make,model).productCode?` · ${esc(identifiedManualInfo(make,model).productCode)}`:''}</span>`:''}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add exact PDF</button><button class="secondary" type="button" disabled>PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}</div></div>`;
+      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}${identifiedManualInfo(make,model)?`<br><span style="font-size:11px">${esc(identifiedManualInfo(make,model).family)}${identifiedManualInfo(make,model).productCode?` · ${esc(identifiedManualInfo(make,model).productCode)}`:''}</span>`:''}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add my PDF</button><button class="pending-status" type="button" disabled>Official PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}</div></div>`;
     }).join(""):`<div class="smallnote" style="padding:10px 2px">No verified model/range catalogue loaded for this make in this section yet.</div><div class="model-actions" style="padding:0 2px 10px">${officialSourceButton(make)}</div>`}</div>
    </div>`;
  }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
