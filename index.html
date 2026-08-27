@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 6.2 · V18.9</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 6.3 · V19.0</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -1883,7 +1883,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 6.2 full technical-library integrity pass + persistent Manual Vault */
+/* Build 6.3 verified Glow-worm expansion + manufacturer-source audit */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1911,6 +1911,8 @@ const DIRECT_MANUALS=[
  {type:"boiler",categories:["naturalgas"],make:"Vaillant",model:"ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant new-generation ecoTEC plus installation manual · exact system boiler outputs: 610, 615, 620, 625, 630 and 635 · do not use for legacy 612/618/624/637 models"},
  {type:"boiler",make:"Ideal Heating",model:"Logic MAX Combi² C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/31e4e31bdd6fdb3572d7bb2d539ce903/Logic%20MAX%20Combi%20Installation%20%26%20Servicing%20-%2010.2023%20%28UIN%20237660%20A01%29.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4hw7r7ut3zXch9PphO11t5%2Fb7b554ce47c40395d57623ed81025135%2FLogic_MAX_Combi_Installation___Servicing_-_10.2023__UIN_237660_A01_.pdf",note:"Official Ideal Heating PDF"},
  {type:"boiler",make:"Glow-worm",model:"Energy7 25C/30C/35C",title:"Installation & Maintenance Instructions",url:"https://www.glow-worm.co.uk/glow-worm/product-manuals/energy-3/combi-8/energy7-combi-installation-and-maintenance-instructions-1948938.pdf",note:"Official Glow-worm PDF"},
+ {type:"boiler",categories:["naturalgas"],make:"Glow-worm",model:"Energy7 12S/15S/18S/25S/30S",title:"Installation & Maintenance Instructions",url:"https://www.glow-worm.co.uk/glow-worm/product-manuals/energy-3/system-5/energy7-system-installation-and-maintenance-instructions-1948947.pdf",note:"Official Glow-worm Energy7 system manual · exact appliances: 12S, 15S, 18S, 25S and 30S · document 0020300876_01"},
+ {type:"boiler",categories:["naturalgas"],make:"Glow-worm",model:"Betacom4 24C/30C",title:"Installation & Maintenance Instructions",url:"https://www.glow-worm.co.uk/glow-worm/product-manuals/betacom/betacom4-combi-installation-and-maintenance-instructions-1948960.pdf",note:"Official Glow-worm Betacom4 manual · exact appliances: 24C and 30C · document 0020238424_02 · discontinued product"},
  {type:"boiler",make:"Main Heating",model:"Eco Compact System 15/18",title:"Installation & Service Manual",url:"https://www.mainheating.co.uk/-/media/websites/mainheating/files/main-eco-compact-system/main-eco-compact-system-installation.pdf?hash=CF39FB1F1398E3789DEC86505852BF97E34EA66A&la=en",note:"Official Main Heating PDF"},
  {type:"boiler",make:"Viessmann",model:"Vitodens 050-W",title:"Installation & Service Instructions",url:"https://www.viessmann.co.uk/content/dam/public-brands/gb/pdf/instructions/Vitodens%20050%20installation%20instructions.pdf/_jcr_content/renditions/original.media_file.download_attachment.file/Vitodens%20050%20installation%20instructions.pdf",note:"Official Viessmann installation/service instructions · Type B0HA/B0KA · 2022 document · verified mapping limited to current catalogue entries covered by this document"},
  {type:"boiler",make:"Viessmann",model:"Vitodens 100-W",title:"Installation & Service Instructions",url:"https://www.viessmann.co.uk/content/dam/public-brands/gb/pdf/instructions/Vitodens%20100-W%20installation%20instructions.pdf/_jcr_content/renditions/original.media_file.download_attachment.file/Vitodens%20100-W%20installation%20instructions.pdf",note:"Official Viessmann document 6167586 GB · Type B1HF/B1KF · Natural Gas and LPG version · verified mapping limited to listed B1HF/B1KF catalogue variants"},
@@ -1975,7 +1977,7 @@ const KNOWN_BOILER_MODELS={
 "Vaillant":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635","ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 837","ecoTEC plus 612","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
 "Ideal Heating":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35","Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic Max Heat2 H12","Logic Max Heat2 H15","Logic Max Heat2 H18","Vogue Max Combi2 C26","Vogue Max Combi2 C32","Vogue Max Combi2 C40","Vogue Gen2","Independent C24","Independent C30"],
 "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 400 Combi 2 24","Baxi 400 Combi 2 30","Duo-tec 24","Duo-tec 28","Duo-tec 33","Duo-tec 40","Platinum 24","Platinum 28","Platinum 33","Platinum 40","Megaflo System 15","Megaflo System 18","Megaflo System 24","Megaflo System 28","Solo HE 12","Solo HE 15","Solo HE 18","Solo HE 24"],
-"Glow-worm":["Energy7 25C","Energy7 30C","Energy7 35C","Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Ultimate3 25C","Ultimate3 30C","Ultimate3 35C","Betacom4 24C","Betacom4 30C","Essential 24C","Essential 28C","Flexicom cx","Flexicom hx","Ultracom2 cx","Ultracom2 hxi"],
+"Glow-worm":["Energy7 25C","Energy7 30C","Energy7 35C","Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Energy7 30S","Ultimate3 25C","Ultimate3 30C","Ultimate3 35C","Betacom4 24C","Betacom4 30C","Essential 24C","Essential 28C","Flexicom cx","Flexicom hx","Ultracom2 cx","Ultracom2 hxi"],
 "Viessmann":["Vitodens 050-W 25kW","Vitodens 050-W 30kW","Vitodens 050-W 35kW","Vitodens 100-W 19kW","Vitodens 100-W 25kW","Vitodens 100-W 32kW","Vitodens 100-W 35kW","Vitodens 111-W","Vitodens 200-W","Vitodens 222-F","Vitodens 050-W B0KA","Vitodens 100-W B1KF","Vitodens 100-W B1HF"],
 "Alpha":["E-Tec 20S","E-Tec 25R","E-Tec 28","E-Tec 33","E-Tec 35","E-Tec Plus 28","E-Tec Plus 33","E-Tec Plus 38","Evoke 28","Evoke 33","InTec 26C","InTec 30C","InTec 34C","InTec 24X","InTec 28X"],
 "Intergas":["Rapid 25","Rapid 32","Rapid 40","Xclusive 24","Xclusive 30","Xclusive 36","Xtreme 24","Xtreme 30","Xtreme 36","HRE 24/18","HRE 28/24","HRE 36/30","HRE 36/40","HRE OV 18","HRE OV 24"],
@@ -2036,6 +2038,8 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Vaillant|ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635"],
   "Ideal Heating|Logic MAX Combi² C24/C30/C35":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35"],
   "Glow-worm|Energy7 25C/30C/35C":["Energy7 25C","Energy7 30C","Energy7 35C"],
+  "Glow-worm|Energy7 12S/15S/18S/25S/30S":["Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Energy7 30S"],
+  "Glow-worm|Betacom4 24C/30C":["Betacom4 24C","Betacom4 30C"],
   "Main Heating|Eco Compact System 15/18":["Eco Compact System 15","Eco Compact System 18"],
   "Grant UK|Vortex Pro / Pro System":["Vortex Pro 15-26","Vortex Pro 26-46","Vortex Pro 46-70","Vortex Pro System 15-26","Vortex Pro System 26-46"],
   "Grant UK|Vortex Pro External":["Vortex Pro External 15-26","Vortex Pro External 26-46","Vortex Pro External 46-70"],
@@ -2105,6 +2109,8 @@ runTechDataIntegrityAudit();
 
 const MANUFACTURER_SOURCES={
  "Baxi":"https://www.baxi.co.uk/support/literature-library",
+ "Glow-worm":"https://www.glow-worm.co.uk/trade/service-and-support/business-support/literature/",
+ "Alpha":"https://www.alpha-innovation.co.uk/",
  "Vaillant":"https://professional.vaillant.co.uk/for-installers/literature-finder/",
  "Intergas":"https://www.intergasheating.co.uk/trade/",
  "Mitsubishi Electric":"https://library.mitsubishielectric.co.uk/home",
