@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 6.5 · V19.2</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 6.6 · V19.3</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -777,6 +777,18 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="sectioncard">
 <div class="section-title-row"><h3>⭐ Favourites & Recently Viewed</h3><span id="recentManualCount" class="count-pill">0</span></div>
 <div id="recentManuals" class="recent-strip" style="margin-top:10px"></div>
+</div>
+
+
+<div class="sectioncard">
+<div class="section-title-row"><h3>✅ Library Health</h3><span id="techHealthStatus" class="count-pill">Checking…</span></div>
+<div class="stats" style="margin-top:10px;margin-bottom:0">
+<div class="card"><small>Models in this section</small><strong id="techHealthModels">0</strong></div>
+<div class="card"><small>Verified coverage</small><strong id="techHealthCovered">0</strong></div>
+<div class="card"><small>PDFs loaded</small><strong id="techHealthDocs">0</strong></div>
+<div class="card"><small>Pending models</small><strong id="techHealthPending">0</strong></div>
+</div>
+<div id="techHealthNote" class="smallnote" style="margin-top:10px">Only explicitly mapped exact models count as covered.</div>
 </div>
 
 <div class="sectioncard">
@@ -1883,7 +1895,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 6.5 verified Alpha E-Tec/Evoke expansion + LPG catalogue audit */
+/* Build 6.6 exact-model integrity hardening + Vaillant legacy audit */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1909,6 +1921,7 @@ const DIRECT_MANUALS=[
  {type:"boiler",categories:["naturalgas","lpg"],make:"Worcester Bosch",model:"Greenstar i System",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720806945",note:"Official Worcester Bosch Greenstar 12-24 i System ErP manual"},
 
  {type:"boiler",categories:["naturalgas"],make:"Vaillant",model:"ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant new-generation ecoTEC plus installation manual · exact system boiler outputs: 610, 615, 620, 625, 630 and 635 · do not use for legacy 612/618/624/637 models"},
+ {type:"boiler",categories:["naturalgas","lpg"],make:"Vaillant",model:"ecoTEC plus legacy 612/615/618/624/630/637 + 825/832/835/838",title:"Installation & Maintenance Instructions",url:"https://professional.vaillant.co.uk/downloads/product-manuals/ecotec-plus-1/ecotec-plus-combi-and-system-installation-instructions-2422739.pdf",note:"Official Vaillant document 0020244997_07 · exact discontinued ecoTEC plus system models 612, 615, 618, 624, 630, 637 and combi models 825, 832, 835, 838 · dedicated LPG variants confirmed for 618, 630 and 832 on Vaillant product data"},
  {type:"boiler",categories:["naturalgas","lpg"],make:"Alpha",model:"E-Tec 28 / E-Tec 33",title:"Installation & Servicing Instructions",url:"https://alpha-heating.ams3.digitaloceanspaces.com/wp-content/uploads/2023/09/27121515/E-Tec-Instructions-Jan22.pdf",note:"Alpha Heating Innovation hosted PDF · March 2022 · exact appliances: E-Tec 28 and E-Tec 33 · manual lists NG and LPG GC numbers and approves Natural Gas G20/G20Y20 and LPG G31"},
  {type:"boiler",categories:["naturalgas","lpg"],make:"Alpha",model:"Evoke 28 / Evoke 33",title:"Installation & Servicing Instructions",url:"https://alpha-heating.ams3.digitaloceanspaces.com/wp-content/uploads/2023/09/27121411/Evoke-Instructions-Jan-22.pdf",note:"Alpha Heating Innovation hosted PDF · January 2022 revision · exact appliances: Evoke 28 and Evoke 33 · dedicated installation, commissioning, servicing, wiring and fault-finding information"},
  {type:"boiler",make:"Ideal Heating",model:"Logic MAX Combi² C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/31e4e31bdd6fdb3572d7bb2d539ce903/Logic%20MAX%20Combi%20Installation%20%26%20Servicing%20-%2010.2023%20%28UIN%20237660%20A01%29.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4hw7r7ut3zXch9PphO11t5%2Fb7b554ce47c40395d57623ed81025135%2FLogic_MAX_Combi_Installation___Servicing_-_10.2023__UIN_237660_A01_.pdf",note:"Official Ideal Heating PDF"},
@@ -1978,7 +1991,7 @@ function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&q
 /* Build 5.7 known boiler model catalogue */
 const KNOWN_BOILER_MODELS={
 "Worcester Bosch":["Greenstar 1000","Greenstar 2000","Greenstar 25i ErP","Greenstar 30i ErP","Greenstar 4000 Combi","Greenstar 4000 System","Greenstar 8000 Life Combi","Greenstar 8000 Life System","Greenstar 8000 Style Combi","Greenstar 8000 Style System","Greenstar CDi Compact","Greenstar i System","Greenstar Ri","Greenstar Highflow 440CDi","Greenstar Highflow 550CDi","Greenstar Si Compact","Greenstar 24i Junior","Greenstar 28i Junior","Greenstar 30Si Compact"],
-"Vaillant":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635","ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 837","ecoTEC plus 612","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
+"Vaillant":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635","ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 838","ecoTEC plus 612","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 637","ecoTEC pro 24","ecoTEC pro 28","ecoTEC exclusive","ecoFIT pure 825","ecoFIT pure 830","ecoFIT pure 835","ecoFIT pure system 612","ecoFIT pure system 615","ecoFIT pure system 618","ecoFIT sustain"],
 "Ideal Heating":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35","Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30","Logic Max Heat2 H12","Logic Max Heat2 H15","Logic Max Heat2 H18","Vogue Max Combi2 C26","Vogue Max Combi2 C32","Vogue Max Combi2 C40","Vogue Gen2","Independent C24","Independent C30"],
 "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 600 System 2 30","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30","Baxi 400 Combi 2 24","Baxi 400 Combi 2 30","Duo-tec 24","Duo-tec 28","Duo-tec 33","Duo-tec 40","Platinum 24","Platinum 28","Platinum 33","Platinum 40","Megaflo System 15","Megaflo System 18","Megaflo System 24","Megaflo System 28","Solo HE 12","Solo HE 15","Solo HE 18","Solo HE 24"],
 "Glow-worm":["Energy7 25C","Energy7 30C","Energy7 35C","Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Energy7 30S","Ultimate3 25C","Ultimate3 30C","Ultimate3 35C","Betacom4 24C","Betacom4 30C","Essential 24C","Essential 28C","Flexicom cx","Flexicom hx","Ultracom2 cx","Ultracom2 hxi"],
@@ -2007,6 +2020,7 @@ const KNOWN_BOILER_MODELS={
 const CATEGORY_MODEL_CATALOGUES={
  naturalgas:KNOWN_BOILER_MODELS,
  lpg:{
+  "Vaillant":["ecoTEC plus 618 LPG","ecoTEC plus 630 LPG","ecoTEC plus 832 LPG"],
   "Alpha":["E-Tec 28","E-Tec 33","Evoke 28","Evoke 33"],
   "Ideal Heating":["Logic+ Combi C24","Logic+ Combi C30","Logic+ Combi C35","Logic System2 S15","Logic System2 S18","Logic System2 S24","Logic System2 S30"],
   "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 600 System 2 30","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30"]
@@ -2044,6 +2058,7 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Worcester Bosch|Greenstar 24i Junior / Greenstar 28i Junior":["Greenstar 24i Junior","Greenstar 28i Junior"],
   "Worcester Bosch|Greenstar 25i ErP / Greenstar 30i ErP":["Greenstar 25i ErP","Greenstar 30i ErP"],
   "Vaillant|ecoTEC plus 610 / 615 / 620 / 625 / 630 / 635":["ecoTEC plus 610","ecoTEC plus 615","ecoTEC plus 620","ecoTEC plus 625","ecoTEC plus 630","ecoTEC plus 635"],
+  "Vaillant|ecoTEC plus legacy 612/615/618/624/630/637 + 825/832/835/838":["ecoTEC plus 612","ecoTEC plus 615","ecoTEC plus 618","ecoTEC plus 624","ecoTEC plus 630","ecoTEC plus 637","ecoTEC plus 825","ecoTEC plus 832","ecoTEC plus 835","ecoTEC plus 838","ecoTEC plus 618 LPG","ecoTEC plus 630 LPG","ecoTEC plus 832 LPG"],
   "Alpha|E-Tec 28 / E-Tec 33":["E-Tec 28","E-Tec 33"],
   "Alpha|Evoke 28 / Evoke 33":["Evoke 28","Evoke 33"],
   "Ideal Heating|Logic MAX Combi² C24/C30/C35":["Logic Max Combi2 C24","Logic Max Combi2 C30","Logic Max Combi2 C35"],
@@ -2087,11 +2102,14 @@ function directManualFor(make,model){
 function allModelsForMake(make){
  const catalogue=(CATEGORY_MODEL_CATALOGUES[techFilter]||{});
  const known=catalogue[make]||[];
- // Verified built-in documents can add an exact model/range to its own category,
- // but data from another fuel/technology is never inherited.
+ // Build 6.6: never invent a selectable model from a broad manual/range title.
+ // A direct-document label is added only when that exact label already exists in
+ // the selected category catalogue. Family coverage otherwise comes only from
+ // VERIFIED_MANUAL_MODEL_MAP. This prevents 24i/25i-style accidental inheritance.
  const loaded=manualsForFilter().filter(x=>x.make===make).filter(x=>{
    const declared=VERIFIED_MANUAL_MODEL_MAP[x.make+"|"+x.model]||[];
-   return declared.length===0;
+   if(declared.length)return false;
+   return known.some(k=>normaliseModelName(k)===normaliseModelName(x.model));
  }).map(x=>x.model);
  return [...new Set([...known,...loaded])];
 }
@@ -2113,6 +2131,15 @@ function runTechDataIntegrityAudit(){
       if(!exists)issues.push(`${m.make} · ${m.model}: mapped model not present in its category catalogue: ${model}`);
     });
   });
+  // Flag broad family/range documents that have no explicit model map and are not
+  // themselves an exact catalogue model. They remain searchable, but cannot count
+  // as model coverage until mapped.
+  DIRECT_MANUALS.forEach(m=>{
+    const declared=VERIFIED_MANUAL_MODEL_MAP[m.make+"|"+m.model]||[];
+    if(declared.length)return;
+    const exactInCatalogue=(m.categories||[]).some(cat=>(CATEGORY_MODEL_CATALOGUES[cat]?.[m.make]||[]).some(x=>normaliseModelName(x)===normaliseModelName(m.model)));
+    if(!exactInCatalogue&&/[\/]|\brange\b|\bcombi\b|\bsystem\b/i.test(m.model))issues.push(`${m.make} · ${m.model}: broad document label has no explicit verified model map`);
+  });
   window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues};
   if(issues.length)console.warn("TradePro technical-library integrity audit",issues);else console.info(`TradePro technical-library audit passed: ${DIRECT_MANUALS.length} built-in documents checked`);
   return window.TRADEPRO_TECH_AUDIT;
@@ -2129,6 +2156,8 @@ const MANUFACTURER_SOURCES={
  "Worcester Bosch":"https://www.worcester-bosch.co.uk/support/literature",
  "Ideal Heating":"https://idealheating.com/support/manuals",
  "Grant UK":"https://www.grantuk.com/professional/product-support/technical-data/",
+ "Firebird":"https://firebird.uk.com/support/manuals/",
+ "Navien":"https://navien.co.uk/",
  "Samsung":"https://www.samsung.com/uk/support/",
  "Panasonic":"https://www.panasonicproclub.com/GB_en/login/"
 };
@@ -2155,6 +2184,19 @@ function recentList(){try{return JSON.parse(localStorage.getItem("tradepro_recen
 function renderRecentManuals(){const box=document.getElementById("recentManuals"),count=document.getElementById("recentManualCount");if(!box)return;const favs=favList(),recent=recentList();let combined=[];favs.forEach(x=>combined.push({...x,_fav:true}));recent.forEach(x=>{if(!combined.some(y=>y.url===x.url))combined.push({...x,_fav:false})});combined=combined.slice(0,8);if(count)count.textContent=combined.length+" saved";box.innerHTML=combined.length?combined.map(x=>{const i=DIRECT_MANUALS.findIndex(m=>m.url===x.url);return `<div class="recent-item"><b>${x._fav?"⭐ ":"🕘 "}${esc(x.make)} · ${esc(x.model)}</b><small>${esc(x.title||"Technical Manual")}</small>${i>=0?`<button class="green" type="button" onclick="viewDirectManual(${i})">Open manual</button>`:""}</div>`}).join(""):'<div class="smallnote">Favourite a manual or open one and it will appear here.</div>'}
 function makeKey(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-")}
 function toggleMake(key){const el=document.getElementById("make-"+key);if(el)el.classList.toggle("open")}
+function updateTechHealth(){
+ const catalogue=CATEGORY_MODEL_CATALOGUES[techFilter]||{};
+ const makes=TECH_LIBRARY.find(x=>x.type===techFilter)?.makes||Object.keys(catalogue);
+ let models=[];makes.forEach(make=>allModelsForMake(make).forEach(model=>models.push([make,model])));
+ const covered=models.filter(([make,model])=>directManualsFor(make,model).length>0).length;
+ const docs=manualsForFilter().length,pending=Math.max(0,models.length-covered);
+ const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
+ set("techHealthModels",models.length);set("techHealthCovered",covered);set("techHealthDocs",docs);set("techHealthPending",pending);
+ const status=document.getElementById("techHealthStatus"),note=document.getElementById("techHealthNote");
+ const audit=window.TRADEPRO_TECH_AUDIT||{issues:[]};
+ if(status)status.textContent=audit.issues.length?audit.issues.length+" audit flag"+(audit.issues.length===1?"":"s"):"Integrity passed";
+ if(note)note.innerHTML=`${covered} of ${models.length} catalogue models have an exact verified built-in document in this section. <strong>Broad family titles never count as coverage unless their individual models are explicitly mapped.</strong>`;
+}
 function renderManufacturerLibrary(){
  const box=document.getElementById("techList"),c=document.getElementById("manufacturerCount");if(!box)return;
  const entry=TECH_LIBRARY.find(x=>x.type===techFilter);
@@ -2193,7 +2235,7 @@ function renderManufacturerLibrary(){
 function populateFaultMakes(){const s=document.getElementById("faultMake");if(!s||s.options.length>1)return;const makes=[...new Set(FAULT_GUIDE.map(x=>x.make))].sort();s.innerHTML='<option value="">Choose make</option>'+makes.map(x=>`<option>${esc(x)}</option>`).join("")}
 function runFaultAssistant(){const make=(document.getElementById("faultMake")?.value||"").trim(),raw=(document.getElementById("faultCodeInput")?.value||"").trim(),out=document.getElementById("faultResult");if(!out)return;if(!make||!raw){out.innerHTML='<div class="fault-result">Choose a manufacturer and enter the fault code.</div>';return}const norm=raw.toLowerCase().replace(/\s+/g,""),hit=FAULT_GUIDE.find(x=>x.make===make&&(x.keywords||[]).some(k=>norm===k.toLowerCase().replace(/\s+/g,"")));if(!hit){out.innerHTML=`<div class="fault-result"><h4>${esc(make)} · ${esc(raw)}</h4><div class="fault-meaning">No verified quick guide is loaded for this code yet.</div><div class="smallnote">Search the exact model in the manufacturer list or add its service manual to the TradePro Manual Vault. TradePro will not guess at an unknown fault code.</div></div>`;return}out.innerHTML=`<div class="fault-result"><h4>${esc(hit.make)} · ${esc(hit.code)}</h4><div class="fault-meaning">${esc(hit.meaning)}</div><strong>Check in this order:</strong><ol class="check-list">${hit.checks.map(x=>`<li>${esc(x)}</li>`).join("")}</ol><div class="fault-caution"><strong>Important:</strong> This is a quick aid, not a substitute for the exact model service manual. Stop and use the manufacturer's diagnostic procedure whenever the appliance/model differs or testing would involve gas, combustion, electrical or refrigerant work outside your competence.</div></div>`}
 const _renderTechLibraryLegacy=renderTechLibrary;
-renderTechLibrary=function(){renderManufacturerLibrary();renderRecentManuals();populateFaultMakes()}
+renderTechLibrary=function(){renderManufacturerLibrary();renderRecentManuals();populateFaultMakes();updateTechHealth()}
 
 // Persistent PDF storage. IndexedDB is used because localStorage is too small for manuals.
 function vaultDb(){return new Promise((resolve,reject)=>{let r=indexedDB.open("tradepro_manual_vault",1);r.onupgradeneeded=()=>{let db=r.result;if(!db.objectStoreNames.contains("manuals")){let st=db.createObjectStore("manuals",{keyPath:"id"});st.createIndex("category","category");st.createIndex("make","make")}};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
