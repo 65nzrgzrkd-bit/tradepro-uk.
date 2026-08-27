@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
-<title>TradePro UK · Plumber Edition · Build 4.6 · V17.4</title>
+<title>TradePro UK · Plumber Edition · Build 4.7 · V17.5</title>
 <style>
 *{box-sizing:border-box}
 :root{--navy:#15324b;--green:#2f7d32;--bg:#f3f6f8;--card:#fff;--text:#1c2733;--muted:#6f7a84;--line:#dce5eb;--danger:#b42318}
@@ -182,7 +182,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 4.6 · V17.4</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 4.7 · V17.5</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -719,7 +719,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <section id="techLibrary" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Technical Library</h2></div>
 <div class="notice"><strong>Boiler PDFs, Air-Con & F-Gas</strong><br>Open gas, oil, air-conditioning and F-Gas technical PDFs in the iPhone full-screen PDF viewer, plus search official manufacturer literature and fault information.</div>
-<div class="warning-card"><strong>Engineer use:</strong> Always follow the current manufacturer instructions, Gas Safe/OFTEC requirements and F-Gas rules applicable to the work. TradePro opens direct PDF files in the reliable iPhone full-screen viewer so every supported PDF is readable. Use Back to return to TradePro, and always confirm you are using the correct and current manual for the appliance.</div>
+<div class="warning-card"><strong>Engineer use:</strong> Always follow the current manufacturer instructions, Gas Safe/OFTEC requirements and F-Gas rules applicable to the work. TradePro now uses direct manufacturer PDF links only for manual buttons. No manual button below opens a general manufacturer webpage. Use Back to return to TradePro, and always confirm the model and document revision before carrying out work.</div>
 <div class="tech-search"><input id="techSearch" placeholder="Search make or model — e.g. Vaillant ecoTEC, Worcester 4000, Grant Vortex" oninput="renderTechLibrary()"></div>
 <div class="tech-tabs">
 <button id="techTabBoiler" class="tech-tab active" onclick="setTechFilter('boiler')">🔥 Gas Boilers</button>
@@ -730,7 +730,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 <div class="sectioncard"><h3>Open any saved PDF</h3><div class="smallnote" style="margin-bottom:10px">Choose any gas, oil, air-con or F-Gas PDF already saved in Files on this phone. TradePro opens it full screen using the iPhone PDF viewer.</div><button class="secondary" type="button" onclick="document.getElementById('manualFileInput').click()">Choose PDF from Files</button><input id="manualFileInput" type="file" accept="application/pdf,.pdf" style="display:none" onchange="openLocalManual(event)"></div>
 <div id="techList" class="tech-list"></div>
 <div class="sectioncard">
-<h3>Quick Fault / Manual Search</h3>
+<h3>Search loaded manuals / fault references</h3>
 <label>Manufacturer / model / fault code<input id="faultSearch" placeholder="e.g. Vaillant ecoTEC F.75"></label>
 <button class="primary" type="button" onclick="searchTechnicalWeb()">Search manuals & fault information</button>
 <div class="smallnote" style="margin-top:8px">Opens a web search targeted at the manufacturer/model you enter. Confirm findings against the official service manual before repair.</div>
@@ -860,7 +860,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </div>
 <input id="backupImport" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
 <div class="install-tip"><strong>iPhone tip:</strong> In Safari, tap Share → Add to Home Screen to launch TradePro more like an app and keep it easy to reach on site.</div>
-<div class="versionline">TradePro UK · Plumber Edition · Build 4.6 · V17.4</div>
+<div class="versionline">TradePro UK · Plumber Edition · Build 4.7 · V17.5</div>
 
 <button class="primary" onclick="saveSettings()">Save Settings</button>
 </section>
@@ -878,7 +878,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_VERSION="17.4";
+const TRADEPRO_VERSION="17.5";
 let data=JSON.parse(localStorage.getItem("tradepro")||'{"customers":[],"quotes":[],"invoices":[]}');
 if(!Array.isArray(data.customers)) data.customers=[];
 if(!Array.isArray(data.quotes)) data.quotes=[];
@@ -1829,54 +1829,62 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 4.6 reliable iPhone PDF opening + expanded Technical Library + Engineer Reports */
+/* Build 4.7 direct-PDF-only technical library + verified catalogue + Engineer Reports */
 let techFilter="boiler";
 const TECH_LIBRARY=[
- {type:"boiler",make:"Worcester Bosch",title:"Gas boiler manuals",desc:"Greenstar combi, system and regular boiler installation, service and user literature.",url:"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/gas-boiler-manuals"},
- {type:"boiler",make:"Vaillant",title:"Literature & manuals",desc:"ecoTEC and other Vaillant installation, maintenance, service and user manuals.",url:"https://professional.vaillant.co.uk/for-installers/literature-finder/"},
- {type:"boiler",make:"Baxi",title:"Literature library",desc:"Baxi boiler, controls, cylinder and technical literature.",url:"https://www.baxi.co.uk/support/literature-library"},
- {type:"boiler",make:"Ideal Heating",title:"Boiler manuals",desc:"Logic, Vogue, Max and other Ideal installation and servicing literature.",searchDomain:"idealheating.com"},
- {type:"boiler",make:"Viessmann",title:"Technical literature",desc:"Vitodens and other Viessmann boiler manuals and technical documents.",searchDomain:"viessmann.co.uk"},
- {type:"boiler",make:"Glow-worm",title:"Boiler manuals",desc:"Energy, Ultimate and other Glow-worm installation and servicing manuals.",searchDomain:"glow-worm.co.uk"},
- {type:"boiler",make:"Alpha",title:"Boiler manuals",desc:"E-Tec and other Alpha Heating Innovation technical literature.",searchDomain:"alpha-innovation.co.uk"},
- {type:"boiler",make:"Intergas",title:"Boiler manuals",desc:"Intergas installation, service and fault-finding literature.",searchDomain:"intergasheating.co.uk"},
- {type:"boiler",make:"ATAG",title:"Boiler manuals",desc:"ATAG boiler installation and service documentation.",searchDomain:"atagheating.co.uk"},
- {type:"boiler",make:"Navien",title:"Boiler manuals",desc:"Navien UK boiler installation and technical manuals.",searchDomain:"navien.co.uk"},
- {type:"boiler",make:"Main Heating",title:"Boiler manuals",desc:"Main boiler installation and service literature.",searchDomain:"mainheating.co.uk"},
- {type:"boiler",make:"Potterton",title:"Boiler manuals",desc:"Potterton boiler technical and service literature.",searchDomain:"baxi.co.uk"},
- {type:"oil",make:"Worcester Bosch",title:"Oil boiler manuals",desc:"Heatslave and Danesmoor oil boiler manuals.",url:"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/oil-boiler-manuals"},
- {type:"oil",make:"Grant UK",title:"Oil boiler manuals & technical literature",desc:"Vortex installation, service and burner-setting literature.",url:"https://www.grantuk.com/professional/support/manuals-brochures/"},
- {type:"oil",make:"Warmflow",title:"Oil boiler manuals",desc:"Warmflow oil boiler installation and service information.",searchDomain:"warmflow.co.uk"},
- {type:"oil",make:"Firebird",title:"Oil boiler manuals",desc:"Firebird oil boiler installation, commissioning and servicing literature.",searchDomain:"firebird.uk.com"},
- {type:"oil",make:"Hounsfield",title:"Oil boiler manuals",desc:"Hounsfield oil-fired boiler manuals and technical information.",searchDomain:"hounsfieldboilers.co.uk"},
- {type:"aircon",make:"Daikin",title:"Air-conditioning & F-Gas manuals",desc:"Split, multi-split, VRV and heat-pump installation/service literature.",searchDomain:"daikin.co.uk"},
- {type:"aircon",make:"Mitsubishi Electric",title:"Air-conditioning manuals",desc:"M Series, Mr Slim, City Multi and technical/fault information.",searchDomain:"les.mitsubishielectric.co.uk"},
- {type:"aircon",make:"Fujitsu",title:"Air-conditioning manuals",desc:"Fujitsu General split and multi-split technical literature.",searchDomain:"fujitsu-general.com"},
- {type:"aircon",make:"Panasonic",title:"Air-conditioning manuals",desc:"Panasonic heating and cooling installation/service documentation.",searchDomain:"aircon.panasonic.eu"},
- {type:"aircon",make:"Toshiba",title:"Air-conditioning manuals",desc:"Toshiba Air Conditioning technical and service documents.",searchDomain:"toshiba-aircon.co.uk"},
- {type:"aircon",make:"Midea",title:"Air-conditioning manuals",desc:"Midea split-system installation and service literature.",searchDomain:"mideauk.co.uk"},
- {type:"aircon",make:"Samsung",title:"Air-conditioning manuals",desc:"Samsung climate solutions installation and technical manuals.",searchDomain:"samsung.com"},
- {type:"aircon",make:"LG",title:"Air-conditioning manuals",desc:"LG HVAC split, multi and commercial technical literature.",searchDomain:"lg.com"},
- {type:"aircon",make:"Hitachi",title:"Air-conditioning manuals",desc:"Hitachi Cooling & Heating technical and service literature.",searchDomain:"hitachiaircon.com"},
- {type:"aircon",make:"Carrier",title:"Air-conditioning manuals",desc:"Carrier air-conditioning installation and service documentation.",searchDomain:"carrier.com"}
+ {type:"boiler",make:"Worcester Bosch",title:"Gas boiler manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"boiler",make:"Vaillant",title:"ecoTEC manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"boiler",make:"Ideal Heating",title:"Logic manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"boiler",make:"Viessmann",title:"Vitodens manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"boiler",make:"Glow-worm",title:"Energy manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"boiler",make:"Main Heating",title:"Eco Compact manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"boiler",make:"Navien",title:"NCB manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"boiler",make:"ATAG",title:"Technical & fault PDFs",desc:"Verified direct PDFs are listed above."},
+ {type:"oil",make:"Grant UK",title:"Vortex manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"oil",make:"Navien",title:"LCB700 oil manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"aircon",make:"Daikin",title:"R32 split manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"aircon",make:"Toshiba",title:"R32 split manuals",desc:"Verified direct PDFs are listed above."},
+ {type:"aircon",make:"Fujitsu",title:"R32 air-conditioning manuals",desc:"Verified direct PDFs are listed above."}
 ];
 const DIRECT_MANUALS=[
  {type:"boiler",make:"Worcester Bosch",model:"Greenstar 4000",title:"Installation & Maintenance Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720891161?cachedVersion=1574796923",note:"Official Worcester Bosch PDF"},
  {type:"boiler",make:"Vaillant",model:"ecoTEC plus 610–635",title:"Installation & Maintenance",url:"https://professional.vaillant.co.uk/downloads/aproducts/new-ecotec-plus/firstspirit-16874195715150020308118-06-2681222.pdf",note:"Official Vaillant PDF"},
- {type:"oil",make:"Grant UK",model:"Vortex Pro / Pro System",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/kp4fntnt/grantvortexproandprosystem-installer-uk-doc0120-rev3-2-february2026.pdf",note:"Official Grant UK PDF · Rev 3.2 · February 2026"}
+ {type:"boiler",make:"Ideal Heating",model:"Logic MAX Combi² C24/C30/C35",title:"Installation & Servicing",url:"https://idealheating.com/_gatsby/file/31e4e31bdd6fdb3572d7bb2d539ce903/Logic%20MAX%20Combi%20Installation%20%26%20Servicing%20-%2010.2023%20%28UIN%20237660%20A01%29.pdf?u=https%3A%2F%2Fdownloads.ctfassets.net%2Fsj902orc9wh4%2F4hw7r7ut3zXch9PphO11t5%2Fb7b554ce47c40395d57623ed81025135%2FLogic_MAX_Combi_Installation___Servicing_-_10.2023__UIN_237660_A01_.pdf",note:"Official Ideal Heating PDF"},
+ {type:"boiler",make:"Glow-worm",model:"Energy7 25C/30C/35C",title:"Installation & Maintenance Instructions",url:"https://www.glow-worm.co.uk/glow-worm/product-manuals/energy-3/combi-8/energy7-combi-installation-and-maintenance-instructions-1948938.pdf",note:"Official Glow-worm PDF"},
+ {type:"boiler",make:"Main Heating",model:"Eco Compact System 15/18",title:"Installation & Service Manual",url:"https://www.mainheating.co.uk/-/media/websites/mainheating/files/main-eco-compact-system/main-eco-compact-system-installation.pdf?hash=CF39FB1F1398E3789DEC86505852BF97E34EA66A&la=en",note:"Official Main Heating PDF"},
+ {type:"boiler",make:"Viessmann",model:"Vitodens 050-W",title:"Installation Instructions",url:"https://www.viessmann.co.uk/content/dam/public-brands/gb/pdf/instructions/Vitodens%20050%20installation%20instructions.pdf/_jcr_content/renditions/original.media_file.download_attachment.file/Vitodens%20050%20installation%20instructions.pdf",note:"Official Viessmann PDF"},
+ {type:"boiler",make:"Viessmann",model:"Vitodens 100-W",title:"Installation Instructions",url:"https://www.viessmann.co.uk/content/dam/public-brands/gb/pdf/instructions/Vitodens%20100-W%20installation%20instructions.pdf/_jcr_content/renditions/original.media_file.download_attachment.file/Vitodens%20100-W%20installation%20instructions.pdf",note:"Official Viessmann PDF"},
+ {type:"boiler",make:"Viessmann",model:"Vitodens 100-W Heat Only",title:"Installation Instructions",url:"https://www.viessmann.co.uk/content/dam/public-brands/gb/pdf/instructions/Vitodens%20100-W%20heat%20only%20installation%20instructions.pdf/_jcr_content/renditions/original.media_file.download_attachment.file/Vitodens%20100-W%20heat%20only%20installation%20instructions.pdf",note:"Official Viessmann PDF"},
+ {type:"boiler",make:"Viessmann",model:"Vitodens 111-W",title:"Installation Instructions",url:"https://www.viessmann.co.uk/content/dam/public-brands/gb/pdf/instructions/Vitodens%20111-W%20installation%20instructions.pdf/_jcr_content/renditions/original.media_file.download_attachment.file/Vitodens%20111-W%20installation%20instructions.pdf",note:"Official Viessmann PDF"},
+ {type:"boiler",make:"Viessmann",model:"Vitodens 200-W",title:"Installation Instructions",url:"https://www.viessmann.co.uk/content/dam/public-brands/gb/pdf/instructions/Vitodens%20200-W%20installation%20instructions.pdf/_jcr_content/renditions/original./Vitodens%20200-W%20installation%20instructions.pdf",note:"Official Viessmann PDF"},
+ {type:"boiler",make:"Viessmann",model:"Vitodens 222-F",title:"Installation Instructions",url:"https://www.viessmann.co.uk/content/dam/public-brands/gb/pdf/instructions/Vitodens%20222-F%20installation%20instructions.pdf/_jcr_content/renditions/original./Vitodens%20222-F%20installation%20instructions.pdf",note:"Official Viessmann PDF"},
+ {type:"boiler",make:"Navien",model:"NCB-CE 24/28/34/40",title:"Installation / Operation Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/20038032BNCB_CE_24_28_34_40LDWE_190514.pdf",note:"Official Navien PDF"},
+ {type:"boiler",make:"Navien",model:"NCB-CE",title:"Service Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/NCB_Service_Manual_Universal-Sep-2-2016.pdf",note:"Official Navien PDF"},
+ {type:"boiler",make:"Navien",model:"NCB500 ON Combi",title:"Installation & Operation",url:"https://navien.co.uk/wp-content/uploads/2025/10/NCB500-ON-Combi_Installation-Operation.pdf",note:"Official Navien PDF"},
+ {type:"boiler",make:"Navien",model:"NCB700 Combi",title:"Installation & Operation",url:"https://navien.co.uk/wp-content/uploads/2025/10/20051189BNCB700_Combi_CE_GB_Installation__Operation_Manual_EN_241007-1.pdf",note:"Official Navien PDF"},
+ {type:"boiler",make:"Navien",model:"NCB700 Combi",title:"Service Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/NCB700_UK_ServiceManual-V1-July-2022-V2.pdf",note:"Official Navien PDF"},
+ {type:"boiler",make:"Navien",model:"NCB300 Combi",title:"Installation & Operation",url:"https://navien.co.uk/wp-content/uploads/2025/10/NCB300_Combi_CE_GB_Installation__Operation_Manual_EN_260102-1.pdf",note:"Official Navien PDF"},
+ {type:"boiler",make:"ATAG",model:"iC / iS / iR Range",title:"Hints, Tips & Fault Codes",url:"https://www.atagheating.co.uk/wp-content/themes/atag/hubfs/Hints%20Tips%20%26%20Fault%20Codes.pdf",note:"Official ATAG PDF"},
+ {type:"boiler",make:"ATAG",model:"iC / iS / iR Range",title:"User Manual",url:"https://www.atagheating.co.uk/wp-content/themes/atag/hubfs/ATAG-USER-INSTRUCTIONS-i-Range-1018%20%283%29.pdf",note:"Official ATAG PDF"},
+ {type:"oil",make:"Grant UK",model:"Vortex Pro / Pro System",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/kp4fntnt/grantvortexproandprosystem-installer-uk-doc0120-rev3-2-february2026.pdf",note:"Official Grant UK PDF · Rev 3.2 · February 2026"},
+ {type:"oil",make:"Navien",model:"LCB700",title:"Installation / Operation Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/20047769CLCB700En_combi_260213_B.pdf",note:"Official Navien PDF"},
+ {type:"oil",make:"Navien",model:"LCB700",title:"Service Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/LCB700_Service_Manual_En.pdf",note:"Official Navien PDF"},
+ {type:"aircon",make:"Daikin",model:"CTXM-R / FTXM-R / ATXM-R",title:"R32 Installation Manual",url:"https://www.daikin.co.uk/content/dam/document-library/installation-manuals/ac/split/ctxm-r/CTXM-R_FTXM-R_ATXM-R_Installation%20manual_3PEN697375-2_English.pdf",note:"Official Daikin PDF"},
+ {type:"aircon",make:"Toshiba",model:"RAS HAORI R32 10/13/16",title:"Installation Manual",url:"https://www.toshiba-aircon.co.uk/content/dam/public-toshiba/gb/documents/products/r32-split-systems/residential/wall-mounted/ras-haori-high-wall/20250524_IM_1129850117_01_R32_HAORI_RAS-B_N4KRVG-E_RAS-J2AVSG-E_EN.pdf/_jcr_content/renditions/original./20250524_IM_1129850117_01_R32_HAORI_RAS-B_N4KRVG-E_RAS-J2AVSG-E_EN.pdf",note:"Official Toshiba PDF"},
+ {type:"aircon",make:"Toshiba",model:"RAS HAORI R32 10/13/16",title:"Service Manual",url:"https://www.toshiba-aircon.co.uk/content/dam/public-toshiba/gb/documents/products/r32-split-systems/residential/wall-mounted/ras-haori-high-wall/20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf/_jcr_content/renditions/original./20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf",note:"Official Toshiba PDF"},
+ {type:"aircon",make:"Fujitsu",model:"ASTH18/22/24KMTD R32",title:"Operation Manual",url:"https://www.fujitsu-general.com/datafiles/W9387602449-0101_OM_En_ASTH18KMTD.pdf",note:"Official Fujitsu General PDF"}
 ];
 let currentManualUrl="";
 function rememberManual(x){try{let r=JSON.parse(localStorage.getItem("tradepro_recent_manuals")||"[]");r=r.filter(a=>a.url!==x.url);r.unshift({make:x.make||"",model:x.model||x.title||"Manual",url:x.url,at:Date.now()});localStorage.setItem("tradepro_recent_manuals",JSON.stringify(r.slice(0,8)))}catch(e){}}
 function openPdfReliable(url,meta){if(!url)return;currentManualUrl=url;if(meta)rememberManual(meta);window.location.href=url}
-function renderDirectManuals(){let box=document.getElementById("directManualList");if(!box)return;let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();let arr=DIRECT_MANUALS.filter(x=>x.type===techFilter&&(!q||(x.make+" "+x.model+" "+x.title).toLowerCase().includes(q)));box.innerHTML=arr.length?arr.map(x=>`<div class="direct-manual"><strong>${esc(x.make)} · ${esc(x.model)}</strong><small>${esc(x.title)}<br>${esc(x.note||"")}</small><button class="green" type="button" onclick="viewDirectManual(${DIRECT_MANUALS.indexOf(x)})">Open PDF full screen</button></div>`).join(""):'<div class="smallnote">No direct PDF is mapped for this search yet. Use the manufacturer section below to find the exact model, or open a PDF already saved on your phone.</div>'}
+function renderDirectManuals(){let box=document.getElementById("directManualList");if(!box)return;let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();let arr=DIRECT_MANUALS.filter(x=>x.type===techFilter&&(!q||(x.make+" "+x.model+" "+x.title).toLowerCase().includes(q)));box.innerHTML=arr.length?arr.map(x=>`<div class="direct-manual"><strong>${esc(x.make)} · ${esc(x.model)}</strong><small>${esc(x.title)}<br>${esc(x.note||"")}</small><button class="green" type="button" onclick="viewDirectManual(${DIRECT_MANUALS.indexOf(x)})">Open PDF full screen</button></div>`).join(""):'<div class="smallnote"><strong>No verified direct PDF matches this search yet.</strong><br>Try the exact make/model wording, or choose a PDF already saved on this phone. TradePro no longer sends a manual button to a general manufacturer webpage.</div>'}
 function viewDirectManual(index){let x=DIRECT_MANUALS[index];if(!x)return;openPdfReliable(x.url,x)}
 function openManualExternal(){if(currentManualUrl)window.location.href=currentManualUrl}
 function openLocalManual(event){let f=event.target.files&&event.target.files[0];if(!f)return;if(f.type&&f.type!=="application/pdf"&&!f.name.toLowerCase().endsWith(".pdf")){toast("Choose a PDF file");return}if(window.__tradeproLocalManualUrl)URL.revokeObjectURL(window.__tradeproLocalManualUrl);window.__tradeproLocalManualUrl=URL.createObjectURL(f);currentManualUrl=window.__tradeproLocalManualUrl;window.location.href=currentManualUrl;event.target.value=""}
 function setTechFilter(type){techFilter=type;["boiler","oil","aircon"].forEach(x=>{let b=document.getElementById("techTab"+(x==="boiler"?"Boiler":x==="oil"?"Oil":"Aircon"));if(b)b.classList.toggle("active",x===type)});renderTechLibrary()}
-function techSearchUrl(item,q){if(item.url)return item.url;return "https://www.google.com/search?q="+encodeURIComponent("site:"+item.searchDomain+" "+item.make+" "+(q||"")+" installation servicing service manual filetype:pdf")}
-function renderTechLibrary(){renderDirectManuals();let box=document.getElementById("techList");if(!box)return;let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();let items=TECH_LIBRARY.filter(x=>x.type===techFilter&&(!q||(x.make+" "+x.title+" "+x.desc).toLowerCase().includes(q)));box.innerHTML=items.length?items.map(x=>`<div class="tech-item"><h4>${esc(x.make)} · ${esc(x.title)}</h4><p>${esc(x.desc)}</p><div class="tech-buttons"><a class="primary-link" href="${techSearchUrl(x,q)}">Find exact manual</a><button type="button" onclick="searchMakeManual('${escAttr(x.make)}')">Search model / PDF</button></div></div>`).join(""):'<div class="notice">No matching manufacturer is listed. Use Quick Fault / Manual Search below with the exact make and model.</div>'}
-function searchMakeManual(make){let model=(document.getElementById("techSearch")?.value||"").trim();let item=TECH_LIBRARY.find(x=>x.make===make&&x.type===techFilter)||TECH_LIBRARY.find(x=>x.make===make);let domain=item&&item.searchDomain?"site:"+item.searchDomain+" ":"";window.location.href="https://www.google.com/search?q="+encodeURIComponent(domain+make+" "+model+" installation servicing service manual filetype:pdf")}
-function searchTechnicalWeb(){let q=(document.getElementById("faultSearch")?.value||"").trim();if(!q){toast("Enter a manufacturer, model or fault code");return}window.location.href="https://www.google.com/search?q="+encodeURIComponent(q+" official installation service manual fault code filetype:pdf UK")}
+function renderTechLibrary(){renderDirectManuals();let box=document.getElementById("techList");if(!box)return;let q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();let grouped={};DIRECT_MANUALS.filter(x=>x.type===techFilter).forEach(x=>{grouped[x.make]=(grouped[x.make]||0)+1});let items=TECH_LIBRARY.filter(x=>x.type===techFilter&&(!q||(x.make+" "+x.title+" "+x.desc).toLowerCase().includes(q)));box.innerHTML=items.length?items.map(x=>`<div class="tech-item"><h4>${esc(x.make)} · ${esc(x.title)}</h4><p>${esc(x.desc)}</p><div class="smallnote"><strong>${grouped[x.make]||0} direct PDF${(grouped[x.make]||0)===1?'':'s'} loaded</strong> · Use the search box above to narrow by model.</div></div>`).join(""):'<div class="notice">No matching manufacturer in the verified direct-PDF catalogue. Try the exact make/model in the search box or open a PDF saved on the phone.</div>'}
+function searchMakeManual(make){document.getElementById("techSearch").value=make;renderTechLibrary();document.getElementById("directManualList")?.scrollIntoView({behavior:"smooth",block:"start"})}
+function searchTechnicalWeb(){let q=(document.getElementById("faultSearch")?.value||"").trim().toLowerCase();if(!q){toast("Enter a manufacturer, model or fault code");return}let hits=DIRECT_MANUALS.filter(x=>(x.make+" "+x.model+" "+x.title).toLowerCase().includes(q));if(hits.length){document.getElementById("techSearch").value=q;techFilter=hits[0].type;setTechFilter(techFilter);document.getElementById("directManualList")?.scrollIntoView({behavior:"smooth",block:"start"});toast(hits.length+" direct PDF"+(hits.length===1?"":"s")+" found")}else toast("No verified direct PDF loaded for that exact search yet")}
 function escAttr(v){return String(v||"").replace(/'/g,"&#39;").replace(/\"/g,"&quot;")}
 
 let currentEngineerReportId=null;
