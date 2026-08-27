@@ -944,8 +944,8 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </nav>
 
 <script>
-const TRADEPRO_BUILD="7.3";
-const TRADEPRO_VERSION="20.0";
+const TRADEPRO_BUILD="7.4";
+const TRADEPRO_VERSION="20.1";
 const TRADEPRO_RELEASE=`TradePro UK · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2037,6 +2037,7 @@ const KNOWN_BOILER_MODELS={
    A model is never inherited across Natural Gas, LPG, Oil, Heat Pumps or Air-Con.
    This prevents a gas-boiler range from appearing under Heat Pumps/Air-Con and
    prevents LPG suitability being inferred from a natural-gas catalogue. */
+/* Build 7.4 catalogue audit: generic LG residential/VRF placeholders removed in favour of verified exact UK R32 models. */
 const CATEGORY_MODEL_CATALOGUES={
  naturalgas:KNOWN_BOILER_MODELS,
  lpg:{
@@ -2073,7 +2074,9 @@ const CATEGORY_MODEL_CATALOGUES={
   "Toshiba":["RAS HAORI R32 10/13/16"],
   // Build 7.2: Samsung WindFree R32 legacy exact model mapping; current range remains pending until exact manuals are verified.
   "Samsung":["WindFree R32 AR09NXPXBWKX (legacy)","WindFree R32 AR09NXWXBWKX (legacy)","WindFree R32 AR12NXWXCWKN (legacy)","WindFree current range (exact manual pending)"],
-  "LG":["Residential split range","Multi V VRF range"],
+  // Build 7.4: remove vague LG Air-Con family placeholders. Only exact UK product models are selectable.
+  // Product pages confirm R32 and the named indoor/outdoor combinations; direct installation/service PDFs remain pending until exact manual matching is verified.
+  "LG":["DUALCOOL Standard Plus PC09SQ","DUALCOOL Standard Plus PC12SQ","DUALCOOL Standard Plus PC18SQ","DUALCOOL Standard Plus PC24SQ","DUALCOOL Deluxe H09S1D","DUALCOOL Deluxe H12S1D","DUALCOOL Premium H12S1P","ARTCOOL Gallery Special A09GA1","ARTCOOL Gallery Premium A09GA2"],
   "Midea":["Residential split range"]
  }
 };
