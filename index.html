@@ -15,7 +15,7 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 header{background:var(--navy);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 18px 18px}
 header small{text-transform:uppercase;letter-spacing:1px;opacity:.75}
 header h1{margin:4px 0 0;font-size:26px}
-main{max-width:680px;margin:auto;padding:16px 16px 105px}
+main{max-width:680px;margin:auto;padding:16px 16px calc(145px + env(safe-area-inset-bottom))}
 .screen{display:none}.screen.active{display:block}
 .hero{background:linear-gradient(135deg,#205d89,#27808c);color:#fff;border-radius:22px;padding:20px;margin-bottom:14px}
 .hero small{opacity:.8}.hero h2{font-size:34px;margin:8px 0 2px}
@@ -243,7 +243,7 @@ header{padding:calc(13px + env(safe-area-inset-top)) 18px 14px;background:linear
 .brand-copy{min-width:0;flex:1}.brand-name{font-weight:900;font-size:23px;letter-spacing:.4px;line-height:1}.brand-name .core{color:#55ad45}.brand-sub{font-size:13px;opacity:.82;margin-top:4px}.brand-tag{font-size:10px;color:#6bc257;margin-top:3px;letter-spacing:.2px}
 header small#appReleaseLabel{display:block;text-align:right;font-size:9px;letter-spacing:.5px;opacity:.6;margin-top:7px;max-width:680px;margin-left:auto;margin-right:auto}
 header h1{display:none}
-#home{margin-top:0}.home-business{display:flex;align-items:center;gap:8px;font-weight:750;margin:2px 2px 13px;color:var(--navy);font-size:14px}.home-business span:first-child{font-size:17px}
+#home{margin-top:0}.home-business{width:100%;display:flex;align-items:center;gap:8px;font-weight:750;margin:2px 2px 13px;padding:0;background:transparent;color:var(--navy);font-size:14px;text-align:left}.home-business span:first-child{font-size:17px}
 .home-newjob{font-size:19px;padding:17px;border-radius:16px;box-shadow:0 8px 18px rgba(47,125,50,.18)}
 .home-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:12px 0 14px}.home-quick button{background:#fff;border:1px solid #e4eaee;border-radius:14px;padding:13px 5px 11px;color:var(--navy);box-shadow:0 4px 14px rgba(0,0,0,.045);font-weight:750;font-size:12px}.home-quick .ico{display:block;font-size:22px;color:var(--green);margin-bottom:5px}
 .home-section{background:#fff;border-radius:17px;padding:14px 15px;margin:12px 0;box-shadow:0 5px 18px rgba(0,0,0,.055)}.home-section-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.home-section-title h3{margin:0;font-size:17px}.home-link{background:transparent;color:var(--green);font-weight:750;font-size:12px;padding:4px}
@@ -251,8 +251,8 @@ header h1{display:none}
 .money-snapshot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.money-cell{background:#f7f9fa;border:1px solid #e2e9ed;border-radius:13px;padding:11px 9px;min-width:0}.money-cell small{display:block;color:var(--muted);font-size:10px}.money-cell strong{display:block;margin-top:5px;font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.money-cell.paid strong{color:var(--green)}.money-cell.owed strong{color:#c56516}.money-cell.won strong{color:#2463a9}
 .engineer-shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.engineer-shortcuts button{background:#f7f9fa;border:1px solid #e1e8ed;border-radius:12px;padding:10px 4px;color:var(--navy);font-size:10px;font-weight:750}.engineer-shortcuts span{display:block;font-size:21px;margin-bottom:4px}
 .home-legacy-metrics{display:none!important}
-nav{background:#0d2d47;border-top:0;box-shadow:0 -5px 20px rgba(8,35,55,.12)}nav button{background:transparent;color:#d3dde4;font-size:19px;padding-top:4px}nav button:first-child{color:#63bd4d}nav span{font-size:10px}
-@media(max-width:430px){main{padding-left:14px;padding-right:14px}.brand-name{font-size:22px}.pc-mark{width:45px;height:45px}.today-job{grid-template-columns:64px 1fr}.today-actions{grid-column:1/-1;grid-template-columns:1fr 1fr}.money-cell strong{font-size:18px}.home-quick{gap:7px}.engineer-shortcuts{gap:6px}}
+nav{background:#0d2d47;border-top:0;box-shadow:0 -5px 20px rgba(8,35,55,.12)}nav button{background:transparent;color:#d3dde4;font-size:19px;padding-top:4px;position:relative}nav button.nav-active{color:#63bd4d}nav button.nav-active:before{content:"";position:absolute;top:-8px;left:28%;right:28%;height:3px;border-radius:99px;background:#63bd4d}nav span{font-size:10px}
+@media(max-width:430px){main{padding-left:14px;padding-right:14px;padding-bottom:calc(165px + env(safe-area-inset-bottom))}.brand-name{font-size:22px}.pc-mark{width:45px;height:45px}.today-job{grid-template-columns:64px 1fr}.today-actions{grid-column:1/-1;grid-template-columns:1fr 1fr}.money-cell strong{font-size:18px}.home-quick{gap:7px}.engineer-shortcuts{gap:6px}}
 </style>
 </head>
 <body>
@@ -266,7 +266,7 @@ nav{background:#0d2d47;border-top:0;box-shadow:0 -5px 20px rgba(8,35,55,.12)}nav
 <main>
 
 <section id="home" class="screen active">
-<div class="home-business"><span>▣</span><span id="homeBusinessName">Your business</span></div>
+<button type="button" class="home-business" onclick="show('settings')" aria-label="Open business settings"><span>▣</span><span id="homeBusinessName">Your business</span><span style="margin-left:auto;color:var(--muted)">›</span></button>
 <button class="primary home-newjob" onclick="newJob()">＋ &nbsp;New Job</button>
 <div class="home-quick">
 <button onclick="show('quotes')"><span class="ico">▤</span>Quote</button>
@@ -281,8 +281,8 @@ nav{background:#0d2d47;border-top:0;box-shadow:0 -5px 20px rgba(8,35,55,.12)}nav
 </div>
 
 <div id="attentionCard" class="attention-card">
-<h3><span>Needs Attention</span><span id="attentionSummary" class="count-pill">Checking…</span></h3>
-<div id="attentionList"><div class="attention-ok">Checking your jobs and accounts…</div></div>
+<h3><span>Needs Attention</span><span id="attentionSummary" class="count-pill">—</span></h3>
+<div id="attentionList"><div class="attention-ok">Loading account and diary checks…</div></div>
 </div>
 
 <div class="home-section">
@@ -1011,16 +1011,16 @@ nav{background:#0d2d47;border-top:0;box-shadow:0 -5px 20px rgba(8,35,55,.12)}nav
 <div id="appToast" class="toast" role="status" aria-live="polite"></div>
 
 <nav>
-<button onclick="show('home')">⌂<span>Home</span></button>
-<button onclick="openDiary()">▣<span>Jobs</span></button>
-<button onclick="show('customers')">♙<span>Customers</span></button>
-<button onclick="show('invoices')">£<span>Money</span></button>
-<button onclick="show('settings')">•••<span>More</span></button>
+<button id="navHome" onclick="show('home')">⌂<span>Home</span></button>
+<button id="navJobs" onclick="openDiary()">▣<span>Jobs</span></button>
+<button id="navCustomers" onclick="show('customers')">♙<span>Customers</span></button>
+<button id="navMoney" onclick="show('invoices')">£<span>Money</span></button>
+<button id="navMore" onclick="show('settings')">•••<span>More</span></button>
 </nav>
 
 <script>
-const TRADEPRO_BUILD="8.9";
-const TRADEPRO_VERSION="21.6";
+const TRADEPRO_BUILD="9.0";
+const TRADEPRO_VERSION="21.7";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1118,6 +1118,13 @@ if(localStorage.getItem('tradepro_migrated_v10')!=='1'){
  localStorage.setItem('tradepro',JSON.stringify(data));
 }
 
+// PlumbCore brand migration: remove only obsolete app-name defaults, never a real business name.
+if(localStorage.getItem('plumbcore_brand_migrated_v1')!=='1'){
+ const oldName=String(localStorage.getItem('businessName')||'').trim();
+ if(['TradePro UK','TradePro UK Plumber Edition','TradePro UK · Plumber Edition'].includes(oldName))localStorage.removeItem('businessName');
+ localStorage.setItem('plumbcore_brand_migrated_v1','1');
+}
+
 
 function syncDataFromStorage(){
  try{
@@ -1136,12 +1143,18 @@ function syncDataFromStorage(){
 function toast(msg){
  const el=document.getElementById("appToast");if(!el)return;el.textContent=msg;el.classList.add("show");clearTimeout(window.__tradeproToastTimer);window.__tradeproToastTimer=setTimeout(()=>el.classList.remove("show"),2200);
 }
+function updateNavActive(id){
+ const map={home:'navHome',appointments:'navJobs',customers:'navCustomers',customerDetail:'navCustomers',invoices:'navMoney',invoiceDetail:'navMoney',invoicePrint:'navMoney',paymentQR:'navMoney',reports:'navMoney',settings:'navMore',pricebook:'navMore',techLibrary:'navMore',heatingTools:'navMore',engineerReports:'navMore'};
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('nav-active'));
+ const el=document.getElementById(map[id]||'');if(el)el.classList.add('nav-active');
+}
 function show(id){
 syncDataFromStorage();
 const target=document.getElementById(id);
 if(!target){console.error("PlumbCore screen not found:",id);toast("That screen is unavailable");return false;}
 document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
 target.classList.add("active");
+updateNavActive(id);
 render();
 if(id==="techLibrary"){renderTechLibrary();renderManualVault();}
 if(id==="engineerReports")renderEngineerReports();
@@ -1193,7 +1206,7 @@ let d=new Date();d.setDate(d.getDate()+days);return d.toLocaleDateString("en-GB"
 function nextInvoiceNumber(){
 let max=0;
 data.invoices.forEach(x=>{let m=String(x.number||"").match(/(\d+)$/);if(m)max=Math.max(max,parseInt(m[1]))});
-return "TP-"+String(max+1).padStart(4,"0")
+return "INV-"+String(max+1).padStart(4,"0")
 }
 function nextQuoteNumber(){
 let max=0;
@@ -1646,7 +1659,7 @@ setting("businessWebsite","").trim()
 }
 function setupReadiness(){
  let checks=[
-  {name:'Business name',ok:!!String(setting('businessName','')).trim(),note:'Shown on quotes and invoices'},
+  {name:'Business name',ok:(()=>{let n=String(setting('businessName','')).trim();return !!n&&!['TradePro UK','TradePro UK Plumber Edition','TradePro UK · Plumber Edition'].includes(n)})(),note:'Shown on quotes and invoices'},
   {name:'Contact details',ok:!!String(setting('businessPhone','')).trim()||!!String(setting('businessEmail','')).trim(),note:'Phone or email saved'},
   {name:'Business address',ok:!!businessAddressText(),note:'Used on customer documents'},
   {name:'Payment details',ok:!!String(setting('accountName','')).trim()&&!!String(setting('sortCode','')).trim()&&!!String(setting('accountNumber','')).trim(),note:'For getting paid by bank transfer'},
@@ -1912,7 +1925,7 @@ function renderReports(){
 function daysBetweenDates(a,b){let ms=24*60*60*1000;return Math.floor((b.getTime()-a.getTime())/ms)}
 function parseUKStart(v){let m=String(v||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?new Date(+m[3],+m[2]-1,+m[1]):null}
 function renderPlumbCoreHome(){
- let bn=document.getElementById('homeBusinessName');if(bn)bn.textContent=String(setting('businessName','')||'Your business').trim()||'Your business';
+ let bn=document.getElementById('homeBusinessName'),rawName=String(setting('businessName','')||'').trim();if(bn)bn.textContent=rawName||'Set business name';
  let box=document.getElementById('todayHomeCard');if(!box)return;
  let jobs=(data.appointments||[]).filter(a=>a.status!=='Cancelled'&&a.date===todayISO()).sort((a,b)=>String(a.time||'99:99').localeCompare(String(b.time||'99:99')));
  if(!jobs.length){box.className='today-empty';box.innerHTML='No jobs booked today. <button class="home-link" onclick="openDiary()">Open diary ›</button>';return;}
@@ -1955,9 +1968,10 @@ let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let i
 if(document.getElementById("showQROnInvoice"))showQROnInvoice.checked=localStorage.getItem("showQROnInvoice")==="1";
 if(document.getElementById("vatRegistered"))vatRegistered.checked=localStorage.getItem("vatRegistered")==="1";
 if(document.getElementById("logoPreviewWrap"))updateLogoPreview();
-renderPriceBook();renderJobTypeOptions();renderDiary();if(document.getElementById('reports'))renderReports();renderPlumbCoreHome();renderAttention();renderReadiness();
+const safeRender=(name,fn)=>{try{fn()}catch(e){console.error('PlumbCore '+name+' refresh failed',e)}};
+safeRender('price book',renderPriceBook);safeRender('job types',renderJobTypeOptions);safeRender('diary',renderDiary);if(document.getElementById('reports'))safeRender('reports',renderReports);safeRender('home',renderPlumbCoreHome);safeRender('attention',renderAttention);safeRender('readiness',renderReadiness);
 }
-render();
+render();updateNavActive(document.querySelector(".screen.active")?.id||"home");
 window.addEventListener("storage",e=>{if(e.key==="tradepro"){syncDataFromStorage();render();toast("PlumbCore data refreshed")}});
 window.addEventListener("focus",()=>{syncDataFromStorage();render()});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){syncDataFromStorage();render()}});
