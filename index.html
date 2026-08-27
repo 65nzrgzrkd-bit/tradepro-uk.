@@ -208,7 +208,7 @@ nav button{background:#fff;color:var(--navy);font-size:20px}nav span{display:blo
 </style>
 </head>
 <body>
-<header><small>TradePro UK · Build 6.7 · V19.4</small><h1>Plumber Edition</h1></header>
+<header><small>TradePro UK · Build 6.8 · V19.5</small><h1>Plumber Edition</h1></header>
 <main>
 
 <section id="home" class="screen active">
@@ -1895,7 +1895,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
-/* Build 6.6 exact-model integrity hardening + Vaillant legacy audit */
+/* Build 6.8 exact-model integrity hardening + Mitsubishi Electric M-Series expansion */
 let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
@@ -1971,6 +1971,9 @@ const DIRECT_MANUALS=[
 
  {type:"heatpump",categories:["heatpump"],make:"Mitsubishi Electric",model:"Ecodan PUZ-WM50VHA-BS / PUZ-WM60VAA / PUZ-WM60VAA-BS / PUZ-WM85VAA / PUZ-WM85VAA-BS / PUZ-WM85YAA / PUZ-WM85YAA-BS / PUZ-WM112VAA / PUZ-WM112VAA-BS / PUZ-WM112YAA / PUZ-WM112YAA-BS",title:"Installation Manual BH79D849H03UK",url:"https://library.mitsubishielectric.co.uk/pdf/book/Ecodan_PUZ-WM-50-60-85-112-V-Y-H-A-A_Installation_Manual-BH79D849H03UK",note:"Official Mitsubishi Electric document library · exact PUZ-WM models listed by Mitsubishi Electric"},
  {type:"heatpump",categories:["heatpump"],make:"Mitsubishi Electric",model:"Ecodan PUZ-WM60VAA / PUZ-WM85VAA / PUZ-WM112VAA",title:"Service Manual OCH727A",url:"https://library.mitsubishielectric.co.uk/pdf/book/Ecodan_PUZ-WM50-60-85-112VH-AA_Service_ManualOCH727",note:"Official Mitsubishi Electric service manual · use only for exact listed PUZ-WM VAA variants"},
+ {type:"aircon",categories:["aircon"],make:"Mitsubishi Electric",model:"MSZ-AP15VG / MSZ-AP20VG",title:"Installation Manual JG79J478H01",url:"https://library.mitsubishielectric.co.uk/pdf/download_full/3966",note:"Official Mitsubishi Electric M-Series split-system installation manual · exact indoor models MSZ-AP15VG and MSZ-AP20VG · Mitsubishi document library also associates MUZ-AP20VG outdoor unit"},
+ {type:"aircon",categories:["aircon"],make:"Mitsubishi Electric",model:"MSZ-AP25/35/42/50VG + VGK",title:"Installation Manual JG79B896H02",url:"https://library.mitsubishielectric.co.uk/pdf/download_full/3754",note:"Official Mitsubishi Electric M-Series split-system installation manual · exact indoor models MSZ-AP25VG/VGK, MSZ-AP35VG/VGK, MSZ-AP42VG/VGK and MSZ-AP50VG/VGK · associated MUZ-AP25/35/42/50VG and VGH outdoor units are listed by Mitsubishi Electric"},
+ {type:"aircon",categories:["aircon"],make:"Mitsubishi Electric",model:"MSZ-AP25/35/42/50/60/71VG + VGK",title:"Service Manual OBH788 Revised Edition B",url:"https://library.mitsubishielectric.co.uk/pdf/download_full/3963",note:"Official Mitsubishi Electric M-Series service manual · covers MSZ-AP25/35/42/50/60/71VG and VGK indoor units · includes wiring, refrigerant diagrams, service functions, troubleshooting and disassembly"},
  {type:"heatpump",categories:["heatpump"],make:"Samsung",model:"EHS Mono HT Quiet AE080BXYDEG/EU / AE120BXYDEG/EU",title:"Installation Guide DB68-11904A-05",url:"https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_UK&OriginYN=N&ModelType=N&ModelName=AE080BXYDEG%2FEU&CttFileID=11279967&CDCttType=UM&VPath=UM%2F202602%2F20260205144030530%2FEHS_R-32_MONO_OUTDOOR_IM_EU_DB68-11904A-05_EN.pdf",note:"Official Samsung UK installation guide · version 05 · 5 Feb 2026 · verified on AE080BXYDEG/EU and AE120BXYDEG/EU support pages"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea legacy C/D/E series monobloc & split",title:"Installation Manual (C/D/E series)",url:"https://www.panasonicproclub.com/uploads/IE/catalogues/A2W_IM_monobloc%2Bsplit_EN_final_2014-05-15.pdf",note:"Official Panasonic ProClub legacy installation manual · C, D and E series only · not for later Aquarea generations"},];
 // Build 6.7 / V19.4: expanded exact oil/heat-pump coverage (Warmflow Agentis, Firebird current combi families, Daikin Altherma 3 M) and retained strict explicit model mapping.
@@ -2049,7 +2052,7 @@ const CATEGORY_MODEL_CATALOGUES={
  },
  aircon:{
   "Daikin":["CTXM-R / FTXM-R / ATXM-R","RZAG35A2V1B","RZAG50A2V1B","RZAG60A2V1B"],
-  "Mitsubishi Electric":["M Series split systems","Mr Slim split systems","City Multi VRF systems"],
+  "Mitsubishi Electric":["MSZ-AP15VG","MSZ-AP20VG","MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK","MSZ-AP60VG","MSZ-AP60VGK","MSZ-AP71VG","MSZ-AP71VGK","M Series split systems","Mr Slim split systems","City Multi VRF systems"],
   "Fujitsu":["ASTH18/22/24KMTD R32"],
   "Panasonic":["RAC single-split range","PACi commercial range"],
   "Toshiba":["RAS HAORI R32 10/13/16"],
@@ -2086,6 +2089,9 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Vaillant|aroTHERM plus VWL 105/6 A / VWL 125/6 A":["aroTHERM plus VWL 105/6 A","aroTHERM plus VWL 125/6 A"],
   "Mitsubishi Electric|Ecodan PUZ-WM50VHA-BS / PUZ-WM60VAA / PUZ-WM60VAA-BS / PUZ-WM85VAA / PUZ-WM85VAA-BS / PUZ-WM85YAA / PUZ-WM85YAA-BS / PUZ-WM112VAA / PUZ-WM112VAA-BS / PUZ-WM112YAA / PUZ-WM112YAA-BS":["Ecodan PUZ-WM50VHA-BS","Ecodan PUZ-WM60VAA","Ecodan PUZ-WM60VAA-BS","Ecodan PUZ-WM85VAA","Ecodan PUZ-WM85VAA-BS","Ecodan PUZ-WM85YAA","Ecodan PUZ-WM85YAA-BS","Ecodan PUZ-WM112VAA","Ecodan PUZ-WM112VAA-BS","Ecodan PUZ-WM112YAA","Ecodan PUZ-WM112YAA-BS"],
   "Mitsubishi Electric|Ecodan PUZ-WM60VAA / PUZ-WM85VAA / PUZ-WM112VAA":["Ecodan PUZ-WM60VAA","Ecodan PUZ-WM85VAA","Ecodan PUZ-WM112VAA"],
+  "Mitsubishi Electric|MSZ-AP15VG / MSZ-AP20VG":["MSZ-AP15VG","MSZ-AP20VG"],
+  "Mitsubishi Electric|MSZ-AP25/35/42/50VG + VGK":["MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK"],
+  "Mitsubishi Electric|MSZ-AP25/35/42/50/60/71VG + VGK":["MSZ-AP25VG","MSZ-AP25VGK","MSZ-AP35VG","MSZ-AP35VGK","MSZ-AP42VG","MSZ-AP42VGK","MSZ-AP50VG","MSZ-AP50VGK","MSZ-AP60VG","MSZ-AP60VGK","MSZ-AP71VG","MSZ-AP71VGK"],
   "Samsung|EHS Mono HT Quiet AE080BXYDEG/EU / AE120BXYDEG/EU":["EHS Mono HT Quiet AE080BXYDEG/EU","EHS Mono HT Quiet AE120BXYDEG/EU"],
   "Viessmann|Vitodens 050-W":["Vitodens 050-W 25kW","Vitodens 050-W 30kW","Vitodens 050-W B0KA"],
   "Viessmann|Vitodens 100-W":["Vitodens 100-W 19kW","Vitodens 100-W 25kW","Vitodens 100-W 32kW","Vitodens 100-W B1KF","Vitodens 100-W B1HF"],
