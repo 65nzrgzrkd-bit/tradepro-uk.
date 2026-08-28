@@ -1217,8 +1217,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.7";
-const TRADEPRO_VERSION="23.7";
+const TRADEPRO_BUILD="10.8";
+const TRADEPRO_VERSION="23.8";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2395,6 +2395,7 @@ const KNOWN_BOILER_MODELS={
 "Main Heating":["Eco Compact 25","Eco Compact 30","Eco Compact 35","Eco Compact Heat 15","Eco Compact Heat 18","Eco Compact Heat 24","Eco Compact System 15","Eco Compact System 18","Eco Compact System 24","Combi 24 HE","Combi 30 HE","Heat 12 Eco Elite","Heat 15 Eco Elite","Heat 18 Eco Elite","Heat 24 Eco Elite"],
 "Potterton":["Promax Combi 24 HE Plus","Promax Combi 28 HE Plus","Promax Combi 33 HE Plus","Promax System 12 HE Plus","Promax System 15 HE Plus","Promax System 18 HE Plus","Promax System 24 HE Plus","Gold Combi 24 HE","Gold Combi 28 HE","Gold Combi 33 HE"],
 "Vokera":["Easi-Heat i 25C","Easi-Heat i 29C","Easi-Heat i 20S","Easi-Heat i 25S","Vibe MAX C 26C","Vibe MAX C 30C","Unica MAX 30C","Unica MAX 35C","Unica MAX 40C","Unica MAX 20S","Unica MAX 30S","evolve 18S","evolve 42C","Mynute i25 ErP"],
+"Ferroli":["Bluehelix Tech RRT 24C","Bluehelix Tech RRT 28C","Bluehelix Tech RRT 34C","Bluehelix Tech RRT 18S","Bluehelix Tech RRT 24S","Bluehelix Tech RRT 30S"],
 "Ariston":["ALTEAS ONE+ NET 35","GENUS ONE+ WiFi 24","GENUS ONE+ WiFi 30","GENUS ONE+ WiFi 35","Clas ONE 24","Clas ONE 30","Clas ONE 38","Clas System ONE 18","Clas System ONE 24","Clas System ONE 30","Clas ONE R"],
 "Keston":["Combi C30","Combi C35","System S30","System S35","Heat 45","Heat 55","Heat 45 Evo","Heat 55 Evo","System 30","System 35"],
 "Remeha":["Avanta 24c","Avanta 28c","Avanta 35c","Avanta 39c","Quinta Ace 30","Quinta Ace 45","Quinta Ace 55","Quinta Ace 65","Quinta Ace 90","Quinta Ace 115","Calenta Ace 25","Calenta Ace 28c","Calenta Ace 35c","Tzerra Ace"],
@@ -2415,6 +2416,7 @@ const KNOWN_BOILER_MODELS={
 /* Build 7.6: Samsung current-range placeholder removed; exact UK support models and official user manuals added without claiming installation coverage. */
 /* Build 7.9 catalogue audit: generic NIBE/Kensa/Fujitsu heat-pump placeholders and broad Mitsubishi Air-Con placeholders removed; exact verified NIBE/Kensa models added. */
 /* Build 10.5: oil-category correction — Navien LCB700 is a current UK oil range; previous 10.4 removal was incorrect and is reversed here. */
+/* Build 10.8: integrity cleanup — Ferroli Bluehelix Tech RRT exact models are now in the natural-gas catalogue, resolving stale official-source mappings. Carrier exact product routes expanded without mislabelling product pages as local PDFs. */
 const CATEGORY_MODEL_CATALOGUES={
  naturalgas:KNOWN_BOILER_MODELS,
  lpg:{
@@ -2830,6 +2832,10 @@ const OFFICIAL_MODEL_SOURCES={
  "Midea|PortaSplit 12,000 BTU R32":"https://www.midea.com/uk/air-treatment/porta-split-air-conditioner.portasplit",
  "Carrier|42QHE R32 High Wall":"https://www.carrier.com/commercial/en/eu/products/split-systems/indoor-units/high-wall/42qhe/",
  "Carrier|42QHG R32 High Wall":"https://www.carrier.com/commercial/en/eu/products/split-systems/indoor-units/high-wall/42qhg/",
+ "Carrier|40VU*C-7S Compact Four-way Cassette":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/40vu-c-7s/",
+ "Carrier|40VC*F-7S Ceiling/Floor":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/40vc-f-7s/",
+ "Carrier|40VU*1-7E One-way Cassette":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/",
+ "Carrier|40VU*2-7G Two-way Cassette":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/",
 
  "Vokera|Easi-Heat i 25C":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i/",
  "Vokera|Easi-Heat i 29C":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i/",
