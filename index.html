@@ -1031,13 +1031,14 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 
 <div class="sectioncard" id="faultAssistantCard">
 <div class="section-title-row"><h3>⚠️ Fault Code Assistant</h3><span class="count-pill">Quick diagnosis</span></div>
-<div class="smallnote" style="margin:7px 0 10px">Choose the manufacturer, optionally choose the exact model, then enter the displayed fault code. Spaces, dots, slashes and letter case are handled automatically. PlumbCore only gives a local answer where the code has been verified; otherwise it routes you to the official source instead of guessing.</div>
+<div class="smallnote" style="margin:7px 0 10px">Choose the manufacturer, optionally choose the exact model, then enter the displayed fault code. Spaces, dots, slashes and letter case are handled automatically. PlumbCore only gives a local answer where the code has been verified. Every manufacturer/model in the library can still be routed to its official manuals and troubleshooting search, so an unknown code is never guessed.</div>
 <div class="two"><label>Manufacturer<select id="faultMake" onchange="populateFaultModels();populateFaultSuggestions()"></select></label><label>Model <span class="smallnote">(optional)</span><select id="faultModel"><option value="">Any / choose model</option></select></label></div>
 <label>Fault code<input id="faultCodeInput" list="faultCodeSuggestions" placeholder="e.g. F.75, F75, EA 227 or E133" oninput="updateFaultMatchHint()" autocomplete="off"></label>
 <datalist id="faultCodeSuggestions"></datalist>
 <div id="faultMatchHint" class="smallnote" style="margin:-2px 0 9px"></div>
 <div class="detail-actions"><button id="faultCheckBtn" class="primary" type="button" onclick="runFaultAssistant()">Check fault code</button><button class="secondary" type="button" onclick="searchFaultOnline()">Search official fault info</button></div>
 <div id="faultResult"></div>
+<div class="smallnote" style="margin-top:10px"><strong>Coverage:</strong> Boiler, LPG, oil, heat-pump and Air-Con / F-Gas manufacturers in the catalogue are searchable. Local quick-code meanings are deliberately limited to entries verified against manufacturer literature; all other codes route to exact-model official sources.</div>
 </div>
 
 <div class="sectioncard">
@@ -1213,8 +1214,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="9.8";
-const TRADEPRO_VERSION="22.5";
+const TRADEPRO_BUILD="10.0";
+const TRADEPRO_VERSION="23.0";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2258,6 +2259,7 @@ function useRadiatorInJob(watts,btu){
 /* Build 6.9 release-integrity hardening: one source of truth for build/version labels, backups and engineer-report metadata. */
 /* Build 6.8 exact-model integrity hardening + Mitsubishi Electric M-Series expansion */
 let techFilter="naturalgas";
+/* Build 10.0 / V23.0: full-catalogue troubleshooting routing across gas, LPG, oil, heat-pump and Air-Con / F-Gas; verified local codes remain conservative. */
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
  {type:"lpg",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Vokera","Ferroli","Ariston","Rinnai","Lochinvar"]},
@@ -2606,24 +2608,68 @@ function runTechDataIntegrityAudit(){
 const MANUFACTURER_SOURCES={
  "Baxi":"https://www.baxi.co.uk/support/literature-library",
  "Glow-worm":"https://www.glow-worm.co.uk/trade/service-and-support/business-support/literature/",
- "Alpha":"https://www.alpha-innovation.co.uk/",
+ "Alpha":"https://www.alpha-innovation.co.uk/technical-support/",
  "Vaillant":"https://professional.vaillant.co.uk/for-installers/literature-finder/",
- "Intergas":"https://www.intergasheating.co.uk/trade/",
+ "Intergas":"https://www.intergasheating.co.uk/trade/technical-support/",
  "Mitsubishi Electric":"https://library.mitsubishielectric.co.uk/home",
- "Worcester Bosch":"https://www.worcester-bosch.co.uk/support/literature",
+ "Worcester Bosch":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures",
  "Ideal Heating":"https://idealheating.com/support/manuals",
  "Grant UK":"https://www.grantuk.com/professional/product-support/technical-data/",
  "Warmflow":"https://warmflow.co.uk/support/manuals-brochures",
- "Daikin":"https://www.daikin.co.uk/en_gb/technical-data.html",
+ "Daikin":"https://www.daikin.co.uk/en_gb/commercial/service-and-support/technical-support.html",
  "Firebird":"https://firebird.uk.com/support/manuals/",
- "Navien":"https://navien.co.uk/",
- "Samsung":"https://www.samsung.com/uk/business/climate/products/",
- "Panasonic":"https://www.aircon.panasonic.eu/GB_en/",
- "LG":"https://www.lg.com/uk/business/manual",
- "NIBE":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps",
- "Kensa":"https://www.kensaheatpumps.com/"
-};
+ "Navien":"https://navien.co.uk/professional/technical-support/",
+ "Samsung":"https://www.samsung.com/uk/support/",
+ "Panasonic":"https://www.aircon.panasonic.eu/GB_en/technical-data/",
+ "LG":"https://www.lg.com/uk/support/product-support/manuals-software/",
+ "NIBE":"https://www.nibe.eu/en-gb/support",
+ "Kensa":"https://www.kensaheatpumps.com/installer-technical-support/",
+ "Viessmann":"https://www.viessmann.co.uk/en/services-and-support/manuals.html",
+ "ATAG":"https://www.atagheating.co.uk/support/technical-support/",
+ "Main Heating":"https://www.mainheating.co.uk/support/",
+ "Potterton":"https://www.potterton.co.uk/technical-support/",
+ "Vokera":"https://www.vokera.co.uk/trade-professionals/technical-support/",
+ "Ferroli":"https://www.ferroli.com/en/service-support",
+ "Ariston":"https://www.ariston.com/en-uk/support/",
+ "Keston":"https://www.keston.co.uk/support/",
+ "Remeha":"https://www.remeha.co.uk/support/technical-support",
+ "Hamworthy":"https://hamworthy-heating.com/technical-support/",
+ "Bosch Commercial":"https://www.bosch-industrial.com/gb/en/ocs/commercial-industrial/service/technical-support/",
+ "Lochinvar":"https://lochinvar.ltd.uk/technical-support/",
+ "ACV":"https://www.acv.com/gb/customer-services/documentation",
+ "Rinnai":"https://www.rinnai-uk.co.uk/technical-support/",
+ "Trianco":"https://trianco.co.uk/technical-support/",
+ "Hounsfield":"https://hounsfieldboilers.co.uk/technical/",
+ "HRM Boilers":"https://hrmboilers.co.uk/technical/",
+ "Mistral":"https://www.mistralboilers.com/technical-information/",
+ "Danfoss Burner":"https://www.danfoss.com/en-gb/service-and-support/downloads/",
+ "Riello Burner":"https://www.riello.com/uk/products/burners",
+ "Hitachi":"https://www.hitachiaircon.com/gb/en/support",
+ "Fujitsu":"https://www.fujitsu-general.com/uk/support/",
+ "Clivet":"https://www.clivet.com/support",
+ "Midea":"https://www.midea.com/uk/support",
+ "Carrier":"https://www.carrier.com/commercial/en/uk/service-support/",
+ "Toshiba":"https://www.toshiba-aircon.co.uk/en/manuals-and-downloads.html",
+ "Stiebel Eltron":"https://www.stiebel-eltron.co.uk/en/service/downloads.html",
+ "Mitsubishi Heavy Industries":"https://mhiaa.com.au/document-library/",
+ "Gree":"https://gree.uk.com/technical-support/",
+ "Haier":"https://www.haierhvac.eu/en/support/",
+ "Hisense":"https://hisenseaircon.com/support/",
+ "Bosch":"https://www.bosch-homecomfort.com/gb/en/residential/service-support/",
+ "Tosot":"https://tosotcomfort.com/support/",
+ "AUX":"https://auxair.com/support/",
+ "York":"https://www.york.com/commercial-equipment/service-and-support",
+ "Trane":"https://www.trane.eu/uk/en/services.html"
+}
 function officialSourceButton(make){const u=MANUFACTURER_SOURCES[make];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official manufacturer library</button>`:''}
+const FAULT_SEARCH_DOMAINS={
+ "Vaillant":"professional.vaillant.co.uk","Worcester Bosch":"worcester-bosch.co.uk","Ideal Heating":"idealheating.com","Baxi":"baxi.co.uk","Glow-worm":"glow-worm.co.uk","Alpha":"alpha-innovation.co.uk","Intergas":"intergasheating.co.uk","Grant UK":"grantuk.com","Warmflow":"warmflow.co.uk","Firebird":"firebird.uk.com","Viessmann":"viessmann.co.uk","ATAG":"atagheating.co.uk","Navien":"navien.co.uk","Main Heating":"mainheating.co.uk","Potterton":"potterton.co.uk","Vokera":"vokera.co.uk","Ferroli":"ferroli.com","Ariston":"ariston.com","Keston":"keston.co.uk","Remeha":"remeha.co.uk","Hamworthy":"hamworthy-heating.com","Lochinvar":"lochinvar.ltd.uk","ACV":"acv.com","Rinnai":"rinnai-uk.co.uk","Daikin":"daikin.co.uk","Mitsubishi Electric":"mitsubishielectric.co.uk","Fujitsu":"fujitsu-general.com","Panasonic":"aircon.panasonic.eu","Toshiba":"toshiba-aircon.co.uk","Midea":"midea.com","Samsung":"samsung.com","LG":"lg.com","Hitachi":"hitachiaircon.com","Carrier":"carrier.com","NIBE":"nibe.eu","Kensa":"kensaheatpumps.com","Stiebel Eltron":"stiebel-eltron.co.uk","Gree":"gree.uk.com","Haier":"haierhvac.eu","Hisense":"hisenseaircon.com"
+};
+function troubleshootingSearch(make,model,code){
+ const domain=FAULT_SEARCH_DOMAINS[make]||"",q=[domain?`site:${domain}`:"",make,model,code,"installation service manual fault code troubleshooting"].filter(Boolean).join(" ");
+ window.open("https://www.google.com/search?q="+encodeURIComponent(q),"_blank","noopener");
+}
+function modelTroubleshooting(make,model){troubleshootingSearch(make,model,"")}
 
 /* Build 7.8: expanded exact LG model-source links and unit-code aliases.
    Build 7.7: exact model-source links and search aliases. Manufacturer webpages are
@@ -2766,7 +2812,22 @@ const FAULT_GUIDE=[
 {make:"Glow-worm",code:"F.32",meaning:"Fan speed / fan operation outside expected range on applicable models.",checks:["Confirm exact model.","Check only safely accessible air/flue routes for obvious obstruction.","Use the exact service manual for fan, wiring and control diagnostics."],keywords:["f32","f.32"]},
 
 // Worcester Bosch — dual-part alert format is normal on a number of Greenstar ranges.
-{make:"Worcester Bosch",code:"EA / 227",meaning:"Ignition/flame-detection lockout on a number of Worcester Bosch Greenstar ranges. Exact wording and cause vary by model.",checks:["Record both parts of the display code where shown (for example EA and 227).","Confirm the exact model before diagnosing.","Check for an obvious gas-supply interruption using normal external checks only.","Follow the permitted reset procedure for that exact model; if it returns, use the installation/service manual diagnostic sequence."],keywords:["ea","227","ea227"]}
+{make:"Worcester Bosch",code:"EA / 227",meaning:"Ignition/flame-detection lockout on a number of Worcester Bosch Greenstar ranges. Exact wording and cause vary by model.",checks:["Record both parts of the display code where shown (for example EA and 227).","Confirm the exact model before diagnosing.","Check for an obvious gas-supply interruption using normal external checks only.","Follow the permitted reset procedure for that exact model; if it returns, use the installation/service manual diagnostic sequence."],keywords:["ea","227","ea227"]},
+
+// Daikin — representative HVAC codes verified against Daikin installer reference literature. Complete lists remain model/service-manual specific.
+{make:"Daikin",code:"A0",meaning:"External protection device activated on applicable Daikin systems.",checks:["Record the exact indoor/outdoor model and controller code.","Check the installation/service manual for the external protection input/device used on that model.","Do not reset repeatedly until the cause of the protection signal has been identified."],keywords:["a0"]},
+{make:"Daikin",code:"A1",meaning:"Indoor-unit PCB malfunction on applicable Daikin systems.",checks:["Confirm the exact model and displayed code.","Check accessible plugs/connectors only with safe electrical isolation and appropriate competence.","Use the exact service manual diagnostic procedure before condemning a PCB."],keywords:["a1"]},
+{make:"Daikin",code:"A3",meaning:"Drain level control system abnormality on applicable Daikin systems.",checks:["Confirm the exact indoor-unit model.","Check for obvious drain blockage, pump/float issues or installation problems where safely accessible.","Use the exact service manual for drain-control diagnostics before resetting."],keywords:["a3"]},
+// Kensa — examples verified against Kensa operational manuals; controller/product generation matters.
+{make:"Kensa",code:"TP",meaning:"Low water-pressure alarm on applicable Kensa heat pumps.",checks:["Check the relevant ground/load circuit pressure and visible leaks.","Confirm the exact Kensa model/controller generation.","Follow the applicable Kensa operational/service manual before resetting."],keywords:["tp"]},
+{make:"Kensa",code:"HP",meaning:"High refrigerant-pressure protection on applicable Kensa heat pumps, commonly associated with inadequate load-side flow.",checks:["Check heating-distribution flow and obvious closed/restricted valves.","Check pumps/strainers only within competence and exact manual guidance.","Use the exact Kensa fault-finding procedure before refrigerant-side intervention."],keywords:["hp"]},
+{make:"Kensa",code:"LP",meaning:"Low refrigerant-pressure fault on applicable Kensa heat pumps.",checks:["Confirm the exact model and operating conditions.","Do not infer refrigerant charge from this code alone.","Use the Kensa service procedure and F-Gas competent diagnostics for refrigerant-side testing."],keywords:["lp"]},
+{make:"Kensa",code:"A1",meaning:"Anti-freeze / low ground-temperature protection on applicable Kensa systems.",checks:["Check source/ground-loop flow and antifreeze protection in accordance with the exact manual.","Check for obvious flow restrictions or commissioning issues.","Use Kensa technical guidance if the alarm returns."],keywords:["a1"]},
+{make:"Kensa",code:"E1",meaning:"Temperature probe fault on applicable Kensa controllers (probe assignment is model/manual specific).",checks:["Confirm the exact controller/manual because probe assignments vary.","Check the named probe connection and wiring only as directed by the exact manual.","Use Kensa technical support if the sensor identity or test values are uncertain."],keywords:["e1"]},
+{make:"Kensa",code:"E2",meaning:"Temperature probe fault on applicable Kensa controllers (probe assignment is model/manual specific).",checks:["Confirm the exact controller/manual because probe assignments vary.","Check the named probe connection and wiring only as directed by the exact manual.","Use Kensa technical support if the sensor identity or test values are uncertain."],keywords:["e2"]},
+{make:"Kensa",code:"E3",meaning:"Temperature probe fault on applicable Kensa controllers (probe assignment is model/manual specific).",checks:["Confirm the exact controller/manual because probe assignments vary.","Check the named probe connection and wiring only as directed by the exact manual.","Use Kensa technical support if the sensor identity or test values are uncertain."],keywords:["e3"]},
+{make:"Kensa",code:"E4",meaning:"Temperature probe fault on applicable Kensa controllers (probe assignment is model/manual specific).",checks:["Confirm the exact controller/manual because probe assignments vary.","Check the named probe connection and wiring only as directed by the exact manual.","Use Kensa technical support if the sensor identity or test values are uncertain."],keywords:["e4"]}
+
 ];
 
 function filteredManuals(){const q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();return manualsForFilter().filter(x=>!q||(x.make+" "+x.model+" "+x.title+" "+(x.note||"")).toLowerCase().includes(q))}
@@ -2835,9 +2896,9 @@ function renderManufacturerLibrary(){
         return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}</div><div class="model-actions">${docs.map(manual=>{
           const mi=DIRECT_MANUALS.indexOf(manual),fav=isFav(manual);
           return `<button class="green" type="button" onclick="viewDirectManual(${mi})">${esc(manual.title||"Open PDF")}</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★":"☆"}</button>`;
-        }).join("")}${officialModelSourceButton(make,model)}</div></div>`;
+        }).join("")}${officialModelSourceButton(make,model)}<button class="secondary" type="button" onclick="modelTroubleshooting('${escAttr(make)}','${escAttr(model)}')">Faults & troubleshooting</button></div></div>`;
       }
-      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}${identifiedManualInfo(make,model)?`<br><span style="font-size:11px">${esc(identifiedManualInfo(make,model).family)}${identifiedManualInfo(make,model).productCode?` · ${esc(identifiedManualInfo(make,model).productCode)}`:''}</span>`:''}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add my PDF</button><button class="pending-status" type="button" disabled>Official PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}</div></div>`;
+      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}${identifiedManualInfo(make,model)?`<br><span style="font-size:11px">${esc(identifiedManualInfo(make,model).family)}${identifiedManualInfo(make,model).productCode?` · ${esc(identifiedManualInfo(make,model).productCode)}`:''}</span>`:''}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add my PDF</button><button class="pending-status" type="button" disabled>Official PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}<button class="secondary" type="button" onclick="modelTroubleshooting('${escAttr(make)}','${escAttr(model)}')">Faults & troubleshooting</button></div></div>`;
     }).join(""):`<div class="smallnote" style="padding:10px 2px">No verified model/range catalogue loaded for this make in this section yet.</div><div class="model-actions" style="padding:0 2px 10px">${officialSourceButton(make)}</div>`}</div>
    </div>`;
  }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
@@ -2862,22 +2923,21 @@ function populateFaultSuggestions(){
 }
 function faultCodeExamples(make){
  const map={
-  "Baxi":["E09","E20","E28","E40","E110","E118","E125","E133","E160","E270"],
+  "Baxi":["E20","E28","E110","E118","E125","E133","E160","E270"],
   "Vaillant":["F.22","F.28","F.29","F.32","F.73","F.75"],
-  "Ideal Heating":["F1","L2"],
-  "Glow-worm":["F.22","F.28"],
-  "Worcester Bosch":["EA / 227"]
+  "Ideal Heating":["F1","L2"],"Glow-worm":["F.22","F.28"],"Worcester Bosch":["EA / 227"],
+  "Daikin":["A0","A1","A3"],"Kensa":["TP","HP","LP","A1","E1","E2","E3","E4"]
  };
  return map[make]||[];
 }
 function faultFormatHint(make){
- return {"Baxi":"Baxi codes on these ranges are normally shown as E-codes (for example E20, E133 or E160), not plain F4.","Vaillant":"Vaillant codes are commonly shown as F.xx — F75, F.75 and F 75 are all accepted here.","Ideal Heating":"Ideal codes commonly use forms such as F1 or L2.","Glow-worm":"Glow-worm codes commonly use forms such as F.22 or F.28.","Worcester Bosch":"Worcester displays vary by range; EA, 227 and EA227 are accepted for the verified EA/227 reference."}[make]||"Enter the code exactly as shown on the appliance; spaces, dots, slashes and letter case are handled automatically.";
+ return {"Baxi":"Baxi code formats vary by generation; use the exact displayed E-code and exact model manual.","Vaillant":"Vaillant codes are commonly shown as F.xx — F75, F.75 and F 75 are all accepted here.","Ideal Heating":"Ideal codes commonly use forms such as F1 or L2; exact meaning varies by range.","Glow-worm":"Glow-worm codes commonly use forms such as F.22 or F.28; confirm the exact range.","Worcester Bosch":"Worcester display codes vary significantly by generation; EA, 227 and EA227 are accepted for the verified EA/227 reference.","Daikin":"Daikin HVAC codes can be two-character codes such as A0/A1/A3; the complete code list is model/service-manual specific.","Kensa":"Kensa heat-pump controllers use letter/number alarm codes; exact lists vary by controller and product generation."}[make]||"Enter the code exactly as shown on the appliance. If it is not in the verified local guide, use the exact-model official troubleshooting search rather than assuming a generic meaning.";
 }
 function updateFaultMatchHint(){
  const make=(document.getElementById("faultMake")?.value||"").trim(),raw=(document.getElementById("faultCodeInput")?.value||"").trim(),hint=document.getElementById("faultMatchHint");if(!hint)return;if(!raw){const n=FAULT_GUIDE.filter(x=>x.make===make).length;hint.innerHTML=make?`${n} verified quick-code references loaded for ${esc(make)}. <span class="smallnote">${esc(faultFormatHint(make))}</span>`:"";return}const n=normaliseFaultCode(raw),hits=FAULT_GUIDE.filter(x=>(!make||x.make===make)&&(x.keywords||[]).some(k=>normaliseFaultCode(k)===n));hint.innerHTML=hits.length?`<strong>Verified local match:</strong> ${esc(hits[0].make)} · ${esc(hits[0].code)}`:`<strong>Code not recognised in the verified local database.</strong> ${esc(faultFormatHint(make))}`;
 }
 function searchFaultOnline(){
- const make=(document.getElementById("faultMake")?.value||"").trim(),model=(document.getElementById("faultModel")?.value||"").trim(),code=(document.getElementById("faultCodeInput")?.value||"").trim();if(!make&&!code){toast("Choose a manufacturer or enter a fault code");return}const domain={"Vaillant":"professional.vaillant.co.uk","Worcester Bosch":"worcester-bosch.co.uk","Ideal Heating":"idealheating.com","Baxi":"baxi.co.uk","Glow-worm":"glow-worm.co.uk","Alpha":"alpha-innovation.co.uk","Intergas":"intergasheating.co.uk","Grant UK":"grantuk.com","Warmflow":"warmflow.co.uk","Firebird":"firebird.uk.com"}[make]||"";const q=[domain?`site:${domain}`:"",make,model,code,"fault code service manual"].filter(Boolean).join(" ");window.open("https://www.google.com/search?q="+encodeURIComponent(q),"_blank","noopener");
+ const make=(document.getElementById("faultMake")?.value||"").trim(),model=(document.getElementById("faultModel")?.value||"").trim(),code=(document.getElementById("faultCodeInput")?.value||"").trim();if(!make&&!code){toast("Choose a manufacturer or enter a fault code");return}troubleshootingSearch(make,model,code);
 }
 function runFaultAssistant(){
  const make=(document.getElementById("faultMake")?.value||"").trim(),model=(document.getElementById("faultModel")?.value||"").trim(),raw=(document.getElementById("faultCodeInput")?.value||"").trim(),out=document.getElementById("faultResult"),btn=document.getElementById("faultCheckBtn");
