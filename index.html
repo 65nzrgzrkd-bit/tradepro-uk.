@@ -1051,7 +1051,7 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 
 
 <div class="sectioncard">
-<div class="section-title-row"><h3>✅ Library Health</h3><span id="techHealthStatus" class="count-pill">Checking…</span></div>
+<div class="section-title-row"><h3 id="techHealthHeading">Library Health</h3><span id="techHealthStatus" class="count-pill">Checking…</span></div>
 <div class="stats" style="margin-top:10px;margin-bottom:0">
 <div class="card"><small>Exact models</small><strong id="techHealthModels">0</strong></div>
 <div class="card"><small>Verified PDF coverage</small><strong id="techHealthCovered">0</strong></div>
@@ -1217,8 +1217,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.6";
-const TRADEPRO_VERSION="23.6";
+const TRADEPRO_BUILD="10.7";
+const TRADEPRO_VERSION="23.7";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2259,6 +2259,7 @@ function useRadiatorInJob(watts,btu){
 }
 
 
+/* Build 10.7 F-Gas coverage hardening: exact Toshiba/Fujitsu mapping, official Midea PortaSplit manual, truthful dynamic Library Health state. */
 /* Build 6.9 release-integrity hardening: one source of truth for build/version labels, backups and engineer-report metadata. */
 /* Build 6.8 exact-model integrity hardening + Mitsubishi Electric M-Series expansion */
 /* Build 10.6: verified oil-document mapping pass for Worcester Bosch, Trianco, Hounsfield, HRM and Mistral. */
@@ -2360,7 +2361,8 @@ const DIRECT_MANUALS=[
  {type:"aircon",categories:["aircon"],make:"Samsung",model:"WindFree AR09AXKAAWKN",title:"User Manual · AR9500T WindFree PM1.0",url:"https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_UK&OriginYN=N&ModelType=N&ModelName=AR09AXKAAWKN&CttFileID=7982481&CDCttType=UM&VPath=UM%2F202103%2F20210303103348369%2FDB68-09607A-00_IB_AR9500T_GEO_WIND_FREE_PM1.0_EU_EN-WEB_.pdf",note:"Official Samsung UK support PDF · exact support model AR09AXKAAWKN · user manual DB68-09607A-00 · March 2021 · not presented as an installation/service manual"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5",title:"R290 Installer Guidance",url:"https://cdn.aircon.panasonic.eu/uploads/GB/Catalogues/2023/EU%20A4%20R290%20INSTALLER%2023%20LR.pdf",note:"Official Panasonic UK technical guidance · Aquarea L Generation R290 · exact outdoor models WH-WDG05LE5, WH-WDG07LE5 and WH-WDG09LE5 · installer safety and installation considerations · this is guidance, not a substitute for the appliance installation manual"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5",title:"R290 Service Engineer Guidance",url:"https://cdn.aircon.panasonic.eu/uploads/GB/Catalogues/2023/EU%203P%20R290%20ENGINEER%2023%20LR.pdf",note:"Official Panasonic UK service-engineer guidance · Aquarea L Generation R290 · exact outdoor models WH-WDG05LE5, WH-WDG07LE5 and WH-WDG09LE5 · refrigerant safety and service considerations"},
- {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea legacy C/D/E series monobloc & split",title:"Installation Manual (C/D/E series)",url:"https://www.panasonicproclub.com/uploads/IE/catalogues/A2W_IM_monobloc%2Bsplit_EN_final_2014-05-15.pdf",note:"Official Panasonic ProClub legacy installation manual · C, D and E series only · not for later Aquarea generations"},];
+ {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea legacy C/D/E series monobloc & split",title:"Installation Manual (C/D/E series)",url:"https://www.panasonicproclub.com/uploads/IE/catalogues/A2W_IM_monobloc%2Bsplit_EN_final_2014-05-15.pdf",note:"Official Panasonic ProClub legacy installation manual · C, D and E series only · not for later Aquarea generations"},
+ {type:"aircon",categories:["aircon"],make:"Midea",model:"PortaSplit 12,000 BTU R32",title:"User Manual",url:"https://www.midea.com/content/dam/midea-aem/nl/nl-en/air-solutions/air-conditioning/portasplit/portasplit/Portasplit-User-Manual-ENG.pdf",note:"Official Midea PortaSplit user manual · exact PortaSplit model · setup, operation and safety information; not a substitute for refrigerant service literature"},];
 // Build 6.7 / V19.4: expanded exact oil/heat-pump coverage (Warmflow Agentis, Firebird current combi families, Daikin Altherma 3 M) and retained strict explicit model mapping.
 // Category tags keep existing verified PDFs compatible with the expanded library.
 DIRECT_MANUALS.forEach(m=>{if(!Array.isArray(m.categories)){m.categories=m.type==="boiler"?["naturalgas"]:m.type==="oil"?["oil"]:m.type==="aircon"?["aircon"]:[m.type]}});
@@ -2495,7 +2497,8 @@ const APPROVED_MANUAL_HOSTS={
   "Trianco":["trianco.co.uk"],
   "Hounsfield":["hounsfieldboilers.co.uk"],
   "HRM Boilers":["www.hrmboilers.co.uk"],
-  "Mistral":["www.mistralboilers.com"]
+  "Mistral":["www.mistralboilers.com"],
+  "Midea":["www.midea.com"]
 };
 
 const VERIFIED_MANUAL_MODEL_MAP={
@@ -2548,7 +2551,10 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Trianco|TRO 12/14 15/19 20/25 28/32 37/45 50/73 legacy":["TRO 12/14 (legacy archive)","TRO 15/19 (legacy archive)","TRO 20/25 (legacy archive)","TRO 28/32 (legacy archive)","TRO 37/45 (legacy archive)","TRO 50/73 (legacy archive)"],
   "Hounsfield|Tuscan Kitchen TA12-19 / TA20-25 / TA26-30":["Tuscan Kitchen TA12-19","Tuscan Kitchen TA20-25","Tuscan Kitchen TA26-30"],
   "HRM Boilers|Wallstar / X1 Max Range":["Wallstar 1 Max","Wallstar 2 Max","Wallstar 3 Max","Wallstar Combi Max","X1 Max","X1 System Max"],
-  "Mistral|CC / CMC Combi & Combi Plus Range":["CC1 Combi Standard","CC2 Combi Standard","CC3 Combi Standard","CC4 Combi Standard","CC1 PLUS Combi Plus","CC2 PLUS Combi Plus","CC3 PLUS Combi Plus","CC4 PLUS Combi Plus","CMC5 PLUS Mega Combi Plus","CMC6 PLUS Mega Combi Plus","CMC7 PLUS Mega Combi Plus"]
+  "Mistral|CC / CMC Combi & Combi Plus Range":["CC1 Combi Standard","CC2 Combi Standard","CC3 Combi Standard","CC4 Combi Standard","CC1 PLUS Combi Plus","CC2 PLUS Combi Plus","CC3 PLUS Combi Plus","CC4 PLUS Combi Plus","CMC5 PLUS Mega Combi Plus","CMC6 PLUS Mega Combi Plus","CMC7 PLUS Mega Combi Plus"],
+  "Toshiba|RAS HAORI R32 10/13/16":["RAS HAORI R32 10/13/16"],
+  "Fujitsu|ASTH18/22/24KMTD R32":["ASTH18/22/24KMTD R32"],
+  "Midea|PortaSplit 12,000 BTU R32":["PortaSplit 12,000 BTU R32"]
 };
 function normaliseModelName(s){return String(s||"").toLowerCase().replace(/[–—]/g,"-").replace(/²/g,"2").replace(/³/g,"3").replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim()}
 function manualHasVerifiedModelMap(m){
@@ -2994,8 +3000,9 @@ function updateTechHealth(){
  const docs=manualsForFilter().length;
  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
  set("techHealthModels",models.length);set("techHealthCovered",covered);set("techHealthOfficialOnly",officialOnly);set("techHealthDocs",docs);set("techHealthPending",pending);set("techHealthLegacy",legacy);
- const status=document.getElementById("techHealthStatus"),note=document.getElementById("techHealthNote");
+ const status=document.getElementById("techHealthStatus"),note=document.getElementById("techHealthNote"),heading=document.getElementById("techHealthHeading");
  const audit=window.TRADEPRO_TECH_AUDIT||{issues:[],warnings:[]};
+ if(heading)heading.textContent=(audit.issues.length?"⚠️ ":audit.warnings.length?"🔎 ":"✅ ")+"Library Health";
  if(status)status.textContent=audit.issues.length?audit.issues.length+" integrity issue"+(audit.issues.length===1?"":"s"):audit.warnings.length?audit.warnings.length+" audit warning"+(audit.warnings.length===1?"":"s"):"Strict matching on";
  if(note){const mappedDocs=manualsForFilter().filter(manualHasVerifiedModelMap).length,referenceDocs=docs-mappedDocs;note.innerHTML=`${covered} of ${models.length} exact catalogue models have verified local documents. ${officialOnly} have a verified official model page, ${manufacturerSource} have an official manufacturer support route, and ${pending} still need source verification. <strong>PlumbCore never counts an official search route as local manual coverage. ${mappedDocs} PDFs have explicit model maps; ${referenceDocs} remain reference-only until exact appliance/revision mapping is verified.</strong>`;}
 }
