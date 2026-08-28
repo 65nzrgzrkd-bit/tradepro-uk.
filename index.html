@@ -1214,8 +1214,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.0";
-const TRADEPRO_VERSION="23.0";
+const TRADEPRO_BUILD="10.1";
+const TRADEPRO_VERSION="23.1";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2670,6 +2670,10 @@ function troubleshootingSearch(make,model,code){
  window.open("https://www.google.com/search?q="+encodeURIComponent(q),"_blank","noopener");
 }
 function modelTroubleshooting(make,model){troubleshootingSearch(make,model,"")}
+function modelManualSearch(make,model){
+ const domain=FAULT_SEARCH_DOMAINS[make]||"",q=[domain?`site:${domain}`:"",make,model,'installation service manual PDF'].filter(Boolean).join(' ');
+ window.open('https://www.google.com/search?q='+encodeURIComponent(q),'_blank','noopener');
+}
 
 /* Build 7.8: expanded exact LG model-source links and unit-code aliases.
    Build 7.7: exact model-source links and search aliases. Manufacturer webpages are
@@ -2841,15 +2845,17 @@ function toggleMake(key){const el=document.getElementById("make-"+key);if(el)el.
 function modelLibraryState(make,model){
  const docs=directManualsFor(make,model);
  const official=!!OFFICIAL_MODEL_SOURCES[make+"|"+model];
+ const manufacturerOfficial=!!MANUFACTURER_SOURCES[make];
  const legacy=/\blegacy\b|\bdiscontinued\b/i.test(String(model||""));
- return {docs,official,legacy,status:docs.length?"verified":official?"official-only":"pending"};
+ return {docs,official,manufacturerOfficial,legacy,status:docs.length?"verified":official?"official-only":manufacturerOfficial?"manufacturer-source":"pending"};
 }
 function modelStateLabel(make,model){
  const st=modelLibraryState(make,model),identified=identifiedManualInfo(make,model);
- if(st.status==="verified")return `${st.docs.length} verified document${st.docs.length===1?"":"s"}${st.legacy?" · legacy":""}`;
- if(st.status==="official-only")return `Official model page verified · exact direct PDF pending${st.legacy?" · legacy":""}`;
- if(identified)return `Exact model listed · family manual identified · official direct PDF pending${st.legacy?" · legacy":""}`;
- return `Exact model listed · exact verified direct PDF pending${st.legacy?" · legacy":""}`;
+ if(st.status==="verified")return `Verified local manual · ${st.docs.length} mapped document${st.docs.length===1?"":"s"}${st.legacy?" · legacy":""}`;
+ if(st.status==="official-only")return `Official model page verified · local direct PDF pending${st.legacy?" · legacy":""}`;
+ if(st.status==="manufacturer-source"&&identified)return `Official manufacturer source available · family manual identified · exact local PDF pending${st.legacy?" · legacy":""}`;
+ if(st.status==="manufacturer-source")return `Official manufacturer source available · exact local PDF pending${st.legacy?" · legacy":""}`;
+ return `Source verification pending${st.legacy?" · legacy":""}`;
 }
 function updateTechHealth(){
  const catalogue=CATEGORY_MODEL_CATALOGUES[techFilter]||{};
@@ -2858,6 +2864,7 @@ function updateTechHealth(){
  const states=models.map(([make,model])=>modelLibraryState(make,model));
  const covered=states.filter(x=>x.status==="verified").length;
  const officialOnly=states.filter(x=>x.status==="official-only").length;
+ const manufacturerSource=states.filter(x=>x.status==="manufacturer-source").length;
  const pending=states.filter(x=>x.status==="pending").length;
  const legacy=states.filter(x=>x.legacy).length;
  const docs=manualsForFilter().length;
@@ -2866,7 +2873,7 @@ function updateTechHealth(){
  const status=document.getElementById("techHealthStatus"),note=document.getElementById("techHealthNote");
  const audit=window.TRADEPRO_TECH_AUDIT||{issues:[],warnings:[]};
  if(status)status.textContent=audit.issues.length?audit.issues.length+" integrity issue"+(audit.issues.length===1?"":"s"):audit.warnings.length?audit.warnings.length+" audit warning"+(audit.warnings.length===1?"":"s"):"Strict matching on";
- if(note){const mappedDocs=manualsForFilter().filter(manualHasVerifiedModelMap).length,referenceDocs=docs-mappedDocs;note.innerHTML=`${covered} of ${models.length} exact catalogue models have verified built-in documents. ${officialOnly} have a verified official model page but still need an exact direct PDF, and ${pending} are exact catalogue models still awaiting document verification. <strong>${mappedDocs} PDFs in this section have explicit model maps; ${referenceDocs} are retained as reference-only until exact appliance/revision mapping is verified. Approved manufacturer/CDN source checking is enforced.</strong>`;}
+ if(note){const mappedDocs=manualsForFilter().filter(manualHasVerifiedModelMap).length,referenceDocs=docs-mappedDocs;note.innerHTML=`${covered} of ${models.length} exact catalogue models have verified local documents. ${officialOnly} have a verified official model page, ${manufacturerSource} have an official manufacturer support route, and ${pending} still need source verification. <strong>PlumbCore never counts an official search route as local manual coverage. ${mappedDocs} PDFs have explicit model maps; ${referenceDocs} remain reference-only until exact appliance/revision mapping is verified.</strong>`;}
 }
 function renderManufacturerLibrary(){
  const box=document.getElementById("techList"),c=document.getElementById("manufacturerCount");if(!box)return;
@@ -2880,11 +2887,13 @@ function renderManufacturerLibrary(){
    let models=allModelsForMake(make);
    if(q)models=models.filter(model=>modelSearchText(make,model).includes(q)||directManualsFor(make,model).some(d=>(d.title+" "+d.note).toLowerCase().includes(q)));
    const key=makeKey(make),autoOpen=!!q&&models.length>0;
-   const coveredCount=models.filter(model=>directManualsFor(make,model).length>0).length;
+   const coveredCount=models.filter(model=>modelLibraryState(make,model).status==="verified").length;
+   const sourceRouted=models.filter(model=>["verified","official-only","manufacturer-source"].includes(modelLibraryState(make,model).status)).length;
+   const sourcePending=Math.max(0,models.length-sourceRouted);
    const makeDocs=uniqueDirectDocsForMake(make),docCount=makeDocs.length,verifiedDocCount=makeDocs.filter(manualHasVerifiedModelMap).length;
    const modelLabel=models.length+" model"+(models.length===1?"":"s");
-   const coverageLabel=coveredCount+" covered";
-   const docLabel=verifiedDocCount+" mapped / "+docCount+" PDF"+(docCount===1?"":"s");
+   const coverageLabel=coveredCount+" local PDF covered";
+   const docLabel=sourceRouted+" official-source routed"+(sourcePending?" · "+sourcePending+" source pending":"");
    return `<div class="make-card ${autoOpen?"open":""}" id="make-${key}">
     <button class="make-head" type="button" onclick="toggleMake('${key}')">
       <span><b>${esc(make)}</b><small>${modelLabel} · ${coverageLabel} · ${docLabel}</small></span>
@@ -2896,9 +2905,9 @@ function renderManufacturerLibrary(){
         return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}</div><div class="model-actions">${docs.map(manual=>{
           const mi=DIRECT_MANUALS.indexOf(manual),fav=isFav(manual);
           return `<button class="green" type="button" onclick="viewDirectManual(${mi})">${esc(manual.title||"Open PDF")}</button><button class="fav-btn ${fav?"on":""}" type="button" onclick="toggleFavourite(${mi})">${fav?"★":"☆"}</button>`;
-        }).join("")}${officialModelSourceButton(make,model)}<button class="secondary" type="button" onclick="modelTroubleshooting('${escAttr(make)}','${escAttr(model)}')">Faults & troubleshooting</button></div></div>`;
+        }).join("")}${officialModelSourceButton(make,model)}<button class="secondary" type="button" onclick="modelManualSearch('${escAttr(make)}','${escAttr(model)}')">Search exact manual</button><button class="secondary" type="button" onclick="modelTroubleshooting('${escAttr(make)}','${escAttr(model)}')">Exact-model troubleshooting</button></div></div>`;
       }
-      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}${identifiedManualInfo(make,model)?`<br><span style="font-size:11px">${esc(identifiedManualInfo(make,model).family)}${identifiedManualInfo(make,model).productCode?` · ${esc(identifiedManualInfo(make,model).productCode)}`:''}</span>`:''}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add my PDF</button><button class="pending-status" type="button" disabled>Official PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}<button class="secondary" type="button" onclick="modelTroubleshooting('${escAttr(make)}','${escAttr(model)}')">Faults & troubleshooting</button></div></div>`;
+      return `<div class="model-row"><strong>${esc(model)}</strong><div class="model-meta">${esc(modelStateLabel(make,model))}${modelAliasMeta(make,model)}${identifiedManualInfo(make,model)?`<br><span style="font-size:11px">${esc(identifiedManualInfo(make,model).family)}${identifiedManualInfo(make,model).productCode?` · ${esc(identifiedManualInfo(make,model).productCode)}`:''}</span>`:''}</div><div class="model-actions"><button class="secondary" type="button" onclick="beginVaultImportFor('${escAttr(make)}','${escAttr(model)}')">Add my PDF</button><button class="pending-status" type="button" disabled>Local PDF pending</button>${officialModelSourceButton(make,model)}${officialSourceButton(make)}<button class="secondary" type="button" onclick="modelManualSearch('${escAttr(make)}','${escAttr(model)}')">Search exact manual</button><button class="secondary" type="button" onclick="modelTroubleshooting('${escAttr(make)}','${escAttr(model)}')">Exact-model troubleshooting</button></div></div>`;
     }).join(""):`<div class="smallnote" style="padding:10px 2px">No verified model/range catalogue loaded for this make in this section yet.</div><div class="model-actions" style="padding:0 2px 10px">${officialSourceButton(make)}</div>`}</div>
    </div>`;
  }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
