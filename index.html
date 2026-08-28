@@ -1217,8 +1217,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.4";
-const TRADEPRO_VERSION="23.4";
+const TRADEPRO_BUILD="10.5";
+const TRADEPRO_VERSION="23.5";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2266,7 +2266,7 @@ let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
  {type:"lpg",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Vokera","Ferroli","Ariston","Rinnai","Lochinvar"]},
- {type:"oil",makes:["Grant UK","Worcester Bosch","Warmflow","Firebird","Trianco","Hounsfield","HRM Boilers","Mistral","Danfoss Burner","Riello Burner"]},
+ {type:"oil",makes:["Grant UK","Worcester Bosch","Warmflow","Firebird","Navien","Trianco","Hounsfield","HRM Boilers","Mistral","Danfoss Burner","Riello Burner"]},
  {type:"heatpump",makes:["Worcester Bosch","Vaillant","Grant UK","Mitsubishi Electric","Daikin","Samsung","Panasonic","LG","Viessmann","Baxi","Ideal Heating","Alpha","Hitachi","Fujitsu","NIBE","Kensa","Clivet","Midea","Carrier","Toshiba","Stiebel Eltron","Remeha"]},
  {type:"aircon",makes:["Daikin","Mitsubishi Electric","Fujitsu","Panasonic","Toshiba","Midea","Samsung","LG","Hitachi","Carrier","Mitsubishi Heavy Industries","Gree","Haier","Hisense","Bosch","Vaillant","Clivet","Tosot","AUX","York","Trane"]}
 ];
@@ -2312,8 +2312,8 @@ const DIRECT_MANUALS=[
  {type:"boiler",make:"ATAG",model:"iC / iS / iR Range",title:"Hints, Tips & Fault Codes",url:"https://www.atagheating.co.uk/wp-content/themes/atag/hubfs/Hints%20Tips%20%26%20Fault%20Codes.pdf",note:"Official ATAG PDF"},
  {type:"boiler",make:"ATAG",model:"iC / iS / iR Range",title:"User Manual",url:"https://www.atagheating.co.uk/wp-content/themes/atag/hubfs/ATAG-USER-INSTRUCTIONS-i-Range-1018%20%283%29.pdf",note:"Official ATAG PDF"},
  {type:"oil",make:"Grant UK",model:"Vortex Pro / Pro System",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/kp4fntnt/grantvortexproandprosystem-installer-uk-doc0120-rev3-2-february2026.pdf",note:"Official Grant UK PDF · Rev 3.2 · February 2026"},
- {type:"oil",make:"Navien",model:"LCB700",title:"Installation / Operation Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/20047769CLCB700En_combi_260213_B.pdf",note:"Official Navien PDF"},
- {type:"oil",make:"Navien",model:"LCB700",title:"Service Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/LCB700_Service_Manual_En.pdf",note:"Official Navien PDF"},
+ {type:"oil",make:"Navien",model:"LCB700 Range",title:"Installation / Operation Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/20047769CLCB700En_combi_260213_B.pdf",note:"Official Navien PDF"},
+ {type:"oil",make:"Navien",model:"LCB700 Range",title:"Service Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/LCB700_Service_Manual_En.pdf",note:"Official Navien PDF"},
  {type:"aircon",make:"Daikin",model:"CTXM-R / FTXM-R / ATXM-R",title:"R32 Installation Manual",url:"https://www.daikin.co.uk/content/dam/document-library/installation-manuals/ac/split/ctxm-r/CTXM-R_FTXM-R_ATXM-R_Installation%20manual_3PEN697375-2_English.pdf",note:"Official Daikin PDF"},
  {type:"aircon",make:"Toshiba",model:"RAS HAORI R32 10/13/16",title:"Installation Manual",url:"https://www.toshiba-aircon.co.uk/content/dam/public-toshiba/gb/documents/products/r32-split-systems/residential/wall-mounted/ras-haori-high-wall/20250524_IM_1129850117_01_R32_HAORI_RAS-B_N4KRVG-E_RAS-J2AVSG-E_EN.pdf/_jcr_content/renditions/original./20250524_IM_1129850117_01_R32_HAORI_RAS-B_N4KRVG-E_RAS-J2AVSG-E_EN.pdf",note:"Official Toshiba PDF"},
  {type:"aircon",make:"Toshiba",model:"RAS HAORI R32 10/13/16",title:"Service Manual",url:"https://www.toshiba-aircon.co.uk/content/dam/public-toshiba/gb/documents/products/r32-split-systems/residential/wall-mounted/ras-haori-high-wall/20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf/_jcr_content/renditions/original./20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf",note:"Official Toshiba PDF"},
@@ -2400,6 +2400,7 @@ const KNOWN_BOILER_MODELS={
 /* Build 7.4 catalogue audit: generic LG residential/VRF placeholders removed in favour of verified exact UK R32 models. */
 /* Build 7.6: Samsung current-range placeholder removed; exact UK support models and official user manuals added without claiming installation coverage. */
 /* Build 7.9 catalogue audit: generic NIBE/Kensa/Fujitsu heat-pump placeholders and broad Mitsubishi Air-Con placeholders removed; exact verified NIBE/Kensa models added. */
+/* Build 10.5: oil-category correction — Navien LCB700 is a current UK oil range; previous 10.4 removal was incorrect and is reversed here. */
 const CATEGORY_MODEL_CATALOGUES={
  naturalgas:KNOWN_BOILER_MODELS,
  lpg:{
@@ -2409,11 +2410,12 @@ const CATEGORY_MODEL_CATALOGUES={
   "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 15","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30","Baxi 400 Combi 2.1 24","Baxi 400 Combi 2.1 30","Baxi 400 Combi 2.1 36"]
  },
  oil:{
-  // Build 10.4: oil catalogue cleanup. Navien is not listed as an oil-boiler make here. Worcester Bosch and specialist UK oil makes are indexed only where official literature/product data verifies the model/range.
+  // Build 10.5: Navien LCB700 restored as a verified UK oil-boiler family after cross-checking Navien's current UK product pages, manuals index and LCB700 service literature.
   "Grant UK":["Vortex Pro 15-26","Vortex Pro 26-46","Vortex Pro 46-70","Vortex Pro System 15-26","Vortex Pro System 26-46","Vortex Pro External 15-26","Vortex Pro External 26-46","Vortex Pro External 46-70","Vortex Pro External Combi 21","Vortex Pro External Combi 26","Vortex Pro External Combi 36","Vortex Pro Combi 21","Vortex Pro Combi 26","Vortex Pro Combi 36","Vortex Pro Combi XS 26","Vortex Eco External / External System","Vortex Eco Utility / Utility System","Vortex Boiler House"],
   "Worcester Bosch":["Greenstar Heatslave II 12/18 2022+","Greenstar Heatslave II 18/25 2022+","Greenstar Heatslave II 25/32 2022+","Greenstar Heatslave II External 12/18 2022+","Greenstar Heatslave II External 18/25 2022+","Greenstar Heatslave II External 25/32 2022+","Greenstar 12-32 Danesmoor Regular Kitchen ErP+","Greenstar 12-32 Danesmoor System Kitchen ErP+","Greenstar Danesmoor Utility Regular","Greenstar Danesmoor Utility System","Greenstar Danesmoor External Regular","Greenstar Danesmoor External System","Greenstar Utility 32/50","Greenstar Utility 50/70"],
   "Warmflow":["Agentis B21","Agentis B26","Agentis B33","Agentis I21","Agentis I26","Agentis I33","Agentis I44","Agentis I21PRO","Agentis I26PRO","Agentis I33PRO","Agentis I44PRO","Agentis I21P","Agentis I26P","Agentis I33P","Agentis I44P","Agentis I21S","Agentis I26S","Agentis I33S","Agentis I21C","Agentis I26C","Agentis I33C","Agentis E21","Agentis E26","Agentis E33","Agentis E44","Agentis E21PRO","Agentis E26PRO","Agentis E33PRO","Agentis E44PRO","Agentis E21P","Agentis E26P","Agentis E33P","Agentis E44P","Agentis E21S","Agentis E26S","Agentis E33S","Agentis E21C","Agentis E26C","Agentis E33C"],
   "Firebird":["Combipac Xceed","Combi Xceed","Slimline Combi","Enviromax Condensing Range (legacy archive)"],
+  "Navien":["LCB700 Regular 21 Internal","LCB700 Regular 28 Internal","LCB700 Regular 36 Internal","LCB700 Regular 21 External","LCB700 Regular 28 External","LCB700 Regular 36 External","LCB700 System 21 Internal","LCB700 System 28 Internal","LCB700 System 36 Internal","LCB700 System 21 External","LCB700 System 28 External","LCB700 System 36 External","LCB700 Combi 21 Internal","LCB700 Combi 28 Internal","LCB700 Combi 36 Internal","LCB700 Combi 21 External","LCB700 Combi 28 External","LCB700 Combi 36 External"],
   "Trianco":["TRO 12/14 (legacy archive)","TRO 15/19 (legacy archive)","TRO 20/25 (legacy archive)","TRO 28/32 (legacy archive)","TRO 37/45 (legacy archive)","TRO 50/73 (legacy archive)"],
   "Hounsfield":["Tuscan Kitchen TA12-19","Tuscan Kitchen TA20-25","Tuscan Kitchen TA26-30"],
   "HRM Boilers":["Wallstar 1 Max","Wallstar 2 Max","Wallstar 3 Max","Wallstar Combi Max","X1 Max","X1 System Max"],
@@ -2494,6 +2496,7 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Glow-worm|Energy7 12S/15S/18S/25S/30S":["Energy7 12S","Energy7 15S","Energy7 18S","Energy7 25S","Energy7 30S"],
   "Glow-worm|Betacom4 24C/30C":["Betacom4 24C","Betacom4 30C"],
   "Main Heating|Eco Compact System 15/18":["Eco Compact System 15","Eco Compact System 18"],
+  "Navien|LCB700 Range":["LCB700 Regular 21 Internal","LCB700 Regular 28 Internal","LCB700 Regular 36 Internal","LCB700 Regular 21 External","LCB700 Regular 28 External","LCB700 Regular 36 External","LCB700 System 21 Internal","LCB700 System 28 Internal","LCB700 System 36 Internal","LCB700 System 21 External","LCB700 System 28 External","LCB700 System 36 External","LCB700 Combi 21 Internal","LCB700 Combi 28 Internal","LCB700 Combi 36 Internal","LCB700 Combi 21 External","LCB700 Combi 28 External","LCB700 Combi 36 External"],
   "Grant UK|Vortex Pro / Pro System":["Vortex Pro 15-26","Vortex Pro 26-46","Vortex Pro 46-70","Vortex Pro System 15-26","Vortex Pro System 26-46"],
   "Grant UK|Vortex Pro External":["Vortex Pro External 15-26","Vortex Pro External 26-46","Vortex Pro External 46-70"],
   "Grant UK|Vortex Pro External Combi":["Vortex Pro External Combi 21","Vortex Pro External Combi 26","Vortex Pro External Combi 36"],
