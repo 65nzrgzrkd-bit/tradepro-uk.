@@ -1217,8 +1217,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.3";
-const TRADEPRO_VERSION="23.3";
+const TRADEPRO_BUILD="10.4";
+const TRADEPRO_VERSION="23.4";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2266,7 +2266,7 @@ let techFilter="naturalgas";
 const TECH_LIBRARY=[
  {type:"naturalgas",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Potterton","Vokera","Ferroli","Ariston","Keston","Remeha","Hamworthy","Bosch Commercial","Lochinvar","ACV","Rinnai"]},
  {type:"lpg",makes:["Worcester Bosch","Vaillant","Ideal Heating","Baxi","Glow-worm","Viessmann","Alpha","Intergas","ATAG","Navien","Main Heating","Vokera","Ferroli","Ariston","Rinnai","Lochinvar"]},
- {type:"oil",makes:["Grant UK","Worcester Bosch","Warmflow","Firebird","Navien","Trianco","Hounsfield","HRM Boilers","Mistral","Danfoss Burner","Riello Burner"]},
+ {type:"oil",makes:["Grant UK","Worcester Bosch","Warmflow","Firebird","Trianco","Hounsfield","HRM Boilers","Mistral","Danfoss Burner","Riello Burner"]},
  {type:"heatpump",makes:["Worcester Bosch","Vaillant","Grant UK","Mitsubishi Electric","Daikin","Samsung","Panasonic","LG","Viessmann","Baxi","Ideal Heating","Alpha","Hitachi","Fujitsu","NIBE","Kensa","Clivet","Midea","Carrier","Toshiba","Stiebel Eltron","Remeha"]},
  {type:"aircon",makes:["Daikin","Mitsubishi Electric","Fujitsu","Panasonic","Toshiba","Midea","Samsung","LG","Hitachi","Carrier","Mitsubishi Heavy Industries","Gree","Haier","Hisense","Bosch","Vaillant","Clivet","Tosot","AUX","York","Trane"]}
 ];
@@ -2409,9 +2409,15 @@ const CATEGORY_MODEL_CATALOGUES={
   "Baxi":["Baxi 600 Combi 2 24","Baxi 600 Combi 2 30","Baxi 600 Combi 2 36","Baxi 800 Combi 2 24","Baxi 800 Combi 2 30","Baxi 800 Combi 2 36","Baxi 600 System 2 15","Baxi 600 System 2 18","Baxi 600 System 2 24","Baxi 800 System 2 18","Baxi 800 System 2 24","Baxi 800 System 2 30","Baxi 400 Combi 2.1 24","Baxi 400 Combi 2.1 30","Baxi 400 Combi 2.1 36"]
  },
  oil:{
+  // Build 10.4: oil catalogue cleanup. Navien is not listed as an oil-boiler make here. Worcester Bosch and specialist UK oil makes are indexed only where official literature/product data verifies the model/range.
   "Grant UK":["Vortex Pro 15-26","Vortex Pro 26-46","Vortex Pro 46-70","Vortex Pro System 15-26","Vortex Pro System 26-46","Vortex Pro External 15-26","Vortex Pro External 26-46","Vortex Pro External 46-70","Vortex Pro External Combi 21","Vortex Pro External Combi 26","Vortex Pro External Combi 36","Vortex Pro Combi 21","Vortex Pro Combi 26","Vortex Pro Combi 36","Vortex Pro Combi XS 26","Vortex Eco External / External System","Vortex Eco Utility / Utility System","Vortex Boiler House"],
+  "Worcester Bosch":["Greenstar Heatslave II 12/18 2022+","Greenstar Heatslave II 18/25 2022+","Greenstar Heatslave II 25/32 2022+","Greenstar Heatslave II External 12/18 2022+","Greenstar Heatslave II External 18/25 2022+","Greenstar Heatslave II External 25/32 2022+","Greenstar 12-32 Danesmoor Regular Kitchen ErP+","Greenstar 12-32 Danesmoor System Kitchen ErP+","Greenstar Danesmoor Utility Regular","Greenstar Danesmoor Utility System","Greenstar Danesmoor External Regular","Greenstar Danesmoor External System","Greenstar Utility 32/50","Greenstar Utility 50/70"],
   "Warmflow":["Agentis B21","Agentis B26","Agentis B33","Agentis I21","Agentis I26","Agentis I33","Agentis I44","Agentis I21PRO","Agentis I26PRO","Agentis I33PRO","Agentis I44PRO","Agentis I21P","Agentis I26P","Agentis I33P","Agentis I44P","Agentis I21S","Agentis I26S","Agentis I33S","Agentis I21C","Agentis I26C","Agentis I33C","Agentis E21","Agentis E26","Agentis E33","Agentis E44","Agentis E21PRO","Agentis E26PRO","Agentis E33PRO","Agentis E44PRO","Agentis E21P","Agentis E26P","Agentis E33P","Agentis E44P","Agentis E21S","Agentis E26S","Agentis E33S","Agentis E21C","Agentis E26C","Agentis E33C"],
-  "Firebird":["Combipac Xceed","Combi Xceed","Slimline Combi","Enviromax Condensing Range (legacy archive)"]
+  "Firebird":["Combipac Xceed","Combi Xceed","Slimline Combi","Enviromax Condensing Range (legacy archive)"],
+  "Trianco":["TRO 12/14 (legacy archive)","TRO 15/19 (legacy archive)","TRO 20/25 (legacy archive)","TRO 28/32 (legacy archive)","TRO 37/45 (legacy archive)","TRO 50/73 (legacy archive)"],
+  "Hounsfield":["Tuscan Kitchen TA12-19","Tuscan Kitchen TA20-25","Tuscan Kitchen TA26-30"],
+  "HRM Boilers":["Wallstar 1 Max","Wallstar 2 Max","Wallstar 3 Max","Wallstar Combi Max","X1 Max","X1 System Max"],
+  "Mistral":["CC1 Combi Standard","CC2 Combi Standard","CC3 Combi Standard","CC4 Combi Standard","CC1 PLUS Combi Plus","CC2 PLUS Combi Plus","CC3 PLUS Combi Plus","CC4 PLUS Combi Plus","CMC5 PLUS Mega Combi Plus","CMC6 PLUS Mega Combi Plus","CMC7 PLUS Mega Combi Plus"]
  },
  heatpump:{
   // Build 7.1: Panasonic Aquarea L Generation exact R290 outdoor models added alongside LG THERMA V catalogue.
@@ -2583,6 +2589,12 @@ function runTechDataIntegrityAudit(){
     const exactInCatalogue=(m.categories||[]).some(cat=>(CATEGORY_MODEL_CATALOGUES[cat]?.[m.make]||[]).some(x=>normaliseModelName(x)===normaliseModelName(m.model)));
     if(!exactInCatalogue&&/[\/]|\brange\b|\bcombi\b|\bsystem\b/i.test(m.model))warnings.push(`${m.make} · ${m.model}: broad document label has no explicit verified model map`);
   });
+  // Build 10.4: category hygiene — do not leave dead zero-model cards in a section.
+  TECH_LIBRARY.forEach(section=>(section.makes||[]).forEach(make=>{
+    const models=CATEGORY_MODEL_CATALOGUES?.[section.type]?.[make]||[];
+    const docs=DIRECT_MANUALS.filter(m=>(m.categories||[]).includes(section.type)&&m.make===make);
+    if(!models.length&&!docs.length&&!MANUFACTURER_SOURCES[make])warnings.push(`${section.type} · ${make}: no catalogue models, local documents or official source route`);
+  }));
   // Build 7.5: catalogue hygiene — broad placeholders must not masquerade as exact selectable models.
   const broadCataloguePattern=/(?:\brange\b|\bsplit systems?\b|\bvrf systems?\b|\bresidential split\b|\bcommercial range\b|\bair source heat pump range\b|\bground source heat pump range\b|\bwaterstage .* range\b|exact manual pending)/i;
   Object.entries(CATEGORY_MODEL_CATALOGUES).forEach(([cat,makes])=>Object.entries(makes||{}).forEach(([make,models])=>(models||[]).forEach(model=>{
@@ -2686,6 +2698,41 @@ function modelManualSearch(make,model){
    Build 7.7: exact model-source links and search aliases. Manufacturer webpages are
    deliberately rendered as model-page buttons, never as PDF/manual buttons. */
 const OFFICIAL_MODEL_SOURCES={
+ // Build 10.4: verified official oil model/range routes. Product/manual pages are not counted as local PDFs.
+ "Worcester Bosch|Greenstar Heatslave II 12/18 2022+":"https://www.worcester-bosch.co.uk/professional/products/boilers/greenstar-heatslave-ii",
+ "Worcester Bosch|Greenstar Heatslave II 18/25 2022+":"https://www.worcester-bosch.co.uk/professional/products/boilers/greenstar-heatslave-ii",
+ "Worcester Bosch|Greenstar Heatslave II 25/32 2022+":"https://www.worcester-bosch.co.uk/professional/products/boilers/greenstar-heatslave-ii",
+ "Worcester Bosch|Greenstar Heatslave II External 12/18 2022+":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/oil-boiler-manuals",
+ "Worcester Bosch|Greenstar Heatslave II External 18/25 2022+":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/oil-boiler-manuals",
+ "Worcester Bosch|Greenstar Heatslave II External 25/32 2022+":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/oil-boiler-manuals",
+ "Worcester Bosch|Greenstar 12-32 Danesmoor Regular Kitchen ErP+":"https://www.worcester-bosch.co.uk/professional/support/literature/product-guides-and-brochures",
+ "Worcester Bosch|Greenstar 12-32 Danesmoor System Kitchen ErP+":"https://www.worcester-bosch.co.uk/professional/support/literature/product-guides-and-brochures",
+ "Worcester Bosch|Greenstar Danesmoor Utility Regular":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/oil-boiler-manuals",
+ "Worcester Bosch|Greenstar Danesmoor Utility System":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/oil-boiler-manuals",
+ "Worcester Bosch|Greenstar Danesmoor External Regular":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/oil-boiler-manuals",
+ "Worcester Bosch|Greenstar Danesmoor External System":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/oil-boiler-manuals",
+ "Worcester Bosch|Greenstar Utility 32/50":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/boiler-user-manuals",
+ "Worcester Bosch|Greenstar Utility 50/70":"https://www.worcester-bosch.co.uk/support/manuals-and-brochures/boiler-user-manuals",
+ "Hounsfield|Tuscan Kitchen TA12-19":"https://hounsfieldboilers.co.uk/products/kitchen-condensing-oil-boiler/",
+ "Hounsfield|Tuscan Kitchen TA20-25":"https://hounsfieldboilers.co.uk/products/kitchen-condensing-oil-boiler/",
+ "Hounsfield|Tuscan Kitchen TA26-30":"https://hounsfieldboilers.co.uk/products/kitchen-condensing-oil-boiler/",
+ "HRM Boilers|Wallstar 1 Max":"https://www.hrmboilers.co.uk/",
+ "HRM Boilers|Wallstar 2 Max":"https://www.hrmboilers.co.uk/",
+ "HRM Boilers|Wallstar 3 Max":"https://www.hrmboilers.co.uk/",
+ "HRM Boilers|Wallstar Combi Max":"https://www.hrmboilers.co.uk/",
+ "HRM Boilers|X1 Max":"https://www.hrmboilers.co.uk/",
+ "HRM Boilers|X1 System Max":"https://www.hrmboilers.co.uk/",
+ "Mistral|CC1 Combi Standard":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CC2 Combi Standard":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CC3 Combi Standard":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CC4 Combi Standard":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CC1 PLUS Combi Plus":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CC2 PLUS Combi Plus":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CC3 PLUS Combi Plus":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CC4 PLUS Combi Plus":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CMC5 PLUS Mega Combi Plus":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CMC6 PLUS Mega Combi Plus":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
+ "Mistral|CMC7 PLUS Mega Combi Plus":"https://www.mistralboilers.com/oil-fired-boilers/combi-boilers/kitchen-utility/",
  "Panasonic|Etherea R32 KIT-Z20-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z20-cke-cs-z20ckew-cu-z20cke/",
  "Panasonic|Etherea R32 KIT-Z25-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z25-cke-cs-z25ckew-cu-z25cke/",
  "Panasonic|Etherea R32 KIT-Z35-CKE":"https://www.aircon.panasonic.eu/GB_en/model/kit-z35-cke-cs-z35ckew-cu-z35cke/",
