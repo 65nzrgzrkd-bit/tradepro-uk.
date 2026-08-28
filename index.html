@@ -443,6 +443,9 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 }
 
 .fault-code-chip{display:inline-block;margin:5px 4px 0 0;padding:5px 9px;border:1px solid #b9c9d5;border-radius:999px;background:#eef4f7;color:#17314a;font:inherit;font-size:12px;font-weight:800;line-height:1.1}.fault-code-chip:active{transform:scale(.97)}#faultCheckBtn:disabled{opacity:.78}
+
+/* Build 10.3 technical-library clarity */
+.source-only-card{background:#f7f9fb;border:1px solid #dce5eb;border-radius:16px;padding:15px;margin-top:14px}.source-chip-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.source-chip{border:1px solid #cdd9e1;background:#fff;color:var(--navy);border-radius:999px;padding:9px 12px;font-weight:700;font-size:13px}
 </style>
 </head>
 <body>
@@ -1214,8 +1217,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.2";
-const TRADEPRO_VERSION="23.2";
+const TRADEPRO_BUILD="10.3";
+const TRADEPRO_VERSION="23.3";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2422,6 +2425,7 @@ const CATEGORY_MODEL_CATALOGUES={
   "Panasonic":["Aquarea L Generation WH-WDG05LE5","Aquarea L Generation WH-WDG07LE5","Aquarea L Generation WH-WDG09LE5","Aquarea legacy C/D/E series monobloc & split"],
   "LG":["THERMA V R32 Monobloc S HM051MR U44","THERMA V R32 Monobloc S HM071MR U44","THERMA V R32 Monobloc S HM091MR U44","THERMA V R32 Monobloc S HM121MR U34","THERMA V R32 Monobloc S HM123MR U34","THERMA V R32 Monobloc S HM141MR U34","THERMA V R32 Monobloc S HM143MR U34","THERMA V R32 Monobloc S HM161MR U34","THERMA V R32 Monobloc S HM163MR U34"],
   // Build 7.9: remove generic heat-pump range placeholders. UK catalogue now uses exact verified model/output names only.
+  "Baxi":["HP50-4-1","HP50-5-1","HP50-7-1","HP50-8-1","HP50-11-1","HP50-13-1","HP50-11-3","HP50-13-3","Assure HP55 4 kW","Assure HP55 6 kW","Assure HP55 8 kW","Assure HP55 11 kW","Assure HP55 13 kW"],
   "Fujitsu":[],
   "NIBE":["S2125-8 (1x230V)","S2125-12 (1x230V)","S2125-16 (1x230V)","S2125-16 (3x400V)","S2125-20 (1x230V)","S2125-20 (3x400V)","F2050-6","F2050-10","F2050-12","F2050-16"],
   "Kensa":["Evo 7kW","Evo 9kW","Evo 13kW","Evo 15kW","Evo 17kW"]
@@ -2440,7 +2444,8 @@ const CATEGORY_MODEL_CATALOGUES={
   // Product pages confirm R32 and the named indoor/outdoor combinations; direct installation/service PDFs remain pending until exact manual matching is verified.
   "LG":["DUALCOOL Standard Plus PC09SQ","DUALCOOL Standard Plus PC12SQ","DUALCOOL Standard Plus PC18SQ","DUALCOOL Standard Plus PC24SQ","DUALCOOL Deluxe H09S1D","DUALCOOL Deluxe H12S1D","DUALCOOL Premium H12S1P","ARTCOOL Gallery Special A09GA1","ARTCOOL Gallery Premium A09GA2"],
   // Build 7.5: broad Midea placeholder removed until exact UK model/manual matching is verified.
-  "Midea":[]
+  "Midea":["PortaSplit 12,000 BTU R32"],
+  "Carrier":["42QHE R32 High Wall","42QHG R32 High Wall","40VU*1-7E One-way Cassette","40VU*2-7G Two-way Cassette","40VU*C-7S Compact Four-way Cassette","40VC*F-7S Ceiling/Floor" ]
  }
 };
 
@@ -2721,6 +2726,29 @@ const OFFICIAL_MODEL_SOURCES={
  "Ariston|Clas System ONE 18":"https://www.ariston.com/en-uk/products/gas-boilers-uk/system-gas-boilers/clas-one-system-uk/",
  "Ariston|Clas System ONE 24":"https://www.ariston.com/en-uk/products/gas-boilers-uk/system-gas-boilers/clas-one-system-uk/",
  "Ariston|Clas System ONE 30":"https://www.ariston.com/en-uk/products/gas-boilers-uk/system-gas-boilers/clas-one-system-uk/",
+ "Ferroli|Bluehelix Tech RRT 24C":"https://www.ferroli.com/en/products/boilers/bluehelix-tech-rrt/",
+ "Ferroli|Bluehelix Tech RRT 28C":"https://www.ferroli.com/en/products/boilers/bluehelix-tech-rrt/",
+ "Ferroli|Bluehelix Tech RRT 34C":"https://www.ferroli.com/en/products/boilers/bluehelix-tech-rrt/",
+ "Ferroli|Bluehelix Tech RRT 18S":"https://www.ferroli.com/en/products/boilers/bluehelix-tech-rrt/",
+ "Ferroli|Bluehelix Tech RRT 24S":"https://www.ferroli.com/en/products/boilers/bluehelix-tech-rrt/",
+ "Ferroli|Bluehelix Tech RRT 30S":"https://www.ferroli.com/en/products/boilers/bluehelix-tech-rrt/",
+ "Baxi|HP50-4-1":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp50-monobloc-air-source-heat-pump",
+ "Baxi|HP50-5-1":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp50-monobloc-air-source-heat-pump",
+ "Baxi|HP50-7-1":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp50-monobloc-air-source-heat-pump",
+ "Baxi|HP50-8-1":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp50-monobloc-air-source-heat-pump",
+ "Baxi|HP50-11-1":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp50-monobloc-air-source-heat-pump",
+ "Baxi|HP50-13-1":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp50-monobloc-air-source-heat-pump",
+ "Baxi|HP50-11-3":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp50-monobloc-air-source-heat-pump",
+ "Baxi|HP50-13-3":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp50-monobloc-air-source-heat-pump",
+ "Baxi|Assure HP55 4 kW":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp55-high-temperature-monobloc-air-source-heat-pump",
+ "Baxi|Assure HP55 6 kW":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp55-high-temperature-monobloc-air-source-heat-pump",
+ "Baxi|Assure HP55 8 kW":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp55-high-temperature-monobloc-air-source-heat-pump",
+ "Baxi|Assure HP55 11 kW":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp55-high-temperature-monobloc-air-source-heat-pump",
+ "Baxi|Assure HP55 13 kW":"https://www.baxi.co.uk/professional/products/air-source-heat-pumps/baxi-assure-hp55-high-temperature-monobloc-air-source-heat-pump",
+ "Midea|PortaSplit 12,000 BTU R32":"https://www.midea.com/uk/air-treatment/porta-split-air-conditioner.portasplit",
+ "Carrier|42QHE R32 High Wall":"https://www.carrier.com/commercial/en/eu/products/split-systems/indoor-units/high-wall/42qhe/",
+ "Carrier|42QHG R32 High Wall":"https://www.carrier.com/commercial/en/eu/products/split-systems/indoor-units/high-wall/42qhg/",
+
  "Vokera|Easi-Heat i 25C":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i/",
  "Vokera|Easi-Heat i 29C":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i/",
  "Vokera|Easi-Heat i 20S":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i-system/",
@@ -2901,8 +2929,10 @@ function renderManufacturerLibrary(){
  let makes=[...(entry?.makes||[])];
  manualsForFilter().forEach(x=>{if(!makes.includes(x.make))makes.push(x.make)});
  const q=(document.getElementById("techSearch")?.value||"").trim().toLowerCase();
+ const sourceOnlyAll=makes.filter(make=>allModelsForMake(make).length===0&&uniqueDirectDocsForMake(make).length===0&&MANUFACTURER_SOURCES[make]);
+ if(!q)makes=makes.filter(make=>allModelsForMake(make).length>0||uniqueDirectDocsForMake(make).length>0);
  if(q)makes=makes.filter(make=>make.toLowerCase().includes(q)||allModelsForMake(make).some(model=>modelSearchText(make,model).includes(q))||uniqueDirectDocsForMake(make).some(d=>(d.title+" "+d.model).toLowerCase().includes(q)));
- if(c)c.textContent=makes.length+" make"+(makes.length===1?"":"s");
+ if(c)c.textContent=q?(makes.length+" match"+(makes.length===1?"":"es")):(makes.length+" indexed"+(sourceOnlyAll.length?" · "+sourceOnlyAll.length+" source-only":""));
  box.innerHTML=makes.length?makes.map(make=>{
    let models=allModelsForMake(make);
    if(q)models=models.filter(model=>modelSearchText(make,model).includes(q)||directManualsFor(make,model).some(d=>(d.title+" "+d.note).toLowerCase().includes(q)));
@@ -2931,6 +2961,7 @@ function renderManufacturerLibrary(){
     }).join(""):`<div class="smallnote" style="padding:10px 2px">No verified model/range catalogue loaded for this make in this section yet.</div><div class="model-actions" style="padding:0 2px 10px">${officialSourceButton(make)}</div>`}</div>
    </div>`;
  }).join(""):'<div class="notice">No manufacturer or model matches this search in the selected section.</div>';
+ if(!q&&sourceOnlyAll.length){box.innerHTML+=`<div class="source-only-card"><h3 style="margin:0 0 8px">Official sources — model index pending</h3><div class="smallnote">These manufacturers remain available through their official technical source, but PlumbCore does not show a false 0-model coverage card.</div><div class="source-chip-wrap">${sourceOnlyAll.map(make=>`<button class="source-chip" type="button" onclick="window.open('${MANUFACTURER_SOURCES[make]}','_blank','noopener')">${esc(make)} ↗</button>`).join('')}</div></div>`;}
 }
 function normaliseFaultCode(v){return String(v||"").toLowerCase().replace(/[^a-z0-9]/g,"")}
 function faultModelsForMake(make){
