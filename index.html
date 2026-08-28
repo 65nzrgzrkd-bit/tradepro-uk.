@@ -1217,8 +1217,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.10";
-const TRADEPRO_VERSION="23.10";
+const TRADEPRO_BUILD="10.11";
+const TRADEPRO_VERSION="23.11";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2563,6 +2563,15 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Toshiba|RAS HAORI R32 10/13/16":["RAS HAORI R32 10/13/16"],
   "Fujitsu|ASTH18/22/24KMTD R32":["ASTH18/22/24KMTD R32"],
   "Midea|PortaSplit 12,000 BTU R32":["PortaSplit 12,000 BTU R32"],
+  // Build 10.11: exact Carrier document-to-catalogue mappings.
+  // Build 10.10 added the verified manuals and unit aliases, but these four
+  // family documents were still reference-only because their catalogue map
+  // entries were missing. Keep the compact four-way cassette source-only
+  // until its exact installation/service manual is verified.
+  "Carrier|42QHE R32 High Wall":["42QHE R32 High Wall"],
+  "Carrier|42QHG R32 High Wall":["42QHG R32 High Wall"],
+  "Carrier|40VU*1-7E One-way Cassette":["40VU*1-7E One-way Cassette"],
+  "Carrier|40VU*2-7G Two-way Cassette":["40VU*2-7G Two-way Cassette"],
   "Carrier|40VC*F-7S Ceiling/Floor":["40VC*F-7S Ceiling/Floor"]
 };
 function normaliseModelName(s){return String(s||"").toLowerCase().replace(/[–—]/g,"-").replace(/²/g,"2").replace(/³/g,"3").replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim()}
