@@ -1217,8 +1217,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.8";
-const TRADEPRO_VERSION="23.8";
+const TRADEPRO_BUILD="10.9";
+const TRADEPRO_VERSION="23.9";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2362,7 +2362,8 @@ const DIRECT_MANUALS=[
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5",title:"R290 Installer Guidance",url:"https://cdn.aircon.panasonic.eu/uploads/GB/Catalogues/2023/EU%20A4%20R290%20INSTALLER%2023%20LR.pdf",note:"Official Panasonic UK technical guidance · Aquarea L Generation R290 · exact outdoor models WH-WDG05LE5, WH-WDG07LE5 and WH-WDG09LE5 · installer safety and installation considerations · this is guidance, not a substitute for the appliance installation manual"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5",title:"R290 Service Engineer Guidance",url:"https://cdn.aircon.panasonic.eu/uploads/GB/Catalogues/2023/EU%203P%20R290%20ENGINEER%2023%20LR.pdf",note:"Official Panasonic UK service-engineer guidance · Aquarea L Generation R290 · exact outdoor models WH-WDG05LE5, WH-WDG07LE5 and WH-WDG09LE5 · refrigerant safety and service considerations"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea legacy C/D/E series monobloc & split",title:"Installation Manual (C/D/E series)",url:"https://www.panasonicproclub.com/uploads/IE/catalogues/A2W_IM_monobloc%2Bsplit_EN_final_2014-05-15.pdf",note:"Official Panasonic ProClub legacy installation manual · C, D and E series only · not for later Aquarea generations"},
- {type:"aircon",categories:["aircon"],make:"Midea",model:"PortaSplit 12,000 BTU R32",title:"User Manual",url:"https://www.midea.com/content/dam/midea-aem/nl/nl-en/air-solutions/air-conditioning/portasplit/portasplit/Portasplit-User-Manual-ENG.pdf",note:"Official Midea PortaSplit user manual · exact PortaSplit model · setup, operation and safety information; not a substitute for refrigerant service literature"},];
+ {type:"aircon",categories:["aircon"],make:"Midea",model:"PortaSplit 12,000 BTU R32",title:"User Manual",url:"https://www.midea.com/content/dam/midea-aem/nl/nl-en/air-solutions/air-conditioning/portasplit/portasplit/Portasplit-User-Manual-ENG.pdf",note:"Official Midea PortaSplit user manual · exact PortaSplit model · setup, operation and safety information; not a substitute for refrigerant service literature"},
+ {type:"aircon",categories:["aircon"],make:"Carrier",model:"40VC*F-7S Ceiling/Floor",title:"XCT7 Flex Ceiling/Floor Installation & Owner’s Manual",url:"https://brandportal.carrier.com/m/548fd2f5ec53a245/original/0150545633-IOM-06_2021_XCT7_IDU_FlexCeilingFloorDC.pdf",note:"Official Carrier XCT7 indoor-unit installation and owner’s manual · covers 40VC009F-7S-QEE through 40VC054F-7S-QEE in the 40VC*F-7S family"},];
 // Build 6.7 / V19.4: expanded exact oil/heat-pump coverage (Warmflow Agentis, Firebird current combi families, Daikin Altherma 3 M) and retained strict explicit model mapping.
 // Category tags keep existing verified PDFs compatible with the expanded library.
 DIRECT_MANUALS.forEach(m=>{if(!Array.isArray(m.categories)){m.categories=m.type==="boiler"?["naturalgas"]:m.type==="oil"?["oil"]:m.type==="aircon"?["aircon"]:[m.type]}});
@@ -2500,7 +2501,8 @@ const APPROVED_MANUAL_HOSTS={
   "Hounsfield":["hounsfieldboilers.co.uk"],
   "HRM Boilers":["www.hrmboilers.co.uk"],
   "Mistral":["www.mistralboilers.com"],
-  "Midea":["www.midea.com"]
+  "Midea":["www.midea.com"],
+  "Carrier":["brandportal.carrier.com"]
 };
 
 const VERIFIED_MANUAL_MODEL_MAP={
@@ -2556,7 +2558,8 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Mistral|CC / CMC Combi & Combi Plus Range":["CC1 Combi Standard","CC2 Combi Standard","CC3 Combi Standard","CC4 Combi Standard","CC1 PLUS Combi Plus","CC2 PLUS Combi Plus","CC3 PLUS Combi Plus","CC4 PLUS Combi Plus","CMC5 PLUS Mega Combi Plus","CMC6 PLUS Mega Combi Plus","CMC7 PLUS Mega Combi Plus"],
   "Toshiba|RAS HAORI R32 10/13/16":["RAS HAORI R32 10/13/16"],
   "Fujitsu|ASTH18/22/24KMTD R32":["ASTH18/22/24KMTD R32"],
-  "Midea|PortaSplit 12,000 BTU R32":["PortaSplit 12,000 BTU R32"]
+  "Midea|PortaSplit 12,000 BTU R32":["PortaSplit 12,000 BTU R32"],
+  "Carrier|40VC*F-7S Ceiling/Floor":["40VC*F-7S Ceiling/Floor"]
 };
 function normaliseModelName(s){return String(s||"").toLowerCase().replace(/[–—]/g,"-").replace(/²/g,"2").replace(/³/g,"3").replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim()}
 function manualHasVerifiedModelMap(m){
@@ -2595,7 +2598,7 @@ function uniqueDirectDocsForMake(make){
 }
 
 function runTechDataIntegrityAudit(){
-  const issues=[],warnings=[];
+  const issues=[],warnings=[],notices=[];
   if(!/^\d+\.\d+$/.test(TRADEPRO_BUILD))issues.push(`Invalid build identifier: ${TRADEPRO_BUILD}`);
   if(!/^\d+\.\d+$/.test(TRADEPRO_VERSION))issues.push(`Invalid app version identifier: ${TRADEPRO_VERSION}`);
   const seenUrls=new Map();
@@ -2615,7 +2618,7 @@ function runTechDataIntegrityAudit(){
     let host="";try{host=new URL(m.url).hostname.toLowerCase()}catch(e){issues.push(`${m.make} · ${m.model}: invalid PDF URL`);return}
     const approved=APPROVED_MANUAL_HOSTS[m.make]||[];
     if(!approved.includes(host))issues.push(`${m.make} · ${m.model}: PDF host is not on the approved manufacturer/CDN list (${host})`);
-    if(!manualHasVerifiedModelMap(m))warnings.push(`${m.make} · ${m.model}: reference PDF retained, but exact model mapping is not yet verified`);
+    if(!manualHasVerifiedModelMap(m))notices.push(`${m.make} · ${m.model}: reference PDF retained, but exact model mapping is not yet verified`);
   });
   // Flag broad family/range documents that have no explicit model map and are not
   // themselves an exact catalogue model. They remain searchable, but cannot count
@@ -2624,7 +2627,7 @@ function runTechDataIntegrityAudit(){
     const declared=VERIFIED_MANUAL_MODEL_MAP[m.make+"|"+m.model]||[];
     if(declared.length)return;
     const exactInCatalogue=(m.categories||[]).some(cat=>(CATEGORY_MODEL_CATALOGUES[cat]?.[m.make]||[]).some(x=>normaliseModelName(x)===normaliseModelName(m.model)));
-    if(!exactInCatalogue&&/[\/]|\brange\b|\bcombi\b|\bsystem\b/i.test(m.model))warnings.push(`${m.make} · ${m.model}: broad document label has no explicit verified model map`);
+    if(!exactInCatalogue&&/[\/]|\brange\b|\bcombi\b|\bsystem\b/i.test(m.model))notices.push(`${m.make} · ${m.model}: broad document label has no explicit verified model map`);
   });
   // Build 10.4: category hygiene — do not leave dead zero-model cards in a section.
   TECH_LIBRARY.forEach(section=>(section.makes||[]).forEach(make=>{
@@ -2635,7 +2638,7 @@ function runTechDataIntegrityAudit(){
   // Build 7.5: catalogue hygiene — broad placeholders must not masquerade as exact selectable models.
   const broadCataloguePattern=/(?:\brange\b|\bsplit systems?\b|\bvrf systems?\b|\bresidential split\b|\bcommercial range\b|\bair source heat pump range\b|\bground source heat pump range\b|\bwaterstage .* range\b|exact manual pending)/i;
   Object.entries(CATEGORY_MODEL_CATALOGUES).forEach(([cat,makes])=>Object.entries(makes||{}).forEach(([make,models])=>(models||[]).forEach(model=>{
-    if(broadCataloguePattern.test(String(model||"")))warnings.push(`${cat} · ${make}: broad catalogue placeholder should be replaced with exact models: ${model}`);
+    if(broadCataloguePattern.test(String(model||""))){if(/legacy archive/i.test(String(model||"")))notices.push(`${cat} · ${make}: legacy archive family retained intentionally: ${model}`);else warnings.push(`${cat} · ${make}: broad catalogue placeholder should be replaced with exact models: ${model}`);}
   })));
   Object.entries(OFFICIAL_MODEL_SOURCES).forEach(([key,url])=>{
     const split=key.indexOf("|");const make=key.slice(0,split),model=key.slice(split+1);
@@ -2653,11 +2656,11 @@ function runTechDataIntegrityAudit(){
     (aliases||[]).forEach(alias=>{
       const a=String(alias||"").trim();if(!a){issues.push(`${make} · ${model}: blank search alias`);return}
       const k=make.toLowerCase()+"|"+normaliseModelName(a);
-      const owner=aliasOwners.get(k);if(owner&&owner!==model)warnings.push(`${make}: unit/search alias ${a} is shared by ${owner} and ${model}`);else aliasOwners.set(k,model);
+      const owner=aliasOwners.get(k);if(owner&&owner!==model)notices.push(`${make}: unit/search alias ${a} is shared by ${owner} and ${model}`);else aliasOwners.set(k,model);
     });
   });
-  window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues,warnings};
-  if(issues.length)console.warn("PlumbCore technical-library integrity audit",issues);else console.info(`PlumbCore technical-library audit passed: ${DIRECT_MANUALS.length} built-in documents checked`);
+  window.TRADEPRO_TECH_AUDIT={checked:DIRECT_MANUALS.length,issues,warnings,notices};
+  if(issues.length)console.warn("PlumbCore technical-library integrity audit",issues);else console.info(`PlumbCore technical-library integrity audit passed: ${DIRECT_MANUALS.length} built-in documents checked${warnings.length?` · ${warnings.length} actionable warning(s)`:""}${notices.length?` · ${notices.length} reference note(s)`:""}`);
   return window.TRADEPRO_TECH_AUDIT;
 }
 
@@ -2707,14 +2710,14 @@ const MANUFACTURER_SOURCES={
  "Carrier":"https://www.carrier.com/commercial/en/uk/service-support/",
  "Toshiba":"https://www.toshiba-aircon.co.uk/en/manuals-and-downloads.html",
  "Stiebel Eltron":"https://www.stiebel-eltron.co.uk/en/service/downloads.html",
- "Mitsubishi Heavy Industries":"https://mhiaa.com.au/document-library/",
+ "Mitsubishi Heavy Industries":"https://www.mhiaa.com.au/partner-portal/",
  "Gree":"https://gree.uk.com/technical-support/",
- "Haier":"https://www.haierhvac.eu/en/support/",
+ "Haier":"https://haierhvac.eu/products/documents/literature",
  "Hisense":"https://hisenseaircon.com/support/",
  "Bosch":"https://www.bosch-homecomfort.com/gb/en/residential/service-support/",
  "Tosot":"https://tosotcomfort.com/support/",
- "AUX":"https://auxair.com/support/",
- "York":"https://www.york.com/commercial-equipment/service-and-support",
+ "AUX":"https://www.auxair.com/global/downloads.html",
+ "York":"https://www.york.com/services-and-support/technical-support",
  "Trane":"https://www.trane.eu/uk/en/services.html"
 }
 function officialSourceButton(make){const u=MANUFACTURER_SOURCES[make];return u?`<button class="secondary" type="button" onclick="window.open('${u}','_blank','noopener')">Official manufacturer library</button>`:''}
@@ -2834,8 +2837,8 @@ const OFFICIAL_MODEL_SOURCES={
  "Carrier|42QHG R32 High Wall":"https://www.carrier.com/commercial/en/eu/products/split-systems/indoor-units/high-wall/42qhg/",
  "Carrier|40VU*C-7S Compact Four-way Cassette":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/40vu-c-7s/",
  "Carrier|40VC*F-7S Ceiling/Floor":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/40vc-f-7s/",
- "Carrier|40VU*1-7E One-way Cassette":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/",
- "Carrier|40VU*2-7G Two-way Cassette":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/",
+ "Carrier|40VU*1-7E One-way Cassette":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/40vu-1-7e/",
+ "Carrier|40VU*2-7G Two-way Cassette":"https://www.carrier.com/commercial/en/eu/products/vrf-systems/indoor-units/40vu-2-7g/",
 
  "Vokera|Easi-Heat i 25C":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i/",
  "Vokera|Easi-Heat i 29C":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i/",
@@ -3010,7 +3013,7 @@ function updateTechHealth(){
  const audit=window.TRADEPRO_TECH_AUDIT||{issues:[],warnings:[]};
  if(heading)heading.textContent=(audit.issues.length?"⚠️ ":audit.warnings.length?"🔎 ":"✅ ")+"Library Health";
  if(status)status.textContent=audit.issues.length?audit.issues.length+" integrity issue"+(audit.issues.length===1?"":"s"):audit.warnings.length?audit.warnings.length+" audit warning"+(audit.warnings.length===1?"":"s"):"Strict matching on";
- if(note){const mappedDocs=manualsForFilter().filter(manualHasVerifiedModelMap).length,referenceDocs=docs-mappedDocs;note.innerHTML=`${covered} of ${models.length} exact catalogue models have verified local documents. ${officialOnly} have a verified official model page, ${manufacturerSource} have an official manufacturer support route, and ${pending} still need source verification. <strong>PlumbCore never counts an official search route as local manual coverage. ${mappedDocs} PDFs have explicit model maps; ${referenceDocs} remain reference-only until exact appliance/revision mapping is verified.</strong>`;}
+ if(note){const mappedDocs=manualsForFilter().filter(manualHasVerifiedModelMap).length,referenceDocs=docs-mappedDocs;note.innerHTML=`${covered} of ${models.length} catalogue entries have verified local documents. ${officialOnly} have a verified official model page, ${manufacturerSource} have an official manufacturer support route, and ${pending} still need source verification. <strong>PlumbCore never counts an official search route as local manual coverage. ${mappedDocs} PDFs have explicit model maps; ${referenceDocs} remain reference-only until exact appliance/revision mapping is verified. Intentional reference-only documents and shared indoor/outdoor aliases are audit notes, not integrity warnings.</strong>`;}
 }
 function renderManufacturerLibrary(){
  const box=document.getElementById("techList"),c=document.getElementById("manufacturerCount");if(!box)return;
