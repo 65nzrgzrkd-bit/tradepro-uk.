@@ -4,14 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#15324b">
+<meta name="description" content="PlumbCore Plumbing & Heating — jobs, quotes, invoices, customer records, technical manuals and engineer tools for plumbing and heating professionals.">
+<meta name="color-scheme" content="light">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PlumbCore">
 <meta name="application-name" content="PlumbCore">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=22.2">
-<link rel="icon" type="image/png" sizes="512x512" href="plumbcore-icon-512.png?v=22.2">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=24.0">
+<link rel="icon" type="image/png" sizes="512x512" href="plumbcore-icon-512.png?v=24.0">
+<link rel="manifest" href="manifest.webmanifest?v=24.0">
 <title>PlumbCore · Plumbing & Heating</title>
 <style>
 *{box-sizing:border-box}
@@ -446,6 +449,14 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 
 /* Build 10.3 technical-library clarity */
 .source-only-card{background:#f7f9fb;border:1px solid #dce5eb;border-radius:16px;padding:15px;margin-top:14px}.source-chip-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.source-chip{border:1px solid #cdd9e1;background:#fff;color:var(--navy);border-radius:999px;padding:9px 12px;font-weight:700;font-size:13px}
+
+/* Build 11.0 · V24.0 launch-candidate hardening */
+.launch-panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0 16px;box-shadow:0 4px 14px rgba(0,0,0,.04)}
+.launch-panel h4{margin:0 0 7px;font-size:15px}.launch-panel p{margin:6px 0;font-size:12px;line-height:1.5;color:var(--muted)}
+.launch-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.launch-pill{border-radius:11px;padding:10px;background:#f5f8fa;border:1px solid var(--line);font-size:12px}
+.launch-pill strong{display:block;color:var(--navy);margin-bottom:2px}.launch-ok{color:#236b2b}.launch-warn{color:#9a6700}
+#launchQaResult{margin-top:10px;font-size:12px;line-height:1.5}.data-privacy-note{font-size:12px;line-height:1.55;color:var(--muted)}
+@media(max-width:430px){.launch-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1189,6 +1200,20 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 <div class="two"><label>Quote valid for (days)<input id="quoteValidDays" type="number" value="30"></label><label>Default deposit %<input id="depositPercent" type="number" value="20"></label></div>
 
 
+<h3>Launch & Data Safety</h3>
+<div class="launch-panel">
+  <h4>PlumbCore launch check</h4>
+  <p>Run this before relying on PlumbCore for live customer work. It checks browser storage, backup status, technical-library integrity and core release metadata.</p>
+  <div id="launchQaSummary" class="launch-grid"></div>
+  <div class="detail-actions" style="margin-top:10px">
+    <button class="secondary" type="button" onclick="runLaunchQA(true)">Run launch QA</button>
+    <button class="secondary" type="button" onclick="exportBackup()">Export safety backup</button>
+  </div>
+  <div id="launchQaResult"></div>
+</div>
+<div class="notice data-privacy-note"><strong>Data & privacy:</strong> Customer records, jobs, quotes, invoices, settings and reports in this build are stored in browser storage on this device. PlumbCore does not upload those records to a PlumbCore cloud account. Opening manufacturer manuals or payment links leaves the app and connects to the selected third-party website. The business using PlumbCore remains responsible for its customer privacy notice, retention policy and lawful handling of personal data.</div>
+<div class="notice data-privacy-note"><strong>Technical & safety:</strong> PlumbCore is an engineer aid, not a substitute for current manufacturer instructions, regulations, competent-person requirements, combustion analysis, electrical safety procedures or F-Gas obligations. Exact model/revision must be confirmed before acting on technical information.</div>
+
 <h3>Data Backup</h3>
 <div class="notice">Your customers, quotes, invoices and personalised price book are stored on this device. Export a backup before changing phones, clearing browser data or making a major app update.</div>
 <div id="backupStatus" class="backup-status"><strong>Backup status</strong><span id="backupStatusText">No backup recorded yet.</span></div>
@@ -1217,8 +1242,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.11";
-const TRADEPRO_VERSION="23.11";
+const TRADEPRO_BUILD="11.0";
+const TRADEPRO_VERSION="24.0";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1895,6 +1920,36 @@ function renderReadiness(){
    bst.textContent=msg;
  }
 }
+
+/* Build 11.0 launch QA / field-support hardening */
+function storageAvailable(){
+ try{const k='__pc_test__';localStorage.setItem(k,'1');localStorage.removeItem(k);return true}catch(e){return false}
+}
+function launchQAChecks(){
+ const audit=window.TRADEPRO_TECH_AUDIT||{issues:[],warnings:[]};
+ const last=localStorage.getItem('lastBackupAt');
+ const backupRecent=(()=>{if(!last)return false;const d=new Date(last);return !isNaN(d)&&Date.now()-d.getTime()<=14*24*60*60*1000})();
+ const releaseOk=/^\d+\.\d+$/.test(TRADEPRO_BUILD)&&/^\d+\.\d+$/.test(TRADEPRO_VERSION);
+ return [
+  {name:'Device storage',ok:storageAvailable(),note:'Browser storage available'},
+  {name:'Technical library',ok:(audit.issues||[]).length===0&&(audit.warnings||[]).length===0,note:`${(audit.issues||[]).length} issues · ${(audit.warnings||[]).length} warnings`},
+  {name:'Release metadata',ok:releaseOk,note:`Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`},
+  {name:'Safety backup',ok:backupRecent,note:backupRecent?'Backup within 14 days':'Export a fresh backup'}
+ ];
+}
+function runLaunchQA(showMessage=false){
+ const checks=launchQAChecks();const passed=checks.filter(x=>x.ok).length;
+ const box=document.getElementById('launchQaSummary');
+ if(box)box.innerHTML=checks.map(x=>`<div class="launch-pill"><strong>${esc(x.name)}</strong><span class="${x.ok?'launch-ok':'launch-warn'}">${x.ok?'✓ Pass':'⚠ Check'}</span><br>${esc(x.note)}</div>`).join('');
+ const out=document.getElementById('launchQaResult');
+ if(out){out.innerHTML=passed===checks.length?'<strong class="launch-ok">Launch QA passed on this device.</strong> Keep regular backups and continue model-specific verification.':`<strong class="launch-warn">${passed}/${checks.length} launch checks passed.</strong> Resolve the items marked Check before depending on this device as the only job record.`}
+ if(showMessage)toast(passed===checks.length?'Launch QA passed':'Launch QA needs attention');
+ return {passed,total:checks.length,checks};
+}
+window.addEventListener('error',e=>{console.error('PlumbCore runtime error',e.error||e.message)});
+window.addEventListener('unhandledrejection',e=>{console.error('PlumbCore promise error',e.reason)});
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(e=>console.warn('Offline cache unavailable',e)))}
+
 function saveSettings(){
 const limits={vatRate:[0,30,20],rate:[0,500,55],travel:[0,500,15],markup:[0,500,20],overheadRate:[0,100,10],contingency:[0,100,5],profit:[0,95,20],paymentDays:[0,365,14],quoteValidDays:[1,365,30],depositPercent:[0,100,0]};
 [
@@ -3155,6 +3210,8 @@ function renderReportPaper(r){let business=setting("businessName","Your Business
 function previewEngineerReport(){let r=collectEngineerReport();document.getElementById("reportPaper").innerHTML=renderReportPaper(r);show("reportPrint")}
 function quickPrintEngineerReport(id){let r=(data.engineerReports||[]).find(x=>x.id===id);if(!r)return;currentEngineerReportId=id;document.getElementById("reportPaper").innerHTML=renderReportPaper(r);show("reportPrint")}
 
+
+window.addEventListener("DOMContentLoaded",()=>setTimeout(()=>runLaunchQA(false),0));
 </script>
 </body>
 </html>
