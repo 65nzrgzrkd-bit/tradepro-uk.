@@ -1217,8 +1217,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.5";
-const TRADEPRO_VERSION="23.5";
+const TRADEPRO_BUILD="10.6";
+const TRADEPRO_VERSION="23.6";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2261,6 +2261,7 @@ function useRadiatorInJob(watts,btu){
 
 /* Build 6.9 release-integrity hardening: one source of truth for build/version labels, backups and engineer-report metadata. */
 /* Build 6.8 exact-model integrity hardening + Mitsubishi Electric M-Series expansion */
+/* Build 10.6: verified oil-document mapping pass for Worcester Bosch, Trianco, Hounsfield, HRM and Mistral. */
 let techFilter="naturalgas";
 /* Build 10.0 / V23.0: full-catalogue troubleshooting routing across gas, LPG, oil, heat-pump and Air-Con / F-Gas; verified local codes remain conservative. */
 const TECH_LIBRARY=[
@@ -2314,6 +2315,17 @@ const DIRECT_MANUALS=[
  {type:"oil",make:"Grant UK",model:"Vortex Pro / Pro System",title:"Installation & Servicing Instructions",url:"https://www.grantuk.com/media/kp4fntnt/grantvortexproandprosystem-installer-uk-doc0120-rev3-2-february2026.pdf",note:"Official Grant UK PDF · Rev 3.2 · February 2026"},
  {type:"oil",make:"Navien",model:"LCB700 Range",title:"Installation / Operation Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/20047769CLCB700En_combi_260213_B.pdf",note:"Official Navien PDF"},
  {type:"oil",make:"Navien",model:"LCB700 Range",title:"Service Manual",url:"https://navien.co.uk/wp-content/uploads/2025/10/LCB700_Service_Manual_En.pdf",note:"Official Navien PDF"},
+ // Build 10.6: oil-library depth pass — exact manufacturer PDFs mapped only where the document itself identifies the catalogue models/range.
+ {type:"oil",categories:["oil"],make:"Worcester Bosch",model:"Greenstar Heatslave II 2022+ Internal 12/18 18/25 25/32",title:"Installation, Commissioning & Servicing Manual",url:"https://www.worcester-bosch.co.uk/support/literature/download/6721843978",note:"Official Worcester Bosch PDF · Greenstar Heatslave II internal 2022+ · current 12/18, 18/25 and 25/32 oil combi range"},
+ {type:"oil",categories:["oil"],make:"Worcester Bosch",model:"Greenstar Heatslave II External 12/18 18/25 25/32",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720821722",note:"Official Worcester Bosch PDF · Greenstar Heatslave II external · 12/18, 18/25 and 25/32 oil combi range"},
+ {type:"oil",categories:["oil"],make:"Worcester Bosch",model:"Greenstar 12-32 Danesmoor Kitchen Regular / System ErP+",title:"Installation & Servicing Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720821686",note:"Official Worcester Bosch PDF · Greenstar 12-32 Danesmoor Kitchen Regular and System ErP+"},
+ {type:"oil",categories:["oil"],make:"Worcester Bosch",model:"Greenstar Danesmoor Utility Regular / System",title:"Installation Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6721846263",note:"Official Worcester Bosch PDF · Greenstar Danesmoor Utility Regular and System"},
+ {type:"oil",categories:["oil"],make:"Worcester Bosch",model:"Greenstar Danesmoor External Regular / System",title:"Installation Instructions",url:"https://www.worcester-bosch.co.uk/support/literature/download/6721844014",note:"Official Worcester Bosch PDF · Greenstar Danesmoor External Regular and System"},
+ {type:"oil",categories:["oil"],make:"Worcester Bosch",model:"Greenstar Utility 32/50 & 50/70 2022+",title:"Installation, Commissioning & Servicing Manual",url:"https://www.worcester-bosch.co.uk/support/literature/download/6720821751",note:"Official Worcester Bosch PDF · Greenstar Utility 2022+ 32/50 and 50/70 · installation, commissioning and servicing"},
+ {type:"oil",categories:["oil"],make:"Trianco",model:"TRO 12/14 15/19 20/25 28/32 37/45 50/73 legacy",title:"Legacy User Instructions",url:"https://trianco.co.uk/wp-content/uploads/2016/01/TRO-User-1995.pdf",note:"Official Trianco archived PDF · TRO legacy range user instructions · exact listed models 12/14, 15/19, 20/25, 28/32, 37/45 and 50/73 · not a current installation/service manual"},
+ {type:"oil",categories:["oil"],make:"Hounsfield",model:"Tuscan Kitchen TA12-19 / TA20-25 / TA26-30",title:"Kitchen Condensing Model Installation Guide WI0022",url:"https://hounsfieldboilers.co.uk/wp-content/uploads/2023/09/WI0022-Kitchen-condensing-model-installation-guide-Hounsfield-Boilers.pdf",note:"Official Hounsfield PDF · WI0022 issue 3 · exact Tuscan Kitchen TA12-19, TA20-25 and TA26-30 quick installation guide"},
+ {type:"oil",categories:["oil"],make:"HRM Boilers",model:"Wallstar / X1 Max Range",title:"HRM Boiler Handbook 2025",url:"https://www.hrmboilers.co.uk/docs/HRM_HANDBOOK-2025.pdf",note:"Official HRM Boilers handbook · installation, wiring, burner settings, burner fault diagnosis, maintenance and parts · exact current Wallstar Max / Combi Max and X1 Max families"},
+ {type:"oil",categories:["oil"],make:"Mistral",model:"CC / CMC Combi & Combi Plus Range",title:"Condensing Range Installation & Servicing Manual",url:"https://www.mistralboilers.com/wp-content/uploads/2024/07/MAY_2024_Mistral_Manual.pdf",note:"Official Mistral 2024 PDF · installation and servicing manual · explicitly lists CC1-CC4, CMC5-CMC7 and Combi Plus variants"},
  {type:"aircon",make:"Daikin",model:"CTXM-R / FTXM-R / ATXM-R",title:"R32 Installation Manual",url:"https://www.daikin.co.uk/content/dam/document-library/installation-manuals/ac/split/ctxm-r/CTXM-R_FTXM-R_ATXM-R_Installation%20manual_3PEN697375-2_English.pdf",note:"Official Daikin PDF"},
  {type:"aircon",make:"Toshiba",model:"RAS HAORI R32 10/13/16",title:"Installation Manual",url:"https://www.toshiba-aircon.co.uk/content/dam/public-toshiba/gb/documents/products/r32-split-systems/residential/wall-mounted/ras-haori-high-wall/20250524_IM_1129850117_01_R32_HAORI_RAS-B_N4KRVG-E_RAS-J2AVSG-E_EN.pdf/_jcr_content/renditions/original./20250524_IM_1129850117_01_R32_HAORI_RAS-B_N4KRVG-E_RAS-J2AVSG-E_EN.pdf",note:"Official Toshiba PDF"},
  {type:"aircon",make:"Toshiba",model:"RAS HAORI R32 10/13/16",title:"Service Manual",url:"https://www.toshiba-aircon.co.uk/content/dam/public-toshiba/gb/documents/products/r32-split-systems/residential/wall-mounted/ras-haori-high-wall/20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf/_jcr_content/renditions/original./20201130_SM_SVM-20079_RAS_R32_HAORI_RAS-B_N4KVRG-E_RAS-_J2AVSG-E1_EN.pdf",note:"Official Toshiba PDF"},
@@ -2479,7 +2491,11 @@ const APPROVED_MANUAL_HOSTS={
   "Intergas":["www.intergasheating.co.uk"],
   "Mitsubishi Electric":["library.mitsubishielectric.co.uk"],
   "Samsung":["org.downloadcenter.samsung.com"],
-  "Panasonic":["cdn.aircon.panasonic.eu","www.panasonicproclub.com"]
+  "Panasonic":["cdn.aircon.panasonic.eu","www.panasonicproclub.com"],
+  "Trianco":["trianco.co.uk"],
+  "Hounsfield":["hounsfieldboilers.co.uk"],
+  "HRM Boilers":["www.hrmboilers.co.uk"],
+  "Mistral":["www.mistralboilers.com"]
 };
 
 const VERIFIED_MANUAL_MODEL_MAP={
@@ -2522,7 +2538,17 @@ const VERIFIED_MANUAL_MODEL_MAP={
   "Panasonic|Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5":["Aquarea L Generation WH-WDG05LE5","Aquarea L Generation WH-WDG07LE5","Aquarea L Generation WH-WDG09LE5"],
   "Viessmann|Vitodens 050-W":["Vitodens 050-W 25kW","Vitodens 050-W 30kW","Vitodens 050-W B0KA"],
   "Viessmann|Vitodens 100-W":["Vitodens 100-W 19kW","Vitodens 100-W 25kW","Vitodens 100-W 32kW","Vitodens 100-W B1KF","Vitodens 100-W B1HF"],
-  "ATAG|iC / iS / iR Range":["iC Economiser 27","iC Economiser 35","iC Economiser 39","iC Economiser 47","iC 24","iC 28","iC 36","iC 40","iR 12","iR 15","iR 18","iR 24","iS 15","iS 18","iS 24","iS 30"]
+  "ATAG|iC / iS / iR Range":["iC Economiser 27","iC Economiser 35","iC Economiser 39","iC Economiser 47","iC 24","iC 28","iC 36","iC 40","iR 12","iR 15","iR 18","iR 24","iS 15","iS 18","iS 24","iS 30"],
+  "Worcester Bosch|Greenstar Heatslave II 2022+ Internal 12/18 18/25 25/32":["Greenstar Heatslave II 12/18 2022+","Greenstar Heatslave II 18/25 2022+","Greenstar Heatslave II 25/32 2022+"],
+  "Worcester Bosch|Greenstar Heatslave II External 12/18 18/25 25/32":["Greenstar Heatslave II External 12/18 2022+","Greenstar Heatslave II External 18/25 2022+","Greenstar Heatslave II External 25/32 2022+"],
+  "Worcester Bosch|Greenstar 12-32 Danesmoor Kitchen Regular / System ErP+":["Greenstar 12-32 Danesmoor Regular Kitchen ErP+","Greenstar 12-32 Danesmoor System Kitchen ErP+"],
+  "Worcester Bosch|Greenstar Danesmoor Utility Regular / System":["Greenstar Danesmoor Utility Regular","Greenstar Danesmoor Utility System"],
+  "Worcester Bosch|Greenstar Danesmoor External Regular / System":["Greenstar Danesmoor External Regular","Greenstar Danesmoor External System"],
+  "Worcester Bosch|Greenstar Utility 32/50 & 50/70 2022+":["Greenstar Utility 32/50","Greenstar Utility 50/70"],
+  "Trianco|TRO 12/14 15/19 20/25 28/32 37/45 50/73 legacy":["TRO 12/14 (legacy archive)","TRO 15/19 (legacy archive)","TRO 20/25 (legacy archive)","TRO 28/32 (legacy archive)","TRO 37/45 (legacy archive)","TRO 50/73 (legacy archive)"],
+  "Hounsfield|Tuscan Kitchen TA12-19 / TA20-25 / TA26-30":["Tuscan Kitchen TA12-19","Tuscan Kitchen TA20-25","Tuscan Kitchen TA26-30"],
+  "HRM Boilers|Wallstar / X1 Max Range":["Wallstar 1 Max","Wallstar 2 Max","Wallstar 3 Max","Wallstar Combi Max","X1 Max","X1 System Max"],
+  "Mistral|CC / CMC Combi & Combi Plus Range":["CC1 Combi Standard","CC2 Combi Standard","CC3 Combi Standard","CC4 Combi Standard","CC1 PLUS Combi Plus","CC2 PLUS Combi Plus","CC3 PLUS Combi Plus","CC4 PLUS Combi Plus","CMC5 PLUS Mega Combi Plus","CMC6 PLUS Mega Combi Plus","CMC7 PLUS Mega Combi Plus"]
 };
 function normaliseModelName(s){return String(s||"").toLowerCase().replace(/[–—]/g,"-").replace(/²/g,"2").replace(/³/g,"3").replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim()}
 function manualHasVerifiedModelMap(m){
