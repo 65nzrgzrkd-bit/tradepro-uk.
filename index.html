@@ -1214,8 +1214,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.1";
-const TRADEPRO_VERSION="23.1";
+const TRADEPRO_BUILD="10.2";
+const TRADEPRO_VERSION="23.2";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2377,6 +2377,8 @@ const KNOWN_BOILER_MODELS={
 "Navien":["NCB-CE 20K","NCB-CE 23K","NCB-CE 28K","NCB-CE 32K","NCB-CE 37K","NCB500-ON Combi","NCB700 Combi","NFB-CE","NH-B series"],
 "Main Heating":["Eco Compact 25","Eco Compact 30","Eco Compact 35","Eco Compact Heat 15","Eco Compact Heat 18","Eco Compact Heat 24","Eco Compact System 15","Eco Compact System 18","Eco Compact System 24","Combi 24 HE","Combi 30 HE","Heat 12 Eco Elite","Heat 15 Eco Elite","Heat 18 Eco Elite","Heat 24 Eco Elite"],
 "Potterton":["Promax Combi 24 HE Plus","Promax Combi 28 HE Plus","Promax Combi 33 HE Plus","Promax System 12 HE Plus","Promax System 15 HE Plus","Promax System 18 HE Plus","Promax System 24 HE Plus","Gold Combi 24 HE","Gold Combi 28 HE","Gold Combi 33 HE"],
+"Vokera":["Easi-Heat i 25C","Easi-Heat i 29C","Easi-Heat i 20S","Easi-Heat i 25S","Vibe MAX C 26C","Vibe MAX C 30C","Unica MAX 30C","Unica MAX 35C","Unica MAX 40C","Unica MAX 20S","Unica MAX 30S","evolve 18S","evolve 42C","Mynute i25 ErP"],
+"Ariston":["ALTEAS ONE+ NET 35","GENUS ONE+ WiFi 24","GENUS ONE+ WiFi 30","GENUS ONE+ WiFi 35","Clas ONE 24","Clas ONE 30","Clas ONE 38","Clas System ONE 18","Clas System ONE 24","Clas System ONE 30","Clas ONE R"],
 "Keston":["Combi C30","Combi C35","System S30","System S35","Heat 45","Heat 55","Heat 45 Evo","Heat 55 Evo","System 30","System 35"],
 "Remeha":["Avanta 24c","Avanta 28c","Avanta 35c","Avanta 39c","Quinta Ace 30","Quinta Ace 45","Quinta Ace 55","Quinta Ace 65","Quinta Ace 90","Quinta Ace 115","Calenta Ace 25","Calenta Ace 28c","Calenta Ace 35c","Tzerra Ace"],
 "Hamworthy":["Wessex ModuMax mk3","Stratton mk3","Upton","Purewell VariHeat mk2","Fleet","Ensbury","Varmax","Tyneham"],
@@ -2628,9 +2630,9 @@ const MANUFACTURER_SOURCES={
  "ATAG":"https://www.atagheating.co.uk/support/technical-support/",
  "Main Heating":"https://www.mainheating.co.uk/support/",
  "Potterton":"https://www.potterton.co.uk/technical-support/",
- "Vokera":"https://www.vokera.co.uk/trade-professionals/technical-support/",
+ "Vokera":"https://www.vokera.co.uk/trade-professionals/manuals-literature/",
  "Ferroli":"https://www.ferroli.com/en/service-support",
- "Ariston":"https://www.ariston.com/en-uk/support/",
+ "Ariston":"https://www.ariston.com/en-uk/products/gas-boilers-uk",
  "Keston":"https://www.keston.co.uk/support/",
  "Remeha":"https://www.remeha.co.uk/support/technical-support",
  "Hamworthy":"https://hamworthy-heating.com/technical-support/",
@@ -2707,7 +2709,25 @@ const OFFICIAL_MODEL_SOURCES={
  "NIBE|F2050-6":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050",
  "NIBE|F2050-10":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050",
  "NIBE|F2050-12":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050",
- "NIBE|F2050-16":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050"
+ "NIBE|F2050-16":"https://www.nibe.eu/en-gb/products/heat-pumps/air-source-heat-pumps/f2050",
+
+ "Ariston|ALTEAS ONE+ NET 35":"https://www.ariston.com/en-uk/products/smart-home/boilers-uk/alteas-one-plus-net-uk",
+ "Ariston|GENUS ONE+ WiFi 24":"https://www.ariston.com/en-uk/products/gas-boilers-uk/combi-gas-boilers/genus-one-wifi/",
+ "Ariston|GENUS ONE+ WiFi 30":"https://www.ariston.com/en-uk/products/gas-boilers-uk/combi-gas-boilers/genus-one-wifi/",
+ "Ariston|GENUS ONE+ WiFi 35":"https://www.ariston.com/en-uk/products/gas-boilers-uk/combi-gas-boilers/genus-one-wifi/",
+ "Ariston|Clas ONE 24":"https://www.ariston.com/en-uk/products/gas-boilers-uk/combi-gas-boilers/clas-one-uk/",
+ "Ariston|Clas ONE 30":"https://www.ariston.com/en-uk/products/gas-boilers-uk/combi-gas-boilers/clas-one-uk/",
+ "Ariston|Clas ONE 38":"https://www.ariston.com/en-uk/products/gas-boilers-uk/combi-gas-boilers/clas-one-uk/",
+ "Ariston|Clas System ONE 18":"https://www.ariston.com/en-uk/products/gas-boilers-uk/system-gas-boilers/clas-one-system-uk/",
+ "Ariston|Clas System ONE 24":"https://www.ariston.com/en-uk/products/gas-boilers-uk/system-gas-boilers/clas-one-system-uk/",
+ "Ariston|Clas System ONE 30":"https://www.ariston.com/en-uk/products/gas-boilers-uk/system-gas-boilers/clas-one-system-uk/",
+ "Vokera|Easi-Heat i 25C":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i/",
+ "Vokera|Easi-Heat i 29C":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i/",
+ "Vokera|Easi-Heat i 20S":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i-system/",
+ "Vokera|Easi-Heat i 25S":"https://www.vokera.co.uk/trade-professionals/boilers/easi-heat-i-system/",
+ "Vokera|Unica MAX 30C":"https://www.vokera.co.uk/trade-professionals/boilers/unica-max-c/",
+ "Vokera|Unica MAX 35C":"https://www.vokera.co.uk/trade-professionals/boilers/unica-max-c/",
+ "Vokera|Unica MAX 40C":"https://www.vokera.co.uk/trade-professionals/boilers/unica-max-c/",
 };
 const MODEL_MANUAL_IDENTIFIED={
  "Baxi|Duo-tec 24":{family:"Baxi Duo-tec Combi ErP 24/28/33/40",note:"Exact family manual identified; official Baxi-hosted direct PDF still pending."},
