@@ -1217,8 +1217,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="10.9";
-const TRADEPRO_VERSION="23.9";
+const TRADEPRO_BUILD="10.10";
+const TRADEPRO_VERSION="23.10";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2363,7 +2363,11 @@ const DIRECT_MANUALS=[
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea L Generation WH-WDG05LE5 / WH-WDG07LE5 / WH-WDG09LE5",title:"R290 Service Engineer Guidance",url:"https://cdn.aircon.panasonic.eu/uploads/GB/Catalogues/2023/EU%203P%20R290%20ENGINEER%2023%20LR.pdf",note:"Official Panasonic UK service-engineer guidance · Aquarea L Generation R290 · exact outdoor models WH-WDG05LE5, WH-WDG07LE5 and WH-WDG09LE5 · refrigerant safety and service considerations"},
  {type:"heatpump",categories:["heatpump"],make:"Panasonic",model:"Aquarea legacy C/D/E series monobloc & split",title:"Installation Manual (C/D/E series)",url:"https://www.panasonicproclub.com/uploads/IE/catalogues/A2W_IM_monobloc%2Bsplit_EN_final_2014-05-15.pdf",note:"Official Panasonic ProClub legacy installation manual · C, D and E series only · not for later Aquarea generations"},
  {type:"aircon",categories:["aircon"],make:"Midea",model:"PortaSplit 12,000 BTU R32",title:"User Manual",url:"https://www.midea.com/content/dam/midea-aem/nl/nl-en/air-solutions/air-conditioning/portasplit/portasplit/Portasplit-User-Manual-ENG.pdf",note:"Official Midea PortaSplit user manual · exact PortaSplit model · setup, operation and safety information; not a substitute for refrigerant service literature"},
- {type:"aircon",categories:["aircon"],make:"Carrier",model:"40VC*F-7S Ceiling/Floor",title:"XCT7 Flex Ceiling/Floor Installation & Owner’s Manual",url:"https://brandportal.carrier.com/m/548fd2f5ec53a245/original/0150545633-IOM-06_2021_XCT7_IDU_FlexCeilingFloorDC.pdf",note:"Official Carrier XCT7 indoor-unit installation and owner’s manual · covers 40VC009F-7S-QEE through 40VC054F-7S-QEE in the 40VC*F-7S family"},];
+ {type:"aircon",categories:["aircon"],make:"Carrier",model:"40VC*F-7S Ceiling/Floor",title:"XCT7 Flex Ceiling/Floor Installation & Owner’s Manual",url:"https://brandportal.carrier.com/m/548fd2f5ec53a245/original/0150545633-IOM-06_2021_XCT7_IDU_FlexCeilingFloorDC.pdf",note:"Official Carrier XCT7 indoor-unit installation and owner’s manual · covers 40VC009F-7S-QEE through 40VC054F-7S-QEE in the 40VC*F-7S family"},
+ {type:"aircon",categories:["aircon"],make:"Carrier",model:"42QHE R32 High Wall",title:"42QHE Wall-Mounted Installation Manual",url:"https://brandportal.carrier.com/m/82e052e130624a8/original/2021-10-Installation-manual-for-Hiwall-QHE-4L.pdf",note:"Official Carrier wall-mounted installation manual · explicitly covers 42QHE09D8SH, 42QHE12D8SH, 42QHE18D8SH and 42QHE24D8SH indoor units with their 38QHE outdoor partners · R32 split family"},
+ {type:"aircon",categories:["aircon"],make:"Carrier",model:"42QHG R32 High Wall",title:"42QHG / QHG-H Wall-Mounted Installation & Owner’s Manual",url:"https://brandportal.carrier.com/m/13ef1249a6ae61f1/original/OM-04_2021_DX_WallMounted_QHG-QHG-H.pdf",note:"Official Carrier QHG/QHG-H wall-mounted owner and installation manual · family-level manual retained only for the 42QHG catalogue entry; exact unit nameplate remains authoritative before refrigerant or electrical work"},
+ {type:"aircon",categories:["aircon"],make:"Carrier",model:"40VU*1-7E One-way Cassette",title:"XCT7 One-Way Cassette Operation & Installation Manual",url:"https://brandportal.carrier.com/m/75e1eb01122304d7/original/0150543402-IOM-06_2021_XCT7_IDU_OneWayCassette.pdf",note:"Official Carrier XCT7 one-way cassette operation and installation manual · explicitly covers 40VU0051-7E-QEE, 40VU0071-7E-QEE, 40VU0091-7E-QEE and 40VU0121-7E-QEE"},
+ {type:"aircon",categories:["aircon"],make:"Carrier",model:"40VU*2-7G Two-way Cassette",title:"XCT7 Two-Way Cassette Technical Manual",url:"https://brandportal.carrier.com/m/6107e6ad38ce1dd6/original/40VU_2-TM.pdf",note:"Official Carrier technical manual · explicitly covers 40VU0072-7G-QEE, 40VU0092-7G-QEE, 40VU0122-7G-QEE, 40VU0162-7G-QEE and 40VU0182-7G-QEE · includes dimensions, piping, wiring and technical data"},];
 // Build 6.7 / V19.4: expanded exact oil/heat-pump coverage (Warmflow Agentis, Firebird current combi families, Daikin Altherma 3 M) and retained strict explicit model mapping.
 // Category tags keep existing verified PDFs compatible with the expanded library.
 DIRECT_MANUALS.forEach(m=>{if(!Array.isArray(m.categories)){m.categories=m.type==="boiler"?["naturalgas"]:m.type==="oil"?["oil"]:m.type==="aircon"?["aircon"]:[m.type]}});
@@ -2871,7 +2875,13 @@ const MODEL_SEARCH_ALIASES={
  "LG|DUALCOOL Deluxe H12S1D":["S3-M121A1D0","S3UM121A1D0"],
  "LG|DUALCOOL Premium H12S1P":["S3UM121L1C0"],
  "LG|ARTCOOL Gallery Special A09GA1":["S3NM09EL16A.EK6GEEU","S3UM09EL16A.EC6GEEU"],
- "LG|ARTCOOL Gallery Premium A09GA2":["S3NM09EL26A.EK6GEEU","S3UM09EL26A.EC6GEEU"]
+ "LG|ARTCOOL Gallery Premium A09GA2":["S3NM09EL26A.EK6GEEU","S3UM09EL26A.EC6GEEU"],
+ // Build 10.10: Carrier exact unit identifiers verified against official Carrier manuals / technical literature.
+ "Carrier|42QHE R32 High Wall":["42QHE09D8SH","42QHE12D8SH","42QHE18D8SH","42QHE24D8SH","38QHE09D8SH","38QHE12D8SH","38QHE18D8SH","38QHE24D8SH"],
+ "Carrier|40VU*1-7E One-way Cassette":["40VU0051-7E-QEE","40VU0071-7E-QEE","40VU0091-7E-QEE","40VU0121-7E-QEE","40VPU01217EQEE"],
+ "Carrier|40VU*2-7G Two-way Cassette":["40VU0072-7G-QEE","40VU0092-7G-QEE","40VU0122-7G-QEE","40VU0162-7G-QEE","40VU0182-7G-QEE","40VPU01827GQEE"],
+ "Carrier|40VU*C-7S Compact Four-way Cassette":["40VU005C-7S-QEE","40VU007C-7S-QEE","40VU009C-7S-QEE","40VU012C-7S-QEE","40VU016C-7S-QEE","40VU018C-7S-QEE","40VPU018C7SQEE"],
+ "Carrier|40VC*F-7S Ceiling/Floor":["40VC009F-7S-QEE","40VC012F-7S-QEE","40VC016F-7S-QEE","40VC018F-7S-QEE","40VC024F-7S-QEE","40VC028F-7S-QEE","40VC030F-7S-QEE","40VC038F-7S-QEE","40VC048F-7S-QEE","40VC054F-7S-QEE"]
 };
 function modelAliases(make,model){return MODEL_SEARCH_ALIASES[make+"|"+model]||[]}
 function modelSearchText(make,model){const i=identifiedManualInfo(make,model);return [make,model,...modelAliases(make,model),i?.family||"",i?.productCode||""].join(" " ).toLowerCase()}
