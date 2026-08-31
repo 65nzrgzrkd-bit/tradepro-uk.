@@ -12,9 +12,9 @@
 <meta name="application-name" content="PlumbCore">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=24.1">
-<link rel="icon" type="image/png" sizes="512x512" href="plumbcore-icon-512.png?v=24.1">
-<link rel="manifest" href="manifest.webmanifest?v=24.1">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=24.3">
+<link rel="icon" type="image/png" sizes="512x512" href="plumbcore-icon-512.png?v=24.3">
+<link rel="manifest" href="manifest.webmanifest?v=24.3">
 <title>PlumbCore · Plumbing & Heating</title>
 <style>
 *{box-sizing:border-box}
@@ -1242,10 +1242,10 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 <h3>Legal &amp; Support</h3>
 <div class="notice data-privacy-note"><strong>Legal &amp; support:</strong> Privacy, Terms &amp; Conditions and support information are kept one tap away for every user. These pages explain local device storage, subscriptions, third-party links, backups and technical-safety limits.</div>
 <div class="detail-actions">
-<button class="secondary" type="button" onclick="window.open('privacy.html','_blank','noopener')">Product Privacy</button>
-<button class="secondary" type="button" onclick="window.open('terms.html','_blank','noopener')">Terms &amp; Conditions</button>
-<button class="secondary" type="button" onclick="window.open('support.html','_blank','noopener')">Support &amp; Data</button>
-<button class="secondary" type="button" onclick="window.open('launch.html','_blank','noopener')">About PLUMBCORE</button>
+<button class="secondary" type="button" onclick="openLegalPage('privacy')">Product Privacy</button>
+<button class="secondary" type="button" onclick="openLegalPage('terms')">Terms &amp; Conditions</button>
+<button class="secondary" type="button" onclick="openLegalPage('support')">Support &amp; Data</button>
+<button class="secondary" type="button" onclick="openLegalPage('about')">About PLUMBCORE</button>
 </div>
 <div class="smallnote" style="margin-top:9px">For a paid public release, add the seller/operator's legal name, postal contact and dedicated support contact to the public listing and these documents before taking payment.</div>
 
@@ -1277,8 +1277,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="11.1";
-const TRADEPRO_VERSION="24.1";
+const TRADEPRO_BUILD="11.4";
+const TRADEPRO_VERSION="24.4";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -3273,7 +3273,7 @@ privacy:`<h1>Product Privacy</h1><p><small>Last updated: 31 August 2026</small><
 <h2>Customer data</h2><p>The business using PLUMBCORE is responsible for deciding why and how its customer information is used, keeping it secure and complying with applicable data-protection law.</p>
 <h2>Backups and deletion</h2><p>Users should export regular backups. Clearing browser/site data, removing the app, changing devices or using private-browsing modes may remove local records.</p>
 <h2>Future services</h2><p>If accounts, cloud sync, analytics, crash reporting or other hosted services are introduced, this notice must be updated to explain them.</p>`,
-support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.3 · V24.3</small></p>
+support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.4 · V24.4</small></p>
 <h2>Data safety</h2><p>Export a backup regularly and before changing phone, clearing browser data or installing a major update. Keep original Manual Vault PDFs separately.</p>
 <h2>Moving to another device</h2><p>Export a PLUMBCORE backup from the old device, open PLUMBCORE on the new device and use Import Backup in Business Settings. Check customers, quotes, invoices, diary and price-book settings after import.</p>
 <h2>Technical library</h2><p>Always confirm manufacturer, exact model and revision. If an exact local PDF is not mapped, use the official manufacturer route rather than assuming a similar model is equivalent.</p>
@@ -3281,7 +3281,7 @@ support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.3 · V24.3</sma
 <h2>App problems</h2><p>If a button stops responding, close and reopen PLUMBCORE, then retry. If the issue remains, note the screen, button and what happened immediately before the fault. Do not clear browser data until a fresh backup has been exported.</p>
 <div class="pc-legal-note"><strong>Before paid public launch:</strong> add a dedicated support email/contact and the legal operator details to the public checkout/listing.</div>`,
 about:`<h1>About PLUMBCORE</h1><p>PLUMBCORE is a mobile-first job and business toolkit for plumbers and heating engineers, bringing job pricing, customers, diary, quotes, invoices, payments, reports and technical reference tools into one working app.</p>
-<h2>Build 11.3</h2><p>This release puts Terms &amp; Conditions, Privacy, Support &amp; Data and About PLUMBCORE directly inside the app, so the legal/support buttons work without separate website files.</p>
+<h2>Build 11.4</h2><p>This release keeps Terms &amp; Conditions, Privacy, Support &amp; Data and About PLUMBCORE directly inside the app, with all four legal/support buttons opening reliably without separate website files.</p>
 <h2>Product approach</h2><p>PLUMBCORE is designed to be practical on site first. Technical information is deliberately model-specific and routes users to official sources rather than guessing where a verified match is unavailable.</p>`
 };
 function openLegalPage(which){
