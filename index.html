@@ -415,6 +415,23 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 }
 
 
+/* Build 11.5 · V24.5: final dashboard polish */
+@media(max-width:430px){
+  /* Empty diary state should read like a status strip, not a full content card. */
+  #home .home-section.today-empty-section{
+    padding:8px 13px 8px;
+    min-height:0;
+  }
+  #home .home-section.today-empty-section .home-section-title{min-height:28px}
+  #home .home-section.today-empty-section .today-empty{font-size:12.5px}
+
+  /* Give the final dashboard card more breathing room above the fixed bottom nav. */
+  main{padding-bottom:calc(220px + env(safe-area-inset-bottom))}
+  #home{padding-bottom:20px}
+}
+.money-cell.won{box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 8px rgba(36,99,169,.06)}
+.money-cell.won strong{font-weight:850}
+
 /* Build 9.8 · V22.5: fault-code finder hardening + final QA */
 @media(max-width:430px){
   #home .home-section.today-empty-section{
@@ -504,7 +521,7 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 <button onclick="openDiary()"><span class="ico"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M8 3.5v4M16 3.5v4M4 9.5h16M8 13h3M13 13h3M8 16h3"/></svg></span>Diary</button>
 </div>
 
-<div class="home-section">
+<div class="home-section today-empty-section" id="todayHomeSection">
   <div class="home-section-title"><h3>Today</h3><button class="home-link" onclick="openDiary()">View all ›</button></div>
   <div id="todayHomeCard" class="today-empty">No jobs booked today.</div>
 </div>
@@ -1277,8 +1294,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="11.4";
-const TRADEPRO_VERSION="24.4";
+const TRADEPRO_BUILD="11.5";
+const TRADEPRO_VERSION="24.5";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -2216,7 +2233,7 @@ function parseUKStart(v){let m=String(v||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4
 function renderPlumbCoreHome(){
  let bn=document.getElementById('homeBusinessName'),bi=document.getElementById('homeBusinessInitials'),rawName=String(setting('businessName','')||'').trim();if(bn)bn.textContent=rawName||'Set business name';if(bi){let words=(rawName||'PlumbCore').split(/\s+/).filter(Boolean);bi.textContent=((words[0]?.[0]||'P')+(words.length>1?(words[words.length-1]?.[0]||''):'')).toUpperCase().slice(0,2);}
  let box=document.getElementById('todayHomeCard');if(!box)return;
- let todaySection=box.closest('.home-section');
+ let todaySection=document.getElementById('todayHomeSection')||box.closest('.home-section');
  let jobs=(data.appointments||[]).filter(a=>a.status!=='Cancelled'&&a.date===todayISO()).sort((a,b)=>String(a.time||'99:99').localeCompare(String(b.time||'99:99')));
  if(!jobs.length){if(todaySection)todaySection.classList.add('today-empty-section');box.className='today-empty';box.innerHTML='No jobs booked today. <button class="home-link" onclick="openDiary()">Open diary ›</button>';return;}
  if(todaySection)todaySection.classList.remove('today-empty-section');
@@ -3273,7 +3290,7 @@ privacy:`<h1>Product Privacy</h1><p><small>Last updated: 31 August 2026</small><
 <h2>Customer data</h2><p>The business using PLUMBCORE is responsible for deciding why and how its customer information is used, keeping it secure and complying with applicable data-protection law.</p>
 <h2>Backups and deletion</h2><p>Users should export regular backups. Clearing browser/site data, removing the app, changing devices or using private-browsing modes may remove local records.</p>
 <h2>Future services</h2><p>If accounts, cloud sync, analytics, crash reporting or other hosted services are introduced, this notice must be updated to explain them.</p>`,
-support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.4 · V24.4</small></p>
+support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.5 · V24.5</small></p>
 <h2>Data safety</h2><p>Export a backup regularly and before changing phone, clearing browser data or installing a major update. Keep original Manual Vault PDFs separately.</p>
 <h2>Moving to another device</h2><p>Export a PLUMBCORE backup from the old device, open PLUMBCORE on the new device and use Import Backup in Business Settings. Check customers, quotes, invoices, diary and price-book settings after import.</p>
 <h2>Technical library</h2><p>Always confirm manufacturer, exact model and revision. If an exact local PDF is not mapped, use the official manufacturer route rather than assuming a similar model is equivalent.</p>
@@ -3281,7 +3298,7 @@ support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.4 · V24.4</sma
 <h2>App problems</h2><p>If a button stops responding, close and reopen PLUMBCORE, then retry. If the issue remains, note the screen, button and what happened immediately before the fault. Do not clear browser data until a fresh backup has been exported.</p>
 <div class="pc-legal-note"><strong>Before paid public launch:</strong> add a dedicated support email/contact and the legal operator details to the public checkout/listing.</div>`,
 about:`<h1>About PLUMBCORE</h1><p>PLUMBCORE is a mobile-first job and business toolkit for plumbers and heating engineers, bringing job pricing, customers, diary, quotes, invoices, payments, reports and technical reference tools into one working app.</p>
-<h2>Build 11.4</h2><p>This release keeps Terms &amp; Conditions, Privacy, Support &amp; Data and About PLUMBCORE directly inside the app, with all four legal/support buttons opening reliably without separate website files.</p>
+<h2>Build 11.5</h2><p>This release tightens the iPhone dashboard, keeps the empty Today state compact, strengthens the Work won figure, and adds extra clearance above the fixed bottom navigation while retaining the in-app legal/support pages.</p>
 <h2>Product approach</h2><p>PLUMBCORE is designed to be practical on site first. Technical information is deliberately model-specific and routes users to official sources rather than guessing where a verified match is unavailable.</p>`
 };
 function openLegalPage(which){
