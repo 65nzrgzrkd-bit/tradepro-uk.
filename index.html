@@ -415,7 +415,16 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 }
 
 
-/* Build 11.6 · V24.6: quote/invoice data-integrity hardening */
+/* Build 11.7 · V24.7: quote/invoice data-integrity hardening */
+
+/* Build 11.7 · V24.7: Paid Invoice Vault */
+.paid-vault-open{width:100%;padding:14px 16px;border-radius:14px;font-weight:800;margin:0 0 8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.vault-count{display:inline-flex;min-width:28px;height:28px;padding:0 8px;align-items:center;justify-content:center;border-radius:999px;background:#e8f5e9;color:#226b28;font-size:13px;font-weight:850}
+.vault-hint{font-size:12px;color:var(--muted);line-height:1.4;margin:0 2px 14px}
+.vault-intro{margin-bottom:14px}.vault-intro strong{display:block;font-size:17px;margin-bottom:5px}.vault-intro small{line-height:1.45}
+.vault-paid-item{border-left:5px solid var(--green)}
+.vault-paid-item .price{color:#226b28}
+
 /* Build 11.5 · V24.5: final dashboard polish */
 @media(max-width:430px){
   /* Empty diary state should read like a status strip, not a full content card. */
@@ -751,12 +760,21 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 
 <section id="invoices" class="screen">
 <div class="screenhead"><button class="back" onclick="show('home')">‹</button><h2>Invoices</h2></div>
-<div class="searchbox"><input id="invoiceSearch" placeholder="Search invoices, customers or jobs" oninput="render()"></div>
+<div class="searchbox"><input id="invoiceSearch" placeholder="Search active invoices, customers or jobs" oninput="render()"></div>
+<button class="secondary paid-vault-open" type="button" onclick="showPaidInvoiceVault()">🗄️ Paid Invoice Vault <span id="paidVaultCount" class="vault-count">0</span></button>
+<div class="vault-hint">Paid invoices are archived automatically when their balance reaches £0.</div>
 <div id="invoiceList"></div>
 </section>
 
+<section id="paidInvoiceVault" class="screen">
+<div class="screenhead"><button class="back" onclick="show('invoices')">‹</button><h2>Paid Invoice Vault</h2></div>
+<div class="sectioncard vault-intro"><strong>Paid &amp; archived</strong><small>Search completed invoices by customer, invoice number, job, date or amount. Archived invoices are read-only unless you deliberately reopen them.</small></div>
+<div class="searchbox"><input id="paidInvoiceSearch" placeholder="Search paid invoices" oninput="renderPaidInvoiceVault()"></div>
+<div id="paidInvoiceVaultList"></div>
+</section>
+
 <section id="invoiceDetail" class="screen">
-<div class="screenhead"><button class="back" onclick="show('invoices')">‹</button><h2>Invoice Details</h2></div>
+<div class="screenhead"><button id="invoiceBackBtn" class="back" onclick="show(invoiceReturnScreen)">‹</button><h2>Invoice Details</h2></div>
 
 <div id="invoiceView" class="detail">
 <div class="detailrow"><span>Invoice number</span><strong id="idNumber"></strong></div>
@@ -785,16 +803,16 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </div>
 
 <div class="detail-actions">
-<button class="secondary" onclick="editSelectedInvoice()">Edit Invoice</button>
+<button id="editInvoiceBtn" class="secondary" onclick="editSelectedInvoice()">Edit Invoice</button>
 <button id="paidToggleBtn" type="button" class="green" onclick="togglePaid(event)">Mark as Paid</button>
 <button id="depositPaidBtn" type="button" class="secondary" onclick="recordDepositPayment()" style="display:none">Record Deposit Paid</button>
-<button type="button" class="secondary" onclick="recordPayment()">Record Payment</button>
-<button type="button" class="secondary" onclick="showPaymentQR()">Show Payment QR</button>
+<button id="recordPaymentBtn" type="button" class="secondary" onclick="recordPayment()">Record Payment</button>
+<button id="paymentQRBtn" type="button" class="secondary" onclick="showPaymentQR()">Show Payment QR</button>
 <button class="secondary" onclick="previewInvoice()">Preview Invoice</button>
 <button class="secondary" onclick="sendInvoice()">Send / Share Invoice</button>
 <button id="paymentReminderBtn" class="secondary" onclick="sendPaymentReminder()">Send Payment Reminder</button>
 <button class="secondary" onclick="printInvoice()">Print / Save PDF</button>
-<button class="danger" onclick="deleteSelectedInvoice()">Delete Invoice</button>
+<button id="deleteInvoiceBtn" class="danger" onclick="deleteSelectedInvoice()">Delete Invoice</button>
 </div>
 </div>
 
@@ -1295,8 +1313,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="11.6";
-const TRADEPRO_VERSION="24.6";
+const TRADEPRO_BUILD="11.7";
+const TRADEPRO_VERSION="24.7";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1385,6 +1403,7 @@ const DEFAULT_PRICE_BOOK=[
 ];
 if(!Array.isArray(data.priceBook)||!data.priceBook.length||data.priceBook.length<=8) data.priceBook=DEFAULT_PRICE_BOOK.map(x=>({...x}));
 let currentPrice=0,selectedQuoteIndex=null,selectedInvoiceIndex=null,selectedPriceBookIndex=null,selectedCustomerIndex=null,selectedAppointmentIndex=null,customerHistoryFilter='all',reportPeriod='month';
+let invoiceReturnScreen="invoices";
 
 // V10 migration marker: preserve user records/settings; add new default jobs once.
 if(localStorage.getItem('tradepro_migrated_v10')!=='1'){
@@ -1603,8 +1622,8 @@ function printQuoteFromPreview(){if(!populateQuotePaper())return;window.print()}
 
 function normalizeCustomer(c){return typeof c==="string"?{name:c,phone:"",email:"",address1:"",address2:"",town:"",postcode:""}:c}
 
-function openInvoice(i){
-selectedInvoiceIndex=i;let inv=data.invoices[i],c=normalizeCustomer(inv.customer);
+function openInvoice(i,returnScreen="invoices"){
+invoiceReturnScreen=returnScreen||"invoices";selectedInvoiceIndex=i;let inv=data.invoices[i],c=normalizeCustomer(inv.customer);
 if(document.getElementById("invoiceView")) invoiceView.style.display="block";
 if(document.getElementById("invoiceEdit")) invoiceEdit.style.display="none";
 idNumber.innerText=inv.number||("TP-"+String(i+1).padStart(4,"0"));
@@ -1613,7 +1632,7 @@ idCustomer.innerText=c.name;let customerAddr=fullAddress(c),displayAddr=customer
 idJob.innerText=inv.job;idJobAddress.innerText=inv.jobAddress||displayAddr;idDate.innerText=inv.date;idDueDate.innerText=inv.dueDate||"Not set";
 updateInvoiceStatus(inv);syncAppointmentFromInvoice(inv);let inNet=Number(inv.net??inv.price??0),inVat=Number(inv.vat||0);idNet.innerText="£"+inNet.toFixed(2);idVat.innerText="£"+inVat.toFixed(2);idVatRow.style.display=inVat>0?"block":"none";idStatus.innerText=inv.status||"Unpaid";idStatus.className="status "+((inv.status||"")==="Overdue"?"status-overdue":(inv.status||"")==="Part Paid"?"status-part":(inv.status||"")==="Paid"?"status-accepted":"");let paidAmt=Number(inv.paid||0),totalAmt=Number(inv.price||0),bal=Math.max(0,totalAmt-paidAmt);idPaid.innerText="£"+paidAmt.toFixed(2);idBalance.innerText="£"+bal.toFixed(2);if(document.getElementById("idFinanceTotal"))idFinanceTotal.innerText="£"+totalAmt.toFixed(2);
 let dep=Math.max(0,Number(inv.depositRequired||0));if(document.getElementById("idFinanceDeposit"))idFinanceDeposit.innerText="£"+dep.toFixed(2);idDepositRequired.innerText="£"+dep.toFixed(2);idDepositRow.style.display=dep>0?"block":"none";if(document.getElementById("idDepositState")){idDepositState.innerHTML=dep>0?(paidAmt>=dep?'<span class="deposit-paid-badge">✓ Deposit paid</span>':'<span class="deposit-due-badge">Deposit still due</span>'):'';}let pct=totalAmt>0?Math.min(100,Math.max(0,paidAmt/totalAmt*100)):0;if(document.getElementById("idProgressFill"))idProgressFill.style.width=pct.toFixed(1)+"%";idSourceQuote.innerText=inv.sourceQuoteNumber||"";idSourceQuoteRow.style.display=inv.sourceQuoteNumber?"block":"none";idPaymentProgress.innerText="£"+paidAmt.toFixed(2)+" of £"+totalAmt.toFixed(2)+" paid";renderPaymentHistory(inv);
-let btn=document.getElementById("paidToggleBtn");if(btn){let isPaid=inv.status==="Paid";btn.textContent=isPaid?"Reopen as Unpaid":"Mark as Paid";btn.className=isPaid?"reversal-btn":"green";}let db=document.getElementById("depositPaidBtn");if(db){db.style.display=dep>0&&Number(inv.paid||0)<dep?"block":"none";db.textContent="Record Deposit Paid · £"+Math.max(0,dep-Number(inv.paid||0)).toFixed(2)};
+let btn=document.getElementById("paidToggleBtn"),isPaid=inv.status==="Paid"||bal<=0&&totalAmt>0;if(btn){btn.textContent=isPaid?"Reopen as Unpaid":"Mark as Paid";btn.className=isPaid?"reversal-btn":"green";}let db=document.getElementById("depositPaidBtn");if(db){db.style.display=!isPaid&&dep>0&&Number(inv.paid||0)<dep?"block":"none";db.textContent="Record Deposit Paid · £"+Math.max(0,dep-Number(inv.paid||0)).toFixed(2)};[["recordPaymentBtn",!isPaid],["paymentQRBtn",!isPaid],["editInvoiceBtn",!isPaid],["deleteInvoiceBtn",!isPaid]].forEach(([id,visible])=>{let el=document.getElementById(id);if(el)el.style.display=visible?"block":"none";});
 let delivery=inv.deliveryStatus||"Draft",dBadge=document.getElementById("idDeliveryStatus"),dMeta=document.getElementById("idDeliveryMeta");if(dBadge){dBadge.textContent=delivery+(inv.revisionCount?" · Rev "+inv.revisionCount:"");dBadge.className="delivery-badge "+(delivery==="Sent"?"sent":inv.revisionCount?"revised":"");}if(dMeta){dMeta.textContent=delivery==="Sent"?("Sent "+formatSavedTime(inv.sentAt)):(inv.revisedAt?"Revised — send the updated invoice":"Safe to edit before sending");}let ms=document.getElementById("invoiceMarkSentBtn"),md=document.getElementById("invoiceMarkDraftBtn");if(ms)ms.style.display=delivery==="Sent"?"none":"inline-block";if(md)md.style.display=delivery==="Draft"?"none":"inline-block";let reminder=document.getElementById("paymentReminderBtn");if(reminder)reminder.style.display=(delivery==="Sent"&&bal>0)?"block":"none";
 show("invoiceDetail")
 }
@@ -1626,7 +1645,7 @@ function renderPaymentHistory(inv){let box=document.getElementById("idPaymentHis
 function recordDepositPayment(){if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],dep=Math.max(0,Number(inv.depositRequired||0)),remaining=Math.max(0,dep-Number(inv.paid||0));if(!remaining){toast("Deposit already covered");return}let applied=addPayment(inv,remaining,"Deposit");syncAppointmentFromInvoice(inv);save();openInvoice(selectedInvoiceIndex);toast("Deposit recorded · £"+applied.toFixed(2))}
 
 function recordPayment(){
-if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));if(balance<=0){toast("Invoice already paid");return}let raw=prompt("Payment received (£)",balance.toFixed(2));if(raw===null)return;let amt=parseFloat(raw);if(!isFinite(amt)||amt<=0){alert("Enter a valid payment amount.");return}let applied=addPayment(inv,amt,"Payment");syncAppointmentFromInvoice(inv);save();openInvoice(selectedInvoiceIndex);toast("Payment recorded · £"+applied.toFixed(2));
+if(selectedInvoiceIndex===null)return;let inv=data.invoices[selectedInvoiceIndex],balance=Math.max(0,Number(inv.price||0)-Number(inv.paid||0));if(balance<=0){toast("Invoice already paid");return}let raw=prompt("Payment received (£)",balance.toFixed(2));if(raw===null)return;let amt=parseFloat(raw);if(!isFinite(amt)||amt<=0){alert("Enter a valid payment amount.");return}let applied=addPayment(inv,amt,"Payment");syncAppointmentFromInvoice(inv);save();openInvoice(selectedInvoiceIndex,invoiceReturnScreen);toast("Payment recorded · £"+applied.toFixed(2));
 }
 function editSelectedInvoice(){
 if(selectedInvoiceIndex===null)return;
@@ -1720,7 +1739,7 @@ let total=Math.max(0,Number(inv.price||0));
 if((inv.status||"")==="Paid" || Number(inv.paid||0)>=total && total>0){let wasPaid=Math.max(0,Number(inv.paid||0));if(!confirm("Reopen this paid invoice as unpaid? A payment reversal will be recorded in the audit history."))return false;if(!Array.isArray(inv.payments))inv.payments=[];if(wasPaid>0)inv.payments.unshift({amount:-wasPaid,type:"Payment reversal",date:todayUK(),at:new Date().toISOString()});inv.paid=0;inv.status="Unpaid";inv.lastPaymentAt=new Date().toISOString();}
 else{let remaining=Math.max(0,total-Number(inv.paid||0));addPayment(inv,remaining,"Paid in full");}
 syncAppointmentFromInvoice(inv);save();
-openInvoice(selectedInvoiceIndex);
+openInvoice(selectedInvoiceIndex,invoiceReturnScreen);
 return false;
 }
 function deleteSelectedInvoice(){
@@ -2257,6 +2276,20 @@ function formatDashboardGBP(value,decimals=0){
  let n=Number(value);if(!Number.isFinite(n))n=0;
  return new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP",minimumFractionDigits:decimals,maximumFractionDigits:decimals}).format(n);
 }
+function invoiceIsPaid(inv){
+ let total=Math.max(0,Number(inv?.price||0)),paid=Math.max(0,Number(inv?.paid||0));
+ return (total>0&&paid>=total)||(inv?.status||"")==="Paid";
+}
+function renderPaidInvoiceVault(){
+ let list=document.getElementById("paidInvoiceVaultList");if(!list)return;
+ let q=(document.getElementById("paidInvoiceSearch")?.value||"").trim().toLowerCase();
+ let rows=data.invoices.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>invoiceIsPaid(r.x)).filter(r=>!q||[r.x.number,r.c.name,r.x.job,r.x.date,r.x.price,r.x.sourceQuoteNumber].join(" ").toLowerCase().includes(q));
+ rows.sort((a,b)=>String(b.x.lastPaymentAt||b.x.createdAt||"").localeCompare(String(a.x.lastPaymentAt||a.x.createdAt||"")));
+ list.innerHTML=rows.length?rows.map(({x,i,c})=>`<div class="item clickable vault-paid-item" onclick="openInvoice(${i},'paidInvoiceVault')"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Invoice")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · Paid in full</small></div>`).join(""):'<div class="empty">'+(q?'No paid invoices match your search.':'No paid invoices in the vault yet.')+'</div>';
+ let count=data.invoices.filter(invoiceIsPaid).length,badge=document.getElementById("paidVaultCount");if(badge)badge.textContent=count;
+}
+function showPaidInvoiceVault(){renderPaidInvoiceVault();show("paidInvoiceVault");}
+
 function render(){
 data.invoices.forEach(updateInvoiceStatus);
 quoteCount.innerText=data.quotes.length;invoiceCount.innerText=data.invoices.length;customerCount.innerText=data.customers.length;
@@ -2275,7 +2308,7 @@ let cs=(document.getElementById('customerSearch')?.value||'').toLowerCase();let 
 
 let qs=(document.getElementById("quoteSearch")?.value||"").toLowerCase();let qrows=data.quotes.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!qs||[r.x.number,r.c.name,r.x.job,r.x.status].join(" ").toLowerCase().includes(qs));quoteList.innerHTML=qrows.length?qrows.map(({x,i,c})=>`<div class="item clickable" onclick="openQuote(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Quote")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.status||"Draft")}</small></div>`).join(""):(data.quotes.length?'<div class="empty">No matching quotes.</div>':'<div class="empty">No quotes saved yet.</div>');
 
-let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let irows=data.invoices.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!is||[r.x.number,r.c.name,r.x.job,r.x.status,r.x.deliveryStatus].join(" ").toLowerCase().includes(is));invoiceList.innerHTML=irows.length?irows.map(({x,i,c})=>`<div class="item clickable" onclick="openInvoice(${i})"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Invoice")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.deliveryStatus||"Draft")} · ${esc(x.status||"Unpaid")}</small></div>`).join(""):(data.invoices.length?'<div class="empty">No matching invoices.</div>':'<div class="empty">No invoices saved yet.</div>');
+let is=(document.getElementById("invoiceSearch")?.value||"").toLowerCase();let activeInvoices=data.invoices.map((x,i)=>({x,i,c:normalizeCustomer(x.customer)})).filter(r=>!invoiceIsPaid(r.x));let irows=activeInvoices.filter(r=>!is||[r.x.number,r.c.name,r.x.job,r.x.status,r.x.deliveryStatus].join(" ").toLowerCase().includes(is));invoiceList.innerHTML=irows.length?irows.map(({x,i,c})=>`<div class="item clickable" onclick="openInvoice(${i},'invoices')"><span class="price">£${Number(x.price||0).toFixed(2)}</span><strong>${esc(x.number||"Invoice")} · ${esc(c.name)}</strong><small>${esc(x.job)} · ${esc(x.date)} · ${esc(x.deliveryStatus||"Draft")} · ${esc(x.status||"Unpaid")}</small></div>`).join(""):(activeInvoices.length?'<div class="empty">No matching active invoices.</div>':'<div class="empty">No active invoices. Paid invoices are safely stored in the Vault.</div>');renderPaidInvoiceVault();
 
 [
 "businessName","ownerName",
@@ -3298,7 +3331,7 @@ privacy:`<h1>Product Privacy</h1><p><small>Last updated: 31 August 2026</small><
 <h2>Customer data</h2><p>The business using PLUMBCORE is responsible for deciding why and how its customer information is used, keeping it secure and complying with applicable data-protection law.</p>
 <h2>Backups and deletion</h2><p>Users should export regular backups. Clearing browser/site data, removing the app, changing devices or using private-browsing modes may remove local records.</p>
 <h2>Future services</h2><p>If accounts, cloud sync, analytics, crash reporting or other hosted services are introduced, this notice must be updated to explain them.</p>`,
-support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.6 · V24.6</small></p>
+support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.7 · V24.7</small></p>
 <h2>Data safety</h2><p>Export a backup regularly and before changing phone, clearing browser data or installing a major update. Keep original Manual Vault PDFs separately.</p>
 <h2>Moving to another device</h2><p>Export a PLUMBCORE backup from the old device, open PLUMBCORE on the new device and use Import Backup in Business Settings. Check customers, quotes, invoices, diary and price-book settings after import.</p>
 <h2>Technical library</h2><p>Always confirm manufacturer, exact model and revision. If an exact local PDF is not mapped, use the official manufacturer route rather than assuming a similar model is equivalent.</p>
@@ -3306,7 +3339,7 @@ support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.6 · V24.6</sma
 <h2>App problems</h2><p>If a button stops responding, close and reopen PLUMBCORE, then retry. If the issue remains, note the screen, button and what happened immediately before the fault. Do not clear browser data until a fresh backup has been exported.</p>
 <div class="pc-legal-note"><strong>Before paid public launch:</strong> add a dedicated support email/contact and the legal operator details to the public checkout/listing.</div>`,
 about:`<h1>About PLUMBCORE</h1><p>PLUMBCORE is a mobile-first job and business toolkit for plumbers and heating engineers, bringing job pricing, customers, diary, quotes, invoices, payments, reports and technical reference tools into one working app.</p>
-<h2>Build 11.6</h2><p>This release hardens the quote-to-invoice money workflow: blank customer attempts no longer create placeholder customer records, and editing an invoice total now keeps Net and VAT figures in sync.</p>
+<h2>Build 11.7</h2><p>This release adds the Paid Invoice Vault: fully paid invoices move out of the active invoice list into a searchable archive, remain available for preview/share/PDF, and can be deliberately reopened if a correction is required. Paid invoices are read-only by default.</p>
 <h2>Product approach</h2><p>PLUMBCORE is designed to be practical on site first. Technical information is deliberately model-specific and routes users to official sources rather than guessing where a verified match is unavailable.</p>`
 };
 function openLegalPage(which){
