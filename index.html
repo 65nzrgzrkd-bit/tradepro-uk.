@@ -415,6 +415,7 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 }
 
 
+/* Build 11.6 · V24.6: quote/invoice data-integrity hardening */
 /* Build 11.5 · V24.5: final dashboard polish */
 @media(max-width:430px){
   /* Empty diary state should read like a status strip, not a full content card. */
@@ -1294,8 +1295,8 @@ html{scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))}
 </nav>
 
 <script>
-const TRADEPRO_BUILD="11.5";
-const TRADEPRO_VERSION="24.5";
+const TRADEPRO_BUILD="11.6";
+const TRADEPRO_VERSION="24.6";
 const TRADEPRO_RELEASE=`PlumbCore · Build ${TRADEPRO_BUILD} · V${TRADEPRO_VERSION}`;
 function syncReleaseLabels(){
  const top=document.getElementById("appReleaseLabel");if(top)top.textContent=TRADEPRO_RELEASE;
@@ -1492,7 +1493,7 @@ function addDaysFromUK(dateText,days){
 let m=String(dateText||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);let d=m?new Date(+m[3],+m[2]-1,+m[1]):new Date();d.setDate(d.getDate()+Number(days||0));return d.toLocaleDateString("en-GB")
 }
 function buildRecord(){
-let c=collectCustomer();upsertCustomer(c);
+let c=collectCustomer();
 return {customer:c,job:jobName(),jobAddress:getJobAddress(c),price:currentPrice,net:currentNet||currentPrice,vat:currentVat||0,vatRate:settingNum("vatRate",20),vatRegistered:settingBool("vatRegistered",false),date:todayUK()}
 }
 
@@ -1512,6 +1513,7 @@ if(!Number.isFinite(currentPrice)||currentPrice<=0){alert("Calculate a valid quo
 syncDataFromStorage();
 let r=buildRecord();
 if(!r.customer.name||r.customer.name==="Unnamed customer"){alert("Enter the customer name before saving the quote.");return}
+upsertCustomer(r.customer);
 let validDays=settingNum("quoteValidDays",30),depositPct=settingNum("depositPercent",20);
 let quote={...r,number:nextQuoteNumber(),validUntil:addDaysFromUK(r.date,validDays),depositPercent:depositPct,depositType:"percent",depositValue:depositPct,status:"Draft",savedAt:new Date().toISOString()};
 data.quotes.unshift(quote);
@@ -1523,6 +1525,7 @@ if(!currentPrice)calculate();
 if(!Number.isFinite(currentPrice)||currentPrice<=0){alert("Calculate a valid invoice total before creating the invoice.");return}
 let r=buildRecord();
 if(!r.customer.name||r.customer.name==="Unnamed customer"){alert("Enter the customer name before creating the invoice.");return}
+upsertCustomer(r.customer);
 let duplicate=data.invoices.find(x=>x.customer?.name===r.customer.name&&x.job===r.job&&x.price===r.price&&x.status!=="Deleted");
 if(duplicate){alert("An invoice for this job already exists.");show("invoices");return}
 let terms=settingNum("paymentDays",14);
@@ -1681,6 +1684,11 @@ inv.date=editInvoiceDate.value.trim()||todayUK();
 inv.dueDate=editDueDate.value.trim();
 let previousPaid=Math.max(0,Number(inv.paid||0));
 inv.price=Math.max(0,parseFloat(editPrice.value)||0);
+let invoiceVatRate=Number.isFinite(Number(inv.vatRate))?Math.max(0,Number(inv.vatRate)):settingNum("vatRate",20);
+let invoiceVatRegistered=typeof inv.vatRegistered==="boolean"?inv.vatRegistered:settingBool("vatRegistered",false);
+inv.vatRate=invoiceVatRate;
+inv.vatRegistered=invoiceVatRegistered;
+if(invoiceVatRegistered&&invoiceVatRate>0){inv.net=inv.price/(1+invoiceVatRate/100);inv.vat=inv.price-inv.net;}else{inv.net=inv.price;inv.vat=0;}
 let editedPaid=Math.min(inv.price,Math.max(0,parseFloat(editPaid.value)||0));
 let paymentDelta=editedPaid-previousPaid;
 if(Math.abs(paymentDelta)>0.004){if(!Array.isArray(inv.payments))inv.payments=[];inv.payments.unshift({amount:paymentDelta,type:paymentDelta>0?"Manual payment adjustment":"Payment correction",date:todayUK(),at:new Date().toISOString()});inv.lastPaymentAt=new Date().toISOString();}
@@ -3290,7 +3298,7 @@ privacy:`<h1>Product Privacy</h1><p><small>Last updated: 31 August 2026</small><
 <h2>Customer data</h2><p>The business using PLUMBCORE is responsible for deciding why and how its customer information is used, keeping it secure and complying with applicable data-protection law.</p>
 <h2>Backups and deletion</h2><p>Users should export regular backups. Clearing browser/site data, removing the app, changing devices or using private-browsing modes may remove local records.</p>
 <h2>Future services</h2><p>If accounts, cloud sync, analytics, crash reporting or other hosted services are introduced, this notice must be updated to explain them.</p>`,
-support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.5 · V24.5</small></p>
+support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.6 · V24.6</small></p>
 <h2>Data safety</h2><p>Export a backup regularly and before changing phone, clearing browser data or installing a major update. Keep original Manual Vault PDFs separately.</p>
 <h2>Moving to another device</h2><p>Export a PLUMBCORE backup from the old device, open PLUMBCORE on the new device and use Import Backup in Business Settings. Check customers, quotes, invoices, diary and price-book settings after import.</p>
 <h2>Technical library</h2><p>Always confirm manufacturer, exact model and revision. If an exact local PDF is not mapped, use the official manufacturer route rather than assuming a similar model is equivalent.</p>
@@ -3298,7 +3306,7 @@ support:`<h1>Support &amp; Data</h1><p><small>PLUMBCORE Build 11.5 · V24.5</sma
 <h2>App problems</h2><p>If a button stops responding, close and reopen PLUMBCORE, then retry. If the issue remains, note the screen, button and what happened immediately before the fault. Do not clear browser data until a fresh backup has been exported.</p>
 <div class="pc-legal-note"><strong>Before paid public launch:</strong> add a dedicated support email/contact and the legal operator details to the public checkout/listing.</div>`,
 about:`<h1>About PLUMBCORE</h1><p>PLUMBCORE is a mobile-first job and business toolkit for plumbers and heating engineers, bringing job pricing, customers, diary, quotes, invoices, payments, reports and technical reference tools into one working app.</p>
-<h2>Build 11.5</h2><p>This release tightens the iPhone dashboard, keeps the empty Today state compact, strengthens the Work won figure, and adds extra clearance above the fixed bottom navigation while retaining the in-app legal/support pages.</p>
+<h2>Build 11.6</h2><p>This release hardens the quote-to-invoice money workflow: blank customer attempts no longer create placeholder customer records, and editing an invoice total now keeps Net and VAT figures in sync.</p>
 <h2>Product approach</h2><p>PLUMBCORE is designed to be practical on site first. Technical information is deliberately model-specific and routes users to official sources rather than guessing where a verified match is unavailable.</p>`
 };
 function openLegalPage(which){
