@@ -43,6 +43,27 @@ function invoiceEvent(event) {
   };
 }
 
+function lifecycleEvent(event) {
+  const obj=event.data?.object||{};
+  const id=value=>typeof value==='string'?value:value?.id||null;
+  const checkout=['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type);
+  if(checkout && obj.mode!=='subscription')return null;
+  if(!checkout && !['customer.subscription.updated','customer.subscription.deleted'].includes(event.type))return null;
+  if(!Number.isSafeInteger(event.created)||event.created<=0)throw Error('Missing event creation time');
+  if(event.type==='checkout.session.async_payment_succeeded' && obj.payment_status!=='paid')throw Error('Async success without paid status');
+  const ends=(obj.items?.data||[]).map(item=>item.current_period_end).filter(Number.isSafeInteger);
+  const end=obj.current_period_end||(ends.length?Math.min(...ends):null);
+  return {
+    p_kind:checkout?(obj.payment_status==='paid'?'checkout_paid':'checkout_pending'):'subscription',
+    p_email:checkout?String(obj.customer_details?.email||obj.customer_email||'').trim().toLowerCase():null,
+    p_customer:id(obj.customer),p_subscription:checkout?id(obj.subscription):id(obj),
+    p_status:checkout?null:(event.type==='customer.subscription.deleted'?'canceled':obj.status),
+    p_period_end:checkout||!end?null:new Date(end*1000).toISOString(),
+    p_price:checkout?null:id(obj.items?.data?.[0]?.price),
+    p_cancel:checkout?false:!!obj.cancel_at_period_end,p_created:event.created
+  };
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
 
@@ -69,36 +90,15 @@ Deno.serve(async (req: Request) => {
 
   const obj: any = evt.data?.object || {};
   try {
-    if (evt.type === "checkout.session.completed") {
-      const email = String(obj.customer_details?.email || obj.customer_email || "").trim().toLowerCase();
-      const customer = typeof obj.customer === "string" ? obj.customer : obj.customer?.id;
-      const subscription = typeof obj.subscription === "string" ? obj.subscription : obj.subscription?.id;
-      if (email && subscription && obj.mode === "subscription" && obj.payment_status === "paid") {
-        const { error } = await supabase.from("subscribers").upsert({
-          email,
-          stripe_customer_id: customer || null,
-          stripe_subscription_id: subscription,
-          status: "active",
-          updated_at: new Date().toISOString()
-        }, { onConflict: "email" });
-        if (error) throw error;
-      }
-    }
-
-    if (evt.type === "customer.subscription.updated" || evt.type === "customer.subscription.deleted") {
-      const subscription = String(obj.id || "");
-      const status = evt.type === "customer.subscription.deleted" ? "canceled" : String(obj.status || "inactive");
-      const periodEnd = obj.current_period_end || obj.items?.data?.[0]?.current_period_end;
-      const currentPeriodEnd = periodEnd ? new Date(periodEnd * 1000).toISOString() : null;
-      const priceId = obj.items?.data?.[0]?.price?.id || null;
-      const { error } = await supabase.from("subscribers").update({
-        status,
-        price_id: priceId,
-        current_period_end: currentPeriodEnd,
-        cancel_at_period_end: !!obj.cancel_at_period_end,
-        updated_at: new Date().toISOString()
-      }).eq("stripe_subscription_id", subscription);
+    const lifecycle = lifecycleEvent(evt);
+    if (lifecycle) {
+      const { data, error } = await supabase.rpc("apply_subscription_lifecycle_event", lifecycle);
       if (error) throw error;
+      if (["unmapped", "conflict", "ambiguous"].includes(data)) {
+        console.warn("Stripe lifecycle needs retry/reconciliation", evt.id, data);
+        return new Response("Subscription reconciliation pending", { status: 503 });
+      }
+      console.log("Stripe lifecycle event processed", evt.id, evt.type, data);
     }
 
     const payment = invoiceEvent(evt);

@@ -14,10 +14,11 @@ event={id:'evt_fixture',type:'invoice.paid',created:200,data:{object:{created:10
 check((await handler(req())).status,200);check(calls[0].name,'apply_subscription_invoice_event');check(calls[0].args.p_paid,true);
 rpcResult={data:'unmapped',error:null};check((await handler(req())).status,503);
 rpcResult={data:null,error:{message:'fixture error'}};check((await handler(req())).status,500);
-calls=[];event={id:'evt_checkout',type:'checkout.session.completed',data:{object:{mode:'subscription',payment_status:'unpaid',customer_email:'test@example.invalid',subscription:'sub_fixture'}}};
-check((await handler(req())).status,200);check(calls.length,0);
-event.data.object.payment_status='paid';check((await handler(req())).status,200);check(calls[0].args.status,'active');
-calls=[];event={type:'customer.subscription.updated',data:{object:{id:'sub_fixture',status:'active',items:{data:[{current_period_end:2000000000,price:{id:'price_fixture'}}]}}}};
-check((await handler(req())).status,200);check(calls[0].args.current_period_end,new Date(2000000000000).toISOString());
+rpcResult={data:'already_mapped',error:null};calls=[];event={created:300,id:'evt_checkout',type:'checkout.session.completed',data:{object:{mode:'subscription',payment_status:'unpaid',customer_email:'test@example.invalid',subscription:'sub_fixture'}}};
+check((await handler(req())).status,200);check(calls[0].args.p_kind,'checkout_pending');
+calls=[];event.data.object.payment_status='paid';check((await handler(req())).status,200);check(calls[0].args.p_kind,'checkout_paid');
+calls=[];event={created:400,type:'customer.subscription.updated',data:{object:{id:'sub_fixture',status:'active',items:{data:[{current_period_end:2000000000,price:{id:'price_fixture'}}]}}}};
+check((await handler(req())).status,200);check(calls[0].args.p_period_end,new Date(2000000000000).toISOString());
+rpcResult={data:'ambiguous',error:null};check((await handler(req())).status,503);
 console.log(`${checks} handler checks passed (mocked Stripe verification and database transport)`);
 })().catch(e=>{console.error(e);process.exitCode=1});

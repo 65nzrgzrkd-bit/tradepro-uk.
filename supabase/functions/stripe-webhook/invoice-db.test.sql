@@ -24,7 +24,7 @@ begin
   assert public.apply_subscription_invoice_event('sub_fixtivo_transaction_test',140,150,true,'2030-02-01')='ineligible';
   update public.subscribers set status='paused' where stripe_subscription_id='sub_fixtivo_transaction_test';
   assert public.apply_subscription_invoice_event('sub_fixtivo_transaction_test',140,150,true,'2030-02-01')='ineligible';
-  update public.subscribers set status='incomplete' where stripe_subscription_id='sub_fixtivo_transaction_test';
+  update public.subscribers set status='incomplete_expired' where stripe_subscription_id='sub_fixtivo_transaction_test';
   assert public.apply_subscription_invoice_event('sub_fixtivo_transaction_test',140,150,true,'2030-02-01')='ineligible';
   assert not has_function_privilege('anon','public.apply_subscription_invoice_event(text,bigint,bigint,boolean,timestamptz)','execute');
   assert not has_function_privilege('authenticated','public.apply_subscription_invoice_event(text,bigint,bigint,boolean,timestamptz)','execute');
